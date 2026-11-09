@@ -34,6 +34,15 @@ object Prefs {
         return current
     }
 
+    /** Moves the favourite at [from] by [delta] slots (negative = earlier / higher on the ring). */
+    fun moveFavorite(context: Context, from: Int, delta: Int): List<String> {
+        val current = favorites(context).toMutableList()
+        val to = (from + delta).coerceIn(0, current.lastIndex)
+        if (from in current.indices && to != from) current.add(to, current.removeAt(from))
+        setFavorites(context, current)
+        return current
+    }
+
     fun bubbleOnRight(context: Context): Boolean = sp(context).getBoolean(KEY_BUBBLE_RIGHT, true)
     fun bubbleY(context: Context, default: Int): Int = sp(context).getInt(KEY_BUBBLE_Y, default)
 
