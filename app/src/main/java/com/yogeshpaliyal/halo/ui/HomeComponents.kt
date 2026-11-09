@@ -21,7 +21,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -142,9 +141,9 @@ fun RadialPreview(favorites: List<ImageBitmap>, modifier: Modifier = Modifier) {
     Canvas(modifier) {
         val cx = size.width - 26.dp.toPx()
         val cy = size.height / 2f
-        val inner = 60.dp.toPx()
-        val outer = 104.dp.toPx()
-        val icon = 32.dp.toPx()
+        val inner = 64.dp.toPx()
+        val outer = 108.dp.toPx()
+        val icon = 26.dp.toPx()
         val span = 160f
 
         fun slot(radius: Float, i: Int, count: Int): Offset {
@@ -388,7 +387,7 @@ private fun FilledSlot(
         Column(
             Modifier
                 .fillMaxWidth()
-                .aspectRatio(0.8f)
+                .height(108.dp)
                 .clip(slotShape)
                 .background(MaterialTheme.colorScheme.surfaceContainerHighest)
                 .border(
@@ -451,7 +450,7 @@ private fun EmptySlot(onAdd: () -> Unit) {
     Box(
         Modifier
             .fillMaxWidth()
-            .aspectRatio(0.8f)
+            .height(108.dp)
             .clip(slotShape)
             .border(1.5.dp, MaterialTheme.colorScheme.outlineVariant, slotShape)
             .clickable(onClick = onAdd),

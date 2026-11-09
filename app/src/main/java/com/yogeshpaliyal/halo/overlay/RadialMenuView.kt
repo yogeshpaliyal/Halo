@@ -57,8 +57,8 @@ class RadialMenuView(
     private val dir = if (onRightEdge) -1f else 1f
 
     private val rings: List<Ring> = buildList {
-        if (favorites.isNotEmpty()) add(Ring(favorites, dp(104f)))
-        if (recents.isNotEmpty()) add(Ring(recents, if (favorites.isEmpty()) dp(104f) else dp(184f)))
+        if (favorites.isNotEmpty()) add(Ring(favorites, dp(122f)))
+        if (recents.isNotEmpty()) add(Ring(recents, if (favorites.isEmpty()) dp(122f) else dp(208f)))
     }
 
     /** Currently highlighted app, or null if the finger is in the cancel zone. */
@@ -189,7 +189,7 @@ class RadialMenuView(
         getLocationOnScreen(screenLoc)
         val p = progress.coerceIn(0f, 1.2f)
         val fade = progress.coerceIn(0f, 1f)
-        scrim.alpha = (fade * 115).toInt()
+        scrim.alpha = (fade * 175).toInt()
         canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), scrim)
 
         val cx = centerX()
