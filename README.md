@@ -1,0 +1,43 @@
+# Halo
+
+A floating bubble that sticks to the edge of your screen and lets you switch apps with one thumb.
+
+- **Long-press** the bubble → a radial menu opens: your **favourites** on the inner ring, **recent apps** on the outer ring.
+- **Slide** to an app (you feel a tick on each one), **let go** to open it. Let go near the bubble to cancel.
+- **Tap** the bubble to jump back to your previous app.
+- **Drag** the bubble anywhere; it snaps to the nearest side and remembers its position.
+
+No ads, no tracking, no internet permission.
+
+## Setup
+
+1. Open the project in Android Studio (or run `./gradlew installDebug`).
+2. In the app, grant:
+   - **Display over other apps**: draws the bubble.
+   - **Usage access**: powers the recent-apps ring. Optional; without it you only get favourites.
+   - **Notifications** (Android 13+): a silent notification with a Stop button.
+3. Pick up to 6 favourites and turn on **Floating bubble**.
+
+## How it works
+
+| Piece | File |
+|---|---|
+| Foreground service that owns the overlay windows | `overlay/HaloService.kt` |
+| Bubble: tap / drag / long-press gesture state machine | `overlay/BubbleView.kt` |
+| Radial menu drawing and hit-testing | `overlay/RadialMenuView.kt` |
+| Installed apps, favourites, recents (`UsageStatsManager` events), launching | `data/AppRepository.kt` |
+| Settings screen (Compose) | `ui/MainActivity.kt` |
+
+The long-press → slide → release gesture works because Android keeps delivering the whole touch stream to the window that got `ACTION_DOWN` (the small bubble window). The menu itself is a separate full-screen, **non-touchable** overlay that just draws what the bubble reports.
+
+## Roadmap ideas
+
+- Start on boot
+- Hide automatically in full-screen apps / games
+- Bubble size, opacity and long-press delay settings
+- Reorder favourites by drag
+- App shortcuts (long-press shortcuts) as a third ring
+
+## License
+
+MIT

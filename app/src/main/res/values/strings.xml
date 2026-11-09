@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Halo</string>
+    <string name="notification_channel">Floating bubble</string>
+    <string name="notification_text">Bubble is active. Long-press it to switch apps.</string>
+    <string name="notification_stop">Stop</string>
+</resources>

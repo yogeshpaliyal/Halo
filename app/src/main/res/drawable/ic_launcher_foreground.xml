@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A ring with a small dot in the middle: the bubble's own look. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFB9A8FF"
+        android:strokeWidth="5"
+        android:pathData="M54,32 a22,22 0 1,0 0.01,0 z" />
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M54,47 a7,7 0 1,0 0.01,0 z" />
+</vector>
