@@ -24,6 +24,16 @@ Every push to the default branch builds a debug APK and publishes it to the
 Builds are signed with the committed `keystore/debug.keystore` (password `android`), so each new
 build installs over the previous one.
 
+## Stats
+
+Halo has no analytics in the app. Download counts, stars and repo traffic are collected from
+GitHub's APIs by the `Stats snapshot` workflow (daily, and before each `latest-master` rebuild) and
+saved to the [`stats` branch](https://github.com/yogeshpaliyal/Halo/tree/stats).
+
+Repo views, clones and referrers need one extra step, because the Actions token can't read
+GitHub's traffic API: create a fine-grained token for this repo with **Administration: Read-only**
+and add it as the `TRAFFIC_TOKEN` repository secret.
+
 ## Setup
 
 1. Open the project in Android Studio (or run `./gradlew installDebug`), or install the APK above.

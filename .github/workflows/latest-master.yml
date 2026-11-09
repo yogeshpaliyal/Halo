@@ -14,7 +14,15 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Record the current APK's download count before it is replaced (re-uploading resets it).
+  snapshot:
+    uses: ./.github/workflows/stats.yml
+    secrets: inherit
+
   build:
+    needs: snapshot
+    # A failed snapshot must never block a release.
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
