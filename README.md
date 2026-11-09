@@ -1,4 +1,4 @@
-<p align="center"><img src="docs/banner.png" alt="Halo: a floating bubble that switches apps with one thumb" width="100%"></p>
+<p align="center"><img src="docs/social-card.jpg" alt="Halo: the one-thumb app switcher for Android, shown with its home screen and the radial menu open" width="100%"></p>
 
 # Halo
 
