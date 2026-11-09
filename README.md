@@ -14,6 +14,17 @@ A floating bubble that sticks to the edge of your screen and lets you switch app
 
 No ads, no tracking, no internet permission.
 
+## Screenshots
+
+<table>
+  <tr>
+    <td align="center"><img src="docs/screenshots/menu.jpg" width="200" alt="Radial menu open over the home screen: favourites on the inner ring, recent apps on the outer ring"><br><sub>Hold, slide, let go</sub></td>
+    <td align="center"><img src="docs/screenshots/bubble.jpg" width="200" alt="The bubble resting on the right edge of the home screen"><br><sub>Stays out of the way</sub></td>
+    <td align="center"><img src="docs/screenshots/home.jpg" width="200" alt="Halo home screen with the on switch, a menu preview and six favourites"><br><sub>Pick up to six favourites</sub></td>
+    <td align="center"><img src="docs/screenshots/settings.jpg" width="200" alt="Gesture settings: tap action, hold delay and haptics"><br><sub>Tune the gestures</sub></td>
+  </tr>
+</table>
+
 ## Download
 
 Every push to the default branch builds a debug APK and publishes it to the
