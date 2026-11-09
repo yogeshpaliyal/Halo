@@ -14,6 +14,9 @@ object Prefs {
     private const val KEY_BUBBLE_RIGHT = "bubble_right"
     private const val KEY_BUBBLE_Y = "bubble_y"
     private const val KEY_ENABLED = "enabled"
+    private const val KEY_TAP_ACTION = "tap_action"
+    private const val KEY_HOLD_DELAY = "hold_delay"
+    private const val KEY_HAPTICS = "haptics"
 
     private fun sp(context: Context): SharedPreferences =
         context.getSharedPreferences(FILE, Context.MODE_PRIVATE)
@@ -50,6 +53,25 @@ object Prefs {
         putBoolean(KEY_BUBBLE_RIGHT, onRight)
         putInt(KEY_BUBBLE_Y, y)
     }
+
+    fun tapAction(context: Context): TapAction =
+        sp(context).getString(KEY_TAP_ACTION, null)
+            ?.let { runCatching { TapAction.valueOf(it) }.getOrNull() }
+            ?: TapAction.PREVIOUS_APP
+
+    fun setTapAction(context: Context, action: TapAction) =
+        sp(context).edit { putString(KEY_TAP_ACTION, action.name) }
+
+    fun holdDelay(context: Context): HoldDelay =
+        sp(context).getString(KEY_HOLD_DELAY, null)
+            ?.let { runCatching { HoldDelay.valueOf(it) }.getOrNull() }
+            ?: HoldDelay.MEDIUM
+
+    fun setHoldDelay(context: Context, delay: HoldDelay) =
+        sp(context).edit { putString(KEY_HOLD_DELAY, delay.name) }
+
+    fun haptics(context: Context): Boolean = sp(context).getBoolean(KEY_HAPTICS, true)
+    fun setHaptics(context: Context, on: Boolean) = sp(context).edit { putBoolean(KEY_HAPTICS, on) }
 
     fun enabled(context: Context): Boolean = sp(context).getBoolean(KEY_ENABLED, false)
     fun setEnabled(context: Context, enabled: Boolean) = sp(context).edit { putBoolean(KEY_ENABLED, enabled) }

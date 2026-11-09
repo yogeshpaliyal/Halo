@@ -24,6 +24,7 @@ import com.yogeshpaliyal.halo.R
 import com.yogeshpaliyal.halo.data.AppRepository
 import com.yogeshpaliyal.halo.data.Permissions
 import com.yogeshpaliyal.halo.data.Prefs
+import com.yogeshpaliyal.halo.data.TapAction
 import com.yogeshpaliyal.halo.ui.MainActivity
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -114,7 +115,12 @@ class HaloService : Service(), BubbleView.Listener {
         snapTo(onRight, Prefs.bubbleY(this, (screen.y * 0.4f).toInt()), animate = false)
     }
 
-    private fun showMenu() {
+    /**
+     * @param tapMode true when opened by a tap: the menu window then takes touches itself
+     * and waits for the user to tap an app (or anywhere else to close).
+     */
+    private fun showMenu(tapMode: Boolean = false) {
+        removeMenu()
         val favorites = repo.favorites()
         val recents = repo.recents(Prefs.MAX_RECENTS, exclude = favorites.mapTo(HashSet()) { it.packageName })
         val view = RadialMenuView(
@@ -128,8 +134,18 @@ class HaloService : Service(), BubbleView.Listener {
         val params = overlayParams(
             WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.MATCH_PARENT,
-            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE or WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            if (tapMode) {
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+            } else {
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE or WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+            },
         )
+        if (tapMode) {
+            view.onPick = { app ->
+                removeMenu()
+                app?.let { repo.launch(it.packageName) }
+            }
+        }
         wm.addView(view, params)
         menu = view
         view.show()
@@ -179,8 +195,12 @@ class HaloService : Service(), BubbleView.Listener {
     // --- BubbleView.Listener --------------------------------------------------------------
 
     override fun onTap() {
-        // Quick toggle: jump back to the previous app, like Alt+Tab.
-        repo.recents(1).firstOrNull()?.let { repo.launch(it.packageName) }
+        when (Prefs.tapAction(this)) {
+            // Quick toggle, like Alt+Tab.
+            TapAction.PREVIOUS_APP -> repo.recents(1).firstOrNull()?.let { repo.launch(it.packageName) }
+            TapAction.OPEN_MENU -> showMenu(tapMode = true)
+            TapAction.NOTHING -> Unit
+        }
     }
 
     override fun onDragMove(rawX: Float, rawY: Float) {

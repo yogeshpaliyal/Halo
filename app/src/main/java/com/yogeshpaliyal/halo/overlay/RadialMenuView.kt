@@ -9,9 +9,12 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.text.TextUtils
 import android.text.TextPaint
+import android.view.HapticFeedbackConstants
+import android.view.MotionEvent
 import android.view.View
 import android.view.animation.OvershootInterpolator
 import com.yogeshpaliyal.halo.data.AppEntry
+import com.yogeshpaliyal.halo.data.Prefs
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.floor
@@ -19,9 +22,14 @@ import kotlin.math.hypot
 import kotlin.math.sin
 
 /**
- * Full-screen, non-touchable overlay that draws two half-rings of app icons around the
- * bubble: favourites on the inner ring, recent apps on the outer ring. The bubble's
- * window owns the gesture and forwards finger positions through [updateFinger].
+ * Full-screen overlay that draws two half-rings of app icons around the bubble:
+ * favourites on the inner ring, recent apps on the outer ring.
+ *
+ * Two modes:
+ * - Hold mode (default): the window is non-touchable; the bubble owns the gesture and
+ *   forwards finger positions through [updateFinger].
+ * - Tap mode: set [onPick] and make the window touchable. The next touch is handled
+ *   here; lifting on an app picks it, lifting anywhere else dismisses (picks null).
  *
  * Angles use the Canvas convention: 0° points right and angles grow clockwise (y is down).
  */
@@ -58,6 +66,9 @@ class RadialMenuView(
         private set
     private var selRing = -1
     private var selSlot = -1
+
+    /** Non-null in tap mode. Called once with the chosen app, or null to dismiss. */
+    var onPick: ((AppEntry?) -> Unit)? = null
 
     private var progress = 0f
     private val screenLoc = IntArray(2)
@@ -109,6 +120,27 @@ class RadialMenuView(
         selected = if (ring >= 0) rings[ring].items[slot] else null
         if (changed) invalidate()
         return changed && selected != null
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        val pick = onPick ?: return false
+        when (event.actionMasked) {
+            MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE ->
+                if (updateFinger(event.rawX, event.rawY) && Prefs.haptics(context)) {
+                    performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
+                }
+            MotionEvent.ACTION_UP -> {
+                updateFinger(event.rawX, event.rawY)
+                onPick = null
+                pick(selected)
+            }
+            MotionEvent.ACTION_CANCEL -> {
+                onPick = null
+                pick(null)
+            }
+        }
+        return true
     }
 
     // --- geometry -------------------------------------------------------------------------

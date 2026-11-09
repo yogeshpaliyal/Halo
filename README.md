@@ -1,11 +1,14 @@
+<p align="center"><img src="docs/banner.png" alt="Halo: a floating bubble that switches apps with one thumb" width="100%"></p>
+
 # Halo
 
 A floating bubble that sticks to the edge of your screen and lets you switch apps with one thumb.
 
 - **Long-press** the bubble → a radial menu opens: your **favourites** on the inner ring, **recent apps** on the outer ring.
 - **Slide** to an app (you feel a tick on each one), **let go** to open it. Let go near the bubble to cancel.
-- **Tap** the bubble to jump back to your previous app.
+- **Tap** the bubble to jump back to your previous app (or set it to open the menu, or do nothing).
 - **Drag** the bubble anywhere; it snaps to the nearest side and remembers its position.
+- **Configurable**: tap action, hold delay (200 / 280 / 400 ms) and haptics.
 
 No ads, no tracking, no internet permission.
 

@@ -68,6 +68,9 @@ fun HomeScreen() {
         favorites.mapNotNull { byPkg[it] }
     }
     var showPicker by remember { mutableStateOf(false) }
+    var tapAction by remember { mutableStateOf(Prefs.tapAction(context)) }
+    var holdDelay by remember { mutableStateOf(Prefs.holdDelay(context)) }
+    var haptics by remember { mutableStateOf(Prefs.haptics(context)) }
 
     val steps = buildList {
         add(SetupStep("Display over other apps", "Lets Halo draw the bubble.", canOverlay) {
@@ -127,7 +130,16 @@ fun HomeScreen() {
                     onMove = { index, delta -> favorites = Prefs.moveFavorite(context, index, delta) },
                 )
             }
-            item { GesturesCard() }
+            item {
+                GesturesCard(
+                    tapAction = tapAction,
+                    holdDelay = holdDelay,
+                    haptics = haptics,
+                    onTapAction = { tapAction = it; Prefs.setTapAction(context, it) },
+                    onHoldDelay = { holdDelay = it; Prefs.setHoldDelay(context, it) },
+                    onHaptics = { haptics = it; Prefs.setHaptics(context, it) },
+                )
+            }
             item { PrivateSpaceNote() }
         }
     }

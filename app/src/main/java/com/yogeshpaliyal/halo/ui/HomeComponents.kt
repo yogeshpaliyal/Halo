@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.material3.Card
@@ -27,6 +28,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -50,12 +52,15 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
 import com.yogeshpaliyal.halo.data.AppEntry
+import com.yogeshpaliyal.halo.data.HoldDelay
 import com.yogeshpaliyal.halo.data.Prefs
+import com.yogeshpaliyal.halo.data.TapAction
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -369,37 +374,153 @@ private fun EmptySlot(onAdd: () -> Unit) {
     }
 }
 
-// --- Gesture cheat sheet -------------------------------------------------------------------
+// --- Gestures: two fixed, three configurable --------------------------------------------
 
 @Composable
-fun GesturesCard() {
+fun GesturesCard(
+    tapAction: TapAction,
+    holdDelay: HoldDelay,
+    haptics: Boolean,
+    onTapAction: (TapAction) -> Unit,
+    onHoldDelay: (HoldDelay) -> Unit,
+    onHaptics: (Boolean) -> Unit,
+) {
     Card(shape = RoundedCornerShape(24.dp)) {
-        Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
-            Text("Gestures", style = MaterialTheme.typography.titleMedium)
-            GestureRow("Hold", "Hold, slide, let go", "Opens the app under your finger. Let go near the bubble to cancel.")
-            GestureRow("Tap", "Tap", "Jumps back to the app you used last.")
-            GestureRow("Drag", "Drag", "Moves the bubble. It snaps to the nearest side.")
+        Column(Modifier.padding(vertical = 20.dp)) {
+            Text(
+                "Gestures",
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(horizontal = 20.dp),
+            )
+            Spacer(Modifier.height(8.dp))
+            GestureRow(
+                tag = "Hold",
+                title = "Hold, slide, let go",
+                body = "Opens the app under your finger. Let go near the bubble to cancel.",
+            )
+            GestureRow(tag = "Drag", title = "Drag", body = "Moves the bubble. It snaps to the nearest side.")
+
+            HorizontalDivider(Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
+
+            ChoiceRow(
+                tag = "Tap",
+                title = "Tap",
+                value = tapAction,
+                options = TapAction.entries,
+                label = { it.label },
+                detail = { it.description },
+                onSelect = onTapAction,
+            )
+            ChoiceRow(
+                tag = "Hold",
+                title = "Hold delay",
+                value = holdDelay,
+                options = HoldDelay.entries,
+                label = { it.label },
+                detail = { "${it.millis} ms" },
+                onSelect = onHoldDelay,
+            )
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .clickable { onHaptics(!haptics) }
+                    .padding(horizontal = 20.dp, vertical = 10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Tag("Feel")
+                Spacer(Modifier.width(14.dp))
+                Column(Modifier.weight(1f)) {
+                    Text("Haptics", style = MaterialTheme.typography.titleSmall)
+                    Text(
+                        "Vibrate on hold and on each app you slide over",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                Switch(checked = haptics, onCheckedChange = onHaptics)
+            }
+        }
+    }
+}
+
+/** A setting row that shows its current value and opens a small menu of options. */
+@Composable
+private fun <T> ChoiceRow(
+    tag: String,
+    title: String,
+    value: T,
+    options: List<T>,
+    label: (T) -> String,
+    detail: (T) -> String,
+    onSelect: (T) -> Unit,
+) {
+    var open by remember { mutableStateOf(false) }
+    Box {
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .clickable { open = true }
+                .padding(horizontal = 20.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Tag(tag)
+            Spacer(Modifier.width(14.dp))
+            Column(Modifier.weight(1f)) {
+                Text(title, style = MaterialTheme.typography.titleSmall)
+                Text(
+                    detail(value),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            Text(
+                label(value),
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.primary,
+            )
+            Icon(
+                Icons.Rounded.ArrowDropDown,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+            )
+        }
+        DropdownMenu(
+            expanded = open,
+            onDismissRequest = { open = false },
+            offset = DpOffset(x = 180.dp, y = 0.dp),
+        ) {
+            options.forEach { option ->
+                DropdownMenuItem(
+                    text = {
+                        Column {
+                            Text(label(option))
+                            Text(
+                                detail(option),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                    },
+                    trailingIcon = {
+                        if (option == value) Icon(Icons.Rounded.Check, contentDescription = "Selected")
+                    },
+                    onClick = {
+                        open = false
+                        onSelect(option)
+                    },
+                )
+            }
         }
     }
 }
 
 @Composable
 private fun GestureRow(tag: String, title: String, body: String) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Box(
-            Modifier
-                .width(56.dp)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.secondaryContainer)
-                .padding(vertical = 6.dp),
-            contentAlignment = Alignment.Center,
-        ) {
-            Text(
-                tag,
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSecondaryContainer,
-            )
-        }
+    Row(
+        Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Tag(tag)
         Spacer(Modifier.width(14.dp))
         Column {
             Text(title, style = MaterialTheme.typography.titleSmall)
@@ -409,6 +530,24 @@ private fun GestureRow(tag: String, title: String, body: String) {
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
+    }
+}
+
+@Composable
+private fun Tag(text: String) {
+    Box(
+        Modifier
+            .width(56.dp)
+            .clip(CircleShape)
+            .background(MaterialTheme.colorScheme.secondaryContainer)
+            .padding(vertical = 6.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text,
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSecondaryContainer,
+        )
     }
 }
 

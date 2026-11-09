@@ -11,13 +11,14 @@ import android.view.HapticFeedbackConstants
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
+import com.yogeshpaliyal.halo.data.Prefs
 import kotlin.math.hypot
 
 /**
  * The small floating circle. It only interprets the gesture and reports it, in screen
  * coordinates, to [listener]:
  *
- * - tap: jump back to the previous app
+ * - tap: whatever the user picked in settings (previous app by default)
  * - drag: move the bubble (it snaps to the nearest side when released)
  * - long-press, then slide and release: pick an app from the radial menu
  *
@@ -45,7 +46,6 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
     private var lastX = 0f
     private var lastY = 0f
     private val touchSlop = ViewConfiguration.get(context).scaledTouchSlop.toFloat()
-    private val longPressMs = 280L
 
     private val fill = Paint(Paint.ANTI_ALIAS_FLAG)
     private val ring = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -57,7 +57,7 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
     private val longPress = Runnable {
         if (state == State.PRESSED) {
             state = State.MENU
-            performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+            haptic(HapticFeedbackConstants.LONG_PRESS)
             animate().scaleX(0.85f).scaleY(0.85f).setDuration(120).start()
             listener.onMenuOpen(lastX, lastY)
         }
@@ -96,7 +96,8 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
                 downX = event.rawX
                 downY = event.rawY
                 alpha = 1f
-                postDelayed(longPress, longPressMs)
+                // Read on every touch so changes in the app apply immediately.
+                postDelayed(longPress, Prefs.holdDelay(context).millis)
             }
 
             MotionEvent.ACTION_MOVE -> when (state) {
@@ -114,7 +115,7 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
                 removeCallbacks(longPress)
                 when (state) {
                     State.PRESSED -> {
-                        performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+                        haptic(HapticFeedbackConstants.VIRTUAL_KEY)
                         listener.onTap()
                     }
                     State.DRAGGING -> listener.onDragEnd(event.rawX, event.rawY)
@@ -138,8 +139,10 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
     }
 
     /** Light tick each time the finger moves onto a different app in the menu. */
-    fun tick() {
-        performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
+    fun tick() = haptic(HapticFeedbackConstants.CLOCK_TICK)
+
+    private fun haptic(type: Int) {
+        if (Prefs.haptics(context)) performHapticFeedback(type)
     }
 
     private fun reset() {
