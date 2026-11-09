@@ -1,6 +1,17 @@
 package com.yogeshpaliyal.halo.ui
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.ui.zIndex
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalHapticFeedback
+import kotlin.math.roundToInt
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -247,7 +258,9 @@ private fun StepBadge(number: Int, done: Boolean) {
     }
 }
 
-// --- Favourites: six ordered slots -------------------------------------------------------
+// --- Favourites: six ordered slots, hold and drag to reorder ----------------------------
+
+private const val COLUMNS = 3
 
 @Composable
 fun FavoritesCard(
@@ -256,13 +269,28 @@ fun FavoritesCard(
     onRemove: (AppEntry) -> Unit,
     onMove: (index: Int, delta: Int) -> Unit,
 ) {
+    val haptics = LocalHapticFeedback.current
+    val gapPx = with(LocalDensity.current) { 10.dp.toPx() }
+    var slotSize by remember { mutableStateOf(IntSize.Zero) }
+    var dragIndex by remember { mutableIntStateOf(-1) }
+    var dragOffset by remember { mutableStateOf(Offset.Zero) }
+
+    /** Slot the dragged favourite would land on, from how far it has moved in whole slots. */
+    fun targetIndex(): Int {
+        if (dragIndex < 0 || slotSize == IntSize.Zero) return -1
+        val col = dragIndex % COLUMNS + (dragOffset.x / (slotSize.width + gapPx)).roundToInt()
+        val row = dragIndex / COLUMNS + (dragOffset.y / (slotSize.height + gapPx)).roundToInt()
+        return (row.coerceAtLeast(0) * COLUMNS + col.coerceIn(0, COLUMNS - 1))
+            .coerceIn(0, favorites.lastIndex)
+    }
+
     Card(shape = RoundedCornerShape(24.dp)) {
         Column(Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
                     Text("Favourites", style = MaterialTheme.typography.titleMedium)
                     Text(
-                        "Inner ring, top to bottom. Tap one to reorder or remove.",
+                        "Inner ring, top to bottom. Hold and drag to reorder, tap for options.",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -270,19 +298,65 @@ fun FavoritesCard(
                 TextButton(onClick = onAdd) { Text("Edit") }
             }
             Spacer(Modifier.height(14.dp))
-            (0 until Prefs.MAX_FAVORITES).chunked(3).forEach { row ->
-                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            val target = targetIndex()
+            (0 until Prefs.MAX_FAVORITES).chunked(COLUMNS).forEach { row ->
+                // The dragged slot must draw above the other row too, so lift its whole row.
+                Row(
+                    Modifier.zIndex(if (dragIndex in row) 1f else 0f),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                ) {
                     row.forEach { index ->
                         val app = favorites.getOrNull(index)
-                        Box(Modifier.weight(1f)) {
+                        val dragging = index == dragIndex
+                        Box(
+                            Modifier
+                                .weight(1f)
+                                .zIndex(if (dragging) 1f else 0f)
+                                .onSizeChanged { slotSize = it }
+                                .graphicsLayer {
+                                    if (dragging) {
+                                        translationX = dragOffset.x
+                                        translationY = dragOffset.y
+                                        scaleX = 1.06f
+                                        scaleY = 1.06f
+                                        shadowElevation = 12.dp.toPx()
+                                        shape = slotShape
+                                        clip = true
+                                    }
+                                },
+                        ) {
                             if (app != null) {
                                 FilledSlot(
                                     app = app,
                                     position = index + 1,
+                                    isDropTarget = dragIndex >= 0 && !dragging && index == target,
                                     canMoveUp = index > 0,
                                     canMoveDown = index < favorites.lastIndex,
                                     onMove = { delta -> onMove(index, delta) },
                                     onRemove = { onRemove(app) },
+                                    dragModifier = Modifier.pointerInput(app.key, index) {
+                                        detectDragGesturesAfterLongPress(
+                                            onDragStart = {
+                                                haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+                                                dragIndex = index
+                                                dragOffset = Offset.Zero
+                                            },
+                                            onDrag = { change, amount ->
+                                                change.consume()
+                                                dragOffset += amount
+                                            },
+                                            onDragEnd = {
+                                                val to = targetIndex()
+                                                if (to >= 0 && to != dragIndex) onMove(dragIndex, to - dragIndex)
+                                                dragIndex = -1
+                                                dragOffset = Offset.Zero
+                                            },
+                                            onDragCancel = {
+                                                dragIndex = -1
+                                                dragOffset = Offset.Zero
+                                            },
+                                        )
+                                    },
                                 )
                             } else {
                                 EmptySlot(onAdd)
@@ -302,10 +376,12 @@ private val slotShape = RoundedCornerShape(20.dp)
 private fun FilledSlot(
     app: AppEntry,
     position: Int,
+    isDropTarget: Boolean,
     canMoveUp: Boolean,
     canMoveDown: Boolean,
     onMove: (Int) -> Unit,
     onRemove: () -> Unit,
+    dragModifier: Modifier,
 ) {
     var menuOpen by remember { mutableStateOf(false) }
     Box {
@@ -315,6 +391,12 @@ private fun FilledSlot(
                 .aspectRatio(0.8f)
                 .clip(slotShape)
                 .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+                .border(
+                    width = 2.dp,
+                    color = if (isDropTarget) MaterialTheme.colorScheme.primary else Color.Transparent,
+                    shape = slotShape,
+                )
+                .then(dragModifier)
                 .clickable { menuOpen = true }
                 .padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -347,12 +429,12 @@ private fun FilledSlot(
         )
         DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
             DropdownMenuItem(
-                text = { Text("Move up") },
+                text = { Text("Move earlier") },
                 enabled = canMoveUp,
                 onClick = { menuOpen = false; onMove(-1) },
             )
             DropdownMenuItem(
-                text = { Text("Move down") },
+                text = { Text("Move later") },
                 enabled = canMoveDown,
                 onClick = { menuOpen = false; onMove(1) },
             )
