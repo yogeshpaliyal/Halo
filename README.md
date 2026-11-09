@@ -9,9 +9,19 @@ A floating bubble that sticks to the edge of your screen and lets you switch app
 
 No ads, no tracking, no internet permission.
 
+## Download
+
+Every push to the default branch builds a debug APK and publishes it to the
+[**Latest master**](https://github.com/yogeshpaliyal/Halo/releases/tag/latest-master) release:
+
+**[halo-debug.apk](https://github.com/yogeshpaliyal/Halo/releases/download/latest-master/halo-debug.apk)**
+
+Builds are signed with the committed `keystore/debug.keystore` (password `android`), so each new
+build installs over the previous one.
+
 ## Setup
 
-1. Open the project in Android Studio (or run `./gradlew installDebug`).
+1. Open the project in Android Studio (or run `./gradlew installDebug`), or install the APK above.
 2. In the app, grant:
    - **Display over other apps**: draws the bubble.
    - **Usage access**: powers the recent-apps ring. Optional; without it you only get favourites.

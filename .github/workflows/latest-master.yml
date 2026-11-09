@@ -1,0 +1,54 @@
+name: Latest master build
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Only the newest push matters; cancel older runs so they can't overwrite a newer APK.
+concurrency:
+  group: latest-master
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Build debug APK
+        run: ./gradlew --no-configuration-cache assembleDebug
+
+      - name: Rename APK
+        run: cp app/build/outputs/apk/debug/app-debug.apk halo-debug.apk
+
+      - name: Publish to "Latest master" release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Passed via env (not inlined) so commit messages can't inject shell.
+          COMMIT_MSG: ${{ github.event.head_commit.message }}
+        run: |
+          SHORT_SHA="${GITHUB_SHA::7}"
+          NOTES="Debug build of \`${SHORT_SHA}\` on \`${GITHUB_REF_NAME}\`.
+
+          ${COMMIT_MSG}
+
+          Signed with the repo's debug keystore, so it installs over earlier builds from this release."
+
+          # Recreate the release so the tag always points at the newest commit.
+          gh release delete latest-master --cleanup-tag --yes || true
+          gh release create latest-master halo-debug.apk \
+            --title "Latest master" \
+            --notes "$NOTES" \
+            --target "$GITHUB_SHA" \
+            --prerelease
