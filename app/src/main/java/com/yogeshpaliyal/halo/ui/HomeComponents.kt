@@ -66,7 +66,7 @@ import kotlin.math.sin
 
 @Composable
 fun rememberIcon(app: AppEntry): ImageBitmap =
-    remember(app.packageName) { app.icon.toBitmap(128, 128).asImageBitmap() }
+    remember(app.key) { app.icon.toBitmap(128, 128).asImageBitmap() }
 
 // --- Hero: on/off switch plus a live preview of the menu ---------------------------------
 
@@ -312,7 +312,7 @@ private fun FilledSlot(
         Column(
             Modifier
                 .fillMaxWidth()
-                .aspectRatio(0.9f)
+                .aspectRatio(0.8f)
                 .clip(slotShape)
                 .background(MaterialTheme.colorScheme.surfaceContainerHighest)
                 .clickable { menuOpen = true }
@@ -320,7 +320,12 @@ private fun FilledSlot(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
-            Image(rememberIcon(app), contentDescription = null, modifier = Modifier.size(44.dp))
+            Image(
+                rememberIcon(app),
+                contentDescription = null,
+                modifier = Modifier.size(44.dp),
+                alpha = if (app.available) 1f else 0.4f,
+            )
             Spacer(Modifier.height(6.dp))
             Text(
                 app.label,
@@ -329,6 +334,10 @@ private fun FilledSlot(
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center,
             )
+            if (app.isWork) {
+                Spacer(Modifier.height(4.dp))
+                WorkTag(paused = !app.available)
+            }
         }
         Text(
             "$position",
@@ -360,7 +369,7 @@ private fun EmptySlot(onAdd: () -> Unit) {
     Box(
         Modifier
             .fillMaxWidth()
-            .aspectRatio(0.9f)
+            .aspectRatio(0.8f)
             .clip(slotShape)
             .border(1.5.dp, MaterialTheme.colorScheme.outlineVariant, slotShape)
             .clickable(onClick = onAdd),
@@ -551,6 +560,20 @@ private fun Tag(text: String) {
     }
 }
 
+/** Small "Work" / "Work · paused" chip shown next to work-profile apps. */
+@Composable
+fun WorkTag(paused: Boolean) {
+    Text(
+        if (paused) "Work · paused" else "Work",
+        style = MaterialTheme.typography.labelSmall,
+        color = MaterialTheme.colorScheme.onTertiaryContainer,
+        modifier = Modifier
+            .clip(CircleShape)
+            .background(MaterialTheme.colorScheme.tertiaryContainer)
+            .padding(horizontal = 8.dp, vertical = 2.dp),
+    )
+}
+
 @Composable
 fun PrivateSpaceNote() {
     Row(Modifier.padding(horizontal = 8.dp), verticalAlignment = Alignment.Top) {
@@ -562,8 +585,9 @@ fun PrivateSpaceNote() {
         )
         Spacer(Modifier.width(8.dp))
         Text(
-            "Apps in Private space can't appear in Halo. Android only shows them to the " +
-                "default home-screen app.",
+            "Work apps are supported, but only as favourites: Android's recent-apps data covers your " +
+                "personal profile only. Private space apps can't appear in Halo; Android only shows " +
+                "them to the default home-screen app.",
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )

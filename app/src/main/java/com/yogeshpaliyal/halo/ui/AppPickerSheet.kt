@@ -55,7 +55,7 @@ fun AppPickerSheet(
     val initialOrder = remember { selected.toList() }
     val filtered = remember(apps, query) {
         apps.filter { query.isBlank() || it.label.contains(query, ignoreCase = true) }
-            .sortedBy { app -> initialOrder.indexOf(app.packageName).let { if (it < 0) Int.MAX_VALUE else it } }
+            .sortedBy { app -> initialOrder.indexOf(app.key).let { if (it < 0) Int.MAX_VALUE else it } }
     }
 
     ModalBottomSheet(onDismissRequest = onDismiss, sheetState = sheetState) {
@@ -92,8 +92,8 @@ fun AppPickerSheet(
         }
         Spacer(Modifier.height(8.dp))
         LazyColumn(contentPadding = PaddingValues(bottom = 32.dp)) {
-            items(filtered, key = { it.packageName }) { app ->
-                val isSelected = app.packageName in selected
+            items(filtered, key = { it.key }) { app ->
+                val isSelected = app.key in selected
                 val enabled = isSelected || !full
                 Row(
                     Modifier
@@ -105,10 +105,15 @@ fun AppPickerSheet(
                 ) {
                     Image(rememberIcon(app), contentDescription = null, modifier = Modifier.size(40.dp))
                     Spacer(Modifier.width(16.dp))
-                    Text(app.label, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
+                    Text(app.label, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f, fill = false))
+                    if (app.isWork) {
+                        Spacer(Modifier.width(8.dp))
+                        WorkTag(paused = !app.available)
+                    }
+                    Spacer(Modifier.weight(1f))
                     if (isSelected) {
                         Text(
-                            "${selected.indexOf(app.packageName) + 1}",
+                            "${selected.indexOf(app.key) + 1}",
                             style = MaterialTheme.typography.labelLarge,
                             color = MaterialTheme.colorScheme.primary,
                         )

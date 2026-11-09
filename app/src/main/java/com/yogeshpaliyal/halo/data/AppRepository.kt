@@ -3,56 +3,85 @@ package com.yogeshpaliyal.halo.data
 import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
 import android.content.ActivityNotFoundException
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
+import android.content.pm.LauncherActivityInfo
+import android.content.pm.LauncherApps
 import android.graphics.drawable.Drawable
+import android.os.Process
+import android.os.UserHandle
+import android.os.UserManager
 import java.util.concurrent.TimeUnit
 
+/**
+ * One launchable app in one profile. The same package can exist twice (personal + work),
+ * so apps are identified by [key], not by package name.
+ */
 data class AppEntry(
+    val key: String,
     val packageName: String,
     val label: String,
     val icon: Drawable,
+    val component: ComponentName,
+    val user: UserHandle,
+    /** True for work-profile apps. */
+    val isWork: Boolean,
+    /** False while the work profile is paused. Opening it then shows the system "Unpause?" prompt. */
+    val available: Boolean,
 )
 
+/**
+ * Lists and opens apps across the user's profiles (personal + work) through [LauncherApps].
+ *
+ * Private space is a hidden profile: Android only reveals it to the default home app, so it
+ * never shows up here.
+ */
 class AppRepository(context: Context) {
 
     private val context = context.applicationContext
-    private val pm = this.context.packageManager
+    private val launcherApps = this.context.getSystemService(LauncherApps::class.java)
+    private val userManager = this.context.getSystemService(UserManager::class.java)
+    private val me = Process.myUserHandle()
     private val iconCache = HashMap<String, Drawable>()
 
-    /** Every app that shows up in the app drawer, sorted by name. */
-    fun launchableApps(): List<AppEntry> {
-        val intent = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
-        return pm.queryIntentActivities(intent, 0)
-            .asSequence()
-            .map { it.activityInfo.packageName }
-            .distinct()
-            .filter { it != context.packageName }
-            .mapNotNull(::entryFor)
-            .sortedBy { it.label.lowercase() }
-            .toList()
-    }
+    /**
+     * Favourites key format: a bare package name for the personal profile (the format older
+     * versions stored, so existing favourites keep working) and "package@serial" for others.
+     */
+    fun keyFor(pkg: String, user: UserHandle): String =
+        if (user == me) pkg else "$pkg@${userManager.getSerialNumberForUser(user)}"
 
-    fun entryFor(pkg: String): AppEntry? = try {
-        val info = pm.getApplicationInfo(pkg, 0)
-        AppEntry(
-            packageName = pkg,
-            label = pm.getApplicationLabel(info).toString(),
-            icon = iconCache.getOrPut(pkg) { pm.getApplicationIcon(info) },
-        )
-    } catch (_: PackageManager.NameNotFoundException) {
-        null
+    /** Every app in the app drawer of every visible profile, personal first, sorted by name. */
+    fun launchableApps(): List<AppEntry> =
+        launcherApps.profiles.flatMap { user ->
+            runCatching { launcherApps.getActivityList(null, user) }.getOrDefault(emptyList())
+                .distinctBy { it.componentName.packageName }
+                .filter { !(user == me && it.componentName.packageName == context.packageName) }
+                .map { toEntry(it, user) }
+        }.sortedWith(compareBy({ it.label.lowercase() }, { it.isWork }))
+
+    fun entryFor(key: String): AppEntry? {
+        val pkg = key.substringBefore('@')
+        val user = if ('@' in key) {
+            key.substringAfter('@').toLongOrNull()?.let { userManager.getUserForSerialNumber(it) }
+        } else {
+            me
+        } ?: return null
+        val info = runCatching { launcherApps.getActivityList(pkg, user) }.getOrNull()?.firstOrNull()
+            ?: return null
+        return toEntry(info, user)
     }
 
     fun favorites(): List<AppEntry> =
         Prefs.favorites(context).mapNotNull(::entryFor).take(Prefs.MAX_FAVORITES)
 
     /**
-     * Most recently opened apps, newest first. The app currently on screen is left out
-     * (switching to it would do nothing), and so are home screens and this app.
+     * Most recently opened personal-profile apps, newest first. Android's usage data only
+     * covers this profile, so work apps can be favourites but never recents. The app on
+     * screen right now, home screens and Halo itself are left out.
      */
-    fun recents(limit: Int, exclude: Set<String> = emptySet()): List<AppEntry> {
+    fun recents(limit: Int, excludeKeys: Set<String> = emptySet()): List<AppEntry> {
         if (!Permissions.hasUsageAccess(context)) return emptyList()
         val usm = context.getSystemService(UsageStatsManager::class.java) ?: return emptyList()
 
@@ -80,33 +109,45 @@ class AppRepository(context: Context) {
             .sortedByDescending { it.value }
             .map { it.key }
             .filter { pkg ->
-                pkg != context.packageName &&
-                    pkg != foreground &&
-                    pkg !in home &&
-                    pkg !in exclude &&
-                    pm.getLaunchIntentForPackage(pkg) != null
+                pkg != context.packageName && pkg != foreground && pkg !in home && pkg !in excludeKeys
             }
+            .mapNotNull(::entryFor) // Also drops packages with no launcher activity.
             .take(limit)
-            .mapNotNull(::entryFor)
             .toList()
     }
 
-    /** Opens [pkg] the same way the launcher does, resuming its task if it is already running. */
-    fun launch(pkg: String): Boolean {
-        val intent = pm.getLaunchIntentForPackage(pkg) ?: return false
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED)
-        return try {
-            context.startActivity(intent)
-            true
-        } catch (_: ActivityNotFoundException) {
-            false
-        } catch (_: SecurityException) {
-            false
-        }
+    /** Opens [app] in its own profile, resuming its task if it is already running. */
+    fun launch(app: AppEntry): Boolean = try {
+        launcherApps.startMainActivity(app.component, app.user, null, null)
+        true
+    } catch (_: ActivityNotFoundException) {
+        false
+    } catch (_: SecurityException) {
+        false
+    } catch (_: IllegalStateException) {
+        // Profile locked or being removed.
+        false
+    }
+
+    private fun toEntry(info: LauncherActivityInfo, user: UserHandle): AppEntry {
+        val pkg = info.componentName.packageName
+        val key = keyFor(pkg, user)
+        return AppEntry(
+            key = key,
+            packageName = pkg,
+            label = info.label.toString(),
+            // Badged: work apps get the briefcase, personal apps are unchanged.
+            icon = iconCache.getOrPut(key) { info.getBadgedIcon(0) },
+            component = info.componentName,
+            user = user,
+            isWork = user != me,
+            available = user == me || !userManager.isQuietModeEnabled(user),
+        )
     }
 
     private fun homePackages(): Set<String> {
         val intent = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME)
-        return pm.queryIntentActivities(intent, 0).mapTo(HashSet()) { it.activityInfo.packageName }
+        return context.packageManager.queryIntentActivities(intent, 0)
+            .mapTo(HashSet()) { it.activityInfo.packageName }
     }
 }

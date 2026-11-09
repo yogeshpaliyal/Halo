@@ -122,7 +122,7 @@ class HaloService : Service(), BubbleView.Listener {
     private fun showMenu(tapMode: Boolean = false) {
         removeMenu()
         val favorites = repo.favorites()
-        val recents = repo.recents(Prefs.MAX_RECENTS, exclude = favorites.mapTo(HashSet()) { it.packageName })
+        val recents = repo.recents(Prefs.MAX_RECENTS, excludeKeys = favorites.mapTo(HashSet()) { it.key })
         val view = RadialMenuView(
             context = this,
             anchorScreenX = (bubbleParams.x + bubbleSize / 2).toFloat(),
@@ -143,7 +143,7 @@ class HaloService : Service(), BubbleView.Listener {
         if (tapMode) {
             view.onPick = { app ->
                 removeMenu()
-                app?.let { repo.launch(it.packageName) }
+                app?.let { repo.launch(it) }
             }
         }
         wm.addView(view, params)
@@ -197,7 +197,7 @@ class HaloService : Service(), BubbleView.Listener {
     override fun onTap() {
         when (Prefs.tapAction(this)) {
             // Quick toggle, like Alt+Tab.
-            TapAction.PREVIOUS_APP -> repo.recents(1).firstOrNull()?.let { repo.launch(it.packageName) }
+            TapAction.PREVIOUS_APP -> repo.recents(1).firstOrNull()?.let { repo.launch(it) }
             TapAction.OPEN_MENU -> showMenu(tapMode = true)
             TapAction.NOTHING -> Unit
         }
@@ -224,7 +224,7 @@ class HaloService : Service(), BubbleView.Listener {
         menu?.updateFinger(rawX, rawY)
         val target = menu?.selected
         removeMenu()
-        target?.let { repo.launch(it.packageName) }
+        target?.let { repo.launch(it) }
     }
 
     override fun onMenuCancel() = removeMenu()

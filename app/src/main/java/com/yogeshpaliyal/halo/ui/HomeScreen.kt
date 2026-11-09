@@ -61,11 +61,11 @@ fun HomeScreen() {
     }
 
     var apps by remember { mutableStateOf<List<AppEntry>>(emptyList()) }
-    LaunchedEffect(Unit) { apps = withContext(Dispatchers.IO) { repo.launchableApps() } }
+    LaunchedEffect(resumeTick) { apps = withContext(Dispatchers.IO) { repo.launchableApps() } }
     var favorites by remember { mutableStateOf(Prefs.favorites(context)) }
     val favoriteEntries = remember(favorites, apps) {
-        val byPkg = apps.associateBy { it.packageName }
-        favorites.mapNotNull { byPkg[it] }
+        val byKey = apps.associateBy { it.key }
+        favorites.mapNotNull { byKey[it] }
     }
     var showPicker by remember { mutableStateOf(false) }
     var tapAction by remember { mutableStateOf(Prefs.tapAction(context)) }
@@ -126,7 +126,7 @@ fun HomeScreen() {
                 FavoritesCard(
                     favorites = favoriteEntries,
                     onAdd = { showPicker = true },
-                    onRemove = { favorites = Prefs.toggleFavorite(context, it.packageName) },
+                    onRemove = { favorites = Prefs.toggleFavorite(context, it.key) },
                     onMove = { index, delta -> favorites = Prefs.moveFavorite(context, index, delta) },
                 )
             }
@@ -148,7 +148,7 @@ fun HomeScreen() {
         AppPickerSheet(
             apps = apps,
             selected = favorites,
-            onToggle = { favorites = Prefs.toggleFavorite(context, it.packageName) },
+            onToggle = { favorites = Prefs.toggleFavorite(context, it.key) },
             onDismiss = { showPicker = false },
         )
     }

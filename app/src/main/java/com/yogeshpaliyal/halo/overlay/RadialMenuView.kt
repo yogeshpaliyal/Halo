@@ -225,7 +225,8 @@ class RadialMenuView(
                 }
                 val half = (size / 2f).toInt()
                 app.icon.setBounds(x.toInt() - half, y.toInt() - half, x.toInt() + half, y.toInt() + half)
-                app.icon.alpha = (fade * 255).toInt()
+                // Paused work apps are dimmed; opening one shows Android's "Unpause?" prompt.
+                app.icon.alpha = (fade * if (app.available) 255 else 100).toInt()
                 app.icon.draw(canvas)
             }
         }
