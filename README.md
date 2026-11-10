@@ -130,4 +130,17 @@ Halo collects no data and has no internet permission. Read the [privacy policy](
 
 ## License
 
-MIT
+Halo is released under the [MIT License](LICENSE).
+
+Copyright (c) 2026 Yogesh Paliyal
+
+You can use, copy, modify and distribute it, including in commercial projects, as long as the copyright notice and
+license text are kept with any copy.
+
+### Third-party
+
+- The quick-action icons (flashlight, volume, play/pause) are adapted from Google's
+  [Material Icons](https://github.com/google/material-design-icons), licensed under the
+  [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
+- App icons shown in screenshots and promotional images belong to their respective owners and appear only to show
+  Halo in use.
