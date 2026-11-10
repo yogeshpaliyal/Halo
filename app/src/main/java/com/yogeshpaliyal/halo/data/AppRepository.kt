@@ -12,23 +12,27 @@ import android.graphics.drawable.Drawable
 import android.os.Process
 import android.os.UserHandle
 import android.os.UserManager
+import androidx.core.content.ContextCompat
 import java.util.concurrent.TimeUnit
 
 /**
- * One launchable app in one profile. The same package can exist twice (personal + work),
- * so apps are identified by [key], not by package name.
+ * One item that can sit in the menu: a launchable app in one profile, or a [QuickAction].
+ * The same package can exist twice (personal + work), so items are identified by [key].
  */
 data class AppEntry(
     val key: String,
     val packageName: String,
     val label: String,
     val icon: Drawable,
-    val component: ComponentName,
-    val user: UserHandle,
+    /** Null for quick actions. */
+    val component: ComponentName?,
+    val user: UserHandle?,
     /** True for work-profile apps. */
     val isWork: Boolean,
     /** False while the work profile is paused. Opening it then shows the system "Unpause?" prompt. */
     val available: Boolean,
+    /** Set for quick actions (flashlight, volume, play/pause) instead of an app. */
+    val action: QuickAction? = null,
 )
 
 /**
@@ -61,7 +65,27 @@ class AppRepository(context: Context) {
                 .map { toEntry(it, user) }
         }.sortedWith(compareBy({ it.label.lowercase() }, { it.isWork }))
 
+    /** Quick actions offered in the favourites picker, before the apps. */
+    fun quickActions(): List<AppEntry> = QuickAction.entries.mapNotNull { actionEntry(it) }
+
+    private fun actionEntry(action: QuickAction): AppEntry? {
+        if (!QuickActions.isAvailable(context, action)) return null
+        val icon = ContextCompat.getDrawable(context, QuickActions.iconRes(action)) ?: return null
+        return AppEntry(
+            key = action.key,
+            packageName = "",
+            label = action.label,
+            icon = icon,
+            component = null,
+            user = null,
+            isWork = false,
+            available = true,
+            action = action,
+        )
+    }
+
     fun entryFor(key: String): AppEntry? {
+        if (key.startsWith(QuickAction.PREFIX)) return QuickAction.fromKey(key)?.let(::actionEntry)
         val pkg = key.substringBefore('@')
         val user = if ('@' in key) {
             key.substringAfter('@').toLongOrNull()?.let { userManager.getUserForSerialNumber(it) }
@@ -118,8 +142,13 @@ class AppRepository(context: Context) {
 
     /** Opens [app] in its own profile, resuming its task if it is already running. */
     fun launch(app: AppEntry): Boolean = try {
-        launcherApps.startMainActivity(app.component, app.user, null, null)
-        true
+        val action = app.action
+        if (action != null) {
+            QuickActions.perform(context, action)
+        } else {
+            launcherApps.startMainActivity(app.component, app.user, null, null)
+            true
+        }
     } catch (_: ActivityNotFoundException) {
         false
     } catch (_: SecurityException) {

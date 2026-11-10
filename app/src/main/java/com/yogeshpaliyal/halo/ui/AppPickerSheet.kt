@@ -110,6 +110,10 @@ fun AppPickerSheet(
                         Spacer(Modifier.width(8.dp))
                         WorkTag(paused = !app.available)
                     }
+                    if (app.action != null) {
+                        Spacer(Modifier.width(8.dp))
+                        ActionTag()
+                    }
                     Spacer(Modifier.weight(1f))
                     if (isSelected) {
                         Text(

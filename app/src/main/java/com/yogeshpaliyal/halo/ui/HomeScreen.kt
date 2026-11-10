@@ -65,7 +65,8 @@ fun HomeScreen() {
     }
 
     var apps by remember { mutableStateOf<List<AppEntry>>(emptyList()) }
-    LaunchedEffect(resumeTick) { apps = withContext(Dispatchers.IO) { repo.launchableApps() } }
+    // Quick actions first, then every app; favourites can hold either.
+    LaunchedEffect(resumeTick) { apps = withContext(Dispatchers.IO) { repo.quickActions() + repo.launchableApps() } }
     var favorites by remember { mutableStateOf(Prefs.favorites(context)) }
     val favoriteEntries = remember(favorites, apps) {
         val byKey = apps.associateBy { it.key }

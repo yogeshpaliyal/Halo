@@ -684,6 +684,20 @@ private fun Tag(text: String) {
     }
 }
 
+/** Small "Action" chip for quick actions (flashlight, volume, play/pause) in the picker. */
+@Composable
+fun ActionTag() {
+    Text(
+        "Action",
+        style = MaterialTheme.typography.labelSmall,
+        color = MaterialTheme.colorScheme.onSecondaryContainer,
+        modifier = Modifier
+            .clip(CircleShape)
+            .background(MaterialTheme.colorScheme.secondaryContainer)
+            .padding(horizontal = 8.dp, vertical = 2.dp),
+    )
+}
+
 /** Small "Work" / "Work · paused" chip shown next to work-profile apps. */
 @Composable
 fun WorkTag(paused: Boolean) {

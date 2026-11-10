@@ -9,6 +9,7 @@ A floating bubble that sticks to the edge of your screen and lets you switch app
 - **Tap** the bubble to jump back to your previous app (or set it to open the menu, or do nothing).
 - **Drag** the bubble anywhere; it snaps to the nearest side and remembers its position.
 - **Configurable**: tap action, hold delay (200 / 280 / 400 ms) and haptics.
+- **Quick actions** as favourites: flashlight, volume panel and play/pause. No extra permissions.
 
 - **Work profile** apps can be favourites (shown with the briefcase badge). Private space apps can't: Android only exposes them to the default home app.
 

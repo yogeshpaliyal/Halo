@@ -30,7 +30,7 @@ object Prefs {
         putString(KEY_FAVORITES, packages.take(MAX_FAVORITES).joinToString(","))
     }
 
-    /** [key] is [AppEntry.key]: the package name, plus "@profile" for work apps. */
+    /** [key] is [AppEntry.key]: the package name, plus "@profile" for work apps, or "action:…" for quick actions. */
     fun toggleFavorite(context: Context, key: String): List<String> {
         val current = favorites(context).toMutableList()
         if (!current.remove(key) && current.size < MAX_FAVORITES) current += key
