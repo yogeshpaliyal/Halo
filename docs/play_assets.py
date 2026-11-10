@@ -1,5 +1,5 @@
 # usage: python3 docs/play_assets.py <dir with menu/home/settings/bubble .jpg at 1080x2424> <out dir>, then rsvg-convert each SVG
-"""Build Google Play listing images for Halo.
+"""Build the Play feature graphic and icon for Halo (screenshots: docs/play_screenshots.py).
 
 usage: python3 play_assets.py <screenshots dir> <out dir>
 Writes SVGs; render each with rsvg-convert at its own size.
