@@ -1,6 +1,6 @@
 <p align="center"><img src="docs/social-card.jpg" alt="Halo: the one-thumb app switcher for Android, shown with its home screen and the radial menu open" width="100%"></p>
 
-# Halo
+# Halo: One-Thumb App Switcher
 
 A floating bubble that sticks to the edge of your screen and lets you switch apps with one thumb.
 
