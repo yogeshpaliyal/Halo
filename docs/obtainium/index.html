@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Add Halo to Obtainium</title>
+<meta name="description" content="Install Halo with Obtainium and get updates straight from GitHub releases.">
+<style>
+  :root { --bg:#F2F2F5; --ink:#1B1830; --quiet:#6B6684; --accent:#5B47D6; --line:#E6E6EC; --card:#FFFFFF; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#14121F; --ink:#F1EDFF; --quiet:#B3ABD6; --accent:#B9A8FF; --line:#2C2842; --card:#1E1B2E; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+         background:var(--bg); color:var(--ink); font: 17px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { width:100%; max-width:440px; padding:32px 20px; text-align:center; }
+  .mark { width:84px; height:84px; margin:0 auto 18px; display:block; }
+  h1 { font-size:30px; margin:0 0 6px; letter-spacing:-0.5px; }
+  p { color:var(--quiet); margin:0 0 22px; }
+  .btn { display:block; width:100%; padding:18px; border-radius:999px; background:var(--accent); color:#fff;
+         font-weight:700; font-size:19px; text-decoration:none; }
+  @media (prefers-color-scheme: dark) { .btn { color:#14121F; } }
+  .alt { display:inline-block; margin-top:16px; color:var(--accent); font-weight:600; }
+  .card { margin-top:28px; padding:18px; border-radius:20px; background:var(--card); border:1px solid var(--line);
+          text-align:left; font-size:15px; color:var(--quiet); }
+  .card strong { color:var(--ink); }
+  code { font-size:14px; background:var(--bg); padding:2px 6px; border-radius:6px; color:var(--ink); word-break:break-all; }
+</style>
+</head>
+<body>
+<main>
+  <svg class="mark" viewBox="0 0 108 108" aria-hidden="true">
+    <rect width="108" height="108" rx="28" fill="#14121F"/>
+    <circle cx="54" cy="54" r="22" fill="none" stroke="#B9A8FF" stroke-width="5"/>
+    <circle cx="54" cy="54" r="7" fill="#fff"/>
+  </svg>
+  <h1>Add Halo to Obtainium</h1>
+  <p>Open this page on your Android phone. Obtainium installs Halo from its GitHub releases and keeps it updated.</p>
+
+  <!-- A tapped intent:// link opens the app on Android Chrome; without Obtainium it falls back to its download page. -->
+  <a class="btn"
+     href="intent://add/https://github.com/yogeshpaliyal/Halo#Intent;scheme=obtainium;S.browser_fallback_url=https%3A%2F%2Fgithub.com%2FImranR98%2FObtainium%2Freleases%2Flatest;end">
+    Add to Obtainium
+  </a>
+  <a class="alt" href="obtainium://add/https://github.com/yogeshpaliyal/Halo">Didn't open? Try this link</a>
+
+  <div class="card">
+    <strong>Still nothing?</strong> Open Obtainium, tap <strong>Add app</strong>, and paste:<br>
+    <code>https://github.com/yogeshpaliyal/Halo</code>
+    <br><br>
+    <strong>No Obtainium yet?</strong> Get it from
+    <a href="https://github.com/ImranR98/Obtainium/releases/latest" style="color:var(--accent)">its GitHub releases</a>.
+  </div>
+</main>
+</body>
+</html>

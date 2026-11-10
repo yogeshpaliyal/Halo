@@ -42,11 +42,11 @@ it every day.
 
 ## Download
 
-<a href="https://apps.obtainium.imranr.dev/redirect.html?r=obtainium://add/https://github.com/yogeshpaliyal/Halo"><img src="https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/badge_obtainium.png" alt="Get it on Obtainium" height="56"></a>
+<a href="https://yogeshpaliyal.github.io/Halo/obtainium/"><img src="https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/badge_obtainium.png" alt="Get it on Obtainium" height="56"></a>
 <a href="https://github.com/yogeshpaliyal/Halo/releases/latest"><img src="https://img.shields.io/github/v/release/yogeshpaliyal/Halo?label=GitHub%20release&style=for-the-badge&logo=github" alt="Latest GitHub release" height="56"></a>
 
 - **[Obtainium](https://github.com/ImranR98/Obtainium)** (recommended for APK installs): tap the badge on your
-  phone and Obtainium opens with Halo filled in. It installs the latest signed release and keeps it updated.
+  phone, then **Add to Obtainium**, and Obtainium opens with Halo filled in. It installs the latest signed release and keeps it updated.
 - **GitHub releases**: download `halo-vX.Y.Z.apk` from the
   [latest release](https://github.com/yogeshpaliyal/Halo/releases/latest).
 - **Google Play**: coming soon.
