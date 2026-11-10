@@ -114,10 +114,11 @@ class HaloService : Service(), BubbleView.Listener {
             bubbleSize,
             WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
         )
+        // Work out the docked position first, then add the window already in place.
+        snapTo(onRight, Prefs.bubbleY(this, (screen.y * 0.4f).toInt()), animate = false)
         val view = BubbleView(this, this)
         bubble = view
         wm.addView(view, bubbleParams)
-        snapTo(onRight, Prefs.bubbleY(this, (screen.y * 0.4f).toInt()), animate = false)
     }
 
     /**
@@ -204,7 +205,9 @@ class HaloService : Service(), BubbleView.Listener {
         if (!animate) {
             bubbleParams.x = targetX
             bubbleParams.y = targetY
-            bubble?.let { if (it.isAttachedToWindow) wm.updateViewLayout(it, bubbleParams) }
+            // A window that was just added isn't attached yet but can already be moved, so
+            // don't gate on isAttachedToWindow here; only skip if it was never added at all.
+            bubble?.let { runCatching { wm.updateViewLayout(it, bubbleParams) } }
             return
         }
         val startX = bubbleParams.x
