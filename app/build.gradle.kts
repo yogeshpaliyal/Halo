@@ -18,9 +18,9 @@ android {
         applicationId = "com.yogeshpaliyal.halo"
         minSdk = 26
         targetSdk = 36
-        // CI passes these for tagged releases; local builds keep the defaults.
-        versionCode = System.getenv("HALO_VERSION_CODE")?.toIntOrNull() ?: 1
-        versionName = System.getenv("HALO_VERSION_NAME") ?: "0.1.0"
+        // Bumped by the "Release" GitHub workflow; don't edit by hand unless you mean it.
+        versionCode = 1
+        versionName = "0.1.0"
     }
 
     signingConfigs {

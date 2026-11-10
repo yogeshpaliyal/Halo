@@ -1,26 +1,33 @@
 name: Release
 
-# Push a tag like v0.1.0 (or create a release with that tag in the GitHub UI) to publish
-# a signed APK for GitHub/Obtainium users and an AAB for the Play Console.
+# Run from the Actions tab: pick patch, minor or major. The workflow bumps the version in
+# app/build.gradle.kts, builds the signed APK and AAB, and only if that succeeds commits the
+# bump to main, tags it and publishes a GitHub release with both files attached.
 on:
-  push:
-    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: Which part of the version to bump
+        type: choice
+        options: [patch, minor, major]
+        default: patch
 
 permissions:
   contents: write
+
+# One release at a time, never cancelled half way through.
+concurrency:
+  group: release
+  cancel-in-progress: false
 
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-
-      - uses: actions/setup-java@v5
         with:
-          distribution: temurin
-          java-version: 17
-
-      - uses: gradle/actions/setup-gradle@v5
+          ref: main
+          fetch-depth: 0
 
       - name: Check signing secrets
         env:
@@ -35,47 +42,98 @@ jobs:
           [ -n "$KA" ] || missing="$missing HALO_KEY_ALIAS"
           [ -n "$KP" ] || missing="$missing HALO_KEY_PASSWORD"
           if [ -n "$missing" ]; then
-            echo "::error::Missing repository secrets:$missing (Settings > Secrets and variables > Actions)"
+            echo "::error::Missing repository secrets:$missing"
             exit 1
           fi
+
+      - name: Bump version in app/build.gradle.kts
+        id: version
+        env:
+          BUMP: ${{ inputs.bump }}
+        run: |
+          FILE=app/build.gradle.kts
+          NAME=$(grep -oP 'versionName = "\K[0-9]+\.[0-9]+\.[0-9]+(?=")' "$FILE")
+          CODE=$(grep -oP 'versionCode = \K[0-9]+' "$FILE")
+          if [ -z "$NAME" ] || [ -z "$CODE" ]; then
+            echo "::error::Couldn't read versionName/versionCode from $FILE"
+            exit 1
+          fi
+          IFS=. read -r MAJOR MINOR PATCH <<< "$NAME"
+          case "$BUMP" in
+            major) MAJOR=$((MAJOR + 1)); MINOR=0; PATCH=0 ;;
+            minor) MINOR=$((MINOR + 1)); PATCH=0 ;;
+            patch) PATCH=$((PATCH + 1)) ;;
+          esac
+          NEW_NAME="$MAJOR.$MINOR.$PATCH"
+          NEW_CODE=$((CODE + 1))
+          if git rev-parse -q --verify "refs/tags/v$NEW_NAME" >/dev/null; then
+            echo "::error::Tag v$NEW_NAME already exists"
+            exit 1
+          fi
+          sed -i -E "s/versionName = \"$NAME\"/versionName = \"$NEW_NAME\"/; s/versionCode = $CODE\b/versionCode = $NEW_CODE/" "$FILE"
+          grep -q "versionName = \"$NEW_NAME\"" "$FILE" && grep -q "versionCode = $NEW_CODE" "$FILE"
+          echo "Bumping $NAME ($CODE) -> $NEW_NAME ($NEW_CODE)"
+          echo "name=$NEW_NAME" >> "$GITHUB_OUTPUT"
+          echo "code=$NEW_CODE" >> "$GITHUB_OUTPUT"
+          echo "tag=v$NEW_NAME" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: gradle/actions/setup-gradle@v5
 
       - name: Restore keystore
         env:
           KS: ${{ secrets.HALO_KEYSTORE_BASE64 }}
         run: echo "$KS" | base64 --decode > "$RUNNER_TEMP/halo-release.jks"
 
+      # Nothing is pushed until this step succeeds.
       - name: Build signed APK and AAB
         env:
           HALO_KEYSTORE_PATH: ${{ runner.temp }}/halo-release.jks
           HALO_KEYSTORE_PASSWORD: ${{ secrets.HALO_KEYSTORE_PASSWORD }}
           HALO_KEY_ALIAS: ${{ secrets.HALO_KEY_ALIAS }}
           HALO_KEY_PASSWORD: ${{ secrets.HALO_KEY_PASSWORD }}
-          HALO_VERSION_NAME: ${{ github.ref_name }}
-          # Grows with every run of this workflow, so each release outranks the last.
-          HALO_VERSION_CODE: ${{ github.run_number }}
+          TAG: ${{ steps.version.outputs.tag }}
         run: |
-          HALO_VERSION_NAME="${HALO_VERSION_NAME#v}" ./gradlew --no-configuration-cache assembleRelease bundleRelease
-          cp app/build/outputs/apk/release/app-release.apk "halo-${GITHUB_REF_NAME}.apk"
-          cp app/build/outputs/bundle/release/app-release.aab "halo-${GITHUB_REF_NAME}.aab"
+          ./gradlew --no-configuration-cache assembleRelease bundleRelease
+          cp app/build/outputs/apk/release/app-release.apk "halo-$TAG.apk"
+          cp app/build/outputs/bundle/release/app-release.aab "halo-$TAG.aab"
 
       - name: Show signing certificate
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
         run: |
           APKSIGNER=$(ls -d "$ANDROID_HOME"/build-tools/*/apksigner | sort -V | tail -1)
-          "$APKSIGNER" verify --print-certs "halo-${GITHUB_REF_NAME}.apk" | grep -E "SHA-256|DN"
-
-      - name: Publish GitHub release
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          TAG="$GITHUB_REF_NAME"
-          FILES=("halo-$TAG.apk" "halo-$TAG.aab")
-          # The release may already exist if it was created in the GitHub UI.
-          if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release upload "$TAG" "${FILES[@]}" --clobber
-          else
-            gh release create "$TAG" "${FILES[@]}" --title "Halo $TAG" --generate-notes
-          fi
+          "$APKSIGNER" verify --print-certs "halo-$TAG.apk" | grep -E "SHA-256|DN"
 
       - name: Remove keystore
         if: always()
         run: rm -f "$RUNNER_TEMP/halo-release.jks"
+
+      - name: Commit, tag and push
+        env:
+          NAME: ${{ steps.version.outputs.name }}
+          CODE: ${{ steps.version.outputs.code }}
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app/build.gradle.kts
+          git commit -m "Release $TAG (versionCode $CODE)"
+          git tag -a "$TAG" -m "Halo $TAG"
+          # Fails (and publishes nothing) if main moved while this was building; just run it again.
+          git push origin HEAD:main
+          git push origin "$TAG"
+
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          gh release create "$TAG" "halo-$TAG.apk" "halo-$TAG.aab" \
+            --title "Halo $TAG" \
+            --generate-notes \
+            --verify-tag

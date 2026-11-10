@@ -51,6 +51,13 @@ These debug builds install as **Halo Debug** (`com.yogeshpaliyal.halo.debug`, am
 Play Store version. They're signed with the committed `keystore/debug.keystore` (password `android`), so
 each new build installs over the previous one.
 
+## Releasing
+
+Actions → **Release** → **Run workflow**, then pick `patch`, `minor` or `major`. The workflow bumps
+`versionName` and `versionCode` in `app/build.gradle.kts`, builds the signed APK and AAB, and only if
+the build succeeds commits the bump to `main`, tags it (`vX.Y.Z`) and publishes a GitHub release with
+both files attached. Upload the `.aab` to Play Console.
+
 ## Stats
 
 Halo has no analytics in the app. Download counts, stars and repo traffic are collected from
