@@ -131,9 +131,10 @@ jobs:
           git add app/build.gradle.kts
           git commit -m "Release $TAG (versionCode $CODE)"
           git tag -a "$TAG" -m "Halo $TAG"
+          # One atomic push: main and the tag update together or not at all, so a failure
+          # can never leave a version bump on main without its tag and release.
           # Fails (and publishes nothing) if main moved while this was building; just run it again.
-          git push origin HEAD:main
-          git push origin "$TAG"
+          git push --atomic origin HEAD:main "refs/tags/$TAG"
 
       - name: Publish GitHub release
         env:
