@@ -32,8 +32,9 @@ Every push to the default branch builds a debug APK and publishes it to the
 
 **[halo-debug.apk](https://github.com/yogeshpaliyal/Halo/releases/download/latest-master/halo-debug.apk)**
 
-Builds are signed with the committed `keystore/debug.keystore` (password `android`), so each new
-build installs over the previous one.
+These debug builds install as **Halo Debug** (`com.yogeshpaliyal.halo.debug`, amber icon), next to the
+Play Store version. They're signed with the committed `keystore/debug.keystore` (password `android`), so
+each new build installs over the previous one.
 
 ## Stats
 

@@ -51,7 +51,7 @@ jobs:
 
           ${COMMIT_MSG}
 
-          Signed with the repo's debug keystore, so it installs over earlier builds from this release."
+          Installs as \"Halo Debug\" (com.yogeshpaliyal.halo.debug), next to the Play version. Signed with the repo's debug keystore, so it updates over earlier builds from this release."
 
           # Recreate the release so the tag always points at the newest commit.
           gh release delete latest-master --cleanup-tag --yes || true

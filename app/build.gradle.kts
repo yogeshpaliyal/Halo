@@ -43,6 +43,11 @@ android {
     }
 
     buildTypes {
+        // Debug installs next to the Play/release app: its own package, name and icon.
+        debug {
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-debug"
+        }
         release {
             if (releaseKeystore != null) signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
