@@ -64,7 +64,7 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
     }
 
     init {
-        alpha = IDLE_ALPHA
+        alpha = Prefs.bubbleOpacity(context)
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -145,20 +145,26 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
         if (Prefs.haptics(context)) performHapticFeedback(type)
     }
 
+    private var hidden = false
+
+    /** Re-applies the resting opacity after the user changes it (skipped while hidden or held). */
+    fun refreshOpacity() {
+        if (hidden || state != State.IDLE) return
+        animate().cancel()
+        alpha = Prefs.bubbleOpacity(context)
+    }
+
     /** Fades the bubble out while another app is full screen, and back in afterwards. */
     fun setHidden(hidden: Boolean) {
         removeCallbacks(longPress)
         state = State.IDLE
         animate().cancel()
-        animate().alpha(if (hidden) 0f else IDLE_ALPHA).scaleX(1f).scaleY(1f).setDuration(180).start()
+        this.hidden = hidden
+        animate().alpha(if (hidden) 0f else Prefs.bubbleOpacity(context)).scaleX(1f).scaleY(1f).setDuration(180).start()
     }
 
     private fun reset() {
         state = State.IDLE
-        animate().scaleX(1f).scaleY(1f).alpha(IDLE_ALPHA).setDuration(160).start()
-    }
-
-    private companion object {
-        const val IDLE_ALPHA = 0.8f
+        animate().scaleX(1f).scaleY(1f).alpha(Prefs.bubbleOpacity(context)).setDuration(160).start()
     }
 }

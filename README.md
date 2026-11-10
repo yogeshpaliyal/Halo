@@ -8,7 +8,7 @@ A floating bubble that sticks to the edge of your screen and lets you switch app
 - **Slide** to an app (you feel a tick on each one), **let go** to open it. Let go near the bubble to cancel.
 - **Tap** the bubble to jump back to your previous app (or set it to open the menu, or do nothing).
 - **Drag** the bubble anywhere; it snaps to the nearest side and remembers its position.
-- **Configurable**: tap action, hold delay (200 / 280 / 400 ms) and haptics.
+- **Configurable**: tap action, hold delay (200 / 280 / 400 ms), haptics and bubble opacity.
 - **Quick actions** as favourites: flashlight, volume panel and play/pause. No extra permissions.
 - **Hide from recents**: keep any app out of the recent-apps ring.
 - **Hides in full-screen apps** like games, videos and OTT apps, and comes back when the status bar does.

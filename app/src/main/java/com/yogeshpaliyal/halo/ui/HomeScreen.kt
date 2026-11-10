@@ -18,6 +18,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -79,6 +80,7 @@ fun HomeScreen() {
     var holdDelay by remember { mutableStateOf(Prefs.holdDelay(context)) }
     var haptics by remember { mutableStateOf(Prefs.haptics(context)) }
     var hideFullscreen by remember { mutableStateOf(Prefs.hideInFullscreen(context)) }
+    var opacity by remember { mutableFloatStateOf(Prefs.bubbleOpacity(context)) }
 
     val steps = buildList {
         val restrictedHelp: (() -> Unit)? = if (Permissions.mayBeRestricted) {
@@ -160,6 +162,9 @@ fun HomeScreen() {
                     onHaptics = { haptics = it; Prefs.setHaptics(context, it) },
                     hideFullscreen = hideFullscreen,
                     onHideFullscreen = { hideFullscreen = it; Prefs.setHideInFullscreen(context, it) },
+                    opacity = opacity,
+                    // Saved as you drag, so the real bubble updates live.
+                    onOpacity = { opacity = it; Prefs.setBubbleOpacity(context, it) },
                 )
             }
             item { PrivateSpaceNote() }

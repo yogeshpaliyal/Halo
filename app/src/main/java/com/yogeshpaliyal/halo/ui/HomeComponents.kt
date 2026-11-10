@@ -43,6 +43,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -519,6 +520,8 @@ fun GesturesCard(
     onHaptics: (Boolean) -> Unit,
     hideFullscreen: Boolean,
     onHideFullscreen: (Boolean) -> Unit,
+    opacity: Float,
+    onOpacity: (Float) -> Unit,
 ) {
     Card(shape = RoundedCornerShape(24.dp)) {
         Column(Modifier.padding(vertical = 20.dp)) {
@@ -593,6 +596,34 @@ fun GesturesCard(
                 }
                 Switch(checked = hideFullscreen, onCheckedChange = onHideFullscreen)
             }
+            Row(
+                Modifier.padding(start = 20.dp, end = 20.dp, top = 10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Tag("Look")
+                Spacer(Modifier.width(14.dp))
+                Column(Modifier.weight(1f)) {
+                    Text("Bubble opacity", style = MaterialTheme.typography.titleSmall)
+                    Text(
+                        "How see-through the resting bubble is. It turns solid while you hold it.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                Spacer(Modifier.width(8.dp))
+                Text(
+                    "${(opacity * 100).roundToInt()}%",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+            }
+            Slider(
+                value = opacity,
+                onValueChange = onOpacity,
+                valueRange = 0.3f..1f,
+                steps = 6, // 30, 40, ... 100
+                modifier = Modifier.padding(start = 90.dp, end = 20.dp),
+            )
         }
     }
 }

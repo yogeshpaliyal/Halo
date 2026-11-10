@@ -19,6 +19,7 @@ object Prefs {
     private const val KEY_HAPTICS = "haptics"
     private const val KEY_HIDDEN_RECENTS = "hidden_recents"
     const val KEY_HIDE_FULLSCREEN = "hide_fullscreen"
+    const val KEY_BUBBLE_OPACITY = "bubble_opacity"
 
     private fun sp(context: Context): SharedPreferences =
         context.getSharedPreferences(FILE, Context.MODE_PRIVATE)
@@ -62,6 +63,13 @@ object Prefs {
     /** Hide the bubble while another app is full screen (games, video, OTT). On by default. */
     fun hideInFullscreen(context: Context): Boolean = sp(context).getBoolean(KEY_HIDE_FULLSCREEN, true)
     fun setHideInFullscreen(context: Context, on: Boolean) = sp(context).edit { putBoolean(KEY_HIDE_FULLSCREEN, on) }
+
+    /** Resting opacity of the bubble, 0.3 to 1.0. The menu and the held bubble stay fully opaque. */
+    fun bubbleOpacity(context: Context): Float =
+        sp(context).getFloat(KEY_BUBBLE_OPACITY, 0.8f).coerceIn(0.3f, 1f)
+
+    fun setBubbleOpacity(context: Context, value: Float) =
+        sp(context).edit { putFloat(KEY_BUBBLE_OPACITY, value.coerceIn(0.3f, 1f)) }
 
     fun registerListener(context: Context, listener: SharedPreferences.OnSharedPreferenceChangeListener) =
         sp(context).registerOnSharedPreferenceChangeListener(listener)

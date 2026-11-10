@@ -108,6 +108,7 @@ class HaloService : Service(), BubbleView.Listener {
     private val applyRunnable = Runnable { applyFullscreen() }
     private val prefListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
         if (key == Prefs.KEY_HIDE_FULLSCREEN) applyFullscreen()
+        if (key == Prefs.KEY_BUBBLE_OPACITY) bubble?.refreshOpacity()
     }
 
     /**
