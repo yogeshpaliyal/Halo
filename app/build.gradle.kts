@@ -19,8 +19,8 @@ android {
         minSdk = 26
         targetSdk = 36
         // Bumped by the "Release" GitHub workflow; don't edit by hand unless you mean it.
-        versionCode = 3
-        versionName = "0.1.2"
+        versionCode = 4
+        versionName = "0.1.3"
     }
 
     signingConfigs {
