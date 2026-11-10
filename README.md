@@ -42,31 +42,14 @@ it every day.
 
 ## Download
 
-Every push to the default branch builds a debug APK and publishes it to the
-[**Latest master**](https://github.com/yogeshpaliyal/Halo/releases/tag/latest-master) release:
+<a href="https://apps.obtainium.imranr.dev/redirect.html?r=obtainium://add/https://github.com/yogeshpaliyal/Halo"><img src="https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/badge_obtainium.png" alt="Get it on Obtainium" height="56"></a>
+<a href="https://github.com/yogeshpaliyal/Halo/releases/latest"><img src="https://img.shields.io/github/v/release/yogeshpaliyal/Halo?label=GitHub%20release&style=for-the-badge&logo=github" alt="Latest GitHub release" height="56"></a>
 
-**[halo-debug.apk](https://github.com/yogeshpaliyal/Halo/releases/download/latest-master/halo-debug.apk)**
-
-These debug builds install as **Halo Debug** (`com.yogeshpaliyal.halo.debug`, amber icon), next to the
-Play Store version. They're signed with the committed `keystore/debug.keystore` (password `android`), so
-each new build installs over the previous one.
-
-## Releasing
-
-Actions → **Release** → **Run workflow**, then pick `patch`, `minor` or `major`. The workflow bumps
-`versionName` and `versionCode` in `app/build.gradle.kts`, builds the signed APK and AAB, and only if
-the build succeeds commits the bump to `main`, tags it (`vX.Y.Z`) and publishes a GitHub release with
-both files attached. Upload the `.aab` to Play Console.
-
-## Stats
-
-Halo has no analytics in the app. Download counts, stars and repo traffic are collected from
-GitHub's APIs by the `Stats snapshot` workflow (daily, and before each `latest-master` rebuild) and
-saved to the [`stats` branch](https://github.com/yogeshpaliyal/Halo/tree/stats).
-
-Repo views, clones and referrers need one extra step, because the Actions token can't read
-GitHub's traffic API: create a fine-grained token for this repo with **Administration: Read-only**
-and add it as the `TRAFFIC_TOKEN` repository secret.
+- **[Obtainium](https://github.com/ImranR98/Obtainium)** (recommended for APK installs): tap the badge on your
+  phone and Obtainium opens with Halo filled in. It installs the latest signed release and keeps it updated.
+- **GitHub releases**: download `halo-vX.Y.Z.apk` from the
+  [latest release](https://github.com/yogeshpaliyal/Halo/releases/latest).
+- **Google Play**: coming soon.
 
 ### Verify the APK
 
@@ -79,7 +62,16 @@ com.yogeshpaliyal.halo
 
 Check it with [AppVerifier](https://github.com/soupslurpr/AppVerifier) (paste both lines) or
 `apksigner verify --print-certs halo-vX.Y.Z.apk`. Each release also lists SHA-256 checksums of its files.
-Debug builds from `latest-master` use a different, public debug key and will not match.
+
+### Debug builds
+
+Every push to `main` builds a debug APK and publishes it to the
+[**Latest master**](https://github.com/yogeshpaliyal/Halo/releases/tag/latest-master) pre-release:
+**[halo-debug.apk](https://github.com/yogeshpaliyal/Halo/releases/download/latest-master/halo-debug.apk)**.
+
+They install as **Halo Debug** (`com.yogeshpaliyal.halo.debug`, amber icon), next to the release version,
+and are signed with the public `keystore/debug.keystore`, so their fingerprint won't match the one above.
+Obtainium ignores this pre-release by default and tracks only signed releases.
 
 ## Setup
 
@@ -106,6 +98,23 @@ Debug builds from `latest-master` use a different, public debug key and will not
 | Settings screen (Compose) | `ui/MainActivity.kt` |
 
 The long-press → slide → release gesture works because Android keeps delivering the whole touch stream to the window that got `ACTION_DOWN` (the small bubble window). The menu itself is a separate full-screen, **non-touchable** overlay that just draws what the bubble reports.
+
+## Releasing
+
+Actions → **Release** → **Run workflow**, then pick `patch`, `minor` or `major`. The workflow bumps
+`versionName` and `versionCode` in `app/build.gradle.kts`, builds the signed APK and AAB, and only if
+the build succeeds commits the bump to `main`, tags it (`vX.Y.Z`) and publishes a GitHub release with
+both files attached and the signing fingerprint in the notes. Upload the `.aab` to Play Console.
+
+## Stats
+
+Halo has no analytics in the app. Download counts, stars and repo traffic are collected from
+GitHub's APIs by the `Stats snapshot` workflow (daily, and before each `latest-master` rebuild) and
+saved to the [`stats` branch](https://github.com/yogeshpaliyal/Halo/tree/stats).
+
+Repo views, clones and referrers need one extra step, because the Actions token can't read
+GitHub's traffic API: create a fine-grained token for this repo with **Administration: Read-only**
+and add it as the `TRAFFIC_TOKEN` repository secret.
 
 ## Roadmap ideas
 
