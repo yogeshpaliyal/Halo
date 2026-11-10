@@ -68,6 +68,19 @@ Repo views, clones and referrers need one extra step, because the Actions token 
 GitHub's traffic API: create a fine-grained token for this repo with **Administration: Read-only**
 and add it as the `TRAFFIC_TOKEN` repository secret.
 
+### Verify the APK
+
+Every release APK, and the Play Store version, is signed with the same key. Its certificate SHA-256 is:
+
+```
+com.yogeshpaliyal.halo
+4D:C1:4F:08:7E:D5:AB:99:63:D1:C1:EF:11:15:EC:3B:33:1E:4B:BD:A5:85:8A:0C:FF:7F:A2:66:73:4A:CD:E5
+```
+
+Check it with [AppVerifier](https://github.com/soupslurpr/AppVerifier) (paste both lines) or
+`apksigner verify --print-certs halo-vX.Y.Z.apk`. Each release also lists SHA-256 checksums of its files.
+Debug builds from `latest-master` use a different, public debug key and will not match.
+
 ## Setup
 
 1. Open the project in Android Studio (or run `./gradlew installDebug`), or install the APK above.

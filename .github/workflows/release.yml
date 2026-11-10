@@ -102,12 +102,19 @@ jobs:
           cp app/build/outputs/apk/release/app-release.apk "halo-$TAG.apk"
           cp app/build/outputs/bundle/release/app-release.aab "halo-$TAG.aab"
 
+      # Verifies the signature and records the certificate fingerprint for the release notes.
       - name: Show signing certificate
+        id: cert
         env:
           TAG: ${{ steps.version.outputs.tag }}
         run: |
           APKSIGNER=$(ls -d "$ANDROID_HOME"/build-tools/*/apksigner | sort -V | tail -1)
-          "$APKSIGNER" verify --print-certs "halo-$TAG.apk" | grep -E "SHA-256|DN"
+          OUT=$("$APKSIGNER" verify --print-certs "halo-$TAG.apk")
+          echo "$OUT" | grep -E "SHA-256|DN"
+          DIGEST=$(echo "$OUT" | grep -m1 -oP 'certificate SHA-256 digest: \K[0-9a-f]{64}')
+          # AA:BB:CC… uppercase, the format AppVerifier and most docs use.
+          FP=$(echo "$DIGEST" | tr 'a-f' 'A-F' | sed 's/../&:/g; s/:$//')
+          echo "fingerprint=$FP" >> "$GITHUB_OUTPUT"
 
       - name: Remove keystore
         if: always()
@@ -137,3 +144,31 @@ jobs:
             --title "Halo $TAG" \
             --generate-notes \
             --verify-tag
+
+      - name: Add verification details to the release notes
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+          FP: ${{ steps.cert.outputs.fingerprint }}
+        run: |
+          {
+            gh release view "$TAG" --json body -q .body
+            echo
+            echo "## Verify your download"
+            echo
+            echo "Signing certificate SHA-256 (the same for every Halo release and the Play Store version):"
+            echo
+            echo '```'
+            echo "com.yogeshpaliyal.halo"
+            echo "$FP"
+            echo '```'
+            echo
+            echo "Paste both lines into [AppVerifier](https://github.com/soupslurpr/AppVerifier), or compare with \`apksigner verify --print-certs\`."
+            echo
+            echo "File checksums (SHA-256):"
+            echo
+            echo '```'
+            sha256sum "halo-$TAG.apk" "halo-$TAG.aab"
+            echo '```'
+          } > notes.md
+          gh release edit "$TAG" --notes-file notes.md
