@@ -14,6 +14,19 @@ A floating bubble that sticks to the edge of your screen and lets you switch app
 
 No ads, no tracking, no internet permission.
 
+## Why I built this
+
+I switch between the same handful of apps all day, and the recents screen is a slow way to do it: a
+full-screen detour every time. I wanted a small button on the edge of the screen that I could hold, slide
+to an app, and let go.
+
+Pixel phones don't have an edge panel, and the apps I tried for this were closed source, looked dated, or
+asked for Accessibility access. That's a lot of trust to give an app I can't read. So I built Halo to do
+this one thing: open source, no internet permission, nothing collected.
+
+It's written in Kotlin and Jetpack Compose, with Claude as a pair programmer. I review the changes and use
+it every day.
+
 ## Screenshots
 
 <table>
