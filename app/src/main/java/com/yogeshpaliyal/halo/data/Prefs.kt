@@ -17,6 +17,7 @@ object Prefs {
     private const val KEY_TAP_ACTION = "tap_action"
     private const val KEY_HOLD_DELAY = "hold_delay"
     private const val KEY_HAPTICS = "haptics"
+    private const val KEY_HIDDEN_RECENTS = "hidden_recents"
 
     private fun sp(context: Context): SharedPreferences =
         context.getSharedPreferences(FILE, Context.MODE_PRIVATE)
@@ -45,6 +46,16 @@ object Prefs {
         if (from in current.indices && to != from) current.add(to, current.removeAt(from))
         setFavorites(context, current)
         return current
+    }
+
+    /** Packages the user never wants in the recent-apps ring. */
+    fun hiddenRecents(context: Context): Set<String> =
+        sp(context).getStringSet(KEY_HIDDEN_RECENTS, emptySet()).orEmpty()
+
+    fun toggleHiddenRecent(context: Context, pkg: String): Set<String> {
+        val next = hiddenRecents(context).toMutableSet().apply { if (!remove(pkg)) add(pkg) }
+        sp(context).edit { putStringSet(KEY_HIDDEN_RECENTS, next) }
+        return next
     }
 
     fun bubbleOnRight(context: Context): Boolean = sp(context).getBoolean(KEY_BUBBLE_RIGHT, true)

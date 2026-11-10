@@ -46,10 +46,16 @@ fun AppPickerSheet(
     selected: List<String>,
     onToggle: (AppEntry) -> Unit,
     onDismiss: () -> Unit,
+    title: String = "Choose favourites",
+    /** Max items that can be ticked; null = no limit. */
+    limit: Int? = Prefs.MAX_FAVORITES,
+    /** Show each ticked item's position (favourites are ordered; other lists aren't). */
+    showOrder: Boolean = true,
+    countLabel: (Int) -> String = { "$it of ${Prefs.MAX_FAVORITES} picked" },
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var query by remember { mutableStateOf("") }
-    val full = selected.size >= Prefs.MAX_FAVORITES
+    val full = limit != null && selected.size >= limit
 
     // Keep the order stable while the sheet is open so rows don't jump as you tick them.
     val initialOrder = remember { selected.toList() }
@@ -62,10 +68,10 @@ fun AppPickerSheet(
         Column(Modifier.padding(horizontal = 20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
-                    Text("Choose favourites", style = MaterialTheme.typography.titleLarge)
+                    Text(title, style = MaterialTheme.typography.titleLarge)
                     Text(
-                        if (full) "All ${Prefs.MAX_FAVORITES} slots used. Untick one to swap."
-                        else "${selected.size} of ${Prefs.MAX_FAVORITES} picked",
+                        if (full) "All $limit slots used. Untick one to swap."
+                        else countLabel(selected.size),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -116,12 +122,14 @@ fun AppPickerSheet(
                     }
                     Spacer(Modifier.weight(1f))
                     if (isSelected) {
-                        Text(
-                            "${selected.indexOf(app.key) + 1}",
-                            style = MaterialTheme.typography.labelLarge,
-                            color = MaterialTheme.colorScheme.primary,
-                        )
-                        Spacer(Modifier.width(8.dp))
+                        if (showOrder) {
+                            Text(
+                                "${selected.indexOf(app.key) + 1}",
+                                style = MaterialTheme.typography.labelLarge,
+                                color = MaterialTheme.colorScheme.primary,
+                            )
+                            Spacer(Modifier.width(8.dp))
+                        }
                         Icon(Icons.Rounded.Check, contentDescription = "Selected", tint = MaterialTheme.colorScheme.primary)
                     }
                 }

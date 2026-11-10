@@ -684,6 +684,45 @@ private fun Tag(text: String) {
     }
 }
 
+/** Outer ring settings: which apps never appear as recents. */
+@Composable
+fun RecentsCard(hiddenCount: Int, hasUsage: Boolean, onChooseHidden: () -> Unit) {
+    Card(shape = RoundedCornerShape(24.dp)) {
+        Column(Modifier.padding(20.dp)) {
+            Text("Recent apps", style = MaterialTheme.typography.titleMedium)
+            Text(
+                if (hasUsage) "Outer ring, newest first. Screens Android keeps out of Recents are skipped."
+                else "Allow Usage access in setup to fill the outer ring.",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Spacer(Modifier.height(12.dp))
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(16.dp))
+                    .clickable(onClick = onChooseHidden)
+                    .padding(vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Column(Modifier.weight(1f)) {
+                    Text("Hide from recents", style = MaterialTheme.typography.titleSmall)
+                    Text(
+                        when (hiddenCount) {
+                            0 -> "No apps hidden"
+                            1 -> "1 app never shows in the outer ring"
+                            else -> "$hiddenCount apps never show in the outer ring"
+                        },
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                TextButton(onClick = onChooseHidden) { Text("Choose") }
+            }
+        }
+    }
+}
+
 /** Small "Action" chip for quick actions (flashlight, volume, play/pause) in the picker. */
 @Composable
 fun ActionTag() {

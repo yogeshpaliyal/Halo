@@ -73,6 +73,8 @@ fun HomeScreen() {
         favorites.mapNotNull { byKey[it] }
     }
     var showPicker by remember { mutableStateOf(false) }
+    var hiddenRecents by remember { mutableStateOf(Prefs.hiddenRecents(context)) }
+    var showHiddenPicker by remember { mutableStateOf(false) }
     var tapAction by remember { mutableStateOf(Prefs.tapAction(context)) }
     var holdDelay by remember { mutableStateOf(Prefs.holdDelay(context)) }
     var haptics by remember { mutableStateOf(Prefs.haptics(context)) }
@@ -141,6 +143,13 @@ fun HomeScreen() {
                 )
             }
             item {
+                RecentsCard(
+                    hiddenCount = hiddenRecents.size,
+                    hasUsage = hasUsage,
+                    onChooseHidden = { showHiddenPicker = true },
+                )
+            }
+            item {
                 GesturesCard(
                     tapAction = tapAction,
                     holdDelay = holdDelay,
@@ -159,6 +168,20 @@ fun HomeScreen() {
                 }
             }
         }
+    }
+
+    if (showHiddenPicker) {
+        // Recents only ever come from the personal profile, so offer just those apps.
+        AppPickerSheet(
+            apps = apps.filter { it.action == null && !it.isWork },
+            selected = hiddenRecents.toList(),
+            onToggle = { hiddenRecents = Prefs.toggleHiddenRecent(context, it.packageName) },
+            onDismiss = { showHiddenPicker = false },
+            title = "Hide from recents",
+            limit = null,
+            showOrder = false,
+            countLabel = { if (it == 0) "Tick apps to keep out of the outer ring" else "$it hidden" },
+        )
     }
 
     if (showPicker) {

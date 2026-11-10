@@ -7,7 +7,9 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.LauncherActivityInfo
+import android.content.pm.ActivityInfo
 import android.content.pm.LauncherApps
+import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.os.Process
 import android.os.UserHandle
@@ -119,21 +121,27 @@ class AppRepository(context: Context) {
             events.getNextEvent(event)
             @Suppress("DEPRECATION") // Same value as ACTIVITY_RESUMED (API 29+).
             if (event.eventType == UsageEvents.Event.MOVE_TO_FOREGROUND) {
-                lastResumed[event.packageName] = event.timeStamp
+                // Track what's on screen even for excluded screens, so it's never offered.
                 if (event.timeStamp >= foregroundTime) {
                     foregroundTime = event.timeStamp
                     foreground = event.packageName
+                }
+                // Screens Android itself keeps out of Recents (call UI, assistant pop-ups,
+                // permission dialogs and so on) shouldn't count as recently used here either.
+                if (!excludedFromRecents(event.packageName, event.className)) {
+                    lastResumed[event.packageName] = event.timeStamp
                 }
             }
         }
 
         val home = homePackages()
+        val hidden = Prefs.hiddenRecents(context)
         return lastResumed.entries
             .asSequence()
             .sortedByDescending { it.value }
             .map { it.key }
             .filter { pkg ->
-                pkg != context.packageName && pkg != foreground && pkg !in home && pkg !in excludeKeys
+                pkg != context.packageName && pkg != foreground && pkg !in home && pkg !in hidden && pkg !in excludeKeys
             }
             .mapNotNull(::entryFor) // Also drops packages with no launcher activity.
             .take(limit)
@@ -172,6 +180,21 @@ class AppRepository(context: Context) {
             isWork = user != me,
             available = user == me || !userManager.isQuietModeEnabled(user),
         )
+    }
+
+    private val excludedCache = HashMap<String, Boolean>()
+
+    /** True if this activity is declared with excludeFromRecents. */
+    private fun excludedFromRecents(pkg: String, className: String?): Boolean {
+        if (className.isNullOrEmpty()) return false
+        return excludedCache.getOrPut("$pkg/$className") {
+            try {
+                val info = context.packageManager.getActivityInfo(ComponentName(pkg, className), 0)
+                info.flags and ActivityInfo.FLAG_EXCLUDE_FROM_RECENTS != 0
+            } catch (_: PackageManager.NameNotFoundException) {
+                false
+            }
+        }
     }
 
     private fun homePackages(): Set<String> {
