@@ -18,6 +18,7 @@ object Prefs {
     private const val KEY_HOLD_DELAY = "hold_delay"
     private const val KEY_HAPTICS = "haptics"
     private const val KEY_HIDDEN_RECENTS = "hidden_recents"
+    const val KEY_HIDE_FULLSCREEN = "hide_fullscreen"
 
     private fun sp(context: Context): SharedPreferences =
         context.getSharedPreferences(FILE, Context.MODE_PRIVATE)
@@ -57,6 +58,16 @@ object Prefs {
         sp(context).edit { putStringSet(KEY_HIDDEN_RECENTS, next) }
         return next
     }
+
+    /** Hide the bubble while another app is full screen (games, video, OTT). On by default. */
+    fun hideInFullscreen(context: Context): Boolean = sp(context).getBoolean(KEY_HIDE_FULLSCREEN, true)
+    fun setHideInFullscreen(context: Context, on: Boolean) = sp(context).edit { putBoolean(KEY_HIDE_FULLSCREEN, on) }
+
+    fun registerListener(context: Context, listener: SharedPreferences.OnSharedPreferenceChangeListener) =
+        sp(context).registerOnSharedPreferenceChangeListener(listener)
+
+    fun unregisterListener(context: Context, listener: SharedPreferences.OnSharedPreferenceChangeListener) =
+        sp(context).unregisterOnSharedPreferenceChangeListener(listener)
 
     fun bubbleOnRight(context: Context): Boolean = sp(context).getBoolean(KEY_BUBBLE_RIGHT, true)
     fun bubbleY(context: Context, default: Int): Int = sp(context).getInt(KEY_BUBBLE_Y, default)

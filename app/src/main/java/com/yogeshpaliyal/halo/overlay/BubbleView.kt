@@ -145,6 +145,14 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
         if (Prefs.haptics(context)) performHapticFeedback(type)
     }
 
+    /** Fades the bubble out while another app is full screen, and back in afterwards. */
+    fun setHidden(hidden: Boolean) {
+        removeCallbacks(longPress)
+        state = State.IDLE
+        animate().cancel()
+        animate().alpha(if (hidden) 0f else IDLE_ALPHA).scaleX(1f).scaleY(1f).setDuration(180).start()
+    }
+
     private fun reset() {
         state = State.IDLE
         animate().scaleX(1f).scaleY(1f).alpha(IDLE_ALPHA).setDuration(160).start()

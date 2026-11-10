@@ -517,6 +517,8 @@ fun GesturesCard(
     onTapAction: (TapAction) -> Unit,
     onHoldDelay: (HoldDelay) -> Unit,
     onHaptics: (Boolean) -> Unit,
+    hideFullscreen: Boolean,
+    onHideFullscreen: (Boolean) -> Unit,
 ) {
     Card(shape = RoundedCornerShape(24.dp)) {
         Column(Modifier.padding(vertical = 20.dp)) {
@@ -571,6 +573,25 @@ fun GesturesCard(
                     )
                 }
                 Switch(checked = haptics, onCheckedChange = onHaptics)
+            }
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .clickable { onHideFullscreen(!hideFullscreen) }
+                    .padding(horizontal = 20.dp, vertical = 10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Tag("Auto")
+                Spacer(Modifier.width(14.dp))
+                Column(Modifier.weight(1f)) {
+                    Text("Hide in full-screen apps", style = MaterialTheme.typography.titleSmall)
+                    Text(
+                        "Games, videos and OTT apps. Comes back when the status bar does.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                Switch(checked = hideFullscreen, onCheckedChange = onHideFullscreen)
             }
         }
     }

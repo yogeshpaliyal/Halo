@@ -78,6 +78,7 @@ fun HomeScreen() {
     var tapAction by remember { mutableStateOf(Prefs.tapAction(context)) }
     var holdDelay by remember { mutableStateOf(Prefs.holdDelay(context)) }
     var haptics by remember { mutableStateOf(Prefs.haptics(context)) }
+    var hideFullscreen by remember { mutableStateOf(Prefs.hideInFullscreen(context)) }
 
     val steps = buildList {
         val restrictedHelp: (() -> Unit)? = if (Permissions.mayBeRestricted) {
@@ -157,6 +158,8 @@ fun HomeScreen() {
                     onTapAction = { tapAction = it; Prefs.setTapAction(context, it) },
                     onHoldDelay = { holdDelay = it; Prefs.setHoldDelay(context, it) },
                     onHaptics = { haptics = it; Prefs.setHaptics(context, it) },
+                    hideFullscreen = hideFullscreen,
+                    onHideFullscreen = { hideFullscreen = it; Prefs.setHideInFullscreen(context, it) },
                 )
             }
             item { PrivateSpaceNote() }

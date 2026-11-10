@@ -8,13 +8,17 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.ServiceInfo
 import android.content.res.Configuration
 import android.graphics.PixelFormat
 import android.graphics.Point
 import android.os.Build
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.view.Gravity
+import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.view.animation.DecelerateInterpolator
@@ -57,6 +61,8 @@ class HaloService : Service(), BubbleView.Listener {
         wm = getSystemService(WindowManager::class.java)
         repo = AppRepository(this)
         addBubble()
+        addFullscreenDetector()
+        Prefs.registerListener(this, prefListener)
         _running.value = true
     }
 
@@ -82,11 +88,81 @@ class HaloService : Service(), BubbleView.Listener {
 
     override fun onDestroy() {
         snapAnimator?.cancel()
+        main.removeCallbacksAndMessages(null)
+        Prefs.unregisterListener(this, prefListener)
+        detector?.let { runCatching { wm.removeView(it) } }
+        detector = null
         removeMenu()
         bubble?.let { runCatching { wm.removeView(it) } }
         bubble = null
         _running.value = false
         super.onDestroy()
+    }
+
+    // --- full screen ----------------------------------------------------------------------
+
+    private val main = Handler(Looper.getMainLooper())
+    private var detector: View? = null
+    private var fullscreen = false
+    private var hiddenForFullscreen = false
+    private val applyRunnable = Runnable { applyFullscreen() }
+    private val prefListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+        if (key == Prefs.KEY_HIDE_FULLSCREEN) applyFullscreen()
+    }
+
+    /**
+     * Games, video and OTT apps hide the status bar when they go full screen. We can't see which
+     * app is open (that would need Accessibility), but a 1px, invisible, non-touchable overlay is
+     * told whenever the status bar hides or shows, which is exactly the signal we need.
+     */
+    private fun addFullscreenDetector() {
+        val view = View(this)
+        val params = WindowManager.LayoutParams(
+            1,
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+            PixelFormat.TRANSPARENT,
+        ).apply {
+            gravity = Gravity.TOP or Gravity.START
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) fitInsetsTypes = 0
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            view.setOnApplyWindowInsetsListener { _, insets ->
+                onFullscreenChanged(!insets.isVisible(WindowInsets.Type.statusBars()))
+                insets
+            }
+        } else {
+            @Suppress("DEPRECATION")
+            view.setOnSystemUiVisibilityChangeListener { visibility ->
+                onFullscreenChanged(visibility and View.SYSTEM_UI_FLAG_FULLSCREEN != 0)
+            }
+        }
+        runCatching { wm.addView(view, params) }.onSuccess { detector = view }
+    }
+
+    private fun onFullscreenChanged(isFullscreen: Boolean) {
+        fullscreen = isFullscreen
+        main.removeCallbacks(applyRunnable)
+        // Hide straight away; come back after a short pause so swiping the bars into view
+        // for a moment in a game doesn't make the bubble flash.
+        if (isFullscreen) applyFullscreen() else main.postDelayed(applyRunnable, 600)
+    }
+
+    private fun applyFullscreen() {
+        val hide = fullscreen && Prefs.hideInFullscreen(this)
+        if (hide == hiddenForFullscreen) return
+        hiddenForFullscreen = hide
+        val view = bubble ?: return
+        if (hide) removeMenu()
+        // A hidden bubble must not catch touches meant for the game underneath.
+        bubbleParams.flags = if (hide) {
+            bubbleParams.flags or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+        } else {
+            bubbleParams.flags and WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE.inv()
+        }
+        runCatching { wm.updateViewLayout(view, bubbleParams) }
+        view.setHidden(hide)
     }
 
     // --- windows --------------------------------------------------------------------------
