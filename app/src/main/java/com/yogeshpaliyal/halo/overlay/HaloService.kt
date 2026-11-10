@@ -15,6 +15,7 @@ import android.graphics.Point
 import android.os.Build
 import android.os.IBinder
 import android.view.Gravity
+import android.view.WindowInsets
 import android.view.WindowManager
 import android.view.animation.DecelerateInterpolator
 import androidx.core.app.NotificationCompat
@@ -39,6 +40,8 @@ class HaloService : Service(), BubbleView.Listener {
     private var menu: RadialMenuView? = null
     private var onRight = true
     private var snapAnimator: ValueAnimator? = null
+    /** Where the bubble rests while the menu has temporarily moved it to the dial's centre. */
+    private var restY: Int? = null
 
     private val bubbleSize by lazy { (52 * resources.displayMetrics.density).toInt() }
 
@@ -70,8 +73,10 @@ class HaloService : Service(), BubbleView.Listener {
         super.onConfigurationChanged(newConfig)
         // Rotation or fold/unfold: re-dock to the same side of the new screen size.
         if (bubble != null) {
+            val homeY = restY ?: bubbleParams.y
+            restY = null
             removeMenu()
-            snapTo(onRight, bubbleParams.y, animate = false)
+            snapTo(onRight, homeY, animate = false)
         }
     }
 
@@ -123,10 +128,25 @@ class HaloService : Service(), BubbleView.Listener {
         removeMenu()
         val favorites = repo.favorites()
         val recents = repo.recents(Prefs.MAX_RECENTS, excludeKeys = favorites.mapTo(HashSet()) { it.key })
+
+        // Near the top or bottom the dial can't be centred on the bubble without spilling
+        // off screen, so centre it where it fits and slide the bubble there while it's open.
+        val half = RadialMenuView.halfExtentPx(this, favorites.isNotEmpty(), recents.isNotEmpty())
+        val screenH = screenSize().y
+        val (top, bottom) = safeInsets()
+        val bubbleCenter = bubbleParams.y + bubbleSize / 2f
+        val lo = top + half
+        val hi = screenH - bottom - half
+        val centerY = if (lo <= hi) bubbleCenter.coerceIn(lo, hi) else (top + screenH - bottom) / 2f
+        if (kotlin.math.abs(centerY - bubbleCenter) > 1f) {
+            restY = bubbleParams.y
+            moveBubble(bubbleParams.x, (centerY - bubbleSize / 2f).toInt(), animate = true)
+        }
+
         val view = RadialMenuView(
             context = this,
             anchorScreenX = (bubbleParams.x + bubbleSize / 2).toFloat(),
-            anchorScreenY = (bubbleParams.y + bubbleSize / 2).toFloat(),
+            anchorScreenY = centerY,
             onRightEdge = onRight,
             favorites = favorites,
             recents = recents,
@@ -154,33 +174,65 @@ class HaloService : Service(), BubbleView.Listener {
     private fun removeMenu() {
         menu?.let { runCatching { wm.removeView(it) } }
         menu = null
+        restY?.let { y ->
+            restY = null
+            moveBubble(bubbleParams.x, y, animate = true)
+        }
+    }
+
+    /**
+     * Status bar / cutout height at the top and navigation bar height at the bottom, in px.
+     * The bubble stays between them so it never hides behind system bars.
+     */
+    private fun safeInsets(): Pair<Int, Int> =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val insets = wm.currentWindowMetrics.windowInsets.getInsetsIgnoringVisibility(
+                WindowInsets.Type.systemBars() or WindowInsets.Type.displayCutout(),
+            )
+            insets.top to insets.bottom
+        } else {
+            fun dimen(name: String): Int {
+                val id = resources.getIdentifier(name, "dimen", "android")
+                return if (id > 0) resources.getDimensionPixelSize(id) else 0
+            }
+            dimen("status_bar_height") to dimen("navigation_bar_height")
+        }
+
+    /** Moves the bubble window, optionally animating both axes. */
+    private fun moveBubble(targetX: Int, targetY: Int, animate: Boolean) {
+        snapAnimator?.cancel()
+        if (!animate) {
+            bubbleParams.x = targetX
+            bubbleParams.y = targetY
+            bubble?.let { if (it.isAttachedToWindow) wm.updateViewLayout(it, bubbleParams) }
+            return
+        }
+        val startX = bubbleParams.x
+        val startY = bubbleParams.y
+        snapAnimator = ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = 200
+            interpolator = DecelerateInterpolator()
+            addUpdateListener {
+                val f = it.animatedValue as Float
+                bubbleParams.x = (startX + (targetX - startX) * f).toInt()
+                bubbleParams.y = (startY + (targetY - startY) * f).toInt()
+                bubble?.let { b -> if (b.isAttachedToWindow) wm.updateViewLayout(b, bubbleParams) }
+            }
+            start()
+        }
     }
 
     // --- docking --------------------------------------------------------------------------
 
     private fun snapTo(right: Boolean, y: Int, animate: Boolean) {
         val screen = screenSize()
+        val (top, bottom) = safeInsets()
         onRight = right
         val targetX = if (right) screen.x - bubbleSize else 0
-        val targetY = y.coerceIn(0, screen.y - bubbleSize)
-        bubbleParams.y = targetY
+        val maxY = (screen.y - bottom - bubbleSize).coerceAtLeast(top)
+        val targetY = y.coerceIn(top, maxY)
         Prefs.saveBubble(this, right, targetY)
-
-        snapAnimator?.cancel()
-        if (!animate) {
-            bubbleParams.x = targetX
-            bubble?.let { wm.updateViewLayout(it, bubbleParams) }
-            return
-        }
-        snapAnimator = ValueAnimator.ofInt(bubbleParams.x, targetX).apply {
-            duration = 220
-            interpolator = DecelerateInterpolator()
-            addUpdateListener {
-                bubbleParams.x = it.animatedValue as Int
-                bubble?.let { b -> if (b.isAttachedToWindow) wm.updateViewLayout(b, bubbleParams) }
-            }
-            start()
-        }
+        moveBubble(targetX, targetY, animate)
     }
 
     private fun screenSize(): Point =

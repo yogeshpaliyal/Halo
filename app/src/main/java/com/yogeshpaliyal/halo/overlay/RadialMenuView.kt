@@ -48,7 +48,7 @@ class RadialMenuView(
     private val density = resources.displayMetrics.density
     private fun dp(v: Float) = v * density
 
-    private val iconSize = dp(46f)
+    private val iconSize = dp(ICON_DP)
     private val deadZone = dp(52f)
     private val span = 160f
     /** Direction the half-rings open towards: left when docked right, right when docked left. */
@@ -57,8 +57,8 @@ class RadialMenuView(
     private val dir = if (onRightEdge) -1f else 1f
 
     private val rings: List<Ring> = buildList {
-        if (favorites.isNotEmpty()) add(Ring(favorites, dp(122f)))
-        if (recents.isNotEmpty()) add(Ring(recents, if (favorites.isEmpty()) dp(122f) else dp(208f)))
+        if (favorites.isNotEmpty()) add(Ring(favorites, dp(INNER_DP)))
+        if (recents.isNotEmpty()) add(Ring(recents, if (favorites.isEmpty()) dp(INNER_DP) else dp(OUTER_DP)))
     }
 
     /** Currently highlighted app, or null if the finger is in the cancel zone. */
@@ -247,5 +247,21 @@ class RadialMenuView(
         pillRect.set(x, y, x + w, y + h)
         canvas.drawRoundRect(pillRect, h / 2f, h / 2f, pill)
         canvas.drawText(name, x + pad, y + h / 2f - (label.descent() + label.ascent()) / 2f, label)
+    }
+
+    companion object {
+        private const val INNER_DP = 122f
+        private const val OUTER_DP = 208f
+        private const val ICON_DP = 46f
+
+        /** How far the menu reaches above and below its centre, in px. */
+        fun halfExtentPx(context: Context, hasFavorites: Boolean, hasRecents: Boolean): Float {
+            val outer = when {
+                hasFavorites && hasRecents -> OUTER_DP
+                hasFavorites || hasRecents -> INNER_DP
+                else -> 0f
+            }
+            return (outer + ICON_DP) * context.resources.displayMetrics.density
+        }
     }
 }
