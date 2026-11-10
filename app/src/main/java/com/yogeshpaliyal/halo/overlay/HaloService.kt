@@ -315,15 +315,26 @@ class HaloService : Service(), BubbleView.Listener {
             recents = recents,
             badged = if (Prefs.notificationDots(this)) NotificationBadges.keys else emptySet(),
         )
+        // Exact display size instead of MATCH_PARENT: an overlay sized MATCH_PARENT stops at the
+        // navigation bar, which left an undimmed strip at the bottom.
+        val full = screenSize()
         val params = overlayParams(
-            WindowManager.LayoutParams.MATCH_PARENT,
-            WindowManager.LayoutParams.MATCH_PARENT,
+            full.x,
+            full.y,
             if (tapMode) {
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
             } else {
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE or WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
             },
         )
+        params.x = 0
+        params.y = 0
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // Don't let the system shrink the window to avoid the status and navigation bars.
+            params.setFitInsetsTypes(0)
+            params.setFitInsetsSides(0)
+            params.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS
+        }
         if (tapMode) {
             view.onPick = { app ->
                 removeMenu()

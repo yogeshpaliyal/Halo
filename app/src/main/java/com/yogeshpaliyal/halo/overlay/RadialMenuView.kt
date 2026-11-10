@@ -184,6 +184,15 @@ class RadialMenuView(
 
         val step = span / ring.items.size
         val slot = floor((dir * rel + span / 2f) / step).toInt().coerceIn(0, ring.items.lastIndex)
+
+        // Tap mode: only a tap on (or right next to) an icon picks it. A tap on the dimmed
+        // background closes the menu. Drag mode stays forgiving so a slide never misses.
+        if (onPick != null) {
+            val a = Math.toRadians(slotAngle(slot, ring.items.size).toDouble())
+            val ix = ring.radius * kotlin.math.cos(a).toFloat()
+            val iy = ring.radius * kotlin.math.sin(a).toFloat()
+            if (hypot(dx - ix, dy - iy) > iconSize * 0.9f) return -1 to -1
+        }
         return ringIndex to slot
     }
 
