@@ -1,0 +1,29 @@
+Halo puts a small bubble on the edge of your screen. Hold it, slide your thumb to an app, and let go. That's the whole gesture.
+
+HOW IT WORKS
+• Hold the bubble to open a half-circle menu
+• Your favourite apps sit on the inner ring, your recent apps on the outer ring
+• Slide over an app to see its name, then let go to open it
+• Let go near the bubble to cancel
+
+MADE FOR ONE HAND
+• Tap the bubble to jump back to the app you used last
+• Drag the bubble anywhere; it snaps to the nearest edge
+• Pick up to six favourites and hold and drag to reorder them
+• Choose what a tap does, how long to hold, and whether it vibrates
+
+FITS YOUR PHONE
+• Matches your wallpaper colours on Android 12 and later
+• Work profile apps can be favourites, marked with the work badge
+
+PRIVATE BY DESIGN
+• No internet permission: Halo cannot send anything off your phone
+• No ads, no analytics, no account
+• Open source: read the code at github.com/yogeshpaliyal/Halo
+
+PERMISSIONS, EXPLAINED
+• Display over other apps: draws the bubble and the menu on top of other apps
+• Usage access (optional): finds your recently used apps for the outer ring. Without it, you get favourites only
+• Notifications: a silent notification that keeps the bubble running, with a Stop button
+
+Apps in Private space can't appear in Halo, because Android only shows them to the default home-screen app.
