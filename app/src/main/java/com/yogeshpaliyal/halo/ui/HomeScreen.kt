@@ -13,6 +13,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -34,6 +36,8 @@ import com.yogeshpaliyal.halo.data.Prefs
 import com.yogeshpaliyal.halo.overlay.HaloService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+
+private const val PRIVACY_POLICY_URL = "https://github.com/yogeshpaliyal/Halo/blob/main/PRIVACY.md"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -146,6 +150,13 @@ fun HomeScreen() {
                 )
             }
             item { PrivateSpaceNote() }
+            item {
+                // Play expects apps that use sensitive permissions to link their policy in-app.
+                val uriHandler = LocalUriHandler.current
+                TextButton(onClick = { uriHandler.openUri(PRIVACY_POLICY_URL) }) {
+                    Text("Privacy policy")
+                }
+            }
         }
     }
 

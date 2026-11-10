@@ -79,6 +79,10 @@ The long-press → slide → release gesture works because Android keeps deliver
 - Reorder favourites by drag
 - App shortcuts (long-press shortcuts) as a third ring
 
+## Privacy
+
+Halo collects no data and has no internet permission. Read the [privacy policy](PRIVACY.md).
+
 ## License
 
 MIT

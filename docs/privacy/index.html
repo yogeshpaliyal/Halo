@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Halo privacy policy</title>
+<meta name="description" content="Halo collects no data. No internet permission, no analytics, no ads.">
+<style>
+  :root { --bg:#ffffff; --ink:#1b1830; --quiet:#5c5675; --line:#e6e2f3; --accent:#5b4bb7; --chip:#f1edff; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#14121f; --ink:#f1edff; --quiet:#b3abd6; --line:#2c2842; --accent:#b9a8ff; --chip:#1e1b2e; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink);
+         font: 17px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 720px; margin: 0 auto; padding: 48px 20px 72px; }
+  header { display:flex; align-items:center; gap:14px; margin-bottom: 8px; }
+  .mark { width:44px; height:44px; flex:none; }
+  h1 { font-size: 34px; line-height:1.15; margin:0; letter-spacing:-0.5px; }
+  h2 { font-size: 21px; margin: 40px 0 10px; }
+  .date { color:var(--quiet); margin: 4px 0 28px; }
+  .summary { background:var(--chip); border:1px solid var(--line); border-radius:16px; padding:18px 20px; }
+  .summary strong { color:var(--ink); }
+  table { width:100%; border-collapse: collapse; font-size: 16px; }
+  th, td { text-align:left; vertical-align:top; padding:12px 10px; border-bottom:1px solid var(--line); }
+  th { color:var(--quiet); font-weight:600; font-size:14px; text-transform:uppercase; letter-spacing:.04em; }
+  td:first-child { font-weight:600; width: 34%; }
+  ul { padding-left: 22px; }
+  a { color:var(--accent); }
+  footer { margin-top: 48px; color:var(--quiet); font-size: 15px; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <svg class="mark" viewBox="0 0 108 108" aria-hidden="true">
+      <rect width="108" height="108" rx="28" fill="#14121F"/>
+      <circle cx="54" cy="54" r="22" fill="none" stroke="#B9A8FF" stroke-width="5"/>
+      <circle cx="54" cy="54" r="7" fill="#fff"/>
+    </svg>
+    <h1>Halo privacy policy</h1>
+  </header>
+  <p class="date">Effective date: 10 November 2026</p>
+
+  <p class="summary">Halo is a floating app switcher for Android, developed by Yogesh Paliyal. In short:
+  <strong>Halo does not collect, store on a server, share or sell any of your data.</strong>
+  The app has no internet permission, so it cannot send anything off your phone.</p>
+
+  <h2>What Halo keeps on your phone</h2>
+  <p>Halo saves only its own settings, in the app's private storage on your device:</p>
+  <ul>
+    <li>the apps you picked as favourites, and their order</li>
+    <li>where the bubble sits on the screen, and whether it's turned on</li>
+    <li>your gesture settings: tap action, hold delay and haptics</li>
+  </ul>
+  <p>This information never leaves your phone through Halo. It is deleted when you uninstall the app or clear its storage.</p>
+  <p><strong>Android backup:</strong> if you have Android's device backup turned on, Android may include these settings
+  in your phone's backup to your Google account, so they come back if you reinstall. That backup is run by Android and
+  Google under <a href="https://policies.google.com/privacy">Google's privacy policy</a>, not by Halo. You can turn it
+  off in your phone's backup settings.</p>
+
+  <h2>Permissions and why Halo needs them</h2>
+  <table>
+    <thead><tr><th>Permission</th><th>What Halo uses it for</th></tr></thead>
+    <tbody>
+      <tr><td>Display over other apps</td><td>Draws the bubble and the app menu on top of other apps.</td></tr>
+      <tr><td>Usage access (optional)</td><td>Finds which apps you opened recently, to fill the outer ring of the menu. Halo reads this on your phone each time you open the menu and does not save or send it. Without this permission, Halo shows favourites only.</td></tr>
+      <tr><td>Foreground service</td><td>Keeps the bubble running while it's turned on.</td></tr>
+      <tr><td>Notifications</td><td>Shows a silent notification while the bubble is on, with a Stop button.</td></tr>
+      <tr><td>List installed apps</td><td>Shows your apps so you can choose favourites, and opens the app you pick. The list stays on your phone.</td></tr>
+    </tbody>
+  </table>
+  <p>Halo has <strong>no</strong> internet, location, contacts, camera, microphone, storage or accessibility permissions.</p>
+
+  <h2>Analytics, ads and tracking</h2>
+  <p>Halo has no analytics, crash reporting, advertising or tracking code, and no account or sign-in.</p>
+
+  <h2>Where you download Halo</h2>
+  <p>The store or site you install Halo from may collect information under its own policy. For example, Google Play
+  and GitHub keep download statistics. As the developer, I only see totals, such as the number of downloads or
+  installs, never who you are.</p>
+
+  <h2>Children</h2>
+  <p>Halo isn't directed at children and collects no data from anyone, including children.</p>
+
+  <h2>Changes to this policy</h2>
+  <p>If this policy changes, the new version will be posted here with a new effective date. The full history is in the
+  <a href="https://github.com/yogeshpaliyal/Halo/commits/main/docs/privacy/index.html">repository's commit log</a>.</p>
+
+  <h2>Contact</h2>
+  <p>Questions or concerns: <a href="https://github.com/yogeshpaliyal/Halo/issues">open an issue on GitHub</a>.</p>
+
+  <footer>Halo is open source, so you can check every claim in this policy in the code:
+  <a href="https://github.com/yogeshpaliyal/Halo">github.com/yogeshpaliyal/Halo</a></footer>
+</main>
+</body>
+</html>
