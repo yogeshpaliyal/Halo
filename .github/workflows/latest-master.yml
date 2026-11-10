@@ -3,6 +3,18 @@ name: Latest master build
 on:
   push:
     branches: [main, master]
+    # Only rebuild when something that ends up in the APK (or this build itself) changes.
+    # README, docs, store listing and other workflows don't trigger a new debug build.
+    paths:
+      - "app/**"
+      - "gradle/**"
+      - "build.gradle.kts"
+      - "settings.gradle.kts"
+      - "gradle.properties"
+      - "gradlew"
+      - "gradlew.bat"
+      - "keystore/**"
+      - ".github/workflows/latest-master.yml"
   workflow_dispatch:
 
 permissions:

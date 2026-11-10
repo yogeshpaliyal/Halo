@@ -116,14 +116,6 @@ Repo views, clones and referrers need one extra step, because the Actions token 
 GitHub's traffic API: create a fine-grained token for this repo with **Administration: Read-only**
 and add it as the `TRAFFIC_TOKEN` repository secret.
 
-## Roadmap ideas
-
-- Start on boot
-- Hide automatically in full-screen apps / games
-- Bubble size, opacity and long-press delay settings
-- Reorder favourites by drag
-- App shortcuts (long-press shortcuts) as a third ring
-
 ## Privacy
 
 Halo collects no data and has no internet permission. Read the [privacy policy](PRIVACY.md).
