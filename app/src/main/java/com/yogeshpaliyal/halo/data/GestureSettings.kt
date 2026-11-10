@@ -13,3 +13,10 @@ enum class HoldDelay(val label: String, val millis: Long) {
     MEDIUM("Medium", 280),
     LONG("Long", 400),
 }
+
+/** Size of the resting bubble. */
+enum class BubbleSize(val label: String, val dp: Int) {
+    SMALL("Small", 44),
+    MEDIUM("Medium", 52),
+    LARGE("Large", 62),
+}

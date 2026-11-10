@@ -81,6 +81,9 @@ fun HomeScreen() {
     var haptics by remember { mutableStateOf(Prefs.haptics(context)) }
     var hideFullscreen by remember { mutableStateOf(Prefs.hideInFullscreen(context)) }
     var opacity by remember { mutableFloatStateOf(Prefs.bubbleOpacity(context)) }
+    var bubbleSize by remember { mutableStateOf(Prefs.bubbleSize(context)) }
+    var hideInApps by remember { mutableStateOf(Prefs.hideInApps(context)) }
+    var showHideAppsPicker by remember { mutableStateOf(false) }
 
     val steps = buildList {
         val restrictedHelp: (() -> Unit)? = if (Permissions.mayBeRestricted) {
@@ -160,11 +163,20 @@ fun HomeScreen() {
                     onTapAction = { tapAction = it; Prefs.setTapAction(context, it) },
                     onHoldDelay = { holdDelay = it; Prefs.setHoldDelay(context, it) },
                     onHaptics = { haptics = it; Prefs.setHaptics(context, it) },
-                    hideFullscreen = hideFullscreen,
-                    onHideFullscreen = { hideFullscreen = it; Prefs.setHideInFullscreen(context, it) },
+                )
+            }
+            item {
+                BubbleCard(
+                    size = bubbleSize,
+                    onSize = { bubbleSize = it; Prefs.setBubbleSize(context, it) },
                     opacity = opacity,
                     // Saved as you drag, so the real bubble updates live.
                     onOpacity = { opacity = it; Prefs.setBubbleOpacity(context, it) },
+                    hideFullscreen = hideFullscreen,
+                    onHideFullscreen = { hideFullscreen = it; Prefs.setHideInFullscreen(context, it) },
+                    hiddenAppsCount = hideInApps.size,
+                    hasUsage = hasUsage,
+                    onChooseHiddenApps = { showHideAppsPicker = true },
                 )
             }
             item { PrivateSpaceNote() }
@@ -176,6 +188,20 @@ fun HomeScreen() {
                 }
             }
         }
+    }
+
+    if (showHideAppsPicker) {
+        // Usage events only cover the personal profile, so offer just those apps.
+        AppPickerSheet(
+            apps = apps.filter { it.action == null && !it.isWork },
+            selected = hideInApps.toList(),
+            onToggle = { hideInApps = Prefs.toggleHideInApp(context, it.packageName) },
+            onDismiss = { showHideAppsPicker = false },
+            title = "Hide the bubble in",
+            limit = null,
+            showOrder = false,
+            countLabel = { if (it == 0) "Tick apps where the bubble should hide" else "Hidden in $it" },
+        )
     }
 
     if (showHiddenPicker) {

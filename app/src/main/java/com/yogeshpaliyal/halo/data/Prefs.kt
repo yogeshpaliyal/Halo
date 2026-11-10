@@ -20,6 +20,8 @@ object Prefs {
     private const val KEY_HIDDEN_RECENTS = "hidden_recents"
     const val KEY_HIDE_FULLSCREEN = "hide_fullscreen"
     const val KEY_BUBBLE_OPACITY = "bubble_opacity"
+    const val KEY_BUBBLE_SIZE = "bubble_size"
+    const val KEY_HIDE_IN_APPS = "hide_in_apps"
 
     private fun sp(context: Context): SharedPreferences =
         context.getSharedPreferences(FILE, Context.MODE_PRIVATE)
@@ -70,6 +72,24 @@ object Prefs {
 
     fun setBubbleOpacity(context: Context, value: Float) =
         sp(context).edit { putFloat(KEY_BUBBLE_OPACITY, value.coerceIn(0.3f, 1f)) }
+
+    fun bubbleSize(context: Context): BubbleSize =
+        sp(context).getString(KEY_BUBBLE_SIZE, null)
+            ?.let { runCatching { BubbleSize.valueOf(it) }.getOrNull() }
+            ?: BubbleSize.MEDIUM
+
+    fun setBubbleSize(context: Context, size: BubbleSize) =
+        sp(context).edit { putString(KEY_BUBBLE_SIZE, size.name) }
+
+    /** Packages where the bubble hides itself while they're on screen. */
+    fun hideInApps(context: Context): Set<String> =
+        sp(context).getStringSet(KEY_HIDE_IN_APPS, emptySet()).orEmpty()
+
+    fun toggleHideInApp(context: Context, pkg: String): Set<String> {
+        val next = hideInApps(context).toMutableSet().apply { if (!remove(pkg)) add(pkg) }
+        sp(context).edit { putStringSet(KEY_HIDE_IN_APPS, next) }
+        return next
+    }
 
     fun registerListener(context: Context, listener: SharedPreferences.OnSharedPreferenceChangeListener) =
         sp(context).registerOnSharedPreferenceChangeListener(listener)

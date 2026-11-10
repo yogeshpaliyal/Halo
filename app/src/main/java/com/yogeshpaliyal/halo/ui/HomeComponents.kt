@@ -70,6 +70,7 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
 import com.yogeshpaliyal.halo.data.AppEntry
+import com.yogeshpaliyal.halo.data.BubbleSize
 import com.yogeshpaliyal.halo.data.HoldDelay
 import com.yogeshpaliyal.halo.data.Prefs
 import com.yogeshpaliyal.halo.data.TapAction
@@ -518,10 +519,6 @@ fun GesturesCard(
     onTapAction: (TapAction) -> Unit,
     onHoldDelay: (HoldDelay) -> Unit,
     onHaptics: (Boolean) -> Unit,
-    hideFullscreen: Boolean,
-    onHideFullscreen: (Boolean) -> Unit,
-    opacity: Float,
-    onOpacity: (Float) -> Unit,
 ) {
     Card(shape = RoundedCornerShape(24.dp)) {
         Column(Modifier.padding(vertical = 20.dp)) {
@@ -577,25 +574,40 @@ fun GesturesCard(
                 }
                 Switch(checked = haptics, onCheckedChange = onHaptics)
             }
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .clickable { onHideFullscreen(!hideFullscreen) }
-                    .padding(horizontal = 20.dp, vertical = 10.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Tag("Auto")
-                Spacer(Modifier.width(14.dp))
-                Column(Modifier.weight(1f)) {
-                    Text("Hide in full-screen apps", style = MaterialTheme.typography.titleSmall)
-                    Text(
-                        "Games, videos and OTT apps. Comes back when the status bar does.",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-                Switch(checked = hideFullscreen, onCheckedChange = onHideFullscreen)
-            }
+        }
+    }
+}
+
+/** How the bubble looks and when it steps aside. */
+@Composable
+fun BubbleCard(
+    size: BubbleSize,
+    onSize: (BubbleSize) -> Unit,
+    opacity: Float,
+    onOpacity: (Float) -> Unit,
+    hideFullscreen: Boolean,
+    onHideFullscreen: (Boolean) -> Unit,
+    hiddenAppsCount: Int,
+    hasUsage: Boolean,
+    onChooseHiddenApps: () -> Unit,
+) {
+    Card(shape = RoundedCornerShape(24.dp)) {
+        Column(Modifier.padding(vertical = 20.dp)) {
+            Text(
+                "Bubble",
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(horizontal = 20.dp),
+            )
+            Spacer(Modifier.height(8.dp))
+            ChoiceRow(
+                tag = "Size",
+                title = "Size",
+                value = size,
+                options = BubbleSize.entries,
+                label = { it.label },
+                detail = { "${it.dp} dp" },
+                onSelect = onSize,
+            )
             Row(
                 Modifier.padding(start = 20.dp, end = 20.dp, top = 10.dp),
                 verticalAlignment = Alignment.CenterVertically,
@@ -603,7 +615,7 @@ fun GesturesCard(
                 Tag("Look")
                 Spacer(Modifier.width(14.dp))
                 Column(Modifier.weight(1f)) {
-                    Text("Bubble opacity", style = MaterialTheme.typography.titleSmall)
+                    Text("Opacity", style = MaterialTheme.typography.titleSmall)
                     Text(
                         "How see-through the resting bubble is. It turns solid while you hold it.",
                         style = MaterialTheme.typography.bodySmall,
@@ -624,6 +636,52 @@ fun GesturesCard(
                 steps = 6, // 30, 40, ... 100
                 modifier = Modifier.padding(start = 90.dp, end = 20.dp),
             )
+
+            HorizontalDivider(Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
+
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .clickable { onHideFullscreen(!hideFullscreen) }
+                    .padding(horizontal = 20.dp, vertical = 10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Tag("Auto")
+                Spacer(Modifier.width(14.dp))
+                Column(Modifier.weight(1f)) {
+                    Text("Hide in full-screen apps", style = MaterialTheme.typography.titleSmall)
+                    Text(
+                        "Games, videos and OTT apps. Comes back when the status bar does.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                Switch(checked = hideFullscreen, onCheckedChange = onHideFullscreen)
+            }
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .clickable(enabled = hasUsage, onClick = onChooseHiddenApps)
+                    .padding(horizontal = 20.dp, vertical = 10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Tag("Apps")
+                Spacer(Modifier.width(14.dp))
+                Column(Modifier.weight(1f)) {
+                    Text("Hide in these apps", style = MaterialTheme.typography.titleSmall)
+                    Text(
+                        when {
+                            !hasUsage -> "Needs Usage access, so Halo can tell which app is open."
+                            hiddenAppsCount == 0 -> "Pick apps where the bubble stays out of sight."
+                            hiddenAppsCount == 1 -> "Hidden in 1 app"
+                            else -> "Hidden in $hiddenAppsCount apps"
+                        },
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                TextButton(onClick = onChooseHiddenApps, enabled = hasUsage) { Text("Choose") }
+            }
         }
     }
 }

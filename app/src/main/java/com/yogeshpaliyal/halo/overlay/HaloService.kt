@@ -6,6 +6,8 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
+import android.app.usage.UsageEvents
+import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -17,6 +19,7 @@ import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
+import android.os.PowerManager
 import android.view.Gravity
 import android.view.View
 import android.view.WindowInsets
@@ -47,7 +50,10 @@ class HaloService : Service(), BubbleView.Listener {
     /** Where the bubble rests while the menu has temporarily moved it to the dial's centre. */
     private var restY: Int? = null
 
-    private val bubbleSize by lazy { (52 * resources.displayMetrics.density).toInt() }
+    /** Bubble width and height in px, from the size setting. */
+    private var bubbleSize = 0
+
+    private fun sizePx() = (Prefs.bubbleSize(this).dp * resources.displayMetrics.density).toInt()
 
     override fun onBind(intent: Intent?): IBinder? = null
 
@@ -63,6 +69,7 @@ class HaloService : Service(), BubbleView.Listener {
         addBubble()
         addFullscreenDetector()
         Prefs.registerListener(this, prefListener)
+        updateAppWatch()
         _running.value = true
     }
 
@@ -104,11 +111,15 @@ class HaloService : Service(), BubbleView.Listener {
     private val main = Handler(Looper.getMainLooper())
     private var detector: View? = null
     private var fullscreen = false
-    private var hiddenForFullscreen = false
-    private val applyRunnable = Runnable { applyFullscreen() }
+    private var hiddenNow = false
+    private val applyRunnable = Runnable { applyVisibility() }
     private val prefListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-        if (key == Prefs.KEY_HIDE_FULLSCREEN) applyFullscreen()
-        if (key == Prefs.KEY_BUBBLE_OPACITY) bubble?.refreshOpacity()
+        when (key) {
+            Prefs.KEY_HIDE_FULLSCREEN -> applyVisibility()
+            Prefs.KEY_BUBBLE_OPACITY -> bubble?.refreshOpacity()
+            Prefs.KEY_BUBBLE_SIZE -> resizeBubble()
+            Prefs.KEY_HIDE_IN_APPS -> updateAppWatch()
+        }
     }
 
     /**
@@ -147,13 +158,62 @@ class HaloService : Service(), BubbleView.Listener {
         main.removeCallbacks(applyRunnable)
         // Hide straight away; come back after a short pause so swiping the bars into view
         // for a moment in a game doesn't make the bubble flash.
-        if (isFullscreen) applyFullscreen() else main.postDelayed(applyRunnable, 600)
+        if (isFullscreen) applyVisibility() else main.postDelayed(applyRunnable, 600)
     }
 
-    private fun applyFullscreen() {
-        val hide = fullscreen && Prefs.hideInFullscreen(this)
-        if (hide == hiddenForFullscreen) return
-        hiddenForFullscreen = hide
+    // --- hide in chosen apps ----------------------------------------------------------------
+
+    private var foregroundPkg: String? = null
+    private var lastEventCheck = 0L
+    private val appWatch = object : Runnable {
+        override fun run() {
+            checkForegroundApp()
+            main.postDelayed(this, APP_WATCH_MS)
+        }
+    }
+
+    /**
+     * Watches which app is on screen, but only while the user has picked apps to hide in.
+     * Reads only new usage events since the last check (about once a second, screen on only),
+     * so the cost stays small.
+     */
+    private fun updateAppWatch() {
+        main.removeCallbacks(appWatch)
+        val active = Prefs.hideInApps(this).isNotEmpty() && Permissions.hasUsageAccess(this)
+        if (active) {
+            lastEventCheck = System.currentTimeMillis() - 60_000
+            main.post(appWatch)
+        } else {
+            foregroundPkg = null
+        }
+        applyVisibility()
+    }
+
+    private fun checkForegroundApp() {
+        if (getSystemService(PowerManager::class.java)?.isInteractive == false) return
+        val usm = getSystemService(UsageStatsManager::class.java) ?: return
+        val now = System.currentTimeMillis()
+        val events = runCatching { usm.queryEvents(lastEventCheck, now) }.getOrNull() ?: return
+        lastEventCheck = now
+        val e = UsageEvents.Event()
+        var latest: String? = null
+        while (events.hasNextEvent()) {
+            events.getNextEvent(e)
+            @Suppress("DEPRECATION") // Same value as ACTIVITY_RESUMED (API 29+).
+            if (e.eventType == UsageEvents.Event.MOVE_TO_FOREGROUND) latest = e.packageName
+        }
+        if (latest != null && latest != foregroundPkg) {
+            foregroundPkg = latest
+            applyVisibility()
+        }
+    }
+
+    /** Hidden while another app is full screen (if enabled) or while a chosen app is open. */
+    private fun applyVisibility() {
+        val inHiddenApp = foregroundPkg?.let { it in Prefs.hideInApps(this) } == true
+        val hide = (fullscreen && Prefs.hideInFullscreen(this)) || inHiddenApp
+        if (hide == hiddenNow) return
+        hiddenNow = hide
         val view = bubble ?: return
         if (hide) removeMenu()
         // A hidden bubble must not catch touches meant for the game underneath.
@@ -183,7 +243,20 @@ class HaloService : Service(), BubbleView.Listener {
         }
     }
 
+    /** Applies a new size setting: keep the bubble's centre, then re-dock it. */
+    private fun resizeBubble() {
+        val view = bubble ?: return
+        removeMenu()
+        val centerY = bubbleParams.y + bubbleSize / 2
+        bubbleSize = sizePx()
+        bubbleParams.width = bubbleSize
+        bubbleParams.height = bubbleSize
+        runCatching { wm.updateViewLayout(view, bubbleParams) }
+        snapTo(onRight, centerY - bubbleSize / 2, animate = false)
+    }
+
     private fun addBubble() {
+        bubbleSize = sizePx()
         val screen = screenSize()
         onRight = Prefs.bubbleOnRight(this)
         bubbleParams = overlayParams(
@@ -397,6 +470,7 @@ class HaloService : Service(), BubbleView.Listener {
 
     companion object {
         private const val CHANNEL_ID = "bubble"
+        private const val APP_WATCH_MS = 1000L
         private const val NOTIFICATION_ID = 1
         private const val ACTION_STOP = "com.yogeshpaliyal.halo.STOP"
 

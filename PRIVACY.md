@@ -21,9 +21,10 @@ This information never leaves your phone through Halo. It is deleted when you un
 | Permission | What Halo uses it for |
 | --- | --- |
 | Display over other apps | Draws the bubble and the app menu on top of other apps. |
-| Usage access (optional) | Finds which apps you opened recently, to fill the outer ring of the menu. Halo reads this on your phone each time you open the menu and does not save or send it. Without this permission, Halo shows favourites only. |
+| Usage access (optional) | Finds which apps you opened recently, to fill the outer ring of the menu, and, only if you pick apps to hide the bubble in, which app is on screen. Halo reads this on your phone as it needs it and does not save or send it. Without this permission, Halo shows favourites only. |
 | Foreground service | Keeps the bubble running while it's turned on. |
 | Notifications | Shows a silent notification while the bubble is on, with a Stop button. |
+| Run at startup | Turns the bubble back on after your phone restarts or Halo updates, but only if it was on before. |
 | List installed apps | Shows your apps so you can choose favourites, and opens the app you pick. The list stays on your phone. |
 
 Halo has **no** internet, location, contacts, camera, microphone, storage or accessibility permissions.
