@@ -1,0 +1,29 @@
+Halo place une petite bulle sur le bord de votre écran. Maintenez-la, glissez le pouce vers une app, puis relâchez. C'est tout le geste.
+
+COMMENT ÇA MARCHE
+• Maintenez la bulle pour ouvrir un menu en demi-cercle
+• Vos apps favorites sont sur l'anneau intérieur, vos apps récentes sur l'anneau extérieur
+• Glissez sur une app pour voir son nom, puis relâchez pour l'ouvrir
+• Relâchez près de la bulle pour annuler
+
+PENSÉ POUR UNE MAIN
+• Touchez la bulle pour revenir à la dernière app utilisée
+• Déplacez la bulle où vous voulez ; elle se colle au bord le plus proche
+• Choisissez jusqu'à six favorites et réorganisez-les en les maintenant et en les faisant glisser
+• Choisissez l'action du toucher, la durée d'appui et la vibration
+
+S'ACCORDE À VOTRE TÉLÉPHONE
+• Reprend les couleurs de votre fond d'écran sur Android 12 et versions ultérieures
+• Les apps du profil professionnel peuvent être favorites, avec leur badge
+
+PRIVÉ PAR CONCEPTION
+• Aucune autorisation Internet : Halo ne peut rien envoyer hors de votre téléphone
+• Pas de pub, pas d'analyses, pas de compte
+• Open source : lisez le code sur github.com/yogeshpaliyal/Halo
+
+LES AUTORISATIONS, EXPLIQUÉES
+• Superposition sur d'autres apps : affiche la bulle et le menu par-dessus les autres apps
+• Accès aux données d'utilisation (facultatif) : trouve vos apps récentes pour l'anneau extérieur. Sans lui, seules les favorites s'affichent
+• Notifications : une notification silencieuse qui garde la bulle active, avec un bouton Arrêter
+
+Les apps de l'Espace privé ne peuvent pas apparaître dans Halo, car Android ne les montre qu'à l'app d'écran d'accueil par défaut.

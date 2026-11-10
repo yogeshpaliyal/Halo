@@ -1,0 +1,29 @@
+Halo menaruh gelembung kecil di tepi layar Anda. Tahan, geser jempol ke sebuah aplikasi, lalu lepas. Hanya itu gerakannya.
+
+CARA KERJANYA
+• Tahan gelembung untuk membuka menu setengah lingkaran
+• Aplikasi favorit ada di cincin dalam, aplikasi terbaru di cincin luar
+• Geser ke sebuah aplikasi untuk melihat namanya, lalu lepas untuk membukanya
+• Lepas di dekat gelembung untuk membatalkan
+
+DIBUAT UNTUK SATU TANGAN
+• Ketuk gelembung untuk kembali ke aplikasi terakhir
+• Seret gelembung ke mana saja; ia menempel ke tepi terdekat
+• Pilih hingga enam favorit, lalu tahan dan seret untuk mengubah urutannya
+• Atur fungsi ketukan, lama menahan, dan getaran
+
+SESUAI DENGAN PONSEL ANDA
+• Mengikuti warna wallpaper Anda di Android 12 dan yang lebih baru
+• Aplikasi profil kerja bisa menjadi favorit, dengan lencana kerja
+
+PRIVAT SEJAK AWAL
+• Tanpa izin internet: Halo tidak bisa mengirim apa pun dari ponsel Anda
+• Tanpa iklan, tanpa analitik, tanpa akun
+• Sumber terbuka: baca kodenya di github.com/yogeshpaliyal/Halo
+
+IZIN, DIJELASKAN
+• Tampilkan di atas aplikasi lain: menampilkan gelembung dan menu di atas aplikasi lain
+• Akses penggunaan (opsional): menemukan aplikasi yang baru Anda pakai untuk cincin luar. Tanpa ini, hanya favorit yang tampil
+• Notifikasi: notifikasi senyap yang menjaga gelembung tetap aktif, dengan tombol Berhenti
+
+Aplikasi di Ruang pribadi tidak bisa muncul di Halo, karena Android hanya menampilkannya ke aplikasi layar utama default.

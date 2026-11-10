@@ -1,0 +1,29 @@
+O Halo coloca uma pequena bolha na borda da tela. Segure, deslize o polegar até um app e solte. É só esse gesto.
+
+COMO FUNCIONA
+• Segure a bolha para abrir um menu em meio círculo
+• Seus apps favoritos ficam no anel interno e os recentes no anel externo
+• Deslize sobre um app para ver o nome e solte para abrir
+• Solte perto da bolha para cancelar
+
+FEITO PARA UMA MÃO
+• Toque na bolha para voltar ao último app usado
+• Arraste a bolha para qualquer lugar; ela se prende à borda mais próxima
+• Escolha até seis favoritos e reordene segurando e arrastando
+• Defina o que o toque faz, quanto tempo segurar e se vibra
+
+COMBINA COM SEU CELULAR
+• Usa as cores do seu papel de parede no Android 12 ou mais recente
+• Apps do perfil de trabalho podem ser favoritos, com o selo de trabalho
+
+PRIVADO POR PADRÃO
+• Sem permissão de internet: o Halo não consegue enviar nada para fora do celular
+• Sem anúncios, sem análises, sem conta
+• Código aberto: leia o código em github.com/yogeshpaliyal/Halo
+
+PERMISSÕES, EXPLICADAS
+• Sobrepor a outros apps: desenha a bolha e o menu por cima de outros apps
+• Acesso ao uso (opcional): encontra os apps usados recentemente para o anel externo. Sem ele, só aparecem os favoritos
+• Notificações: uma notificação silenciosa que mantém a bolha ativa, com um botão Parar
+
+Apps do Espaço privado não aparecem no Halo, porque o Android só os mostra ao app de tela inicial padrão.

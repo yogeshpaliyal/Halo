@@ -1,0 +1,29 @@
+Halo legt eine kleine Blase an den Rand deines Bildschirms. Halte sie gedrückt, wische mit dem Daumen zu einer App und lass los. Mehr braucht es nicht.
+
+SO FUNKTIONIERT ES
+• Halte die Blase gedrückt, um ein halbrundes Menü zu öffnen
+• Deine Lieblings-Apps liegen im inneren Ring, deine letzten Apps im äußeren
+• Wische über eine App, um ihren Namen zu sehen, und lass los, um sie zu öffnen
+• Lass in der Nähe der Blase los, um abzubrechen
+
+FÜR EINE HAND GEMACHT
+• Tippe auf die Blase, um zur zuletzt genutzten App zurückzukehren
+• Zieh die Blase an eine beliebige Stelle; sie rastet am nächsten Rand ein
+• Wähle bis zu sechs Favoriten und ordne sie durch Halten und Ziehen neu
+• Lege fest, was ein Tippen macht, wie lange du hältst und ob es vibriert
+
+PASST ZU DEINEM HANDY
+• Übernimmt ab Android 12 die Farben deines Hintergrundbilds
+• Apps aus dem Arbeitsprofil können Favoriten sein, mit Arbeits-Badge
+
+PRIVAT VON GRUND AUF
+• Keine Internetberechtigung: Halo kann nichts von deinem Handy senden
+• Keine Werbung, keine Analysen, kein Konto
+• Open Source: Lies den Code auf github.com/yogeshpaliyal/Halo
+
+BERECHTIGUNGEN, ERKLÄRT
+• Über anderen Apps einblenden: zeigt die Blase und das Menü über anderen Apps
+• Zugriff auf Nutzungsdaten (optional): findet deine zuletzt genutzten Apps für den äußeren Ring. Ohne ihn siehst du nur Favoriten
+• Benachrichtigungen: eine lautlose Benachrichtigung, die die Blase aktiv hält, mit einer Stopp-Schaltfläche
+
+Apps im privaten Bereich können nicht in Halo erscheinen, weil Android sie nur der Standard-Startbildschirm-App zeigt.

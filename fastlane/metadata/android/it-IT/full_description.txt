@@ -1,0 +1,29 @@
+Halo mette una piccola bolla sul bordo dello schermo. Tienila premuta, fai scorrere il pollice su un'app e rilascia. Tutto qui.
+
+COME FUNZIONA
+• Tieni premuta la bolla per aprire un menu a semicerchio
+• Le app preferite sono nell'anello interno, quelle recenti nell'anello esterno
+• Scorri su un'app per vederne il nome, poi rilascia per aprirla
+• Rilascia vicino alla bolla per annullare
+
+PENSATO PER UNA MANO
+• Tocca la bolla per tornare all'ultima app usata
+• Trascina la bolla ovunque; si aggancia al bordo più vicino
+• Scegli fino a sei preferite e riordinale tenendo premuto e trascinando
+• Scegli cosa fa il tocco, quanto tenere premuto e se vibrare
+
+SI ADATTA AL TUO TELEFONO
+• Usa i colori dello sfondo su Android 12 e versioni successive
+• Le app del profilo di lavoro possono essere preferite, con il badge di lavoro
+
+PRIVATO PER SCELTA
+• Nessuna autorizzazione Internet: Halo non può inviare nulla fuori dal telefono
+• Niente pubblicità, niente analisi, nessun account
+• Open source: leggi il codice su github.com/yogeshpaliyal/Halo
+
+LE AUTORIZZAZIONI, SPIEGATE
+• Mostra sopra altre app: disegna la bolla e il menu sopra le altre app
+• Accesso ai dati di utilizzo (facoltativo): trova le app usate di recente per l'anello esterno. Senza, vedi solo le preferite
+• Notifiche: una notifica silenziosa che mantiene attiva la bolla, con un pulsante Interrompi
+
+Le app nello Spazio privato non possono comparire in Halo, perché Android le mostra solo all'app della schermata Home predefinita.

@@ -1,0 +1,29 @@
+Halo, ekranınızın kenarına küçük bir baloncuk yerleştirir. Basılı tutun, başparmağınızı bir uygulamaya kaydırın ve bırakın. Hareketin tamamı bu.
+
+NASIL ÇALIŞIR
+• Yarım daire menüyü açmak için baloncuğu basılı tutun
+• Favori uygulamalarınız iç halkada, son kullandıklarınız dış halkada
+• Adını görmek için bir uygulamanın üzerine kaydırın, açmak için bırakın
+• İptal etmek için baloncuğun yakınında bırakın
+
+TEK EL İÇİN TASARLANDI
+• Son kullandığınız uygulamaya dönmek için baloncuğa dokunun
+• Baloncuğu istediğiniz yere sürükleyin; en yakın kenara yapışır
+• En fazla altı favori seçin, basılı tutup sürükleyerek sıralayın
+• Dokunmanın ne yapacağını, basılı tutma süresini ve titreşimi seçin
+
+TELEFONUNUZA UYUM SAĞLAR
+• Android 12 ve sonrasında duvar kağıdınızın renklerini kullanır
+• İş profili uygulamaları iş rozetiyle favori olabilir
+
+TASARIMDAN GİZLİ
+• İnternet izni yok: Halo telefonunuzdan dışarıya hiçbir şey gönderemez
+• Reklam yok, analiz yok, hesap yok
+• Açık kaynak: kodu github.com/yogeshpaliyal/Halo adresinde okuyun
+
+İZİNLER, AÇIKLAMALI
+• Diğer uygulamaların üzerinde gösterme: baloncuğu ve menüyü diğer uygulamaların üzerinde gösterir
+• Kullanım erişimi (isteğe bağlı): dış halka için son kullandığınız uygulamaları bulur. Olmadan yalnızca favoriler görünür
+• Bildirimler: baloncuğu çalışır tutan, Durdur düğmeli sessiz bir bildirim
+
+Özel alandaki uygulamalar Halo'da görünemez, çünkü Android bunları yalnızca varsayılan ana ekran uygulamasına gösterir.

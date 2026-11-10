@@ -1,0 +1,29 @@
+Halo pone una pequeña burbuja en el borde de la pantalla. Mantenla presionada, desliza el pulgar hasta una app y suelta. Ese es todo el gesto.
+
+CÓMO FUNCIONA
+• Mantén presionada la burbuja para abrir un menú en semicírculo
+• Tus apps favoritas están en el anillo interior y las recientes en el exterior
+• Desliza sobre una app para ver su nombre y suelta para abrirla
+• Suelta cerca de la burbuja para cancelar
+
+HECHO PARA UNA MANO
+• Toca la burbuja para volver a la última app que usaste
+• Arrastra la burbuja a cualquier lugar; se ajusta al borde más cercano
+• Elige hasta seis favoritas y reordénalas manteniendo y arrastrando
+• Decide qué hace un toque, cuánto mantener presionado y si vibra
+
+SE ADAPTA A TU TELÉFONO
+• Usa los colores de tu fondo de pantalla en Android 12 y versiones posteriores
+• Las apps del perfil de trabajo pueden ser favoritas, con su insignia de trabajo
+
+PRIVADO POR DISEÑO
+• Sin permiso de internet: Halo no puede enviar nada fuera de tu teléfono
+• Sin anuncios, sin analíticas, sin cuenta
+• Código abierto: lee el código en github.com/yogeshpaliyal/Halo
+
+PERMISOS, EXPLICADOS
+• Mostrar sobre otras apps: dibuja la burbuja y el menú encima de otras apps
+• Acceso a datos de uso (opcional): encuentra las apps que usaste hace poco para el anillo exterior. Sin él, solo verás favoritas
+• Notificaciones: una notificación silenciosa que mantiene activa la burbuja, con un botón para detenerla
+
+Las apps de Espacio privado no pueden aparecer en Halo, porque Android solo las muestra a la app de pantalla de inicio predeterminada.
