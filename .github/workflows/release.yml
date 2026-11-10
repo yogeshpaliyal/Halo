@@ -1,0 +1,81 @@
+name: Release
+
+# Push a tag like v0.1.0 (or create a release with that tag in the GitHub UI) to publish
+# a signed APK for GitHub/Obtainium users and an AAB for the Play Console.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: gradle/actions/setup-gradle@v5
+
+      - name: Check signing secrets
+        env:
+          KS: ${{ secrets.HALO_KEYSTORE_BASE64 }}
+          SP: ${{ secrets.HALO_KEYSTORE_PASSWORD }}
+          KA: ${{ secrets.HALO_KEY_ALIAS }}
+          KP: ${{ secrets.HALO_KEY_PASSWORD }}
+        run: |
+          missing=""
+          [ -n "$KS" ] || missing="$missing HALO_KEYSTORE_BASE64"
+          [ -n "$SP" ] || missing="$missing HALO_KEYSTORE_PASSWORD"
+          [ -n "$KA" ] || missing="$missing HALO_KEY_ALIAS"
+          [ -n "$KP" ] || missing="$missing HALO_KEY_PASSWORD"
+          if [ -n "$missing" ]; then
+            echo "::error::Missing repository secrets:$missing (Settings > Secrets and variables > Actions)"
+            exit 1
+          fi
+
+      - name: Restore keystore
+        env:
+          KS: ${{ secrets.HALO_KEYSTORE_BASE64 }}
+        run: echo "$KS" | base64 --decode > "$RUNNER_TEMP/halo-release.jks"
+
+      - name: Build signed APK and AAB
+        env:
+          HALO_KEYSTORE_PATH: ${{ runner.temp }}/halo-release.jks
+          HALO_KEYSTORE_PASSWORD: ${{ secrets.HALO_KEYSTORE_PASSWORD }}
+          HALO_KEY_ALIAS: ${{ secrets.HALO_KEY_ALIAS }}
+          HALO_KEY_PASSWORD: ${{ secrets.HALO_KEY_PASSWORD }}
+          HALO_VERSION_NAME: ${{ github.ref_name }}
+          # Grows with every run of this workflow, so each release outranks the last.
+          HALO_VERSION_CODE: ${{ github.run_number }}
+        run: |
+          HALO_VERSION_NAME="${HALO_VERSION_NAME#v}" ./gradlew --no-configuration-cache assembleRelease bundleRelease
+          cp app/build/outputs/apk/release/app-release.apk "halo-${GITHUB_REF_NAME}.apk"
+          cp app/build/outputs/bundle/release/app-release.aab "halo-${GITHUB_REF_NAME}.aab"
+
+      - name: Show signing certificate
+        run: |
+          APKSIGNER=$(ls -d "$ANDROID_HOME"/build-tools/*/apksigner | sort -V | tail -1)
+          "$APKSIGNER" verify --print-certs "halo-${GITHUB_REF_NAME}.apk" | grep -E "SHA-256|DN"
+
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="$GITHUB_REF_NAME"
+          FILES=("halo-$TAG.apk" "halo-$TAG.aab")
+          # The release may already exist if it was created in the GitHub UI.
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "${FILES[@]}" --clobber
+          else
+            gh release create "$TAG" "${FILES[@]}" --title "Halo $TAG" --generate-notes
+          fi
+
+      - name: Remove keystore
+        if: always()
+        run: rm -f "$RUNNER_TEMP/halo-release.jks"

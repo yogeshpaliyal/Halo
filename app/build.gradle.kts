@@ -1,5 +1,9 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
+// Release signing comes from env vars (set by CI from GitHub secrets, or exported locally).
+// Without HALO_KEYSTORE_PATH the release build is left unsigned instead of failing.
+val releaseKeystore: String? = System.getenv("HALO_KEYSTORE_PATH")
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -14,8 +18,9 @@ android {
         applicationId = "com.yogeshpaliyal.halo"
         minSdk = 26
         targetSdk = 36
-        versionCode = 1
-        versionName = "0.1.0"
+        // CI passes these for tagged releases; local builds keep the defaults.
+        versionCode = System.getenv("HALO_VERSION_CODE")?.toIntOrNull() ?: 1
+        versionName = System.getenv("HALO_VERSION_NAME") ?: "0.1.0"
     }
 
     signingConfigs {
@@ -27,10 +32,19 @@ android {
             keyAlias = "androiddebugkey"
             keyPassword = "android"
         }
+        if (releaseKeystore != null) {
+            create("release") {
+                storeFile = file(releaseKeystore)
+                storePassword = System.getenv("HALO_KEYSTORE_PASSWORD")
+                keyAlias = System.getenv("HALO_KEY_ALIAS")
+                keyPassword = System.getenv("HALO_KEY_PASSWORD")
+            }
+        }
     }
 
     buildTypes {
         release {
+            if (releaseKeystore != null) signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
