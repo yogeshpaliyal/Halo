@@ -1,5 +1,7 @@
 package com.yogeshpaliyal.halo.overlay
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
@@ -12,6 +14,7 @@ import android.text.TextPaint
 import android.view.HapticFeedbackConstants
 import android.view.MotionEvent
 import android.view.View
+import android.view.animation.AccelerateInterpolator
 import android.view.animation.OvershootInterpolator
 import com.yogeshpaliyal.halo.data.AppEntry
 import com.yogeshpaliyal.halo.data.Prefs
@@ -101,14 +104,38 @@ class RadialMenuView(
     private val arcRect = RectF()
     private val pillRect = RectF()
 
+    private var anim: ValueAnimator? = null
+
     fun show() {
-        ValueAnimator.ofFloat(0f, 1f).apply {
+        anim?.cancel()
+        anim = ValueAnimator.ofFloat(0f, 1f).apply {
             duration = 220
             interpolator = OvershootInterpolator(1.1f)
             addUpdateListener {
                 progress = it.animatedValue as Float
                 invalidate()
             }
+            start()
+        }
+    }
+
+    /** Reverse of [show]: rings shrink back toward the bubble and fade, then [onEnd] runs. */
+    fun dismiss(onEnd: () -> Unit) {
+        onPick = null
+        anim?.cancel()
+        var done = false
+        val finish = { if (!done) { done = true; onEnd() } }
+        anim = ValueAnimator.ofFloat(progress.coerceIn(0f, 1f), 0f).apply {
+            duration = 160
+            interpolator = AccelerateInterpolator(1.4f)
+            addUpdateListener {
+                progress = it.animatedValue as Float
+                invalidate()
+            }
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) = finish()
+                override fun onAnimationCancel(animation: Animator) = finish()
+            })
             start()
         }
     }

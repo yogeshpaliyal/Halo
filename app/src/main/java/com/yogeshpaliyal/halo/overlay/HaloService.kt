@@ -90,7 +90,7 @@ class HaloService : Service(), BubbleView.Listener {
         if (bubble != null) {
             val homeY = restY ?: bubbleParams.y
             restY = null
-            removeMenu()
+            removeMenu(animate = false)
             snapTo(onRight, homeY, animate = false)
         }
     }
@@ -102,7 +102,7 @@ class HaloService : Service(), BubbleView.Listener {
         NotificationBadges.removeListener(badgeListener)
         detector?.let { runCatching { wm.removeView(it) } }
         detector = null
-        removeMenu()
+        removeMenu(animate = false)
         bubble?.let { runCatching { wm.removeView(it) } }
         bubble = null
         _running.value = false
@@ -258,7 +258,7 @@ class HaloService : Service(), BubbleView.Listener {
     /** Applies a new size setting: keep the bubble's centre, then re-dock it. */
     private fun resizeBubble() {
         val view = bubble ?: return
-        removeMenu()
+        removeMenu(animate = false)
         val centerY = bubbleParams.y + bubbleSize / 2
         bubbleSize = sizePx()
         bubbleParams.width = bubbleSize
@@ -288,7 +288,7 @@ class HaloService : Service(), BubbleView.Listener {
      * and waits for the user to tap an app (or anywhere else to close).
      */
     private fun showMenu(tapMode: Boolean = false) {
-        removeMenu()
+        removeMenu(animate = false)
         val favorites = repo.favorites()
         val recents = repo.recents(Prefs.MAX_RECENTS, excludeKeys = favorites.mapTo(HashSet()) { it.key })
 
@@ -346,9 +346,35 @@ class HaloService : Service(), BubbleView.Listener {
         view.show()
     }
 
-    private fun removeMenu() {
-        menu?.let { runCatching { wm.removeView(it) } }
+    /** Menus playing their close animation; removed for good when it ends. */
+    private val closingMenus = mutableSetOf<RadialMenuView>()
+
+    /**
+     * Closes the dial. Animated by default; [animate] = false removes it at once (service
+     * shutting down, rotation, resize, or a new menu about to open).
+     */
+    private fun removeMenu(animate: Boolean = true) {
+        val view = menu
         menu = null
+        if (!animate) {
+            closingMenus.forEach { runCatching { wm.removeView(it) } }
+            closingMenus.clear()
+        }
+        if (view != null) {
+            if (animate && view.isAttachedToWindow) {
+                // Let touches through to the app underneath while the dial fades out.
+                (view.layoutParams as? WindowManager.LayoutParams)?.let { lp ->
+                    lp.flags = lp.flags or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                    runCatching { wm.updateViewLayout(view, lp) }
+                }
+                closingMenus += view
+                view.dismiss {
+                    if (closingMenus.remove(view)) runCatching { wm.removeView(view) }
+                }
+            } else {
+                runCatching { wm.removeView(view) }
+            }
+        }
         restY?.let { y ->
             restY = null
             moveBubble(bubbleParams.x, y, animate = true)
