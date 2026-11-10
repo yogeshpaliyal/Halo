@@ -590,6 +590,9 @@ fun BubbleCard(
     hiddenAppsCount: Int,
     hasUsage: Boolean,
     onChooseHiddenApps: () -> Unit,
+    dots: Boolean,
+    dotsAccess: Boolean,
+    onDots: (Boolean) -> Unit,
 ) {
     Card(shape = RoundedCornerShape(24.dp)) {
         Column(Modifier.padding(vertical = 20.dp)) {
@@ -681,6 +684,33 @@ fun BubbleCard(
                     )
                 }
                 TextButton(onClick = onChooseHiddenApps, enabled = hasUsage) { Text("Choose") }
+            }
+
+            HorizontalDivider(Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
+
+            val dotsOn = dots && dotsAccess
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .clickable { onDots(!dotsOn) }
+                    .padding(horizontal = 20.dp, vertical = 10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Tag("Dots")
+                Spacer(Modifier.width(14.dp))
+                Column(Modifier.weight(1f)) {
+                    Text("Notification dots", style = MaterialTheme.typography.titleSmall)
+                    Text(
+                        if (dots && !dotsAccess) {
+                            "Turn on Notification access for Halo to see the dots."
+                        } else {
+                            "A dot on apps with notifications waiting. Halo only sees which apps, never what they say."
+                        },
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                Switch(checked = dotsOn, onCheckedChange = onDots)
             }
         }
     }

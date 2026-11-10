@@ -69,7 +69,9 @@ class HaloService : Service(), BubbleView.Listener {
         addBubble()
         addFullscreenDetector()
         Prefs.registerListener(this, prefListener)
+        NotificationBadges.addListener(badgeListener)
         updateAppWatch()
+        updateBubbleBadge()
         _running.value = true
     }
 
@@ -97,6 +99,7 @@ class HaloService : Service(), BubbleView.Listener {
         snapAnimator?.cancel()
         main.removeCallbacksAndMessages(null)
         Prefs.unregisterListener(this, prefListener)
+        NotificationBadges.removeListener(badgeListener)
         detector?.let { runCatching { wm.removeView(it) } }
         detector = null
         removeMenu()
@@ -119,7 +122,16 @@ class HaloService : Service(), BubbleView.Listener {
             Prefs.KEY_BUBBLE_OPACITY -> bubble?.refreshOpacity()
             Prefs.KEY_BUBBLE_SIZE -> resizeBubble()
             Prefs.KEY_HIDE_IN_APPS -> updateAppWatch()
+            Prefs.KEY_NOTIFICATION_DOTS, Prefs.KEY_FAVORITES -> updateBubbleBadge()
         }
+    }
+
+    private val badgeListener: () -> Unit = { main.post { updateBubbleBadge() } }
+
+    /** Dot on the bubble when any favourite has notifications waiting. */
+    private fun updateBubbleBadge() {
+        val on = Prefs.notificationDots(this) && Prefs.favorites(this).any { it in NotificationBadges.keys }
+        bubble?.badge = on
     }
 
     /**
@@ -301,6 +313,7 @@ class HaloService : Service(), BubbleView.Listener {
             onRightEdge = onRight,
             favorites = favorites,
             recents = recents,
+            badged = if (Prefs.notificationDots(this)) NotificationBadges.keys else emptySet(),
         )
         val params = overlayParams(
             WindowManager.LayoutParams.MATCH_PARENT,

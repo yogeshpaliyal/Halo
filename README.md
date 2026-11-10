@@ -14,6 +14,7 @@ A floating bubble that sticks to the edge of your screen and lets you switch app
 - **Hides in full-screen apps** like games, videos and OTT apps, and in any apps you choose.
 - **Bubble size** (small, medium, large) and opacity.
 - **Starts on boot** if the bubble was on before the restart.
+- **Notification dots** (optional): a dot on apps with notifications waiting. Halo only sees which apps, never what the notifications say.
 
 - **Work profile** apps can be favourites (shown with the briefcase badge). Private space apps can't: Android only exposes them to the default home app.
 

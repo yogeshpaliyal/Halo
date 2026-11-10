@@ -41,6 +41,8 @@ class RadialMenuView(
     private val onRightEdge: Boolean,
     favorites: List<AppEntry>,
     recents: List<AppEntry>,
+    /** Keys of apps that have notifications waiting; each gets a small dot. */
+    private val badged: Set<String> = emptySet(),
 ) : View(context) {
 
     private class Ring(val items: List<AppEntry>, val radius: Float)
@@ -82,6 +84,8 @@ class RadialMenuView(
         strokeWidth = iconSize + dp(18f)
         color = Color.parseColor("#E61E1B2E")
     }
+    private val badgePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.parseColor("#FFFF5A5F") }
+    private val badgeRim = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.WHITE }
     private val glow = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.parseColor("#59B9A8FF") }
     private val pill = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.parseColor("#F2F1EDFF") }
     private val label = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -228,6 +232,12 @@ class RadialMenuView(
                 // Paused work apps are dimmed; opening one shows Android's "Unpause?" prompt.
                 app.icon.alpha = (fade * if (app.available) 255 else 100).toInt()
                 app.icon.draw(canvas)
+                if (app.key in badged && fade > 0.5f) {
+                    val bx = x + size * 0.36f
+                    val by = y - size * 0.36f
+                    canvas.drawCircle(bx, by, size * 0.15f, badgeRim)
+                    canvas.drawCircle(bx, by, size * 0.11f, badgePaint)
+                }
             }
         }
 

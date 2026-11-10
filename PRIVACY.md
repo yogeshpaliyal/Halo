@@ -25,6 +25,7 @@ This information never leaves your phone through Halo. It is deleted when you un
 | Foreground service | Keeps the bubble running while it's turned on. |
 | Notifications | Shows a silent notification while the bubble is on, with a Stop button. |
 | Run at startup | Turns the bubble back on after your phone restarts or Halo updates, but only if it was on before. |
+| Notification access | Optional and off by default. Used only to know which apps have notifications waiting, so Halo can show a dot on them. Halo never reads, stores or sends what a notification says. |
 | List installed apps | Shows your apps so you can choose favourites, and opens the app you pick. The list stays on your phone. |
 
 Halo has **no** internet, location, contacts, camera, microphone, storage or accessibility permissions.

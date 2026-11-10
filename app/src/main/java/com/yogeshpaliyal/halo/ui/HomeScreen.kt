@@ -34,6 +34,7 @@ import com.yogeshpaliyal.halo.data.AppEntry
 import com.yogeshpaliyal.halo.data.AppRepository
 import com.yogeshpaliyal.halo.data.Permissions
 import com.yogeshpaliyal.halo.data.Prefs
+import com.yogeshpaliyal.halo.overlay.NotificationBadges
 import com.yogeshpaliyal.halo.overlay.HaloService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -84,6 +85,8 @@ fun HomeScreen() {
     var bubbleSize by remember { mutableStateOf(Prefs.bubbleSize(context)) }
     var hideInApps by remember { mutableStateOf(Prefs.hideInApps(context)) }
     var showHideAppsPicker by remember { mutableStateOf(false) }
+    var dots by remember { mutableStateOf(Prefs.notificationDots(context)) }
+    val dotsAccess = remember(resumeTick) { NotificationBadges.hasAccess(context) }
 
     val steps = buildList {
         val restrictedHelp: (() -> Unit)? = if (Permissions.mayBeRestricted) {
@@ -177,6 +180,15 @@ fun HomeScreen() {
                     hiddenAppsCount = hideInApps.size,
                     hasUsage = hasUsage,
                     onChooseHiddenApps = { showHideAppsPicker = true },
+                    dots = dots,
+                    dotsAccess = dotsAccess,
+                    onDots = { on ->
+                        dots = on
+                        Prefs.setNotificationDots(context, on)
+                        if (on && !dotsAccess) {
+                            runCatching { context.startActivity(NotificationBadges.settingsIntent(context)) }
+                        }
+                    },
                 )
             }
             item { PrivateSpaceNote() }

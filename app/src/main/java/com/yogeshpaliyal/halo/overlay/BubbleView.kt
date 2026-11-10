@@ -53,6 +53,17 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
         color = Color.parseColor("#FFB9A8FF")
     }
     private val dot = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.WHITE }
+    private val badgePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.parseColor("#FFFF5A5F") }
+    private val badgeRim = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.parseColor("#FF14121F") }
+
+    /** Small dot when a favourite has notifications waiting. */
+    var badge = false
+        set(value) {
+            if (field != value) {
+                field = value
+                invalidate()
+            }
+        }
 
     private val longPress = Runnable {
         if (state == State.PRESSED) {
@@ -84,6 +95,12 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
         canvas.drawCircle(cx, cy, r * 0.94f, fill)
         canvas.drawCircle(cx, cy, r * 0.58f, ring)
         canvas.drawCircle(cx, cy, r * 0.18f, dot)
+        if (badge) {
+            val bx = cx + r * 0.62f
+            val by = cy - r * 0.62f
+            canvas.drawCircle(bx, by, r * 0.26f, badgeRim)
+            canvas.drawCircle(bx, by, r * 0.19f, badgePaint)
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")

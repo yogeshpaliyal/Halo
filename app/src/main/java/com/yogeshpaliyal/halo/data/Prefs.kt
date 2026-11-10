@@ -10,7 +10,7 @@ object Prefs {
     const val MAX_RECENTS = 8
 
     private const val FILE = "halo"
-    private const val KEY_FAVORITES = "favorites"
+    const val KEY_FAVORITES = "favorites"
     private const val KEY_BUBBLE_RIGHT = "bubble_right"
     private const val KEY_BUBBLE_Y = "bubble_y"
     private const val KEY_ENABLED = "enabled"
@@ -22,6 +22,7 @@ object Prefs {
     const val KEY_BUBBLE_OPACITY = "bubble_opacity"
     const val KEY_BUBBLE_SIZE = "bubble_size"
     const val KEY_HIDE_IN_APPS = "hide_in_apps"
+    const val KEY_NOTIFICATION_DOTS = "notification_dots"
 
     private fun sp(context: Context): SharedPreferences =
         context.getSharedPreferences(FILE, Context.MODE_PRIVATE)
@@ -90,6 +91,10 @@ object Prefs {
         sp(context).edit { putStringSet(KEY_HIDE_IN_APPS, next) }
         return next
     }
+
+    /** Show dots for apps with notifications. Off by default: it needs Notification access. */
+    fun notificationDots(context: Context): Boolean = sp(context).getBoolean(KEY_NOTIFICATION_DOTS, false)
+    fun setNotificationDots(context: Context, on: Boolean) = sp(context).edit { putBoolean(KEY_NOTIFICATION_DOTS, on) }
 
     fun registerListener(context: Context, listener: SharedPreferences.OnSharedPreferenceChangeListener) =
         sp(context).registerOnSharedPreferenceChangeListener(listener)
