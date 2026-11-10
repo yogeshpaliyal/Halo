@@ -73,10 +73,15 @@ fun HomeScreen() {
     var haptics by remember { mutableStateOf(Prefs.haptics(context)) }
 
     val steps = buildList {
-        add(SetupStep("Display over other apps", "Lets Halo draw the bubble.", canOverlay) {
+        val restrictedHelp: (() -> Unit)? = if (Permissions.mayBeRestricted) {
+            { context.startActivity(Permissions.appInfoIntent(context)) }
+        } else {
+            null
+        }
+        add(SetupStep("Display over other apps", "Lets Halo draw the bubble.", canOverlay, restrictedHelp) {
             context.startActivity(Permissions.overlaySettingsIntent(context))
         })
-        add(SetupStep("Usage access", "Fills the outer ring with your recent apps.", hasUsage) {
+        add(SetupStep("Usage access", "Fills the outer ring with your recent apps.", hasUsage, restrictedHelp) {
             context.startActivity(Permissions.usageSettingsIntent())
         })
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -188,7 +189,14 @@ fun RadialPreview(favorites: List<ImageBitmap>, modifier: Modifier = Modifier) {
 
 // --- Setup checklist -----------------------------------------------------------------------
 
-data class SetupStep(val title: String, val body: String, val done: Boolean, val onGrant: () -> Unit)
+data class SetupStep(
+    val title: String,
+    val body: String,
+    val done: Boolean,
+    /** Shown under a step that isn't done yet, with a button that opens App info. */
+    val restrictedHelp: (() -> Unit)? = null,
+    val onGrant: () -> Unit,
+)
 
 @Composable
 fun SetupCard(steps: List<SetupStep>) {
@@ -228,6 +236,10 @@ fun SetupCard(steps: List<SetupStep>) {
                         FilledTonalButton(onClick = step.onGrant) { Text("Allow") }
                     }
                 }
+                val openAppInfo = step.restrictedHelp
+                if (!step.done && openAppInfo != null) {
+                    RestrictedHint(onOpenAppInfo = openAppInfo)
+                }
             }
         }
     }
@@ -254,6 +266,37 @@ private fun StepBadge(number: Int, done: Boolean) {
         } else {
             Text("$number", style = MaterialTheme.typography.labelLarge)
         }
+    }
+}
+
+/**
+ * Explains Android's "restricted setting" block for sideloaded apps and links to App info,
+ * where the ⋮ menu has "Allow restricted settings".
+ */
+@Composable
+private fun RestrictedHint(onOpenAppInfo: () -> Unit) {
+    Column(
+        Modifier
+            .padding(start = 46.dp, top = 8.dp)
+            .clip(RoundedCornerShape(12.dp))
+            .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+            .padding(12.dp),
+    ) {
+        Text(
+            "Switch greyed out or “Restricted setting”?",
+            style = MaterialTheme.typography.labelLarge,
+        )
+        Spacer(Modifier.height(4.dp))
+        Text(
+            "Android blocks this for apps installed outside an app store. Open App info, tap ⋮ " +
+                "in the top corner, choose “Allow restricted settings”, then come back and tap Allow.",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        TextButton(
+            onClick = onOpenAppInfo,
+            contentPadding = PaddingValues(horizontal = 0.dp),
+        ) { Text("Open App info") }
     }
 }
 

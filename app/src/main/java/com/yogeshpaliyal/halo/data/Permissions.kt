@@ -35,4 +35,15 @@ object Permissions {
         Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:${context.packageName}"))
 
     fun usageSettingsIntent() = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
+
+    /** Halo's App info page, where the ⋮ menu holds "Allow restricted settings". */
+    fun appInfoIntent(context: Context) =
+        Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:${context.packageName}"))
+
+    /**
+     * Android 13+ (overlay and usage access from Android 15) blocks these special permissions
+     * for apps installed outside an app store, until the user taps "Allow restricted settings"
+     * in App info. Apps can't read that state, so we just show the hint on those versions.
+     */
+    val mayBeRestricted: Boolean get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
 }

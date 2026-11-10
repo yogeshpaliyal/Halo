@@ -54,6 +54,11 @@ and add it as the `TRAFFIC_TOKEN` repository secret.
    - **Notifications** (Android 13+): a silent notification with a Stop button.
 3. Pick up to 6 favourites and turn on **Floating bubble**.
 
+> **“Restricted setting” or a greyed-out switch?** Android 15+ blocks *Display over other apps* and
+> *Usage access* for apps installed from a downloaded APK. Open **Settings → Apps → Halo**, tap **⋮**
+> (top right), choose **Allow restricted settings**, confirm with your screen lock, then grant the
+> permission again. Halo's setup card has an **Open App info** shortcut for this.
+
 ## How it works
 
 | Piece | File |
