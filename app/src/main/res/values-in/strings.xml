@@ -124,4 +124,25 @@
     <string name="tag_work">Kerja</string>
     <string name="tag_work_paused">Kerja · dijeda</string>
     <string name="private_space_note">Aplikasi kerja didukung, tetapi hanya sebagai favorit: data aplikasi terbaru Android hanya mencakup profil pribadi Anda. Aplikasi di ruang privasi tidak bisa muncul di Halo; Android hanya menampilkannya ke aplikasi layar utama default.</string>
+
+    <!-- Bubble style -->
+    <string name="style_hint">Pilih karakter dan warna. Karakter berkedip, melihat sekeliling, dan bereaksi saat disentuh.</string>
+    <string name="tag_anim">Anim</string>
+    <string name="animations_title">Animasi diam</string>
+    <string name="animations_body">Berkedip dan gerakan kecil setiap beberapa detik. Matikan untuk gelembung yang diam.</string>
+    <string name="character_classic">Klasik</string>
+    <string name="character_blob">Blob</string>
+    <string name="character_kitty">Kucing</string>
+    <string name="character_ghost">Hantu</string>
+    <string name="character_sprout">Tunas</string>
+    <string name="character_star">Bintang</string>
+    <string name="character_bot">Bot</string>
+    <string name="palette_midnight">Tengah malam</string>
+    <string name="palette_sunset">Senja</string>
+    <string name="palette_ocean">Samudra</string>
+    <string name="palette_mint">Mint</string>
+    <string name="palette_bubblegum">Permen karet</string>
+    <string name="palette_lemon">Lemon</string>
+    <string name="palette_grape">Anggur</string>
+    <string name="palette_mono">Mono</string>
 </resources>

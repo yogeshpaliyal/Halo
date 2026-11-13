@@ -127,4 +127,25 @@
     <string name="tag_work">Arbeit</string>
     <string name="tag_work_paused">Arbeit · pausiert</string>
     <string name="private_space_note">Arbeits-Apps werden unterstützt, aber nur als Favoriten: Androids Daten zu zuletzt verwendeten Apps umfassen nur dein privates Profil. Apps aus dem vertraulichen Bereich können nicht in Halo erscheinen; Android zeigt sie nur der Standard-Startbildschirm-App.</string>
+
+    <!-- Bubble style -->
+    <string name="style_hint">Wähle eine Figur und eine Farbe. Figuren blinzeln, schauen sich um und reagieren auf Berührung.</string>
+    <string name="tag_anim">Anim</string>
+    <string name="animations_title">Leerlauf-Animationen</string>
+    <string name="animations_body">Alle paar Sekunden Blinzeln und kleine Bewegungen. Aus für eine ruhige Blase.</string>
+    <string name="character_classic">Klassisch</string>
+    <string name="character_blob">Blob</string>
+    <string name="character_kitty">Kätzchen</string>
+    <string name="character_ghost">Geist</string>
+    <string name="character_sprout">Spross</string>
+    <string name="character_star">Stern</string>
+    <string name="character_bot">Bot</string>
+    <string name="palette_midnight">Mitternacht</string>
+    <string name="palette_sunset">Sonnenuntergang</string>
+    <string name="palette_ocean">Ozean</string>
+    <string name="palette_mint">Minze</string>
+    <string name="palette_bubblegum">Kaugummi</string>
+    <string name="palette_lemon">Zitrone</string>
+    <string name="palette_grape">Traube</string>
+    <string name="palette_mono">Mono</string>
 </resources>

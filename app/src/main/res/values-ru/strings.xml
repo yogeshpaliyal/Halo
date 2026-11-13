@@ -133,4 +133,25 @@
     <string name="tag_work">Рабочее</string>
     <string name="tag_work_paused">Рабочее · приостановлено</string>
     <string name="private_space_note">Рабочие приложения поддерживаются, но только в избранном: данные Android о недавних приложениях охватывают только личный профиль. Приложения из личного пространства не могут появляться в Halo; Android показывает их только стандартному приложению главного экрана.</string>
+
+    <!-- Bubble style -->
+    <string name="style_hint">Выберите персонажа и цвет. Персонажи моргают, оглядываются и реагируют на касание.</string>
+    <string name="tag_anim">Аним.</string>
+    <string name="animations_title">Анимация в покое</string>
+    <string name="animations_body">Моргание и небольшие движения каждые несколько секунд. Выключите для неподвижной кнопки.</string>
+    <string name="character_classic">Классика</string>
+    <string name="character_blob">Капля</string>
+    <string name="character_kitty">Котик</string>
+    <string name="character_ghost">Призрак</string>
+    <string name="character_sprout">Росток</string>
+    <string name="character_star">Звезда</string>
+    <string name="character_bot">Робот</string>
+    <string name="palette_midnight">Полночь</string>
+    <string name="palette_sunset">Закат</string>
+    <string name="palette_ocean">Океан</string>
+    <string name="palette_mint">Мята</string>
+    <string name="palette_bubblegum">Жвачка</string>
+    <string name="palette_lemon">Лимон</string>
+    <string name="palette_grape">Виноград</string>
+    <string name="palette_mono">Моно</string>
 </resources>

@@ -106,6 +106,9 @@ fun HomeScreen() {
     var hiddenRecents by remember { mutableStateOf(Prefs.hiddenRecents(context)) }
     var showHiddenPicker by remember { mutableStateOf(false) }
     var tapAction by remember { mutableStateOf(Prefs.tapAction(context)) }
+    var bubbleCharacter by remember { mutableStateOf(Prefs.bubbleCharacter(context)) }
+    var bubblePalette by remember { mutableStateOf(Prefs.bubblePalette(context)) }
+    var bubbleAnimations by remember { mutableStateOf(Prefs.bubbleAnimations(context)) }
     var doubleTapAction by remember { mutableStateOf(Prefs.doubleTapAction(context)) }
     var holdDelay by remember { mutableStateOf(Prefs.holdDelay(context)) }
     var haptics by remember { mutableStateOf(Prefs.haptics(context)) }
@@ -203,6 +206,12 @@ fun HomeScreen() {
             }
             item {
                 BubbleCard(
+                    character = bubbleCharacter,
+                    onCharacter = { bubbleCharacter = it; Prefs.setBubbleCharacter(context, it) },
+                    palette = bubblePalette,
+                    onPalette = { bubblePalette = it; Prefs.setBubblePalette(context, it) },
+                    animations = bubbleAnimations,
+                    onAnimations = { bubbleAnimations = it; Prefs.setBubbleAnimations(context, it) },
                     size = bubbleSize,
                     onSize = { bubbleSize = it; Prefs.setBubbleSize(context, it) },
                     opacity = opacity,

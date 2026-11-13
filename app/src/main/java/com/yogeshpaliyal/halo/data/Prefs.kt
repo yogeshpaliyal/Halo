@@ -1,6 +1,8 @@
 package com.yogeshpaliyal.halo.data
 
 import android.content.Context
+import com.yogeshpaliyal.halo.overlay.BubbleCharacter
+import com.yogeshpaliyal.halo.overlay.BubblePalette
 import android.content.SharedPreferences
 import androidx.core.content.edit
 
@@ -25,6 +27,9 @@ object Prefs {
     const val KEY_HIDE_IN_APPS = "hide_in_apps"
     const val KEY_NOTIFICATION_DOTS = "notification_dots"
     const val KEY_FOLDERS = "folders"
+    const val KEY_BUBBLE_PALETTE = "bubble_palette"
+    const val KEY_BUBBLE_CHARACTER = "bubble_character"
+    const val KEY_BUBBLE_ANIMATIONS = "bubble_animations"
 
     private fun sp(context: Context): SharedPreferences =
         context.getSharedPreferences(FILE, Context.MODE_PRIVATE)
@@ -86,6 +91,26 @@ object Prefs {
 
     fun setBubbleSize(context: Context, size: BubbleSize) =
         sp(context).edit { putString(KEY_BUBBLE_SIZE, size.name) }
+
+    fun bubblePalette(context: Context): BubblePalette =
+        sp(context).getString(KEY_BUBBLE_PALETTE, null)
+            ?.let { runCatching { BubblePalette.valueOf(it) }.getOrNull() }
+            ?: BubblePalette.MIDNIGHT
+
+    fun setBubblePalette(context: Context, palette: BubblePalette) =
+        sp(context).edit { putString(KEY_BUBBLE_PALETTE, palette.name) }
+
+    fun bubbleCharacter(context: Context): BubbleCharacter =
+        sp(context).getString(KEY_BUBBLE_CHARACTER, null)
+            ?.let { runCatching { BubbleCharacter.valueOf(it) }.getOrNull() }
+            ?: BubbleCharacter.CLASSIC
+
+    fun setBubbleCharacter(context: Context, character: BubbleCharacter) =
+        sp(context).edit { putString(KEY_BUBBLE_CHARACTER, character.name) }
+
+    /** Blinks and idle moves for characters. Touch reactions always play. */
+    fun bubbleAnimations(context: Context): Boolean = sp(context).getBoolean(KEY_BUBBLE_ANIMATIONS, true)
+    fun setBubbleAnimations(context: Context, on: Boolean) = sp(context).edit { putBoolean(KEY_BUBBLE_ANIMATIONS, on) }
 
     /** Packages where the bubble hides itself while they're on screen. */
     fun hideInApps(context: Context): Set<String> =

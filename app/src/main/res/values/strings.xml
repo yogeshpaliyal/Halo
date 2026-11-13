@@ -156,4 +156,25 @@
     <string name="tag_work">Work</string>
     <string name="tag_work_paused">Work · paused</string>
     <string name="private_space_note">Work apps are supported, but only as favourites: Android\'s recent-apps data covers your personal profile only. Private space apps can\'t appear in Halo; Android only shows them to the default home-screen app.</string>
+
+    <!-- Bubble style -->
+    <string name="style_hint">Pick a character and a colour. Characters blink, look around and react when you touch them.</string>
+    <string name="tag_anim">Anim</string>
+    <string name="animations_title">Idle animations</string>
+    <string name="animations_body">Blinks and little moves every few seconds. Turn off for a still bubble.</string>
+    <string name="character_classic">Classic</string>
+    <string name="character_blob">Blob</string>
+    <string name="character_kitty">Kitty</string>
+    <string name="character_ghost">Ghost</string>
+    <string name="character_sprout">Sprout</string>
+    <string name="character_star">Star</string>
+    <string name="character_bot">Bot</string>
+    <string name="palette_midnight">Midnight</string>
+    <string name="palette_sunset">Sunset</string>
+    <string name="palette_ocean">Ocean</string>
+    <string name="palette_mint">Mint</string>
+    <string name="palette_bubblegum">Bubblegum</string>
+    <string name="palette_lemon">Lemon</string>
+    <string name="palette_grape">Grape</string>
+    <string name="palette_mono">Mono</string>
 </resources>

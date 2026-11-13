@@ -2,6 +2,8 @@ package com.yogeshpaliyal.halo.ui
 
 import androidx.compose.ui.platform.LocalContext
 import com.yogeshpaliyal.halo.R
+import com.yogeshpaliyal.halo.overlay.BubblePalette
+import com.yogeshpaliyal.halo.overlay.BubbleCharacter
 import androidx.annotation.PluralsRes
 import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.Canvas
@@ -655,6 +657,12 @@ fun GesturesCard(
 /** How the bubble looks and when it steps aside. */
 @Composable
 fun BubbleCard(
+    character: BubbleCharacter,
+    onCharacter: (BubbleCharacter) -> Unit,
+    palette: BubblePalette,
+    onPalette: (BubblePalette) -> Unit,
+    animations: Boolean,
+    onAnimations: (Boolean) -> Unit,
     size: BubbleSize,
     onSize: (BubbleSize) -> Unit,
     opacity: Float,
@@ -676,7 +684,39 @@ fun BubbleCard(
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.padding(horizontal = 20.dp),
             )
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(4.dp))
+            Text(
+                stringResource(R.string.style_hint),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(horizontal = 20.dp),
+            )
+            Spacer(Modifier.height(10.dp))
+            CharacterRow(character, palette, onCharacter)
+            Spacer(Modifier.height(10.dp))
+            PaletteRow(palette, onPalette)
+            if (character != BubbleCharacter.CLASSIC) {
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .clickable { onAnimations(!animations) }
+                        .padding(horizontal = 20.dp, vertical = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Tag(stringResource(R.string.tag_anim))
+                    Spacer(Modifier.width(14.dp))
+                    Column(Modifier.weight(1f)) {
+                        Text(stringResource(R.string.animations_title), style = MaterialTheme.typography.titleSmall)
+                        Text(
+                            stringResource(R.string.animations_body),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                    Switch(checked = animations, onCheckedChange = onAnimations)
+                }
+            }
+            HorizontalDivider(Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
             ChoiceRow(
                 tag = stringResource(R.string.tag_size),
                 title = stringResource(R.string.size),

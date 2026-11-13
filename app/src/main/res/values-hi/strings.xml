@@ -127,4 +127,25 @@
     <string name="tag_work">ऑफ़िस</string>
     <string name="tag_work_paused">ऑफ़िस · रुका</string>
     <string name="private_space_note">ऑफ़िस प्रोफ़ाइल के ऐप काम करते हैं, लेकिन सिर्फ़ पसंदीदा के तौर पर: Android के हाल के ऐप का डेटा सिर्फ़ आपकी निजी प्रोफ़ाइल का होता है। प्राइवेट स्पेस के ऐप Halo में नहीं दिख सकते; Android उन्हें सिर्फ़ डिफ़ॉल्ट होम-स्क्रीन ऐप को दिखाता है।</string>
+
+    <!-- Bubble style -->
+    <string name="style_hint">एक कैरेक्टर और रंग चुनें। कैरेक्टर पलक झपकाते हैं, इधर-उधर देखते हैं और छूने पर जवाब देते हैं।</string>
+    <string name="tag_anim">एनिमेशन</string>
+    <string name="animations_title">आइडल एनिमेशन</string>
+    <string name="animations_body">हर कुछ सेकंड में पलक झपकना और छोटी हरकतें। स्थिर बबल के लिए बंद करें।</string>
+    <string name="character_classic">क्लासिक</string>
+    <string name="character_blob">ब्लॉब</string>
+    <string name="character_kitty">बिल्ली</string>
+    <string name="character_ghost">भूत</string>
+    <string name="character_sprout">अंकुर</string>
+    <string name="character_star">तारा</string>
+    <string name="character_bot">बॉट</string>
+    <string name="palette_midnight">आधी रात</string>
+    <string name="palette_sunset">सूर्यास्त</string>
+    <string name="palette_ocean">समुद्र</string>
+    <string name="palette_mint">पुदीना</string>
+    <string name="palette_bubblegum">बबलगम</string>
+    <string name="palette_lemon">नींबू</string>
+    <string name="palette_grape">अंगूर</string>
+    <string name="palette_mono">मोनो</string>
 </resources>

@@ -122,6 +122,7 @@ class HaloService : Service(), BubbleView.Listener {
             Prefs.KEY_HIDE_FULLSCREEN -> applyVisibility()
             Prefs.KEY_BUBBLE_OPACITY -> bubble?.refreshOpacity()
             Prefs.KEY_BUBBLE_SIZE -> resizeBubble()
+            Prefs.KEY_BUBBLE_PALETTE, Prefs.KEY_BUBBLE_CHARACTER, Prefs.KEY_BUBBLE_ANIMATIONS -> bubble?.refreshStyle()
             Prefs.KEY_HIDE_IN_APPS -> updateAppWatch()
             Prefs.KEY_NOTIFICATION_DOTS, Prefs.KEY_FAVORITES, Prefs.KEY_FOLDERS -> updateBubbleBadge()
         }

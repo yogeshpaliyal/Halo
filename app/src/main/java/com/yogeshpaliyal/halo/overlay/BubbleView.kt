@@ -1,12 +1,11 @@
 package com.yogeshpaliyal.halo.overlay
 
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.RadialGradient
-import android.graphics.Shader
 import android.view.HapticFeedbackConstants
 import android.view.MotionEvent
 import android.view.View
@@ -14,6 +13,7 @@ import android.view.ViewConfiguration
 import com.yogeshpaliyal.halo.data.Prefs
 import com.yogeshpaliyal.halo.data.TapAction
 import kotlin.math.hypot
+import kotlin.math.sin
 
 /**
  * The small floating circle. It only interprets the gesture and reports it, in screen
@@ -49,12 +49,10 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
     private var lastY = 0f
     private val touchSlop = ViewConfiguration.get(context).scaledTouchSlop.toFloat()
 
-    private val fill = Paint(Paint.ANTI_ALIAS_FLAG)
-    private val ring = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        style = Paint.Style.STROKE
-        color = Color.parseColor("#FFB9A8FF")
+    private val renderer = BubbleRenderer().apply {
+        palette = Prefs.bubblePalette(context)
+        character = Prefs.bubbleCharacter(context)
     }
-    private val dot = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.WHITE }
     private val badgePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.parseColor("#FFFF5A5F") }
     private val badgeRim = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.parseColor("#FF14121F") }
 
@@ -70,6 +68,7 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
     private val longPress = Runnable {
         if (state == State.PRESSED) {
             state = State.MENU
+            setMood(BubbleRenderer.Mood.HAPPY)
             haptic(HapticFeedbackConstants.LONG_PRESS)
             animate().scaleX(0.85f).scaleY(0.85f).setDuration(120).start()
             listener.onMenuOpen(lastX, lastY)
@@ -80,23 +79,11 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
         alpha = Prefs.bubbleOpacity(context)
     }
 
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        val r = minOf(w, h) / 2f
-        fill.shader = RadialGradient(
-            w / 2f, h / 2f, r,
-            intArrayOf(Color.parseColor("#FF3A3358"), Color.parseColor("#FF14121F")),
-            null, Shader.TileMode.CLAMP,
-        )
-        ring.strokeWidth = r * 0.12f
-    }
-
     override fun onDraw(canvas: Canvas) {
         val cx = width / 2f
         val cy = height / 2f
         val r = minOf(width, height) / 2f
-        canvas.drawCircle(cx, cy, r * 0.94f, fill)
-        canvas.drawCircle(cx, cy, r * 0.58f, ring)
-        canvas.drawCircle(cx, cy, r * 0.18f, dot)
+        renderer.draw(canvas, cx, cy, r)
         if (badge) {
             val bx = cx + r * 0.62f
             val by = cy - r * 0.62f
@@ -117,10 +104,13 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
+        lastDragX = lastX
+        lastDragY = lastY
         lastX = event.rawX
         lastY = event.rawY
         when (event.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
+                setMood(BubbleRenderer.Mood.PRESSED)
                 secondTap = tapPending
                 if (tapPending) {
                     removeCallbacks(singleTap)
@@ -138,9 +128,14 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
                 State.PRESSED -> if (hypot(event.rawX - downX, event.rawY - downY) > touchSlop) {
                     removeCallbacks(longPress)
                     state = State.DRAGGING
+                    setMood(BubbleRenderer.Mood.NORMAL)
                     listener.onDragMove(event.rawX, event.rawY)
                 }
-                State.DRAGGING -> listener.onDragMove(event.rawX, event.rawY)
+                State.DRAGGING -> {
+                    // Eyes follow the way you're dragging.
+                    lookAt(event.rawX - lastDragX, event.rawY - lastDragY)
+                    listener.onDragMove(event.rawX, event.rawY)
+                }
                 State.MENU -> listener.onMenuMove(event.rawX, event.rawY)
                 State.IDLE -> Unit
             }
@@ -208,12 +203,131 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
         state = State.IDLE
         animate().cancel()
         this.hidden = hidden
+        if (hidden) stopIdle() else scheduleIdle()
         animate().alpha(if (hidden) 0f else Prefs.bubbleOpacity(context)).scaleX(1f).scaleY(1f).setDuration(180).start()
     }
 
     private fun reset() {
         state = State.IDLE
+        setMood(BubbleRenderer.Mood.NORMAL)
+        renderer.lookX = 0f
+        renderer.lookY = 0f
+        invalidate()
         animate().scaleX(1f).scaleY(1f).alpha(Prefs.bubbleOpacity(context)).setDuration(160).start()
+    }
+
+    private var lastDragX = 0f
+    private var lastDragY = 0f
+
+    // --- Companion personality --------------------------------------------------------------
+
+    /** Applies a new look from settings. */
+    fun refreshStyle() {
+        renderer.palette = Prefs.bubblePalette(context)
+        renderer.character = Prefs.bubbleCharacter(context)
+        stopIdle()
+        scheduleIdle()
+        invalidate()
+    }
+
+    private fun setMood(mood: BubbleRenderer.Mood) {
+        if (renderer.mood != mood) {
+            renderer.mood = mood
+            invalidate()
+        }
+    }
+
+    private fun lookAt(dx: Float, dy: Float) {
+        val len = hypot(dx, dy)
+        if (len < 1f) return
+        renderer.lookX = renderer.lookX * 0.6f + (dx / len) * 0.4f
+        renderer.lookY = renderer.lookY * 0.6f + (dy / len) * 0.4f
+        invalidate()
+    }
+
+    private var idleAnim: ValueAnimator? = null
+    private val random = java.util.Random()
+
+    /** Every few seconds the character does one small thing; between them nothing is redrawn. */
+    private val idleMoment = Runnable {
+        if (state == State.IDLE && !hidden && renderer.animated) playIdle()
+        scheduleIdle()
+    }
+
+    private fun scheduleIdle() {
+        removeCallbacks(idleMoment)
+        if (!isAttachedToWindow || hidden || !renderer.animated || !Prefs.bubbleAnimations(context)) return
+        postDelayed(idleMoment, 2500L + random.nextInt(4000))
+    }
+
+    private fun stopIdle() {
+        removeCallbacks(idleMoment)
+        idleAnim?.cancel()
+        renderer.blink = 0f
+        renderer.wiggle = 0f
+    }
+
+    private fun playIdle() {
+        idleAnim?.cancel()
+        val roll = random.nextInt(10)
+        idleAnim = when {
+            // Mostly blinks, sometimes twice.
+            roll < 5 -> idleTween(if (roll == 0) 420L else 180L) { t ->
+                val phase = if (roll == 0) (t * 2f) % 1f else t
+                renderer.blink = 1f - kotlin.math.abs(phase * 2f - 1f)
+            }
+            // A look to one side and back.
+            roll < 8 -> {
+                val side = if (random.nextBoolean()) 1f else -1f
+                val up = (random.nextFloat() - 0.5f) * 0.6f
+                idleTween(1100L) { t ->
+                    val k = when {
+                        t < 0.2f -> t / 0.2f
+                        t > 0.8f -> (1f - t) / 0.2f
+                        else -> 1f
+                    }
+                    renderer.lookX = side * 0.7f * k
+                    renderer.lookY = up * k
+                }
+            }
+            // Character move: ear flick, leaf sway, ghost bob, star tilt, antenna blink.
+            else -> idleTween(700L) { t ->
+                renderer.wiggle = sin(t * Math.PI.toFloat() * 3f) * (1f - t)
+            }
+        }
+    }
+
+    private fun idleTween(duration: Long, update: (Float) -> Unit): ValueAnimator =
+        ValueAnimator.ofFloat(0f, 1f).apply {
+            this.duration = duration
+            addUpdateListener {
+                update(it.animatedValue as Float)
+                invalidate()
+            }
+            addListener(object : android.animation.AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: android.animation.Animator) {
+                    renderer.blink = 0f
+                    renderer.wiggle = 0f
+                    if (state == State.IDLE) {
+                        renderer.lookX = 0f
+                        renderer.lookY = 0f
+                    }
+                    invalidate()
+                }
+            })
+            start()
+        }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        scheduleIdle()
+    }
+
+    override fun onDetachedFromWindow() {
+        stopIdle()
+        removeCallbacks(singleTap)
+        removeCallbacks(longPress)
+        super.onDetachedFromWindow()
     }
 
     private companion object {

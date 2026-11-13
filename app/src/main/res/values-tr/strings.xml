@@ -127,4 +127,25 @@
     <string name="tag_work">İş</string>
     <string name="tag_work_paused">İş · duraklatıldı</string>
     <string name="private_space_note">İş uygulamaları desteklenir, ancak yalnızca favori olarak: Android’in son uygulama verileri yalnızca kişisel profilinizi kapsar. Özel alan uygulamaları Halo’da görünemez; Android bunları yalnızca varsayılan ana ekran uygulamasına gösterir.</string>
+
+    <!-- Bubble style -->
+    <string name="style_hint">Bir karakter ve renk seçin. Karakterler göz kırpar, etrafa bakar ve dokununca tepki verir.</string>
+    <string name="tag_anim">Anim</string>
+    <string name="animations_title">Bekleme animasyonları</string>
+    <string name="animations_body">Birkaç saniyede bir göz kırpma ve küçük hareketler. Hareketsiz bir baloncuk için kapatın.</string>
+    <string name="character_classic">Klasik</string>
+    <string name="character_blob">Blob</string>
+    <string name="character_kitty">Kedicik</string>
+    <string name="character_ghost">Hayalet</string>
+    <string name="character_sprout">Filiz</string>
+    <string name="character_star">Yıldız</string>
+    <string name="character_bot">Robot</string>
+    <string name="palette_midnight">Gece yarısı</string>
+    <string name="palette_sunset">Gün batımı</string>
+    <string name="palette_ocean">Okyanus</string>
+    <string name="palette_mint">Nane</string>
+    <string name="palette_bubblegum">Sakız</string>
+    <string name="palette_lemon">Limon</string>
+    <string name="palette_grape">Üzüm</string>
+    <string name="palette_mono">Mono</string>
 </resources>

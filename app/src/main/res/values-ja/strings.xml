@@ -124,4 +124,25 @@
     <string name="tag_work">仕事用</string>
     <string name="tag_work_paused">仕事用 · 一時停止中</string>
     <string name="private_space_note">仕事用アプリはお気に入りとしてのみ使えます。Android の最近使ったアプリのデータは個人用プロファイルのみが対象です。プライベート スペースのアプリは Halo に表示できません。Android はそれらをデフォルトのホームアプリにのみ公開します。</string>
+
+    <!-- Bubble style -->
+    <string name="style_hint">キャラクターと色を選びましょう。キャラクターはまばたきしたり、きょろきょろしたり、触ると反応します。</string>
+    <string name="tag_anim">動き</string>
+    <string name="animations_title">待機アニメーション</string>
+    <string name="animations_body">数秒ごとにまばたきや小さな動き。オフにすると静止したバブルになります。</string>
+    <string name="character_classic">クラシック</string>
+    <string name="character_blob">ぷにぷに</string>
+    <string name="character_kitty">ねこ</string>
+    <string name="character_ghost">おばけ</string>
+    <string name="character_sprout">ふたば</string>
+    <string name="character_star">ほし</string>
+    <string name="character_bot">ロボ</string>
+    <string name="palette_midnight">ミッドナイト</string>
+    <string name="palette_sunset">サンセット</string>
+    <string name="palette_ocean">オーシャン</string>
+    <string name="palette_mint">ミント</string>
+    <string name="palette_bubblegum">バブルガム</string>
+    <string name="palette_lemon">レモン</string>
+    <string name="palette_grape">グレープ</string>
+    <string name="palette_mono">モノ</string>
 </resources>
