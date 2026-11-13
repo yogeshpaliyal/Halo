@@ -387,7 +387,7 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
     private fun hop() {
         runMotion(320, { t ->
             val h = sin(PI.toFloat() * t)
-            offY = -0.13f * h
+            offY = -0.11f * h
             scaleXf = 1f - 0.06f * h
             scaleYf = 1f + 0.08f * h
         })

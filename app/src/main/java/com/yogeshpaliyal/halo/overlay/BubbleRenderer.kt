@@ -197,8 +197,8 @@ class BubbleRenderer {
         leaf.color = 0xFF5BD06A.toInt()
         path.reset()
         path.moveTo(cx, baseY - r * 0.14f)
-        path.quadTo(cx + r * 0.18f, baseY - r * 0.42f, cx + r * 0.46f, baseY - r * 0.24f)
-        path.quadTo(cx + r * 0.2f, baseY - r * 0.04f, cx, baseY - r * 0.14f)
+        path.quadTo(cx + r * 0.18f, baseY - r * 0.36f, cx + r * 0.44f, baseY - r * 0.2f)
+        path.quadTo(cx + r * 0.2f, baseY - r * 0.02f, cx, baseY - r * 0.14f)
         c.drawPath(path, leaf)
         c.restore()
         stroke.color = palette.face
