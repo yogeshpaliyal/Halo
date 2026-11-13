@@ -54,7 +54,8 @@ class HaloService : Service(), BubbleView.Listener {
     /** Bubble width and height in px, from the size setting. */
     private var bubbleSize = 0
 
-    private fun sizePx() = (Prefs.bubbleSize(this).dp * resources.displayMetrics.density).toInt()
+    // The window is a bit larger than the bubble itself, so its animations have room.
+    private fun sizePx() = (Prefs.bubbleSize(this).dp / BubbleView.ART_SCALE * resources.displayMetrics.density).toInt()
 
     override fun onBind(intent: Intent?): IBinder? = null
 
