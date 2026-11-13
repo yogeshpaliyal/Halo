@@ -136,24 +136,29 @@ jobs:
           # Fails (and publishes nothing) if main moved while this was building; just run it again.
           git push --atomic origin HEAD:main "refs/tags/$TAG"
 
-      - name: Publish GitHub release
+      # GitHub's --generate-notes only lists merged pull requests, and Halo is committed to
+      # main directly, so build the notes from commits instead: everything since the last
+      # release that changed the app itself (README, docs and CI changes are left out).
+      - name: Write release notes
         env:
-          GH_TOKEN: ${{ github.token }}
-          TAG: ${{ steps.version.outputs.tag }}
-        run: |
-          gh release create "$TAG" "halo-$TAG.apk" "halo-$TAG.aab" \
-            --title "Halo $TAG" \
-            --generate-notes \
-            --verify-tag
-
-      - name: Add verification details to the release notes
-        env:
-          GH_TOKEN: ${{ github.token }}
           TAG: ${{ steps.version.outputs.tag }}
           FP: ${{ steps.cert.outputs.fingerprint }}
+          REPO: ${{ github.repository }}
         run: |
+          PREV=$(git describe --tags --abbrev=0 --match 'v*' "$TAG^" 2>/dev/null || true)
+          RANGE=${PREV:+$PREV..}$TAG
+          CHANGES=$(git log "$RANGE" --no-merges --reverse --format='- %s' -- app/ | grep -v '^- Release v' || true)
           {
-            gh release view "$TAG" --json body -q .body
+            echo "## What's new"
+            echo
+            if [ -n "$CHANGES" ]; then echo "$CHANGES"; else echo "- Small fixes and improvements."; fi
+            echo
+            [ -n "$PREV" ] && echo "**All changes**: https://github.com/$REPO/compare/$PREV...$TAG" && echo
+            echo "## Install"
+            echo
+            echo "- [Google Play](https://play.google.com/store/apps/details?id=com.yogeshpaliyal.halo)"
+            echo "- [Obtainium](https://yogeshpaliyal.github.io/Halo/obtainium/), for automatic APK updates"
+            echo "- \`halo-$TAG.apk\` below"
             echo
             echo "## Verify your download"
             echo
@@ -172,4 +177,14 @@ jobs:
             sha256sum "halo-$TAG.apk" "halo-$TAG.aab"
             echo '```'
           } > notes.md
-          gh release edit "$TAG" --notes-file notes.md
+          cat notes.md
+
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          gh release create "$TAG" "halo-$TAG.apk" "halo-$TAG.aab" \
+            --title "Halo $TAG" \
+            --notes-file notes.md \
+            --verify-tag
