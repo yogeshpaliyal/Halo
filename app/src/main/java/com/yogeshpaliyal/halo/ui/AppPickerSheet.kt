@@ -1,6 +1,8 @@
 package com.yogeshpaliyal.halo.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,8 +17,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -34,6 +38,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
 import com.yogeshpaliyal.halo.data.AppEntry
@@ -54,6 +59,10 @@ fun AppPickerSheet(
     countLabel: (Int) -> String = { "$it of ${Prefs.MAX_FAVORITES} picked" },
     /** Extra content under the title, e.g. a folder's name field. */
     header: (@Composable () -> Unit)? = null,
+    /** First row of the list, above the apps (e.g. "New folder"). Hidden while searching. */
+    leadingRow: (@Composable () -> Unit)? = null,
+    /** Shows an edit button on folder rows. */
+    onEditFolder: ((AppEntry) -> Unit)? = null,
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var query by remember { mutableStateOf("") }
@@ -104,6 +113,9 @@ fun AppPickerSheet(
         }
         Spacer(Modifier.height(8.dp))
         LazyColumn(contentPadding = PaddingValues(bottom = 32.dp)) {
+            if (leadingRow != null && query.isBlank()) {
+                item(key = "leading") { leadingRow() }
+            }
             items(filtered, key = { it.key }) { app ->
                 val isSelected = app.key in selected
                 val enabled = isSelected || !full
@@ -126,7 +138,16 @@ fun AppPickerSheet(
                         Spacer(Modifier.width(8.dp))
                         ActionTag()
                     }
+                    if (app.isFolder) {
+                        Spacer(Modifier.width(8.dp))
+                        FolderTag(app.children.size)
+                    }
                     Spacer(Modifier.weight(1f))
+                    if (app.isFolder && onEditFolder != null) {
+                        IconButton(onClick = { onEditFolder(app) }) {
+                            Icon(Icons.Rounded.Edit, contentDescription = "Edit ${app.label}")
+                        }
+                    }
                     if (isSelected) {
                         if (showOrder) {
                             Text(
@@ -140,6 +161,52 @@ fun AppPickerSheet(
                     }
                 }
             }
+        }
+    }
+}
+
+/** Folder tag for picker rows: "Folder · 3". */
+@Composable
+fun FolderTag(count: Int) {
+    Text(
+        "Folder · $count",
+        style = MaterialTheme.typography.labelSmall,
+        color = MaterialTheme.colorScheme.onPrimaryContainer,
+        modifier = Modifier
+            .clip(CircleShape)
+            .background(MaterialTheme.colorScheme.primaryContainer)
+            .padding(horizontal = 8.dp, vertical = 2.dp),
+    )
+}
+
+/** First row of the favourites picker: start a new folder. */
+@Composable
+fun NewFolderRow(enabled: Boolean, onClick: () -> Unit) {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .clickable(enabled = enabled, onClick = onClick)
+            .alpha(if (enabled) 1f else 0.4f)
+            .padding(horizontal = 20.dp, vertical = 10.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Box(
+            Modifier
+                .size(40.dp)
+                .clip(CircleShape)
+                .background(MaterialTheme.colorScheme.primaryContainer),
+            contentAlignment = Alignment.Center,
+        ) {
+            Icon(Icons.Rounded.Add, contentDescription = null, tint = MaterialTheme.colorScheme.onPrimaryContainer)
+        }
+        Spacer(Modifier.width(16.dp))
+        Column(Modifier.weight(1f)) {
+            Text("New folder", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.primary)
+            Text(
+                if (enabled) "Group several apps into one slot" else "All slots used. Untick one to add a folder.",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
         }
     }
 }

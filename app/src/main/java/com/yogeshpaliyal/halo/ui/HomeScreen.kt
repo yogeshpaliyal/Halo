@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LargeTopAppBar
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -82,6 +83,9 @@ fun HomeScreen() {
     }
     // Folder being created or edited, with its working name and apps.
     var editingFolder by remember { mutableStateOf<Folder?>(null) }
+    // Folders are listed in the favourites picker like apps; editing one returns to it.
+    val folderEntries = remember(foldersVersion, apps) { Folders.all(context).mapNotNull { repo.entryFor(it.key) } }
+    var backToPicker by remember { mutableStateOf(false) }
     var showPicker by remember { mutableStateOf(false) }
     var hiddenRecents by remember { mutableStateOf(Prefs.hiddenRecents(context)) }
     var showHiddenPicker by remember { mutableStateOf(false) }
@@ -155,16 +159,9 @@ fun HomeScreen() {
                 FavoritesCard(
                     favorites = favoriteEntries,
                     onAdd = { showPicker = true },
-                    onRemove = {
-                        if (it.isFolder) {
-                            Folders.delete(context, it.key)
-                            favorites = Prefs.favorites(context)
-                        } else {
-                            favorites = Prefs.toggleFavorite(context, it.key)
-                        }
-                    },
+                    // Removing a folder only frees its slot; it stays in the picker to add back.
+                    onRemove = { favorites = Prefs.toggleFavorite(context, it.key) },
                     onMove = { index, delta -> favorites = Prefs.moveFavorite(context, index, delta) },
-                    onNewFolder = { editingFolder = Folders.newFolder() },
                     onEditFolder = { entry -> editingFolder = Folders.get(context, entry.key) },
                 )
             }
@@ -267,6 +264,10 @@ fun HomeScreen() {
                 favorites = Prefs.favorites(context)
                 foldersVersion++
                 editingFolder = null
+                if (backToPicker) {
+                    backToPicker = false
+                    showPicker = true
+                }
             },
             title = if (isNew) "New folder" else "Edit folder",
             limit = Folders.MAX_APPS,
@@ -280,16 +281,47 @@ fun HomeScreen() {
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                 )
+                if (!isNew) {
+                    TextButton(
+                        onClick = {
+                            Folders.delete(context, folder.key)
+                            // Dismissing with no apps saves nothing.
+                            editingFolder = folder.copy(apps = emptyList())
+                            favorites = Prefs.favorites(context)
+                            foldersVersion++
+                            editingFolder = null
+                            if (backToPicker) {
+                                backToPicker = false
+                                showPicker = true
+                            }
+                        },
+                        contentPadding = PaddingValues(horizontal = 0.dp),
+                    ) {
+                        Text("Delete folder", color = MaterialTheme.colorScheme.error)
+                    }
+                }
             },
         )
     }
 
     if (showPicker) {
         AppPickerSheet(
-            apps = apps,
+            apps = folderEntries + apps,
             selected = favorites,
             onToggle = { favorites = Prefs.toggleFavorite(context, it.key) },
             onDismiss = { showPicker = false },
+            leadingRow = {
+                NewFolderRow(enabled = favorites.size < Prefs.MAX_FAVORITES) {
+                    showPicker = false
+                    backToPicker = true
+                    editingFolder = Folders.newFolder()
+                }
+            },
+            onEditFolder = { entry ->
+                showPicker = false
+                backToPicker = true
+                editingFolder = Folders.get(context, entry.key)
+            },
         )
     }
 }

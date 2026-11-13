@@ -313,7 +313,6 @@ fun FavoritesCard(
     onAdd: () -> Unit,
     onRemove: (AppEntry) -> Unit,
     onMove: (index: Int, delta: Int) -> Unit,
-    onNewFolder: () -> Unit,
     onEditFolder: (AppEntry) -> Unit,
 ) {
     val haptics = LocalHapticFeedback.current
@@ -337,17 +336,12 @@ fun FavoritesCard(
                 Column(Modifier.weight(1f)) {
                     Text("Favourites", style = MaterialTheme.typography.titleMedium)
                     Text(
-                        "Inner ring, top to bottom. Hold and drag to reorder, tap for options.",
+                        "Inner ring, top to bottom. Hold and drag to reorder, tap for options. Add folders from Edit.",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
                 TextButton(onClick = onAdd) { Text("Edit") }
-            }
-            if (favorites.size < Prefs.MAX_FAVORITES) {
-                TextButton(onClick = onNewFolder, contentPadding = PaddingValues(horizontal = 0.dp)) {
-                    Text("+ New folder")
-                }
             }
             Spacer(Modifier.height(14.dp))
             val target = targetIndex()
@@ -507,7 +501,7 @@ private fun FilledSlot(
                 onClick = { menuOpen = false; onMove(1) },
             )
             DropdownMenuItem(
-                text = { Text(if (onEdit != null) "Delete folder" else "Remove", color = MaterialTheme.colorScheme.error) },
+                text = { Text("Remove", color = MaterialTheme.colorScheme.error) },
                 onClick = { menuOpen = false; onRemove() },
             )
         }
