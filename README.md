@@ -11,6 +11,7 @@ A floating bubble that sticks to the edge of your screen and lets you switch app
 - **Configurable**: tap action, hold delay (200 / 280 / 400 ms) and haptics.
 - **Quick actions** as favourites: flashlight, volume panel and play/pause. No extra permissions.
 - **Folders** (optional): group up to 8 apps in one favourite slot. Rest on it in the dial and its apps fan out; slide to one and let go.
+- **11 languages**: English, Deutsch, Español, Français, हिन्दी, Bahasa Indonesia, Italiano, 日本語, Português (Brasil), Русский and Türkçe. On Android 13+ you can pick Halo's language on its own in Settings → Apps → Halo → Language.
 - **Hide from recents**: keep any app out of the recent-apps ring.
 - **Hides in full-screen apps** like games, videos and OTT apps, and in any apps you choose.
 - **Bubble size** (small, medium, large) and opacity.
