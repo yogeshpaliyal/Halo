@@ -47,9 +47,9 @@ it every day.
 
 ## Download
 
-<a href="https://play.google.com/store/apps/details?id=com.yogeshpaliyal.halo"><img src="https://img.shields.io/badge/Google_Play-Install-34A853?style=for-the-badge&logo=googleplay&logoColor=white" alt="Get it on Google Play" height="40"></a>
-<a href="https://yogeshpaliyal.github.io/Halo/obtainium/"><img src="https://img.shields.io/badge/Obtainium-Auto--update_APK-6639B7?style=for-the-badge&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyLjQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI%2BPHBhdGggZD0iTTIwIDExYTggOCAwIDAgMC0xNC43LTQuNEwzIDkiLz48cGF0aCBkPSJNMyAzdjZoNiIvPjxwYXRoIGQ9Ik00IDEzYTggOCAwIDAgMCAxNC43IDQuNEwyMSAxNSIvPjxwYXRoIGQ9Ik0yMSAyMXYtNmgtNiIvPjwvc3ZnPg%3D%3D" alt="Get it on Obtainium" height="40"></a>
-<a href="https://github.com/yogeshpaliyal/Halo/releases/latest"><img src="https://img.shields.io/github/v/release/yogeshpaliyal/Halo?style=for-the-badge&logo=github&label=GitHub&color=24292F" alt="Latest GitHub release" height="40"></a>
+<a href="https://play.google.com/store/apps/details?id=com.yogeshpaliyal.halo"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" height="83"></a>
+<a href="https://yogeshpaliyal.github.io/Halo/obtainium/"><img src="https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/badge_obtainium.png" alt="Get it on Obtainium" height="56"></a>
+<a href="https://github.com/yogeshpaliyal/Halo/releases/latest"><img src="https://img.shields.io/github/v/release/yogeshpaliyal/Halo?label=GitHub%20release&style=for-the-badge&logo=github" alt="Latest GitHub release" height="56"></a>
 
 - **[Google Play](https://play.google.com/store/apps/details?id=com.yogeshpaliyal.halo)** (easiest): updates
   automatically, and Android 15's "restricted settings" step doesn't apply.
