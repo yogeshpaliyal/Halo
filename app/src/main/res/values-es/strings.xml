@@ -148,4 +148,7 @@
     <string name="palette_lemon">Limón</string>
     <string name="palette_grape">Uva</string>
     <string name="palette_mono">Mono</string>
+    <string name="tag_mood">Ánimo</string>
+    <string name="reactions_title">Reacciona a tu día</string>
+    <string name="reactions_body">Duerme de noche, suda con poca batería, brilla mientras carga y salta con notificaciones nuevas.</string>
 </resources>

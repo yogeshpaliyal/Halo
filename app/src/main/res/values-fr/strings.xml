@@ -151,4 +151,7 @@
     <string name="palette_lemon">Citron</string>
     <string name="palette_grape">Raisin</string>
     <string name="palette_mono">Mono</string>
+    <string name="tag_mood">Humeur</string>
+    <string name="reactions_title">Réagit à votre journée</string>
+    <string name="reactions_body">Dort la nuit, transpire quand la batterie est faible, s’illumine en charge et saute aux nouvelles notifications.</string>
 </resources>

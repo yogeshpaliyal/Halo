@@ -148,4 +148,7 @@
     <string name="palette_lemon">Zitrone</string>
     <string name="palette_grape">Traube</string>
     <string name="palette_mono">Mono</string>
+    <string name="tag_mood">Laune</string>
+    <string name="reactions_title">Reagiert auf deinen Tag</string>
+    <string name="reactions_body">Schläft nachts, schwitzt bei schwachem Akku, leuchtet beim Laden und hüpft bei neuen Benachrichtigungen.</string>
 </resources>

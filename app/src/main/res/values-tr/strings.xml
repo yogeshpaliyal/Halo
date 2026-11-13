@@ -148,4 +148,7 @@
     <string name="palette_lemon">Limon</string>
     <string name="palette_grape">Üzüm</string>
     <string name="palette_mono">Mono</string>
+    <string name="tag_mood">Ruh hâli</string>
+    <string name="reactions_title">Gününe tepki verir</string>
+    <string name="reactions_body">Gece uyur, pil azalınca terler, şarj olurken parlar ve yeni bildirimlerde zıplar.</string>
 </resources>

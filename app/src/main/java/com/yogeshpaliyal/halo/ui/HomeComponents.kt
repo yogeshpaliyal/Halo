@@ -663,6 +663,8 @@ fun BubbleCard(
     onPalette: (BubblePalette) -> Unit,
     animations: Boolean,
     onAnimations: (Boolean) -> Unit,
+    reactions: Boolean,
+    onReactions: (Boolean) -> Unit,
     size: BubbleSize,
     onSize: (BubbleSize) -> Unit,
     opacity: Float,
@@ -714,6 +716,25 @@ fun BubbleCard(
                         )
                     }
                     Switch(checked = animations, onCheckedChange = onAnimations)
+                }
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .clickable { onReactions(!reactions) }
+                        .padding(horizontal = 20.dp, vertical = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Tag(stringResource(R.string.tag_mood))
+                    Spacer(Modifier.width(14.dp))
+                    Column(Modifier.weight(1f)) {
+                        Text(stringResource(R.string.reactions_title), style = MaterialTheme.typography.titleSmall)
+                        Text(
+                            stringResource(R.string.reactions_body),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                    Switch(checked = reactions, onCheckedChange = onReactions)
                 }
             }
             HorizontalDivider(Modifier.padding(horizontal = 20.dp, vertical = 8.dp))

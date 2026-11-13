@@ -64,6 +64,16 @@ class BubbleRenderer {
     /** -1..1: ear flick, leaf sway, ghost bob, star tilt, antenna glow. */
     var wiggle = 0f
 
+    // Reactions to your day.
+    /** Night time: eyes closed and a couple of floating z's (only while untouched). */
+    var sleepy = false
+    /** Battery under 15% and not charging: a sweat drop. */
+    var lowBattery = false
+    /** Plugged in: a lightning bolt. */
+    var charging = false
+    /** 0..1 animation phase for the z's, sweat drop and bolt, driven by idle moments. */
+    var extraPhase = 0f
+
     private val body = Paint(Paint.ANTI_ALIAS_FLAG)
     private val face = Paint(Paint.ANTI_ALIAS_FLAG)
     private val stroke = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -73,6 +83,23 @@ class BubbleRenderer {
     }
     private val blush = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = 0x66FF7A9A }
     private val leaf = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val extraFill = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val extraStroke = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.STROKE
+        strokeJoin = Paint.Join.ROUND
+        color = 0xFF1B1530.toInt()
+    }
+    private val zText = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        typeface = android.graphics.Typeface.DEFAULT_BOLD
+        textAlign = Paint.Align.CENTER
+    }
+    private val zOutline = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        typeface = android.graphics.Typeface.DEFAULT_BOLD
+        textAlign = Paint.Align.CENTER
+        style = Paint.Style.STROKE
+        strokeJoin = Paint.Join.ROUND
+        color = 0xFF1B1530.toInt()
+    }
     private val path = Path()
     private val rect = RectF()
     private var shaderKey = ""
@@ -94,6 +121,68 @@ class BubbleRenderer {
             BubbleCharacter.STAR -> star(canvas, cx, cy, r)
             BubbleCharacter.BOT -> bot(canvas, cx, cy, r)
         }
+        if (animated) extras(canvas, cx, cy, r)
+    }
+
+    /** Asleep only while nobody's touching it. */
+    private val dozing: Boolean get() = sleepy && mood == Mood.NORMAL
+
+    private fun extras(c: Canvas, cx: Float, cy: Float, r: Float) {
+        if (dozing) {
+            // Two z's drifting up from the top left.
+            val drift = extraPhase * r * 0.12f
+            zz(c, cx - r * 0.6f, cy - r * 0.48f - drift, r * 0.44f, 1f - extraPhase * 0.3f)
+            zz(c, cx - r * 0.88f, cy - r * 0.86f - drift, r * 0.32f, 0.75f - extraPhase * 0.3f)
+        }
+        if (lowBattery) {
+            // A sweat drop at the right temple, sliding down a little when it drips.
+            val x = cx + r * 0.72f
+            val y = cy - r * 0.22f + extraPhase * r * 0.18f
+            val s = r * 0.17f
+            path.reset()
+            path.moveTo(x, y - s * 1.3f)
+            path.cubicTo(x + s * 0.2f, y - s * 0.6f, x + s, y - s * 0.1f, x + s * 0.9f, y + s * 0.4f)
+            path.cubicTo(x + s * 0.8f, y + s * 1.05f, x - s * 0.8f, y + s * 1.05f, x - s * 0.9f, y + s * 0.4f)
+            path.cubicTo(x - s, y - s * 0.1f, x - s * 0.2f, y - s * 0.6f, x, y - s * 1.3f)
+            path.close()
+            extraFill.color = 0xFF7FD3FF.toInt()
+            extraStroke.strokeWidth = r * 0.04f
+            c.drawPath(path, extraFill)
+            c.drawPath(path, extraStroke)
+            extraFill.color = 0xCCFFFFFF.toInt()
+            c.drawCircle(x - s * 0.35f, y + s * 0.25f, s * 0.22f, extraFill)
+        }
+        if (charging) {
+            // A lightning bolt at the bottom right that flashes bigger now and then.
+            val k = 1f + 0.25f * kotlin.math.sin(extraPhase * Math.PI.toFloat())
+            val x = cx + r * 0.66f
+            val y = cy + r * 0.6f
+            val s = r * 0.3f * k
+            path.reset()
+            path.moveTo(x + s * 0.15f, y - s)
+            path.lineTo(x - s * 0.55f, y + s * 0.12f)
+            path.lineTo(x - s * 0.02f, y + s * 0.12f)
+            path.lineTo(x - s * 0.2f, y + s)
+            path.lineTo(x + s * 0.55f, y - s * 0.18f)
+            path.lineTo(x + s * 0.02f, y - s * 0.18f)
+            path.close()
+            extraFill.color = 0xFFFFD54F.toInt()
+            extraStroke.strokeWidth = r * 0.05f
+            c.drawPath(path, extraStroke)
+            c.drawPath(path, extraFill)
+        }
+    }
+
+    private fun zz(c: Canvas, x: Float, y: Float, size: Float, alpha: Float) {
+        val a = (alpha.coerceIn(0f, 1f) * 255).toInt()
+        zText.textSize = size
+        zOutline.textSize = size
+        zOutline.strokeWidth = size * 0.18f
+        zOutline.alpha = a
+        zText.color = Color.WHITE
+        zText.alpha = a
+        c.drawText("z", x, y, zOutline)
+        c.drawText("z", x, y, zText)
     }
 
     /** True when the character has a face to animate. */
@@ -246,7 +335,8 @@ class BubbleRenderer {
         // Screen-like eyes.
         val ex = hw * 0.36f
         val ew = hw * 0.18f
-        val eh = (hw * 0.3f) * (1f - blink).coerceAtLeast(0.15f) * if (mood == Mood.PRESSED) 0.5f else 1f
+        val closed = if (dozing) 1f else blink
+        val eh = (hw * 0.3f) * (1f - closed).coerceAtLeast(0.15f) * if (mood == Mood.PRESSED) 0.5f else 1f
         val ox = lookX * hw * 0.08f
         val oy = hy - hw * 0.1f + lookY * hw * 0.06f
         for (s in listOf(-1f, 1f)) {
@@ -274,6 +364,16 @@ class BubbleRenderer {
                 val x = cx + s * dx + ox
                 rect.set(x - r * 0.12f, cy - r * 0.04f + oy, x + r * 0.12f, cy + r * 0.16f + oy)
                 c.drawArc(rect, 200f, 140f, false, stroke)
+            }
+            return
+        }
+        if (dozing) {
+            // Peaceful closed eyes.
+            stroke.strokeWidth = r * 0.07f
+            for (s in listOf(-1f, 1f)) {
+                val x = cx + s * dx
+                rect.set(x - r * 0.1f, cy - r * 0.1f, x + r * 0.1f, cy + r * 0.06f)
+                c.drawArc(rect, 20f, 140f, false, stroke)
             }
             return
         }

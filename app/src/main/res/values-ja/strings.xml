@@ -145,4 +145,7 @@
     <string name="palette_lemon">レモン</string>
     <string name="palette_grape">グレープ</string>
     <string name="palette_mono">モノ</string>
+    <string name="tag_mood">気分</string>
+    <string name="reactions_title">1 日に反応</string>
+    <string name="reactions_body">夜は眠り、電池が少ないと汗をかき、充電中は光り、新しい通知でジャンプします。</string>
 </resources>

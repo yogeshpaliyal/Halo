@@ -30,6 +30,7 @@ object Prefs {
     const val KEY_BUBBLE_PALETTE = "bubble_palette"
     const val KEY_BUBBLE_CHARACTER = "bubble_character"
     const val KEY_BUBBLE_ANIMATIONS = "bubble_animations"
+    const val KEY_BUBBLE_REACTIONS = "bubble_reactions"
 
     private fun sp(context: Context): SharedPreferences =
         context.getSharedPreferences(FILE, Context.MODE_PRIVATE)
@@ -111,6 +112,10 @@ object Prefs {
     /** Blinks and idle moves for characters. Touch reactions always play. */
     fun bubbleAnimations(context: Context): Boolean = sp(context).getBoolean(KEY_BUBBLE_ANIMATIONS, true)
     fun setBubbleAnimations(context: Context, on: Boolean) = sp(context).edit { putBoolean(KEY_BUBBLE_ANIMATIONS, on) }
+
+    /** Characters sleep at night, sweat on low battery, show a bolt while charging, hop for notifications. */
+    fun bubbleReactions(context: Context): Boolean = sp(context).getBoolean(KEY_BUBBLE_REACTIONS, true)
+    fun setBubbleReactions(context: Context, on: Boolean) = sp(context).edit { putBoolean(KEY_BUBBLE_REACTIONS, on) }
 
     /** Packages where the bubble hides itself while they're on screen. */
     fun hideInApps(context: Context): Set<String> =

@@ -75,12 +75,14 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
     }
     private val arc = android.graphics.RectF()
 
-    /** Small dot when a favourite has notifications waiting. */
+    /** Small dot when a favourite has notifications waiting. A new one makes it hop. */
     var badge = false
         set(value) {
             if (field != value) {
+                val arrived = value && !field
                 field = value
                 invalidate()
+                if (arrived && reactionsOn() && state == State.IDLE && !hidden) celebrate()
             }
         }
 
@@ -306,6 +308,9 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
 
     private fun reset() {
         state = State.IDLE
+        // Touched at night: stays awake for a moment before dozing off again.
+        awakeUntil = android.os.SystemClock.uptimeMillis() + AWAKE_AFTER_TOUCH_MS
+        renderer.sleepy = false
         setMood(BubbleRenderer.Mood.NORMAL)
         renderer.lookX = 0f
         renderer.lookY = 0f
@@ -485,6 +490,7 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
     fun refreshStyle() {
         renderer.palette = Prefs.bubblePalette(context)
         renderer.character = Prefs.bubbleCharacter(context)
+        updateDay()
         stopIdle()
         scheduleIdle()
         invalidate()
@@ -513,8 +519,73 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
     private val idleMoment = Runnable {
         // Skip while the screen is off; the timer itself never wakes a sleeping phone.
         val screenOn = power?.isInteractive != false
+        if (screenOn) updateDay()
         if (screenOn && state == State.IDLE && !hidden && renderer.animated && motion?.isRunning != true) playIdle()
         scheduleIdle()
+    }
+
+    // --- Reactions to your day --------------------------------------------------------------
+
+    private fun reactionsOn() = renderer.animated && Prefs.bubbleReactions(context)
+
+    /** Stays awake for a bit after you touch it, even at night. */
+    private var awakeUntil = 0L
+
+    /** Re-reads the clock and battery; cheap, done at idle moments and on battery changes. */
+    private fun updateDay() {
+        val on = reactionsOn()
+        val hour = java.util.Calendar.getInstance().get(java.util.Calendar.HOUR_OF_DAY)
+        val night = hour >= 23 || hour < 6
+        val sleepy = on && night && android.os.SystemClock.uptimeMillis() > awakeUntil
+        val low = on && batteryLow && !batteryCharging
+        val plugged = on && batteryCharging
+        if (sleepy != renderer.sleepy || low != renderer.lowBattery || plugged != renderer.charging) {
+            renderer.sleepy = sleepy
+            renderer.lowBattery = low
+            renderer.charging = plugged
+            invalidate()
+        }
+    }
+
+    private var batteryLow = false
+    private var batteryCharging = false
+    private var wasAttachedLongEnough = false
+
+    private val batteryReceiver = object : android.content.BroadcastReceiver() {
+        override fun onReceive(c: Context, intent: android.content.Intent) {
+            val level = intent.getIntExtra(android.os.BatteryManager.EXTRA_LEVEL, -1)
+            val scale = intent.getIntExtra(android.os.BatteryManager.EXTRA_SCALE, 100)
+            val status = intent.getIntExtra(android.os.BatteryManager.EXTRA_STATUS, -1)
+            batteryLow = level >= 0 && scale > 0 && level * 100 / scale < LOW_BATTERY_PERCENT
+            val wasCharging = batteryCharging
+            batteryCharging = status == android.os.BatteryManager.BATTERY_STATUS_CHARGING ||
+                status == android.os.BatteryManager.BATTERY_STATUS_FULL
+            updateDay()
+            // Plugging in gets a little celebration.
+            if (batteryCharging && !wasCharging && wasAttachedLongEnough && state == State.IDLE && !hidden && reactionsOn()) {
+                celebrate()
+            }
+        }
+    }
+
+    /** A happy double hop: new notification, or plugged in. */
+    private fun celebrate() {
+        setMood(BubbleRenderer.Mood.HAPPY)
+        runMotion(620, { t ->
+            val h = abs(sin(2f * PI.toFloat() * t))
+            offY = -0.09f * h * (1f - t * 0.4f)
+            scaleXf = 1f - 0.04f * h
+            scaleYf = 1f + 0.06f * h
+        }, end = { if (state == State.IDLE) setMood(BubbleRenderer.Mood.NORMAL) })
+    }
+
+    /** Asleep, sweating or charging: those get their own idle moments. */
+    private fun playDayMoment(): Boolean {
+        val r = renderer
+        if (!r.sleepy && !r.lowBattery && !r.charging) return false
+        idleAnim?.cancel()
+        idleAnim = idleTween(if (r.sleepy) 1600L else 900L) { t -> r.extraPhase = t }
+        return true
     }
 
     private fun scheduleIdle() {
@@ -531,6 +602,8 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
     }
 
     private fun playIdle() {
+        // Mostly the day reaction when there is one (asleep characters don't look around).
+        if ((renderer.sleepy || random.nextInt(3) == 0) && playDayMoment()) return
         idleAnim?.cancel()
         val roll = random.nextInt(10)
         idleAnim = when {
@@ -571,6 +644,7 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
                 override fun onAnimationEnd(animation: Animator) {
                     renderer.blink = 0f
                     renderer.wiggle = 0f
+                    renderer.extraPhase = 0f
                     if (state == State.IDLE) {
                         renderer.lookX = 0f
                         renderer.lookY = 0f
@@ -583,10 +657,19 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
+        // Sticky broadcast: also delivers the current battery state right away.
+        androidx.core.content.ContextCompat.registerReceiver(
+            context, batteryReceiver, android.content.IntentFilter(android.content.Intent.ACTION_BATTERY_CHANGED),
+            androidx.core.content.ContextCompat.RECEIVER_NOT_EXPORTED,
+        )
+        postDelayed({ wasAttachedLongEnough = true }, 1500)
+        updateDay()
         scheduleIdle()
     }
 
     override fun onDetachedFromWindow() {
+        runCatching { context.unregisterReceiver(batteryReceiver) }
+        wasAttachedLongEnough = false
         stopIdle()
         motion?.cancel()
         holdAnim?.cancel()
@@ -598,6 +681,8 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
     companion object {
         /** Gap allowed between the two taps of a double tap. */
         private const val DOUBLE_TAP_MS = 250L
+        private const val LOW_BATTERY_PERCENT = 15
+        private const val AWAKE_AFTER_TOUCH_MS = 8000L
 
         /**
          * The character fills this share of the window; the rest is room for hops, pops

@@ -145,4 +145,7 @@
     <string name="palette_lemon">Lemon</string>
     <string name="palette_grape">Anggur</string>
     <string name="palette_mono">Mono</string>
+    <string name="tag_mood">Mood</string>
+    <string name="reactions_title">Bereaksi pada harimu</string>
+    <string name="reactions_body">Tidur di malam hari, berkeringat saat baterai lemah, bersinar saat diisi daya, dan melompat saat ada notifikasi baru.</string>
 </resources>

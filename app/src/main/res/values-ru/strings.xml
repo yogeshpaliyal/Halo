@@ -154,4 +154,7 @@
     <string name="palette_lemon">Лимон</string>
     <string name="palette_grape">Виноград</string>
     <string name="palette_mono">Моно</string>
+    <string name="tag_mood">Настр.</string>
+    <string name="reactions_title">Реагирует на ваш день</string>
+    <string name="reactions_body">Спит ночью, потеет при низком заряде, светится при зарядке и подпрыгивает от новых уведомлений.</string>
 </resources>

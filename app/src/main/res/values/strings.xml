@@ -177,4 +177,7 @@
     <string name="palette_lemon">Lemon</string>
     <string name="palette_grape">Grape</string>
     <string name="palette_mono">Mono</string>
+    <string name="tag_mood">Mood</string>
+    <string name="reactions_title">Reacts to your day</string>
+    <string name="reactions_body">Sleeps at night, sweats when the battery is low, glows while charging and hops for new notifications.</string>
 </resources>
