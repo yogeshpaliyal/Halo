@@ -20,6 +20,8 @@
     <!-- Settings choices -->
     <string name="tap_previous">Previous app</string>
     <string name="tap_previous_desc">Jump back to the app you used last</string>
+    <string name="tap_second">App before last</string>
+    <string name="tap_second_desc">Jump to the app you used before that</string>
     <string name="tap_menu">Open menu</string>
     <string name="tap_menu_desc">Show the menu, then tap an app</string>
     <string name="tap_nothing">Do nothing</string>
@@ -118,6 +120,8 @@
     <string name="gesture_drag_title">Drag</string>
     <string name="gesture_drag_body">Moves the bubble. It snaps to the nearest side.</string>
     <string name="gesture_tap_title">Tap</string>
+    <string name="tag_double">Double</string>
+    <string name="gesture_double_title">Double tap</string>
     <string name="hold_delay">Hold delay</string>
     <string name="haptics">Haptics</string>
     <string name="haptics_body">Vibrate on hold and on each app you slide over</string>

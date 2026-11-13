@@ -12,6 +12,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
 import com.yogeshpaliyal.halo.data.Prefs
+import com.yogeshpaliyal.halo.data.TapAction
 import kotlin.math.hypot
 
 /**
@@ -30,6 +31,7 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
 
     interface Listener {
         fun onTap()
+        fun onDoubleTap()
         fun onDragMove(rawX: Float, rawY: Float)
         fun onDragEnd(rawX: Float, rawY: Float)
         fun onMenuOpen(rawX: Float, rawY: Float)
@@ -103,12 +105,27 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
         }
     }
 
+    /** A first tap waiting to see if a second one follows. */
+    private val singleTap = Runnable {
+        tapPending = false
+        haptic(HapticFeedbackConstants.VIRTUAL_KEY)
+        listener.onTap()
+    }
+    private var tapPending = false
+    /** This touch began while a first tap was waiting, so lifting it makes a double tap. */
+    private var secondTap = false
+
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
         lastX = event.rawX
         lastY = event.rawY
         when (event.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
+                secondTap = tapPending
+                if (tapPending) {
+                    removeCallbacks(singleTap)
+                    tapPending = false
+                }
                 state = State.PRESSED
                 downX = event.rawX
                 downY = event.rawY
@@ -131,9 +148,21 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
             MotionEvent.ACTION_UP -> {
                 removeCallbacks(longPress)
                 when (state) {
-                    State.PRESSED -> {
-                        haptic(HapticFeedbackConstants.VIRTUAL_KEY)
-                        listener.onTap()
+                    State.PRESSED -> when {
+                        secondTap -> {
+                            haptic(HapticFeedbackConstants.VIRTUAL_KEY)
+                            listener.onDoubleTap()
+                        }
+                        // Only wait for a possible second tap when double tap does something,
+                        // so single taps stay instant otherwise.
+                        Prefs.doubleTapAction(context) != TapAction.NOTHING -> {
+                            tapPending = true
+                            postDelayed(singleTap, DOUBLE_TAP_MS)
+                        }
+                        else -> {
+                            haptic(HapticFeedbackConstants.VIRTUAL_KEY)
+                            listener.onTap()
+                        }
                     }
                     State.DRAGGING -> listener.onDragEnd(event.rawX, event.rawY)
                     State.MENU -> listener.onMenuRelease(event.rawX, event.rawY)
@@ -174,6 +203,8 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
     /** Fades the bubble out while another app is full screen, and back in afterwards. */
     fun setHidden(hidden: Boolean) {
         removeCallbacks(longPress)
+        removeCallbacks(singleTap)
+        tapPending = false
         state = State.IDLE
         animate().cancel()
         this.hidden = hidden
@@ -183,5 +214,10 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
     private fun reset() {
         state = State.IDLE
         animate().scaleX(1f).scaleY(1f).alpha(Prefs.bubbleOpacity(context)).setDuration(160).start()
+    }
+
+    private companion object {
+        /** Gap allowed between the two taps of a double tap. */
+        const val DOUBLE_TAP_MS = 250L
     }
 }

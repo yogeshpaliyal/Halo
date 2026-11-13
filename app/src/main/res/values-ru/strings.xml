@@ -11,6 +11,8 @@
     <string name="action_play_pause">Пуск / пауза</string>
     <string name="tap_previous">Предыдущее приложение</string>
     <string name="tap_previous_desc">Вернуться к последнему приложению</string>
+    <string name="tap_second">Позапрошлое приложение</string>
+    <string name="tap_second_desc">Вернуться к приложению перед последним</string>
     <string name="tap_menu">Открыть меню</string>
     <string name="tap_menu_desc">Показать меню, затем нажать на приложение</string>
     <string name="tap_nothing">Ничего не делать</string>
@@ -97,6 +99,8 @@
     <string name="gesture_drag_title">Перетаскивание</string>
     <string name="gesture_drag_body">Перемещает кнопку. Она прилипает к ближайшему краю.</string>
     <string name="gesture_tap_title">Нажатие</string>
+    <string name="tag_double">Двойн.</string>
+    <string name="gesture_double_title">Двойное нажатие</string>
     <string name="hold_delay">Время удержания</string>
     <string name="haptics">Вибрация</string>
     <string name="haptics_body">Вибрация при удержании и на каждом приложении под пальцем</string>

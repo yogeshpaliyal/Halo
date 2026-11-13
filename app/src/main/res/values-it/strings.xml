@@ -11,6 +11,8 @@
     <string name="action_play_pause">Riproduci / pausa</string>
     <string name="tap_previous">App precedente</string>
     <string name="tap_previous_desc">Torna all’ultima app usata</string>
+    <string name="tap_second">Penultima app</string>
+    <string name="tap_second_desc">Torna all’app usata prima dell’ultima</string>
     <string name="tap_menu">Apri menu</string>
     <string name="tap_menu_desc">Mostra il menu, poi tocca un’app</string>
     <string name="tap_nothing">Non fare nulla</string>
@@ -95,6 +97,8 @@
     <string name="gesture_drag_title">Trascina</string>
     <string name="gesture_drag_body">Sposta la bolla. Si aggancia al lato più vicino.</string>
     <string name="gesture_tap_title">Tocca</string>
+    <string name="tag_double">Doppio</string>
+    <string name="gesture_double_title">Doppio tocco</string>
     <string name="hold_delay">Durata pressione</string>
     <string name="haptics">Vibrazione</string>
     <string name="haptics_body">Vibra quando tieni premuto e su ogni app su cui scorri</string>

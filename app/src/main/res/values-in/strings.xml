@@ -11,6 +11,8 @@
     <string name="action_play_pause">Putar / jeda</string>
     <string name="tap_previous">Aplikasi sebelumnya</string>
     <string name="tap_previous_desc">Kembali ke aplikasi terakhir yang dipakai</string>
+    <string name="tap_second">Aplikasi sebelum itu</string>
+    <string name="tap_second_desc">Kembali ke aplikasi sebelum yang terakhir</string>
     <string name="tap_menu">Buka menu</string>
     <string name="tap_menu_desc">Tampilkan menu, lalu ketuk aplikasi</string>
     <string name="tap_nothing">Tidak melakukan apa pun</string>
@@ -91,6 +93,8 @@
     <string name="gesture_drag_title">Seret</string>
     <string name="gesture_drag_body">Memindahkan gelembung. Gelembung menempel ke sisi terdekat.</string>
     <string name="gesture_tap_title">Ketuk</string>
+    <string name="tag_double">Ganda</string>
+    <string name="gesture_double_title">Ketuk dua kali</string>
     <string name="hold_delay">Durasi tahan</string>
     <string name="haptics">Getaran</string>
     <string name="haptics_body">Bergetar saat menahan dan pada setiap aplikasi yang dilewati</string>

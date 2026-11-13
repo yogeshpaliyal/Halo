@@ -11,6 +11,8 @@
     <string name="action_play_pause">Wiedergabe / Pause</string>
     <string name="tap_previous">Vorherige App</string>
     <string name="tap_previous_desc">Zurück zur zuletzt verwendeten App</string>
+    <string name="tap_second">Vorletzte App</string>
+    <string name="tap_second_desc">Zur App davor springen</string>
     <string name="tap_menu">Menü öffnen</string>
     <string name="tap_menu_desc">Menü zeigen, dann eine App antippen</string>
     <string name="tap_nothing">Nichts tun</string>
@@ -93,6 +95,8 @@
     <string name="gesture_drag_title">Ziehen</string>
     <string name="gesture_drag_body">Verschiebt die Blase. Sie rastet an der nächsten Seite ein.</string>
     <string name="gesture_tap_title">Tippen</string>
+    <string name="tag_double">Doppelt</string>
+    <string name="gesture_double_title">Doppeltippen</string>
     <string name="hold_delay">Haltedauer</string>
     <string name="haptics">Vibration</string>
     <string name="haptics_body">Vibrieren beim Halten und bei jeder App, über die du gleitest</string>

@@ -11,6 +11,8 @@
     <string name="action_play_pause">Lecture / pause</string>
     <string name="tap_previous">App précédente</string>
     <string name="tap_previous_desc">Revenir à la dernière app utilisée</string>
+    <string name="tap_second">Avant-dernière app</string>
+    <string name="tap_second_desc">Revenir à l’app utilisée juste avant</string>
     <string name="tap_menu">Ouvrir le menu</string>
     <string name="tap_menu_desc">Afficher le menu, puis toucher une app</string>
     <string name="tap_nothing">Ne rien faire</string>
@@ -95,6 +97,8 @@
     <string name="gesture_drag_title">Glisser</string>
     <string name="gesture_drag_body">Déplace la bulle. Elle se colle au bord le plus proche.</string>
     <string name="gesture_tap_title">Toucher</string>
+    <string name="tag_double">Double</string>
+    <string name="gesture_double_title">Double appui</string>
     <string name="hold_delay">Durée d’appui</string>
     <string name="haptics">Vibrations</string>
     <string name="haptics_body">Vibrer à l’appui et sur chaque app survolée</string>

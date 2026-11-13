@@ -11,6 +11,8 @@
     <string name="action_play_pause">चलाएं / रोकें</string>
     <string name="tap_previous">पिछला ऐप</string>
     <string name="tap_previous_desc">पिछली बार इस्तेमाल किए ऐप पर वापस जाएं</string>
+    <string name="tap_second">उससे पहले वाला ऐप</string>
+    <string name="tap_second_desc">पिछले ऐप से पहले इस्तेमाल किए ऐप पर जाएं</string>
     <string name="tap_menu">मेन्यू खोलें</string>
     <string name="tap_menu_desc">मेन्यू दिखाएं, फिर किसी ऐप पर टैप करें</string>
     <string name="tap_nothing">कुछ न करें</string>
@@ -93,6 +95,8 @@
     <string name="gesture_drag_title">खींचें</string>
     <string name="gesture_drag_body">बबल को हिलाता है। यह सबसे पास वाले किनारे पर टिक जाता है।</string>
     <string name="gesture_tap_title">टैप</string>
+    <string name="tag_double">दो बार</string>
+    <string name="gesture_double_title">दो बार टैप</string>
     <string name="hold_delay">दबाने का समय</string>
     <string name="haptics">वाइब्रेशन</string>
     <string name="haptics_body">दबाने पर और हर ऐप पर उंगली सरकाते समय वाइब्रेट करें</string>

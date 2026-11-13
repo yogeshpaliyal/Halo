@@ -11,6 +11,8 @@
     <string name="action_play_pause">Reproducir / pausar</string>
     <string name="tap_previous">App anterior</string>
     <string name="tap_previous_desc">Vuelve a la última app que usaste</string>
+    <string name="tap_second">Penúltima app</string>
+    <string name="tap_second_desc">Vuelve a la app que usaste antes de la última</string>
     <string name="tap_menu">Abrir menú</string>
     <string name="tap_menu_desc">Muestra el menú y luego toca una app</string>
     <string name="tap_nothing">No hacer nada</string>
@@ -93,6 +95,8 @@
     <string name="gesture_drag_title">Arrastrar</string>
     <string name="gesture_drag_body">Mueve la burbuja. Se ajusta al lado más cercano.</string>
     <string name="gesture_tap_title">Tocar</string>
+    <string name="tag_double">Doble</string>
+    <string name="gesture_double_title">Doble toque</string>
     <string name="hold_delay">Tiempo de pulsación</string>
     <string name="haptics">Vibración</string>
     <string name="haptics_body">Vibra al mantener y en cada app sobre la que deslizas</string>

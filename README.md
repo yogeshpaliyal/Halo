@@ -7,8 +7,9 @@ A floating bubble that sticks to the edge of your screen and lets you switch app
 - **Long-press** the bubble → a radial menu opens: your **favourites** on the inner ring, **recent apps** on the outer ring.
 - **Slide** to an app (you feel a tick on each one), **let go** to open it. Let go near the bubble to cancel.
 - **Tap** the bubble to jump back to your previous app (or set it to open the menu, or do nothing).
+- **Double-tap** it to jump to the app before that, so your two latest apps are one gesture away. Both taps can be set to any action.
 - **Drag** the bubble anywhere; it snaps to the nearest side and remembers its position.
-- **Configurable**: tap action, hold delay (200 / 280 / 400 ms) and haptics.
+- **Configurable**: tap and double-tap actions, hold delay (200 / 280 / 400 ms) and haptics.
 - **Quick actions** as favourites: flashlight, volume panel and play/pause. No extra permissions.
 - **Folders** (optional): group up to 8 apps in one favourite slot. Rest on it in the dial and its apps fan out; slide to one and let go.
 - **11 languages**: English, Deutsch, Español, Français, हिन्दी, Bahasa Indonesia, Italiano, 日本語, Português (Brasil), Русский and Türkçe. On Android 13+ you can pick Halo's language on its own in Settings → Apps → Halo → Language.

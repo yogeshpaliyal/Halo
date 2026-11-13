@@ -3,9 +3,10 @@ package com.yogeshpaliyal.halo.data
 import androidx.annotation.StringRes
 import com.yogeshpaliyal.halo.R
 
-/** What a single tap on the bubble does. */
+/** What a tap or double tap on the bubble does. */
 enum class TapAction(@StringRes val labelRes: Int, @StringRes val descriptionRes: Int) {
     PREVIOUS_APP(R.string.tap_previous, R.string.tap_previous_desc),
+    SECOND_APP(R.string.tap_second, R.string.tap_second_desc),
     OPEN_MENU(R.string.tap_menu, R.string.tap_menu_desc),
     NOTHING(R.string.tap_nothing, R.string.tap_nothing_desc),
 }

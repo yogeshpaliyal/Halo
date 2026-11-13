@@ -106,6 +106,7 @@ fun HomeScreen() {
     var hiddenRecents by remember { mutableStateOf(Prefs.hiddenRecents(context)) }
     var showHiddenPicker by remember { mutableStateOf(false) }
     var tapAction by remember { mutableStateOf(Prefs.tapAction(context)) }
+    var doubleTapAction by remember { mutableStateOf(Prefs.doubleTapAction(context)) }
     var holdDelay by remember { mutableStateOf(Prefs.holdDelay(context)) }
     var haptics by remember { mutableStateOf(Prefs.haptics(context)) }
     var hideFullscreen by remember { mutableStateOf(Prefs.hideInFullscreen(context)) }
@@ -194,6 +195,8 @@ fun HomeScreen() {
                     holdDelay = holdDelay,
                     haptics = haptics,
                     onTapAction = { tapAction = it; Prefs.setTapAction(context, it) },
+                    doubleTapAction = doubleTapAction,
+                    onDoubleTapAction = { doubleTapAction = it; Prefs.setDoubleTapAction(context, it) },
                     onHoldDelay = { holdDelay = it; Prefs.setHoldDelay(context, it) },
                     onHaptics = { haptics = it; Prefs.setHaptics(context, it) },
                 )

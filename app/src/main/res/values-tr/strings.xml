@@ -11,6 +11,8 @@
     <string name="action_play_pause">Oynat / duraklat</string>
     <string name="tap_previous">Önceki uygulama</string>
     <string name="tap_previous_desc">Son kullandığınız uygulamaya dönün</string>
+    <string name="tap_second">Sondan önceki uygulama</string>
+    <string name="tap_second_desc">Sondan önce kullandığınız uygulamaya dönün</string>
     <string name="tap_menu">Menüyü aç</string>
     <string name="tap_menu_desc">Menüyü göster, sonra bir uygulamaya dokun</string>
     <string name="tap_nothing">Hiçbir şey yapma</string>
@@ -93,6 +95,8 @@
     <string name="gesture_drag_title">Sürükle</string>
     <string name="gesture_drag_body">Baloncuğu taşır. En yakın kenara yapışır.</string>
     <string name="gesture_tap_title">Dokun</string>
+    <string name="tag_double">Çift</string>
+    <string name="gesture_double_title">Çift dokunma</string>
     <string name="hold_delay">Basılı tutma süresi</string>
     <string name="haptics">Titreşim</string>
     <string name="haptics_body">Basılı tutunca ve üzerinden geçtiğiniz her uygulamada titreşir</string>

@@ -449,10 +449,16 @@ class HaloService : Service(), BubbleView.Listener {
 
     // --- BubbleView.Listener --------------------------------------------------------------
 
-    override fun onTap() {
-        when (Prefs.tapAction(this)) {
+    override fun onTap() = perform(Prefs.tapAction(this))
+
+    override fun onDoubleTap() = perform(Prefs.doubleTapAction(this))
+
+    private fun perform(action: TapAction) {
+        when (action) {
             // Quick toggle, like Alt+Tab.
             TapAction.PREVIOUS_APP -> repo.recents(1).firstOrNull()?.let { repo.launch(it) }
+            // The one before that: tap and double tap cover your two latest apps.
+            TapAction.SECOND_APP -> repo.recents(2).getOrNull(1)?.let { repo.launch(it) }
             TapAction.OPEN_MENU -> showMenu(tapMode = true)
             TapAction.NOTHING -> Unit
         }

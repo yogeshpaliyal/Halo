@@ -579,6 +579,8 @@ fun GesturesCard(
     holdDelay: HoldDelay,
     haptics: Boolean,
     onTapAction: (TapAction) -> Unit,
+    doubleTapAction: TapAction,
+    onDoubleTapAction: (TapAction) -> Unit,
     onHoldDelay: (HoldDelay) -> Unit,
     onHaptics: (Boolean) -> Unit,
 ) {
@@ -608,6 +610,15 @@ fun GesturesCard(
                 label = { res.getString(it.labelRes) },
                 detail = { res.getString(it.descriptionRes) },
                 onSelect = onTapAction,
+            )
+            ChoiceRow(
+                tag = stringResource(R.string.tag_double),
+                title = stringResource(R.string.gesture_double_title),
+                value = doubleTapAction,
+                options = TapAction.entries,
+                label = { res.getString(it.labelRes) },
+                detail = { res.getString(it.descriptionRes) },
+                onSelect = onDoubleTapAction,
             )
             ChoiceRow(
                 tag = stringResource(R.string.tag_hold),

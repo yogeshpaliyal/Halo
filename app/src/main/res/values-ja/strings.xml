@@ -11,6 +11,8 @@
     <string name="action_play_pause">再生 / 一時停止</string>
     <string name="tap_previous">前のアプリ</string>
     <string name="tap_previous_desc">最後に使ったアプリに戻る</string>
+    <string name="tap_second">2 つ前のアプリ</string>
+    <string name="tap_second_desc">最後に使ったアプリの 1 つ前に戻る</string>
     <string name="tap_menu">メニューを開く</string>
     <string name="tap_menu_desc">メニューを表示し、アプリをタップ</string>
     <string name="tap_nothing">何もしない</string>
@@ -91,6 +93,8 @@
     <string name="gesture_drag_title">ドラッグ</string>
     <string name="gesture_drag_body">バブルを移動します。近い方の端に吸着します。</string>
     <string name="gesture_tap_title">タップ</string>
+    <string name="tag_double">2 回</string>
+    <string name="gesture_double_title">ダブルタップ</string>
     <string name="hold_delay">長押しの時間</string>
     <string name="haptics">振動</string>
     <string name="haptics_body">長押し時と、アプリの上を通るたびに振動</string>

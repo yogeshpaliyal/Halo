@@ -15,6 +15,7 @@ object Prefs {
     private const val KEY_BUBBLE_Y = "bubble_y"
     private const val KEY_ENABLED = "enabled"
     private const val KEY_TAP_ACTION = "tap_action"
+    private const val KEY_DOUBLE_TAP_ACTION = "double_tap_action"
     private const val KEY_HOLD_DELAY = "hold_delay"
     private const val KEY_HAPTICS = "haptics"
     private const val KEY_HIDDEN_RECENTS = "hidden_recents"
@@ -121,6 +122,15 @@ object Prefs {
 
     fun setTapAction(context: Context, action: TapAction) =
         sp(context).edit { putString(KEY_TAP_ACTION, action.name) }
+
+    /** Defaults to the app before last, so tap and double tap reach your two latest apps. */
+    fun doubleTapAction(context: Context): TapAction =
+        sp(context).getString(KEY_DOUBLE_TAP_ACTION, null)
+            ?.let { runCatching { TapAction.valueOf(it) }.getOrNull() }
+            ?: TapAction.SECOND_APP
+
+    fun setDoubleTapAction(context: Context, action: TapAction) =
+        sp(context).edit { putString(KEY_DOUBLE_TAP_ACTION, action.name) }
 
     fun holdDelay(context: Context): HoldDelay =
         sp(context).getString(KEY_HOLD_DELAY, null)
