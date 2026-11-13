@@ -13,15 +13,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -31,14 +26,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.yogeshpaliyal.halo.R
 import com.yogeshpaliyal.halo.overlay.BubbleCharacter
 import com.yogeshpaliyal.halo.overlay.BubblePalette
 
 /** Pages behind the settings list on the home screen. */
-enum class Page { HOME, GESTURES, APPEARANCE, HIDING, RECENTS, ABOUT }
+enum class Page { HOME, APPEARANCE }
 
 /** The fun part, front and centre: your bubble, live, with a way into Appearance. */
 @Composable
@@ -73,101 +67,35 @@ fun StyleTeaserCard(character: BubbleCharacter, palette: BubblePalette, onCustom
     }
 }
 
-/** One row of the settings list: title, current value, and a chevron or a switch. */
+/** A labelled group of options on the home screen: a small title, then its card. */
 @Composable
-fun SettingsRow(
-    title: String,
-    summary: String,
-    onClick: () -> Unit,
-    checked: Boolean? = null,
-) {
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick)
-            .padding(horizontal = 20.dp, vertical = 14.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Column(Modifier.weight(1f)) {
-            Text(title, style = MaterialTheme.typography.titleSmall)
-            Text(
-                summary,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-            )
-        }
-        Spacer(Modifier.width(12.dp))
-        if (checked != null) {
-            Switch(checked = checked, onCheckedChange = { onClick() })
-        } else {
-            Icon(
-                Icons.AutoMirrored.Rounded.KeyboardArrowRight,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
-    }
-}
-
-/** A titled group of [SettingsRow]s; put [GroupDivider] between rows. */
-@Composable
-fun SettingsGroup(title: String, content: @Composable () -> Unit) {
-    Column {
+fun Section(title: String, content: @Composable () -> Unit) {
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(
             title,
-            style = MaterialTheme.typography.labelLarge,
+            style = MaterialTheme.typography.titleSmall,
             color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(start = 8.dp, bottom = 8.dp),
+            modifier = Modifier.padding(start = 8.dp, top = 8.dp),
         )
-        Card(shape = RoundedCornerShape(24.dp)) {
-            Column(Modifier.padding(vertical = 4.dp)) { content() }
-        }
+        content()
     }
 }
 
+/** Privacy policy and source links, and the version. */
 @Composable
-fun GroupDivider() = HorizontalDivider(Modifier.padding(horizontal = 20.dp))
-
-/** About page: what Halo can't do, privacy, source and version. */
-@Composable
-fun AboutContent(version: String) {
+fun HomeFooter(version: String) {
     val uri = LocalUriHandler.current
-    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        PrivateSpaceNote()
-        Card(shape = RoundedCornerShape(24.dp)) {
-            Column(Modifier.padding(vertical = 4.dp)) {
-                SettingsRow(
-                    title = stringResource(R.string.privacy_policy),
-                    summary = stringResource(R.string.about_privacy_summary),
-                    onClick = { uri.openUri(PRIVACY_POLICY_URL) },
-                )
-                HorizontalDivider(Modifier.padding(horizontal = 20.dp))
-                SettingsRow(
-                    title = stringResource(R.string.about_source),
-                    summary = "github.com/yogeshpaliyal/Halo",
-                    onClick = { uri.openUri(SOURCE_URL) },
-                )
-            }
+    Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+        Row(horizontalArrangement = Arrangement.Center) {
+            TextButton(onClick = { uri.openUri(PRIVACY_POLICY_URL) }) { Text(stringResource(R.string.privacy_policy)) }
+            TextButton(onClick = { uri.openUri(SOURCE_URL) }) { Text(stringResource(R.string.about_source)) }
         }
         Text(
             stringResource(R.string.about_version, version),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth(),
         )
-    }
-}
-
-/** Small links under the home list. */
-@Composable
-fun HomeFooter(onAbout: () -> Unit) {
-    val uri = LocalUriHandler.current
-    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-        TextButton(onClick = onAbout) { Text(stringResource(R.string.about_title)) }
-        TextButton(onClick = { uri.openUri(PRIVACY_POLICY_URL) }) { Text(stringResource(R.string.privacy_policy)) }
     }
 }
 

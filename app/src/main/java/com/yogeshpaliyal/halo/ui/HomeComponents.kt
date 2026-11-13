@@ -649,7 +649,12 @@ fun GesturesCard(
 }
 
 /** Which part of the bubble settings a page shows. */
-enum class BubbleSection { APPEARANCE, HIDING, DOTS }
+enum class BubbleSection {
+    /** Character, colours, animations, reactions: the customise screen. */
+    APPEARANCE,
+    /** Size, opacity, when to hide, notification dots: on the home screen. */
+    BASICS,
+}
 
 /** How the bubble looks, when it steps aside, and notification dots: one page each. */
 @Composable
@@ -730,7 +735,8 @@ fun BubbleCard(
                         Switch(checked = reactions, onCheckedChange = onReactions)
                     }
                 }
-                HorizontalDivider(Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
+            }
+            if (section == BubbleSection.BASICS) {
                 ChoiceRow(
                     tag = stringResource(R.string.tag_size),
                     title = stringResource(R.string.size),
@@ -770,7 +776,8 @@ fun BubbleCard(
                 )
 
             }
-            if (section == BubbleSection.HIDING) {
+            if (section == BubbleSection.BASICS) {
+                HorizontalDivider(Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
 
                 Row(
                     Modifier
@@ -816,7 +823,8 @@ fun BubbleCard(
                 }
 
             }
-            if (section == BubbleSection.DOTS) {
+            if (section == BubbleSection.BASICS) {
+                HorizontalDivider(Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
 
                 val dotsOn = dots && dotsAccess
                 Row(

@@ -153,6 +153,40 @@ fun HomeScreen() {
         }
     }
 
+    // One card, two places: basics on home, character and colours on their own screen.
+    val bubbleCard: @Composable (BubbleSection) -> Unit = { section ->
+        BubbleCard(
+            section = section,
+            character = bubbleCharacter,
+            onCharacter = { bubbleCharacter = it; Prefs.setBubbleCharacter(context, it) },
+            palette = bubblePalette,
+            onPalette = { bubblePalette = it; Prefs.setBubblePalette(context, it) },
+            animations = bubbleAnimations,
+            onAnimations = { bubbleAnimations = it; Prefs.setBubbleAnimations(context, it) },
+            reactions = bubbleReactions,
+            onReactions = { bubbleReactions = it; Prefs.setBubbleReactions(context, it) },
+            size = bubbleSize,
+            onSize = { bubbleSize = it; Prefs.setBubbleSize(context, it) },
+            opacity = opacity,
+            // Saved as you drag, so the real bubble updates live.
+            onOpacity = { opacity = it; Prefs.setBubbleOpacity(context, it) },
+            hideFullscreen = hideFullscreen,
+            onHideFullscreen = { hideFullscreen = it; Prefs.setHideInFullscreen(context, it) },
+            hiddenAppsCount = hideInApps.size,
+            hasUsage = hasUsage,
+            onChooseHiddenApps = { showHideAppsPicker = true },
+            dots = dots,
+            dotsAccess = dotsAccess,
+            onDots = { on ->
+                dots = on
+                Prefs.setNotificationDots(context, on)
+                if (on && !dotsAccess) {
+                    runCatching { context.startActivity(NotificationBadges.settingsIntent(context)) }
+                }
+            },
+        )
+    }
+
     var page by rememberSaveable { mutableStateOf(Page.HOME) }
     BackHandler(enabled = page != Page.HOME) { page = Page.HOME }
     val version = remember {
@@ -169,11 +203,7 @@ fun HomeScreen() {
                     Text(
                         when (page) {
                             Page.HOME -> stringResource(R.string.app_name)
-                            Page.GESTURES -> stringResource(R.string.gestures)
                             Page.APPEARANCE -> stringResource(R.string.page_appearance)
-                            Page.HIDING -> stringResource(R.string.page_hiding)
-                            Page.RECENTS -> stringResource(R.string.recents_title)
-                            Page.ABOUT -> stringResource(R.string.about_title)
                         },
                     )
                 },
@@ -243,69 +273,7 @@ fun HomeScreen() {
                 StyleTeaserCard(bubbleCharacter, bubblePalette) { page = Page.APPEARANCE }
             }
             item {
-                SettingsGroup(title = stringResource(R.string.settings_title)) {
-                            SettingsRow(
-                                title = stringResource(R.string.gestures),
-                                summary = stringResource(
-                                    R.string.summary_gestures,
-                                    stringResource(tapAction.labelRes),
-                                    stringResource(doubleTapAction.labelRes),
-                                ),
-                                onClick = { page = Page.GESTURES },
-                            )
-                    GroupDivider()
-                            SettingsRow(
-                                title = stringResource(R.string.page_appearance),
-                                summary = listOf(
-                                    stringResource(bubbleCharacter.labelRes),
-                                    stringResource(bubblePalette.labelRes),
-                                    stringResource(bubbleSize.labelRes),
-                                ).joinToString(" · "),
-                                onClick = { page = Page.APPEARANCE },
-                            )
-                    GroupDivider()
-                            SettingsRow(
-                                title = stringResource(R.string.page_hiding),
-                                summary = buildList {
-                                    if (hideFullscreen) add(res.getString(R.string.summary_fullscreen))
-                                    if (hideInApps.isNotEmpty()) {
-                                        add(res.getQuantityString(R.plurals.hidden_in_apps, hideInApps.size, hideInApps.size))
-                                    }
-                                }.ifEmpty { listOf(res.getString(R.string.summary_never_hides)) }.joinToString(" · "),
-                                onClick = { page = Page.HIDING },
-                            )
-                    GroupDivider()
-                            SettingsRow(
-                                title = stringResource(R.string.recents_title),
-                                summary = when {
-                                    !hasUsage -> stringResource(R.string.recents_need_usage)
-                                    hiddenRecents.isEmpty() -> stringResource(R.string.summary_recents_all)
-                                    else -> stringResource(R.string.hide_recents_picked, hiddenRecents.size)
-                                },
-                                onClick = { page = Page.RECENTS },
-                            )
-                    GroupDivider()
-                            SettingsRow(
-                                title = stringResource(R.string.dots_title),
-                                summary = stringResource(
-                                    if (dots && !dotsAccess) R.string.dots_need_access else R.string.summary_dots,
-                                ),
-                                checked = dots && dotsAccess,
-                                onClick = {
-                                    val on = !(dots && dotsAccess)
-                                    dots = on
-                                    Prefs.setNotificationDots(context, on)
-                                    if (on && !dotsAccess) {
-                                        runCatching { context.startActivity(NotificationBadges.settingsIntent(context)) }
-                                    }
-                                },
-                            )
-                }
-            }
-            item { HomeFooter(onAbout = { page = Page.ABOUT }) }
-                }
-
-                Page.GESTURES -> item {
+                Section(stringResource(R.string.gestures)) {
                 GesturesCard(
                     tapAction = tapAction,
                     holdDelay = holdDelay,
@@ -317,43 +285,22 @@ fun HomeScreen() {
                     onHaptics = { haptics = it; Prefs.setHaptics(context, it) },
                 )
                 }
-
-                Page.APPEARANCE, Page.HIDING -> item {
-                BubbleCard(
-                    section = if (current == Page.APPEARANCE) BubbleSection.APPEARANCE else BubbleSection.HIDING,
-                    character = bubbleCharacter,
-                    onCharacter = { bubbleCharacter = it; Prefs.setBubbleCharacter(context, it) },
-                    palette = bubblePalette,
-                    onPalette = { bubblePalette = it; Prefs.setBubblePalette(context, it) },
-                    animations = bubbleAnimations,
-                    onAnimations = { bubbleAnimations = it; Prefs.setBubbleAnimations(context, it) },
-                    reactions = bubbleReactions,
-                    onReactions = { bubbleReactions = it; Prefs.setBubbleReactions(context, it) },
-                    size = bubbleSize,
-                    onSize = { bubbleSize = it; Prefs.setBubbleSize(context, it) },
-                    opacity = opacity,
-                    // Saved as you drag, so the real bubble updates live.
-                    onOpacity = { opacity = it; Prefs.setBubbleOpacity(context, it) },
-                    hideFullscreen = hideFullscreen,
-                    onHideFullscreen = { hideFullscreen = it; Prefs.setHideInFullscreen(context, it) },
-                    hiddenAppsCount = hideInApps.size,
-                    hasUsage = hasUsage,
-                    onChooseHiddenApps = { showHideAppsPicker = true },
-                    dots = dots,
-                    dotsAccess = dotsAccess,
-                    onDots = {},
-                )
-                }
-
-                Page.RECENTS -> item {
+            }
+            item { Section(stringResource(R.string.bubble)) { bubbleCard(BubbleSection.BASICS) } }
+            item {
+                Section(stringResource(R.string.recents_title)) {
                 RecentsCard(
                     hiddenCount = hiddenRecents.size,
                     hasUsage = hasUsage,
                     onChooseHidden = { showHiddenPicker = true },
                 )
                 }
+            }
+            item { PrivateSpaceNote() }
+            item { HomeFooter(version) }
+                }
 
-                Page.ABOUT -> item { AboutContent(version) }
+                Page.APPEARANCE -> item { bubbleCard(BubbleSection.APPEARANCE) }
             }
         }
         }

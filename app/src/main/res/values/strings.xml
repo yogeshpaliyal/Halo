@@ -183,19 +183,10 @@
 
     <!-- Home layout -->
     <string name="back">Back</string>
-    <string name="settings_title">Settings</string>
     <string name="page_appearance">Appearance</string>
-    <string name="page_hiding">When to hide</string>
-    <string name="summary_gestures">Tap: %1$s · Double tap: %2$s</string>
-    <string name="summary_fullscreen">Full-screen apps</string>
-    <string name="summary_never_hides">Always visible</string>
-    <string name="summary_recents_all">All recent apps shown</string>
-    <string name="summary_dots">A dot on apps with unread notifications</string>
     <string name="style_card_title">Make it yours</string>
     <string name="style_card_body">Pick a character, colours and moves for your bubble.</string>
     <string name="customise">Customise</string>
-    <string name="about_title">About</string>
-    <string name="about_privacy_summary">What Halo can and can\'t see</string>
     <string name="about_source">Source code</string>
     <string name="about_version">Version %s</string>
 </resources>

@@ -151,19 +151,10 @@
 
     <!-- Home layout -->
     <string name="back">Kembali</string>
-    <string name="settings_title">Setelan</string>
     <string name="page_appearance">Tampilan</string>
-    <string name="page_hiding">Kapan disembunyikan</string>
-    <string name="summary_gestures">Ketuk: %1$s · Ketuk dua kali: %2$s</string>
-    <string name="summary_fullscreen">Aplikasi layar penuh</string>
-    <string name="summary_never_hides">Selalu terlihat</string>
-    <string name="summary_recents_all">Semua aplikasi terbaru ditampilkan</string>
-    <string name="summary_dots">Titik pada aplikasi dengan notifikasi belum dibaca</string>
     <string name="style_card_title">Jadikan milikmu</string>
     <string name="style_card_body">Pilih karakter, warna, dan gerakan untuk gelembungmu.</string>
     <string name="customise">Sesuaikan</string>
-    <string name="about_title">Tentang</string>
-    <string name="about_privacy_summary">Apa yang bisa dan tidak bisa dilihat Halo</string>
     <string name="about_source">Kode sumber</string>
     <string name="about_version">Versi %s</string>
 </resources>

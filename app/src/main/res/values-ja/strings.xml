@@ -151,19 +151,10 @@
 
     <!-- Home layout -->
     <string name="back">戻る</string>
-    <string name="settings_title">設定</string>
     <string name="page_appearance">外観</string>
-    <string name="page_hiding">非表示にするタイミング</string>
-    <string name="summary_gestures">タップ: %1$s · ダブルタップ: %2$s</string>
-    <string name="summary_fullscreen">全画面アプリ</string>
-    <string name="summary_never_hides">常に表示</string>
-    <string name="summary_recents_all">最近使ったアプリをすべて表示</string>
-    <string name="summary_dots">未読の通知があるアプリにドット</string>
     <string name="style_card_title">自分好みに</string>
     <string name="style_card_body">バブルのキャラクター、色、動きを選びましょう。</string>
     <string name="customise">カスタマイズ</string>
-    <string name="about_title">このアプリについて</string>
-    <string name="about_privacy_summary">Halo が見られるもの・見られないもの</string>
     <string name="about_source">ソースコード</string>
     <string name="about_version">バージョン %s</string>
 </resources>

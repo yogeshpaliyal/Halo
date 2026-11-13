@@ -157,19 +157,10 @@
 
     <!-- Home layout -->
     <string name="back">Retour</string>
-    <string name="settings_title">Paramètres</string>
     <string name="page_appearance">Apparence</string>
-    <string name="page_hiding">Quand masquer</string>
-    <string name="summary_gestures">Appui : %1$s · Double appui : %2$s</string>
-    <string name="summary_fullscreen">Apps en plein écran</string>
-    <string name="summary_never_hides">Toujours visible</string>
-    <string name="summary_recents_all">Toutes les apps récentes sont affichées</string>
-    <string name="summary_dots">Une pastille sur les apps avec des notifications non lues</string>
     <string name="style_card_title">À votre image</string>
     <string name="style_card_body">Choisissez le personnage, les couleurs et les animations de votre bulle.</string>
     <string name="customise">Personnaliser</string>
-    <string name="about_title">À propos</string>
-    <string name="about_privacy_summary">Ce que Halo peut voir ou non</string>
     <string name="about_source">Code source</string>
     <string name="about_version">Version %s</string>
 </resources>

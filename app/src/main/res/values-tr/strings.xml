@@ -154,19 +154,10 @@
 
     <!-- Home layout -->
     <string name="back">Geri</string>
-    <string name="settings_title">Ayarlar</string>
     <string name="page_appearance">Görünüm</string>
-    <string name="page_hiding">Ne zaman gizlensin</string>
-    <string name="summary_gestures">Dokunma: %1$s · Çift dokunma: %2$s</string>
-    <string name="summary_fullscreen">Tam ekran uygulamalar</string>
-    <string name="summary_never_hides">Her zaman görünür</string>
-    <string name="summary_recents_all">Tüm son uygulamalar gösterilir</string>
-    <string name="summary_dots">Okunmamış bildirimi olan uygulamalarda bir nokta</string>
     <string name="style_card_title">Kendine göre yap</string>
     <string name="style_card_body">Baloncuğun için karakter, renk ve hareket seç.</string>
     <string name="customise">Özelleştir</string>
-    <string name="about_title">Hakkında</string>
-    <string name="about_privacy_summary">Halo neyi görebilir, neyi göremez</string>
     <string name="about_source">Kaynak kodu</string>
     <string name="about_version">Sürüm %s</string>
 </resources>

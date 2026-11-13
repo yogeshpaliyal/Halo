@@ -154,19 +154,10 @@
 
     <!-- Home layout -->
     <string name="back">Zurück</string>
-    <string name="settings_title">Einstellungen</string>
     <string name="page_appearance">Aussehen</string>
-    <string name="page_hiding">Wann ausblenden</string>
-    <string name="summary_gestures">Tippen: %1$s · Doppeltippen: %2$s</string>
-    <string name="summary_fullscreen">Vollbild-Apps</string>
-    <string name="summary_never_hides">Immer sichtbar</string>
-    <string name="summary_recents_all">Alle letzten Apps werden gezeigt</string>
-    <string name="summary_dots">Ein Punkt auf Apps mit ungelesenen Benachrichtigungen</string>
     <string name="style_card_title">Mach sie zu deiner</string>
     <string name="style_card_body">Wähle Figur, Farben und Bewegungen für deine Blase.</string>
     <string name="customise">Anpassen</string>
-    <string name="about_title">Über</string>
-    <string name="about_privacy_summary">Was Halo sehen kann und was nicht</string>
     <string name="about_source">Quellcode</string>
     <string name="about_version">Version %s</string>
 </resources>

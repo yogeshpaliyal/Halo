@@ -157,19 +157,10 @@
 
     <!-- Home layout -->
     <string name="back">Voltar</string>
-    <string name="settings_title">Configurações</string>
     <string name="page_appearance">Aparência</string>
-    <string name="page_hiding">Quando ocultar</string>
-    <string name="summary_gestures">Toque: %1$s · Toque duplo: %2$s</string>
-    <string name="summary_fullscreen">Apps em tela cheia</string>
-    <string name="summary_never_hides">Sempre visível</string>
-    <string name="summary_recents_all">Todos os apps recentes aparecem</string>
-    <string name="summary_dots">Um ponto nos apps com notificações não lidas</string>
     <string name="style_card_title">Do seu jeito</string>
     <string name="style_card_body">Escolha personagem, cores e movimentos para sua bolha.</string>
     <string name="customise">Personalizar</string>
-    <string name="about_title">Sobre</string>
-    <string name="about_privacy_summary">O que o Halo pode e não pode ver</string>
     <string name="about_source">Código-fonte</string>
     <string name="about_version">Versão %s</string>
 </resources>

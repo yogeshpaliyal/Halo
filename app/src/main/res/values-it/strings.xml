@@ -157,19 +157,10 @@
 
     <!-- Home layout -->
     <string name="back">Indietro</string>
-    <string name="settings_title">Impostazioni</string>
     <string name="page_appearance">Aspetto</string>
-    <string name="page_hiding">Quando nascondere</string>
-    <string name="summary_gestures">Tocco: %1$s · Doppio tocco: %2$s</string>
-    <string name="summary_fullscreen">App a schermo intero</string>
-    <string name="summary_never_hides">Sempre visibile</string>
-    <string name="summary_recents_all">Tutte le app recenti sono mostrate</string>
-    <string name="summary_dots">Un pallino sulle app con notifiche non lette</string>
     <string name="style_card_title">Falla tua</string>
     <string name="style_card_body">Scegli personaggio, colori e movimenti per la tua bolla.</string>
     <string name="customise">Personalizza</string>
-    <string name="about_title">Info</string>
-    <string name="about_privacy_summary">Cosa Halo può e non può vedere</string>
     <string name="about_source">Codice sorgente</string>
     <string name="about_version">Versione %s</string>
 </resources>
