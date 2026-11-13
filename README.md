@@ -1,40 +1,38 @@
 # Halo stats
 
-Updated 2026-11-12T16:25:30+00:00 by the `Stats snapshot` workflow on [yogeshpaliyal/Halo](https://github.com/yogeshpaliyal/Halo).
+Updated 2026-11-13T07:12:58+00:00 by the `Stats snapshot` workflow on [yogeshpaliyal/Halo](https://github.com/yogeshpaliyal/Halo).
 Collected from GitHub's APIs only; the Halo app contains no tracking.
 
 | Metric | Value |
 | --- | --- |
-| Total APK downloads (all releases) | 339 |
-| Stars | 11 |
+| Total APK downloads (all releases) | 386 |
+| Stars | 12 |
 | Forks | 0 |
 | Open issues and PRs | 0 |
-| Repo views, last 14 days | 593 (229 unique-day visitors) |
+| Repo views, last 14 days | 757 (300 unique-day visitors) |
 
 ## Downloads by release
 
 | Release | Downloads |
 | --- | --- |
-| v0.1.3 | 258 |
+| v0.1.3 | 304 |
 | v0.1.1 | 33 |
-| latest-master | 26 |
+| latest-master | 27 |
 | v0.1.0 | 22 |
 
 ## Top referrers (last 14 days)
 
 | Site | Views | Unique |
 | --- | --- | --- |
-| youtube.com | 122 | 98 |
-| com.reddit.frontpage | 19 | 14 |
-| reddit.com | 17 | 11 |
-| github.com | 8 | 8 |
-| com.linkedin.android | 7 | 7 |
+| youtube.com | 167 | 129 |
+| com.reddit.frontpage | 20 | 15 |
+| reddit.com | 18 | 12 |
+| github.com | 9 | 9 |
+| com.linkedin.android | 8 | 8 |
+| m.youtube.com | 8 | 6 |
 | github.yogeshpaliyal.com | 7 | 7 |
-| m.youtube.com | 7 | 5 |
-| linkedin.com | 6 | 5 |
+| linkedin.com | 7 | 6 |
+| xdaforums.com | 4 | 3 |
 | t.co | 2 | 1 |
-| DuckDuckGo | 1 | 1 |
-| komistore.app | 1 | 1 |
-| xdaforums.com | 1 | 1 |
 
 Raw data: `downloads.csv`, `repo.csv`, `views.csv`, `clones.csv`, `referrers.csv`.
