@@ -52,6 +52,8 @@ fun AppPickerSheet(
     /** Show each ticked item's position (favourites are ordered; other lists aren't). */
     showOrder: Boolean = true,
     countLabel: (Int) -> String = { "$it of ${Prefs.MAX_FAVORITES} picked" },
+    /** Extra content under the title, e.g. a folder's name field. */
+    header: (@Composable () -> Unit)? = null,
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var query by remember { mutableStateOf("") }
@@ -77,6 +79,10 @@ fun AppPickerSheet(
                     )
                 }
                 TextButton(onClick = onDismiss) { Text("Done") }
+            }
+            if (header != null) {
+                Spacer(Modifier.height(12.dp))
+                header()
             }
             Spacer(Modifier.height(12.dp))
             OutlinedTextField(

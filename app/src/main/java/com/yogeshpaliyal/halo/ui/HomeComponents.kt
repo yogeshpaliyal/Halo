@@ -79,7 +79,8 @@ import kotlin.math.sin
 
 @Composable
 fun rememberIcon(app: AppEntry): ImageBitmap =
-    remember(app.key) { app.icon.toBitmap(128, 128).asImageBitmap() }
+    // Folder icons are drawn from their apps, so they change when the folder is edited.
+    remember(app.key, app.label, app.children.map { it.key }) { app.icon.toBitmap(128, 128).asImageBitmap() }
 
 // --- Hero: on/off switch plus a live preview of the menu ---------------------------------
 
@@ -312,6 +313,8 @@ fun FavoritesCard(
     onAdd: () -> Unit,
     onRemove: (AppEntry) -> Unit,
     onMove: (index: Int, delta: Int) -> Unit,
+    onNewFolder: () -> Unit,
+    onEditFolder: (AppEntry) -> Unit,
 ) {
     val haptics = LocalHapticFeedback.current
     val gapPx = with(LocalDensity.current) { 10.dp.toPx() }
@@ -340,6 +343,11 @@ fun FavoritesCard(
                     )
                 }
                 TextButton(onClick = onAdd) { Text("Edit") }
+            }
+            if (favorites.size < Prefs.MAX_FAVORITES) {
+                TextButton(onClick = onNewFolder, contentPadding = PaddingValues(horizontal = 0.dp)) {
+                    Text("+ New folder")
+                }
             }
             Spacer(Modifier.height(14.dp))
             val target = targetIndex()
@@ -378,6 +386,7 @@ fun FavoritesCard(
                                     canMoveDown = index < favorites.lastIndex,
                                     onMove = { delta -> onMove(index, delta) },
                                     onRemove = { onRemove(app) },
+                                    onEdit = if (app.isFolder) ({ onEditFolder(app) }) else null,
                                     dragModifier = Modifier.pointerInput(app.key, index) {
                                         detectDragGesturesAfterLongPress(
                                             onDragStart = {
@@ -425,6 +434,8 @@ private fun FilledSlot(
     canMoveDown: Boolean,
     onMove: (Int) -> Unit,
     onRemove: () -> Unit,
+    /** Set for folders. */
+    onEdit: (() -> Unit)?,
     dragModifier: Modifier,
 ) {
     var menuOpen by remember { mutableStateOf(false) }
@@ -464,6 +475,13 @@ private fun FilledSlot(
                 Spacer(Modifier.height(4.dp))
                 WorkTag(paused = !app.available)
             }
+            if (app.isFolder) {
+                Text(
+                    if (app.children.size == 1) "1 app" else "${app.children.size} apps",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
         }
         Text(
             "$position",
@@ -472,6 +490,12 @@ private fun FilledSlot(
             modifier = Modifier.padding(start = 10.dp, top = 6.dp),
         )
         DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
+            if (onEdit != null) {
+                DropdownMenuItem(
+                    text = { Text("Edit folder") },
+                    onClick = { menuOpen = false; onEdit() },
+                )
+            }
             DropdownMenuItem(
                 text = { Text("Move earlier") },
                 enabled = canMoveUp,
@@ -483,7 +507,7 @@ private fun FilledSlot(
                 onClick = { menuOpen = false; onMove(1) },
             )
             DropdownMenuItem(
-                text = { Text("Remove", color = MaterialTheme.colorScheme.error) },
+                text = { Text(if (onEdit != null) "Delete folder" else "Remove", color = MaterialTheme.colorScheme.error) },
                 onClick = { menuOpen = false; onRemove() },
             )
         }

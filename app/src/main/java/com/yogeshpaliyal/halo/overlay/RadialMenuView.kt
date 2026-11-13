@@ -34,6 +34,10 @@ import kotlin.math.sin
  * - Tap mode: set [onPick] and make the window touchable. The next touch is handled
  *   here; lifting on an app picks it, lifting anywhere else dismisses (picks null).
  *
+ * Folders sit on the inner ring like any favourite. Resting on one for a moment (or tapping
+ * it in tap mode) swaps the outer ring for the folder's apps, fanned out next to it. Moving
+ * to another favourite closes it again.
+ *
  * Angles use the Canvas convention: 0° points right and angles grow clockwise (y is down).
  */
 @SuppressLint("ViewConstructor")
@@ -48,7 +52,8 @@ class RadialMenuView(
     private val badged: Set<String> = emptySet(),
 ) : View(context) {
 
-    private class Ring(val items: List<AppEntry>, val radius: Float)
+    /** [angles] is set for an open folder: its apps sit on a short arc instead of evenly spread. */
+    private class Ring(val items: List<AppEntry>, val radius: Float, val angles: FloatArray? = null)
 
     private val density = resources.displayMetrics.density
     private fun dp(v: Float) = v * density
@@ -61,10 +66,24 @@ class RadialMenuView(
     /** +1 / -1 so that slot 0 is always the top item, whichever side the bubble is on. */
     private val dir = if (onRightEdge) -1f else 1f
 
-    private val rings: List<Ring> = buildList {
-        if (favorites.isNotEmpty()) add(Ring(favorites, dp(INNER_DP)))
-        if (recents.isNotEmpty()) add(Ring(recents, if (favorites.isEmpty()) dp(INNER_DP) else dp(OUTER_DP)))
+    private val favRing = favorites.takeIf { it.isNotEmpty() }?.let { Ring(it, dp(INNER_DP)) }
+    private val recentRing = recents.takeIf { it.isNotEmpty() }
+        ?.let { Ring(it, if (favRing == null) dp(INNER_DP) else dp(OUTER_DP)) }
+    private var rings: List<Ring> = listOfNotNull(favRing, recentRing)
+
+    /** Furthest ring the menu can show, open folders included; keeps its position fixed. */
+    private val extent = when {
+        favRing != null && (recentRing != null || favorites.any { it.isFolder }) -> dp(OUTER_DP)
+        favRing != null || recentRing != null -> dp(INNER_DP)
+        else -> 0f
     }
+
+    /** The folder whose apps are on the outer ring right now, and its inner-ring slot. */
+    private var openFolder: AppEntry? = null
+    private var folderSlot = -1
+    private var folderProgress = 1f
+    private var folderAnim: ValueAnimator? = null
+    private val openFolderLater = Runnable { if (selRing == 0 && selSlot >= 0) openFolderAt(selSlot) }
 
     /** Currently highlighted app, or null if the finger is in the cancel zone. */
     var selected: AppEntry? = null
@@ -144,13 +163,80 @@ class RadialMenuView(
     fun updateFinger(rawX: Float, rawY: Float): Boolean {
         fingerX = rawX
         fingerY = rawY
-        val (ring, slot) = hitTest(rawX, rawY)
+        var (ring, slot) = hitTest(rawX, rawY)
+        // Back on the inner ring on a different favourite: fold the open folder away.
+        if (openFolder != null && ring == 0 && slot != folderSlot) {
+            closeFolder()
+            val again = hitTest(rawX, rawY)
+            ring = again.first
+            slot = again.second
+        }
         val changed = ring != selRing || slot != selSlot
         selRing = ring
         selSlot = slot
         selected = if (ring >= 0) rings[ring].items[slot] else null
-        if (changed) invalidate()
+        if (changed) {
+            removeCallbacks(openFolderLater)
+            val sel = selected
+            if (ring == 0 && sel != null && sel.isFolder && openFolder?.key != sel.key) {
+                postDelayed(openFolderLater, FOLDER_DWELL_MS)
+            }
+            invalidate()
+        }
         return changed && selected != null
+    }
+
+    /** Opens the highlighted folder right away (finger lifted on it). */
+    fun openSelectedFolder() {
+        if (selRing == 0 && selSlot >= 0) openFolderAt(selSlot)
+    }
+
+    /** Opens the folder on inner-ring [slot] now (release or tap on it). No-op if not a folder. */
+    fun openFolderAt(slot: Int) {
+        val inner = favRing ?: return
+        val folder = inner.items.getOrNull(slot)?.takeIf { it.isFolder && it.children.isNotEmpty() } ?: return
+        removeCallbacks(openFolderLater)
+        if (openFolder?.key == folder.key) return
+        val outerR = dp(OUTER_DP)
+        val n = folder.children.size
+        val step = Math.toDegrees(((iconSize + dp(16f)) / outerR).toDouble()).toFloat()
+        val total = (n - 1) * step
+        val base = slotAngle(slot, inner.items.size)
+        // Centre the fan on the folder, but keep it within the half-ring.
+        val lo = facing - span / 2f + total / 2f
+        val hi = facing + span / 2f - total / 2f
+        val c = if (lo <= hi) base.coerceIn(lo, hi) else facing
+        val angles = FloatArray(n) { i -> c + dir * (-total / 2f + i * step) }
+        openFolder = folder
+        folderSlot = slot
+        rings = listOf(inner, Ring(folder.children, outerR, angles))
+        if (Prefs.haptics(context)) performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
+        folderAnim?.cancel()
+        folderAnim = ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = 180
+            interpolator = OvershootInterpolator(1.2f)
+            addUpdateListener {
+                folderProgress = it.animatedValue as Float
+                invalidate()
+            }
+            start()
+        }
+        invalidate()
+    }
+
+    private fun closeFolder() {
+        removeCallbacks(openFolderLater)
+        folderAnim?.cancel()
+        openFolder = null
+        folderSlot = -1
+        folderProgress = 1f
+        rings = listOfNotNull(favRing, recentRing)
+    }
+
+    override fun onDetachedFromWindow() {
+        removeCallbacks(openFolderLater)
+        folderAnim?.cancel()
+        super.onDetachedFromWindow()
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -163,8 +249,14 @@ class RadialMenuView(
                 }
             MotionEvent.ACTION_UP -> {
                 updateFinger(event.rawX, event.rawY)
+                val sel = selected
+                if (sel != null && sel.isFolder) {
+                    // Tapping a folder opens it; the next tap picks one of its apps.
+                    openFolderAt(selSlot)
+                    return true
+                }
                 onPick = null
-                pick(selected)
+                pick(sel)
             }
             MotionEvent.ACTION_CANCEL -> {
                 onPick = null
@@ -180,10 +272,13 @@ class RadialMenuView(
 
     /** Keep the whole menu on screen when the bubble sits near the top or bottom. */
     private fun centerY(): Float {
-        val outer = (rings.maxOfOrNull { it.radius } ?: 0f) + iconSize
+        val outer = extent + iconSize
         val y = anchorScreenY - screenLoc[1]
         return if (height <= 2 * outer) height / 2f else y.coerceIn(outer, height - outer)
     }
+
+    private fun angleOf(ring: Ring, slot: Int): Float =
+        ring.angles?.get(slot) ?: slotAngle(slot, ring.items.size)
 
     private fun slotAngle(slot: Int, count: Int): Float {
         val step = span / count
@@ -209,13 +304,32 @@ class RadialMenuView(
         while (rel >= 180f) rel -= 360f
         if (kotlin.math.abs(rel) > span / 2f + 20f) return -1 to -1
 
-        val step = span / ring.items.size
-        val slot = floor((dir * rel + span / 2f) / step).toInt().coerceIn(0, ring.items.lastIndex)
+        val slot = ring.angles?.let { angles ->
+            // Open folder: nearest of its apps, or nothing if the finger is off the fan.
+            val a = Math.toDegrees(atan2(dy, dx).toDouble()).toFloat()
+            var best = -1
+            var bestDiff = Float.MAX_VALUE
+            angles.forEachIndexed { i, ang ->
+                var d = a - ang
+                while (d < -180f) d += 360f
+                while (d >= 180f) d -= 360f
+                if (kotlin.math.abs(d) < bestDiff) {
+                    bestDiff = kotlin.math.abs(d)
+                    best = i
+                }
+            }
+            val half = Math.toDegrees(((iconSize + dp(16f)) / ring.radius).toDouble()).toFloat() / 2f
+            if (bestDiff > half + 6f) return -1 to -1
+            best
+        } ?: run {
+            val step = span / ring.items.size
+            floor((dir * rel + span / 2f) / step).toInt().coerceIn(0, ring.items.lastIndex)
+        }
 
         // Tap mode: only a tap on (or right next to) an icon picks it. A tap on the dimmed
         // background closes the menu. Drag mode stays forgiving so a slide never misses.
         if (onPick != null) {
-            val a = Math.toRadians(slotAngle(slot, ring.items.size).toDouble())
+            val a = Math.toRadians(angleOf(ring, slot).toDouble())
             val ix = ring.radius * kotlin.math.cos(a).toFloat()
             val iy = ring.radius * kotlin.math.sin(a).toFloat()
             if (hypot(dx - ix, dy - iy) > iconSize * 0.9f) return -1 to -1
@@ -242,22 +356,39 @@ class RadialMenuView(
         }
 
         rings.forEach { ring ->
-            val r = ring.radius * (0.55f + 0.45f * p)
-            arcRect.set(cx - r, cy - r, cx + r, cy + r)
-            band.alpha = (fade * 235).toInt()
-            canvas.drawArc(arcRect, facing - span / 2f - 4f, span + 8f, false, band)
+            val angles = ring.angles
+            if (angles == null) {
+                val r = ring.radius * (0.55f + 0.45f * p)
+                arcRect.set(cx - r, cy - r, cx + r, cy + r)
+                band.alpha = (fade * 235).toInt()
+                canvas.drawArc(arcRect, facing - span / 2f - 4f, span + 8f, false, band)
+            } else {
+                // Open folder: a short band under just its apps, growing out from the folder.
+                val r = folderRadius(ring) * (0.55f + 0.45f * p)
+                val half = Math.toDegrees(((iconSize + dp(16f)) / ring.radius).toDouble()).toFloat() / 2f
+                val start = angles.min() - half + 4f
+                arcRect.set(cx - r, cy - r, cx + r, cy + r)
+                band.alpha = (fade * folderProgress.coerceIn(0f, 1f) * 235).toInt()
+                canvas.drawArc(arcRect, start, angles.max() - angles.min() + 2 * half - 8f, false, band)
+            }
         }
 
         var selCenterX = 0f
         var selCenterY = 0f
         rings.forEachIndexed { ri, ring ->
-            val r = ring.radius * (0.55f + 0.45f * p)
+            val folderRing = ring.angles != null
+            val r = (if (folderRing) folderRadius(ring) else ring.radius) * (0.55f + 0.45f * p)
+            val ringFade = if (folderRing) fade * folderProgress.coerceIn(0f, 1f) else fade
             ring.items.forEachIndexed { si, app ->
-                val a = Math.toRadians(slotAngle(si, ring.items.size).toDouble())
+                val a = Math.toRadians(angleOf(ring, si).toDouble())
                 val x = cx + r * cos(a).toFloat()
                 val y = cy + r * sin(a).toFloat()
                 val isSelected = ri == selRing && si == selSlot
-                val size = iconSize * (if (isSelected) 1.3f else 1f) * fade
+                val size = iconSize * (if (isSelected) 1.3f else 1f) * ringFade
+                if (ri == 0 && si == folderSlot && !isSelected) {
+                    // Keep the open folder lit while you pick from it.
+                    canvas.drawCircle(x, y, size * 0.66f, glow)
+                }
                 if (isSelected) {
                     canvas.drawCircle(x, y, size * 0.72f, glow)
                     selCenterX = x
@@ -266,9 +397,10 @@ class RadialMenuView(
                 val half = (size / 2f).toInt()
                 app.icon.setBounds(x.toInt() - half, y.toInt() - half, x.toInt() + half, y.toInt() + half)
                 // Paused work apps are dimmed; opening one shows Android's "Unpause?" prompt.
-                app.icon.alpha = (fade * if (app.available) 255 else 100).toInt()
+                app.icon.alpha = (ringFade * if (app.available) 255 else 100).toInt()
                 app.icon.draw(canvas)
-                if (app.key in badged && fade > 0.5f) {
+                val dot = app.key in badged || app.children.any { it.key in badged }
+                if (dot && ringFade > 0.5f) {
                     val bx = x + size * 0.36f
                     val by = y - size * 0.36f
                     canvas.drawCircle(bx, by, size * 0.15f, badgeRim)
@@ -278,6 +410,12 @@ class RadialMenuView(
         }
 
         selected?.let { drawLabel(canvas, it.label, selCenterX, selCenterY) }
+    }
+
+    /** Open-folder apps glide out from the inner ring to the outer one. */
+    private fun folderRadius(ring: Ring): Float {
+        val inner = favRing?.radius ?: ring.radius
+        return inner + (ring.radius - inner) * folderProgress
     }
 
     /** App name in a pill just inside the highlighted icon, kept on screen. */
@@ -299,8 +437,10 @@ class RadialMenuView(
         private const val INNER_DP = 122f
         private const val OUTER_DP = 208f
         private const val ICON_DP = 46f
+        private const val FOLDER_DWELL_MS = 280L
 
         /** How far the menu reaches above and below its centre, in px. */
+        /** Pass hasRecents = true when favourites include a folder: open folders use the outer ring. */
         fun halfExtentPx(context: Context, hasFavorites: Boolean, hasRecents: Boolean): Float {
             val outer = when {
                 hasFavorites && hasRecents -> OUTER_DP

@@ -23,6 +23,7 @@ object Prefs {
     const val KEY_BUBBLE_SIZE = "bubble_size"
     const val KEY_HIDE_IN_APPS = "hide_in_apps"
     const val KEY_NOTIFICATION_DOTS = "notification_dots"
+    const val KEY_FOLDERS = "folders"
 
     private fun sp(context: Context): SharedPreferences =
         context.getSharedPreferences(FILE, Context.MODE_PRIVATE)
@@ -52,6 +53,9 @@ object Prefs {
         setFavorites(context, current)
         return current
     }
+
+    fun foldersJson(context: Context): String? = sp(context).getString(KEY_FOLDERS, null)
+    fun setFoldersJson(context: Context, json: String) = sp(context).edit { putString(KEY_FOLDERS, json) }
 
     /** Packages the user never wants in the recent-apps ring. */
     fun hiddenRecents(context: Context): Set<String> =

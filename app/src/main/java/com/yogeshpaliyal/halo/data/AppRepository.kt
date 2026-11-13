@@ -35,7 +35,11 @@ data class AppEntry(
     val available: Boolean,
     /** Set for quick actions (flashlight, volume, play/pause) instead of an app. */
     val action: QuickAction? = null,
-)
+    /** The apps inside, when this is a folder. */
+    val children: List<AppEntry> = emptyList(),
+) {
+    val isFolder: Boolean get() = Folders.isFolderKey(key)
+}
 
 /**
  * Lists and opens apps across the user's profiles (personal + work) through [LauncherApps].
@@ -88,6 +92,7 @@ class AppRepository(context: Context) {
 
     fun entryFor(key: String): AppEntry? {
         if (key.startsWith(QuickAction.PREFIX)) return QuickAction.fromKey(key)?.let(::actionEntry)
+        if (Folders.isFolderKey(key)) return folderEntry(key)
         val pkg = key.substringBefore('@')
         val user = if ('@' in key) {
             key.substringAfter('@').toLongOrNull()?.let { userManager.getUserForSerialNumber(it) }
@@ -101,6 +106,23 @@ class AppRepository(context: Context) {
 
     fun favorites(): List<AppEntry> =
         Prefs.favorites(context).mapNotNull(::entryFor).take(Prefs.MAX_FAVORITES)
+
+    /** A folder with whichever of its apps are still installed. */
+    private fun folderEntry(key: String): AppEntry? {
+        val folder = Folders.get(context, key) ?: return null
+        val children = folder.apps.filterNot(Folders::isFolderKey).mapNotNull(::entryFor)
+        return AppEntry(
+            key = key,
+            packageName = "",
+            label = folder.name,
+            icon = FolderIcon(children.map { it.icon }),
+            component = null,
+            user = null,
+            isWork = false,
+            available = true,
+            children = children,
+        )
+    }
 
     /**
      * Most recently opened personal-profile apps, newest first. Android's usage data only
@@ -151,7 +173,9 @@ class AppRepository(context: Context) {
     /** Opens [app] in its own profile, resuming its task if it is already running. */
     fun launch(app: AppEntry): Boolean = try {
         val action = app.action
-        if (action != null) {
+        if (app.isFolder) {
+            false // folders open in the menu, never launch
+        } else if (action != null) {
             QuickActions.perform(context, action)
         } else {
             launcherApps.startMainActivity(app.component, app.user, null, null)

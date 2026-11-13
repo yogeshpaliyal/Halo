@@ -2,15 +2,18 @@ package com.yogeshpaliyal.halo.ui
 
 import android.Manifest
 import android.os.Build
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LargeTopAppBar
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -32,6 +35,8 @@ import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yogeshpaliyal.halo.data.AppEntry
 import com.yogeshpaliyal.halo.data.AppRepository
+import com.yogeshpaliyal.halo.data.Folder
+import com.yogeshpaliyal.halo.data.Folders
 import com.yogeshpaliyal.halo.data.Permissions
 import com.yogeshpaliyal.halo.data.Prefs
 import com.yogeshpaliyal.halo.overlay.NotificationBadges
@@ -70,10 +75,13 @@ fun HomeScreen() {
     // Quick actions first, then every app; favourites can hold either.
     LaunchedEffect(resumeTick) { apps = withContext(Dispatchers.IO) { repo.quickActions() + repo.launchableApps() } }
     var favorites by remember { mutableStateOf(Prefs.favorites(context)) }
-    val favoriteEntries = remember(favorites, apps) {
+    var foldersVersion by remember { mutableIntStateOf(0) }
+    val favoriteEntries = remember(favorites, apps, foldersVersion) {
         val byKey = apps.associateBy { it.key }
-        favorites.mapNotNull { byKey[it] }
+        favorites.mapNotNull { if (Folders.isFolderKey(it)) repo.entryFor(it) else byKey[it] }
     }
+    // Folder being created or edited, with its working name and apps.
+    var editingFolder by remember { mutableStateOf<Folder?>(null) }
     var showPicker by remember { mutableStateOf(false) }
     var hiddenRecents by remember { mutableStateOf(Prefs.hiddenRecents(context)) }
     var showHiddenPicker by remember { mutableStateOf(false) }
@@ -147,8 +155,17 @@ fun HomeScreen() {
                 FavoritesCard(
                     favorites = favoriteEntries,
                     onAdd = { showPicker = true },
-                    onRemove = { favorites = Prefs.toggleFavorite(context, it.key) },
+                    onRemove = {
+                        if (it.isFolder) {
+                            Folders.delete(context, it.key)
+                            favorites = Prefs.favorites(context)
+                        } else {
+                            favorites = Prefs.toggleFavorite(context, it.key)
+                        }
+                    },
                     onMove = { index, delta -> favorites = Prefs.moveFavorite(context, index, delta) },
+                    onNewFolder = { editingFolder = Folders.newFolder() },
+                    onEditFolder = { entry -> editingFolder = Folders.get(context, entry.key) },
                 )
             }
             item {
@@ -227,6 +244,43 @@ fun HomeScreen() {
             limit = null,
             showOrder = false,
             countLabel = { if (it == 0) "Tick apps to keep out of the outer ring" else "$it hidden" },
+        )
+    }
+
+    editingFolder?.let { folder ->
+        val isNew = Folders.get(context, folder.key) == null
+        AppPickerSheet(
+            apps = apps,
+            selected = folder.apps,
+            onToggle = { app ->
+                val list = folder.apps.toMutableList()
+                if (!list.remove(app.key) && list.size < Folders.MAX_APPS) list += app.key
+                editingFolder = folder.copy(apps = list)
+            },
+            onDismiss = {
+                // Saved on close. A folder left empty is dropped.
+                if (folder.apps.isEmpty()) {
+                    if (!isNew) Folders.delete(context, folder.key)
+                } else if (!Folders.save(context, folder)) {
+                    Toast.makeText(context, "Favourites are full. Remove one to add this folder.", Toast.LENGTH_LONG).show()
+                }
+                favorites = Prefs.favorites(context)
+                foldersVersion++
+                editingFolder = null
+            },
+            title = if (isNew) "New folder" else "Edit folder",
+            limit = Folders.MAX_APPS,
+            countLabel = { "$it of ${Folders.MAX_APPS} apps. Rest on the folder in the dial to open it." },
+            header = {
+                OutlinedTextField(
+                    value = folder.name,
+                    onValueChange = { editingFolder = folder.copy(name = it.take(24)) },
+                    label = { Text("Folder name") },
+                    placeholder = { Text("e.g. Social, Work, Travel") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            },
         )
     }
 

@@ -30,6 +30,7 @@ import androidx.core.app.ServiceCompat
 import androidx.core.content.ContextCompat
 import com.yogeshpaliyal.halo.R
 import com.yogeshpaliyal.halo.data.AppRepository
+import com.yogeshpaliyal.halo.data.Folders
 import com.yogeshpaliyal.halo.data.Permissions
 import com.yogeshpaliyal.halo.data.Prefs
 import com.yogeshpaliyal.halo.data.TapAction
@@ -122,7 +123,7 @@ class HaloService : Service(), BubbleView.Listener {
             Prefs.KEY_BUBBLE_OPACITY -> bubble?.refreshOpacity()
             Prefs.KEY_BUBBLE_SIZE -> resizeBubble()
             Prefs.KEY_HIDE_IN_APPS -> updateAppWatch()
-            Prefs.KEY_NOTIFICATION_DOTS, Prefs.KEY_FAVORITES -> updateBubbleBadge()
+            Prefs.KEY_NOTIFICATION_DOTS, Prefs.KEY_FAVORITES, Prefs.KEY_FOLDERS -> updateBubbleBadge()
         }
     }
 
@@ -130,7 +131,8 @@ class HaloService : Service(), BubbleView.Listener {
 
     /** Dot on the bubble when any favourite has notifications waiting. */
     private fun updateBubbleBadge() {
-        val on = Prefs.notificationDots(this) && Prefs.favorites(this).any { it in NotificationBadges.keys }
+        val on = Prefs.notificationDots(this) &&
+            Folders.expand(this, Prefs.favorites(this)).any { it in NotificationBadges.keys }
         bubble?.badge = on
     }
 
@@ -289,12 +291,15 @@ class HaloService : Service(), BubbleView.Listener {
      */
     private fun showMenu(tapMode: Boolean = false) {
         removeMenu(animate = false)
-        val favorites = repo.favorites()
+        // Empty folders (all their apps uninstalled) are left out of the dial.
+        val favorites = repo.favorites().filter { !it.isFolder || it.children.isNotEmpty() }
         val recents = repo.recents(Prefs.MAX_RECENTS, excludeKeys = favorites.mapTo(HashSet()) { it.key })
 
         // Near the top or bottom the dial can't be centred on the bubble without spilling
         // off screen, so centre it where it fits and slide the bubble there while it's open.
-        val half = RadialMenuView.halfExtentPx(this, favorites.isNotEmpty(), recents.isNotEmpty())
+        val half = RadialMenuView.halfExtentPx(
+            this, favorites.isNotEmpty(), recents.isNotEmpty() || favorites.any { it.isFolder },
+        )
         val screenH = screenSize().y
         val (top, bottom) = safeInsets()
         val bubbleCenter = bubbleParams.y + bubbleSize / 2f
@@ -335,12 +340,7 @@ class HaloService : Service(), BubbleView.Listener {
             params.setFitInsetsSides(0)
             params.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS
         }
-        if (tapMode) {
-            view.onPick = { app ->
-                removeMenu()
-                app?.let { repo.launch(it) }
-            }
-        }
+        if (tapMode) armTapMode(view)
         wm.addView(view, params)
         menu = view
         view.show()
@@ -476,10 +476,29 @@ class HaloService : Service(), BubbleView.Listener {
     }
 
     override fun onMenuRelease(rawX: Float, rawY: Float) {
-        menu?.updateFinger(rawX, rawY)
-        val target = menu?.selected
+        val view = menu
+        view?.updateFinger(rawX, rawY)
+        val target = view?.selected
+        if (view != null && target != null && target.isFolder) {
+            // Let go on a folder: keep the dial up with the folder open, and take the next tap.
+            view.openSelectedFolder()
+            armTapMode(view)
+            (view.layoutParams as? WindowManager.LayoutParams)?.let { lp ->
+                lp.flags = lp.flags and WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE.inv()
+                runCatching { wm.updateViewLayout(view, lp) }
+            }
+            return
+        }
         removeMenu()
         target?.let { repo.launch(it) }
+    }
+
+    /** Menu takes touches itself: tapping an app opens it, a folder opens the folder, anything else closes. */
+    private fun armTapMode(view: RadialMenuView) {
+        view.onPick = { app ->
+            removeMenu()
+            app?.let { repo.launch(it) }
+        }
     }
 
     override fun onMenuCancel() = removeMenu()
