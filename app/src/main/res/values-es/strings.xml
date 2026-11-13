@@ -151,4 +151,22 @@
     <string name="tag_mood">Ánimo</string>
     <string name="reactions_title">Reacciona a tu día</string>
     <string name="reactions_body">Duerme de noche, suda con poca batería, brilla mientras carga y salta con notificaciones nuevas.</string>
+
+    <!-- Home layout -->
+    <string name="back">Atrás</string>
+    <string name="settings_title">Ajustes</string>
+    <string name="page_appearance">Apariencia</string>
+    <string name="page_hiding">Cuándo ocultar</string>
+    <string name="summary_gestures">Toque: %1$s · Doble toque: %2$s</string>
+    <string name="summary_fullscreen">Apps a pantalla completa</string>
+    <string name="summary_never_hides">Siempre visible</string>
+    <string name="summary_recents_all">Se muestran todas las apps recientes</string>
+    <string name="summary_dots">Un punto en las apps con notificaciones sin leer</string>
+    <string name="style_card_title">Hazla tuya</string>
+    <string name="style_card_body">Elige personaje, colores y movimientos para tu burbuja.</string>
+    <string name="customise">Personalizar</string>
+    <string name="about_title">Acerca de</string>
+    <string name="about_privacy_summary">Qué puede y qué no puede ver Halo</string>
+    <string name="about_source">Código fuente</string>
+    <string name="about_version">Versión %s</string>
 </resources>

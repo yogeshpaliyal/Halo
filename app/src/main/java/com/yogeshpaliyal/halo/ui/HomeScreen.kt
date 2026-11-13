@@ -3,6 +3,19 @@ package com.yogeshpaliyal.halo.ui
 import com.yogeshpaliyal.halo.R
 import androidx.compose.ui.res.stringResource
 import android.Manifest
+import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.rememberTopAppBarState
+import androidx.compose.runtime.saveable.rememberSaveable
 import android.os.Build
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -47,7 +60,7 @@ import com.yogeshpaliyal.halo.overlay.HaloService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-private const val PRIVACY_POLICY_URL = "https://github.com/yogeshpaliyal/Halo/blob/main/PRIVACY.md"
+const val PRIVACY_POLICY_URL = "https://github.com/yogeshpaliyal/Halo/blob/main/PRIVACY.md"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -140,13 +153,51 @@ fun HomeScreen() {
         }
     }
 
-    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+    var page by rememberSaveable { mutableStateOf(Page.HOME) }
+    BackHandler(enabled = page != Page.HOME) { page = Page.HOME }
+    val version = remember {
+        runCatching { context.packageManager.getPackageInfo(context.packageName, 0).versionName }.getOrNull() ?: ""
+    }
+
+    // Each page gets its own collapsing bar so it starts expanded.
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            LargeTopAppBar(title = { Text(stringResource(R.string.app_name)) }, scrollBehavior = scrollBehavior)
+            LargeTopAppBar(
+                title = {
+                    Text(
+                        when (page) {
+                            Page.HOME -> stringResource(R.string.app_name)
+                            Page.GESTURES -> stringResource(R.string.gestures)
+                            Page.APPEARANCE -> stringResource(R.string.page_appearance)
+                            Page.HIDING -> stringResource(R.string.page_hiding)
+                            Page.RECENTS -> stringResource(R.string.recents_title)
+                            Page.ABOUT -> stringResource(R.string.about_title)
+                        },
+                    )
+                },
+                navigationIcon = {
+                    if (page != Page.HOME) {
+                        IconButton(onClick = { page = Page.HOME }) {
+                            Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = stringResource(R.string.back))
+                        }
+                    }
+                },
+                scrollBehavior = scrollBehavior,
+            )
         },
     ) { padding ->
+        AnimatedContent(
+            targetState = page,
+            transitionSpec = {
+                // Pages slide in from the side; going home slides them back out.
+                val forward = targetState != Page.HOME
+                (slideInHorizontally { w -> if (forward) w / 4 else -w / 4 } + fadeIn()) togetherWith
+                    (slideOutHorizontally { w -> if (forward) -w / 4 else w / 4 } + fadeOut())
+            },
+            label = "page",
+        ) { current ->
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(
@@ -157,6 +208,8 @@ fun HomeScreen() {
             ),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
+            when (current) {
+                Page.HOME -> {
             item {
                 HeroCard(
                     running = running,
@@ -187,13 +240,72 @@ fun HomeScreen() {
                 )
             }
             item {
-                RecentsCard(
-                    hiddenCount = hiddenRecents.size,
-                    hasUsage = hasUsage,
-                    onChooseHidden = { showHiddenPicker = true },
-                )
+                StyleTeaserCard(bubbleCharacter, bubblePalette) { page = Page.APPEARANCE }
             }
             item {
+                SettingsGroup(title = stringResource(R.string.settings_title)) {
+                            SettingsRow(
+                                title = stringResource(R.string.gestures),
+                                summary = stringResource(
+                                    R.string.summary_gestures,
+                                    stringResource(tapAction.labelRes),
+                                    stringResource(doubleTapAction.labelRes),
+                                ),
+                                onClick = { page = Page.GESTURES },
+                            )
+                    GroupDivider()
+                            SettingsRow(
+                                title = stringResource(R.string.page_appearance),
+                                summary = listOf(
+                                    stringResource(bubbleCharacter.labelRes),
+                                    stringResource(bubblePalette.labelRes),
+                                    stringResource(bubbleSize.labelRes),
+                                ).joinToString(" · "),
+                                onClick = { page = Page.APPEARANCE },
+                            )
+                    GroupDivider()
+                            SettingsRow(
+                                title = stringResource(R.string.page_hiding),
+                                summary = buildList {
+                                    if (hideFullscreen) add(res.getString(R.string.summary_fullscreen))
+                                    if (hideInApps.isNotEmpty()) {
+                                        add(res.getQuantityString(R.plurals.hidden_in_apps, hideInApps.size, hideInApps.size))
+                                    }
+                                }.ifEmpty { listOf(res.getString(R.string.summary_never_hides)) }.joinToString(" · "),
+                                onClick = { page = Page.HIDING },
+                            )
+                    GroupDivider()
+                            SettingsRow(
+                                title = stringResource(R.string.recents_title),
+                                summary = when {
+                                    !hasUsage -> stringResource(R.string.recents_need_usage)
+                                    hiddenRecents.isEmpty() -> stringResource(R.string.summary_recents_all)
+                                    else -> stringResource(R.string.hide_recents_picked, hiddenRecents.size)
+                                },
+                                onClick = { page = Page.RECENTS },
+                            )
+                    GroupDivider()
+                            SettingsRow(
+                                title = stringResource(R.string.dots_title),
+                                summary = stringResource(
+                                    if (dots && !dotsAccess) R.string.dots_need_access else R.string.summary_dots,
+                                ),
+                                checked = dots && dotsAccess,
+                                onClick = {
+                                    val on = !(dots && dotsAccess)
+                                    dots = on
+                                    Prefs.setNotificationDots(context, on)
+                                    if (on && !dotsAccess) {
+                                        runCatching { context.startActivity(NotificationBadges.settingsIntent(context)) }
+                                    }
+                                },
+                            )
+                }
+            }
+            item { HomeFooter(onAbout = { page = Page.ABOUT }) }
+                }
+
+                Page.GESTURES -> item {
                 GesturesCard(
                     tapAction = tapAction,
                     holdDelay = holdDelay,
@@ -204,9 +316,11 @@ fun HomeScreen() {
                     onHoldDelay = { holdDelay = it; Prefs.setHoldDelay(context, it) },
                     onHaptics = { haptics = it; Prefs.setHaptics(context, it) },
                 )
-            }
-            item {
+                }
+
+                Page.APPEARANCE, Page.HIDING -> item {
                 BubbleCard(
+                    section = if (current == Page.APPEARANCE) BubbleSection.APPEARANCE else BubbleSection.HIDING,
                     character = bubbleCharacter,
                     onCharacter = { bubbleCharacter = it; Prefs.setBubbleCharacter(context, it) },
                     palette = bubblePalette,
@@ -227,23 +341,21 @@ fun HomeScreen() {
                     onChooseHiddenApps = { showHideAppsPicker = true },
                     dots = dots,
                     dotsAccess = dotsAccess,
-                    onDots = { on ->
-                        dots = on
-                        Prefs.setNotificationDots(context, on)
-                        if (on && !dotsAccess) {
-                            runCatching { context.startActivity(NotificationBadges.settingsIntent(context)) }
-                        }
-                    },
+                    onDots = {},
                 )
-            }
-            item { PrivateSpaceNote() }
-            item {
-                // Play expects apps that use sensitive permissions to link their policy in-app.
-                val uriHandler = LocalUriHandler.current
-                TextButton(onClick = { uriHandler.openUri(PRIVACY_POLICY_URL) }) {
-                    Text(stringResource(R.string.privacy_policy))
                 }
+
+                Page.RECENTS -> item {
+                RecentsCard(
+                    hiddenCount = hiddenRecents.size,
+                    hasUsage = hasUsage,
+                    onChooseHidden = { showHiddenPicker = true },
+                )
+                }
+
+                Page.ABOUT -> item { AboutContent(version) }
             }
+        }
         }
     }
 

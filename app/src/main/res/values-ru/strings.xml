@@ -157,4 +157,22 @@
     <string name="tag_mood">Настр.</string>
     <string name="reactions_title">Реагирует на ваш день</string>
     <string name="reactions_body">Спит ночью, потеет при низком заряде, светится при зарядке и подпрыгивает от новых уведомлений.</string>
+
+    <!-- Home layout -->
+    <string name="back">Назад</string>
+    <string name="settings_title">Настройки</string>
+    <string name="page_appearance">Внешний вид</string>
+    <string name="page_hiding">Когда скрывать</string>
+    <string name="summary_gestures">Нажатие: %1$s · Двойное: %2$s</string>
+    <string name="summary_fullscreen">Полноэкранные приложения</string>
+    <string name="summary_never_hides">Всегда видна</string>
+    <string name="summary_recents_all">Показываются все недавние приложения</string>
+    <string name="summary_dots">Точка на приложениях с непрочитанными уведомлениями</string>
+    <string name="style_card_title">Под себя</string>
+    <string name="style_card_body">Выберите персонажа, цвета и движения для кнопки.</string>
+    <string name="customise">Настроить</string>
+    <string name="about_title">О приложении</string>
+    <string name="about_privacy_summary">Что Halo видит, а что нет</string>
+    <string name="about_source">Исходный код</string>
+    <string name="about_version">Версия %s</string>
 </resources>

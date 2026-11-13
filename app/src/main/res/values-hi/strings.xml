@@ -151,4 +151,22 @@
     <string name="tag_mood">मूड</string>
     <string name="reactions_title">आपके दिन पर रिएक्ट करे</string>
     <string name="reactions_body">रात में सोता है, बैटरी कम होने पर पसीना आता है, चार्जिंग पर चमकता है और नई सूचना पर उछलता है।</string>
+
+    <!-- Home layout -->
+    <string name="back">वापस</string>
+    <string name="settings_title">सेटिंग</string>
+    <string name="page_appearance">रूप</string>
+    <string name="page_hiding">कब छिपाएं</string>
+    <string name="summary_gestures">टैप: %1$s · दो बार टैप: %2$s</string>
+    <string name="summary_fullscreen">फ़ुल-स्क्रीन ऐप</string>
+    <string name="summary_never_hides">हमेशा दिखे</string>
+    <string name="summary_recents_all">सभी हाल के ऐप दिखते हैं</string>
+    <string name="summary_dots">बिना पढ़ी सूचना वाले ऐप पर एक डॉट</string>
+    <string name="style_card_title">इसे अपना बनाएं</string>
+    <string name="style_card_body">अपने बबल के लिए कैरेक्टर, रंग और हरकतें चुनें।</string>
+    <string name="customise">पसंद के मुताबिक बनाएं</string>
+    <string name="about_title">जानकारी</string>
+    <string name="about_privacy_summary">Halo क्या देख सकता है और क्या नहीं</string>
+    <string name="about_source">सोर्स कोड</string>
+    <string name="about_version">वर्शन %s</string>
 </resources>

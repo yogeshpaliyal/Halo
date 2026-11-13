@@ -588,13 +588,7 @@ fun GesturesCard(
 ) {
     val res = LocalContext.current.resources
     Card(shape = RoundedCornerShape(24.dp)) {
-        Column(Modifier.padding(vertical = 20.dp)) {
-            Text(
-                stringResource(R.string.gestures),
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(horizontal = 20.dp),
-            )
-            Spacer(Modifier.height(8.dp))
+        Column(Modifier.padding(vertical = 12.dp)) {
             GestureRow(
                 tag = stringResource(R.string.tag_hold),
                 title = stringResource(R.string.gesture_hold_title),
@@ -654,9 +648,13 @@ fun GesturesCard(
     }
 }
 
-/** How the bubble looks and when it steps aside. */
+/** Which part of the bubble settings a page shows. */
+enum class BubbleSection { APPEARANCE, HIDING, DOTS }
+
+/** How the bubble looks, when it steps aside, and notification dots: one page each. */
 @Composable
 fun BubbleCard(
+    section: BubbleSection,
     character: BubbleCharacter,
     onCharacter: (BubbleCharacter) -> Unit,
     palette: BubblePalette,
@@ -680,172 +678,170 @@ fun BubbleCard(
 ) {
     val res = LocalContext.current.resources
     Card(shape = RoundedCornerShape(24.dp)) {
-        Column(Modifier.padding(vertical = 20.dp)) {
-            Text(
-                stringResource(R.string.bubble),
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(horizontal = 20.dp),
-            )
-            Spacer(Modifier.height(4.dp))
-            Text(
-                stringResource(R.string.style_hint),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(horizontal = 20.dp),
-            )
-            Spacer(Modifier.height(10.dp))
-            CharacterRow(character, palette, onCharacter)
-            Spacer(Modifier.height(10.dp))
-            PaletteRow(palette, onPalette)
-            if (character != BubbleCharacter.CLASSIC) {
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .clickable { onAnimations(!animations) }
-                        .padding(horizontal = 20.dp, vertical = 10.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Tag(stringResource(R.string.tag_anim))
-                    Spacer(Modifier.width(14.dp))
-                    Column(Modifier.weight(1f)) {
-                        Text(stringResource(R.string.animations_title), style = MaterialTheme.typography.titleSmall)
-                        Text(
-                            stringResource(R.string.animations_body),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
-                    Switch(checked = animations, onCheckedChange = onAnimations)
-                }
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .clickable { onReactions(!reactions) }
-                        .padding(horizontal = 20.dp, vertical = 10.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Tag(stringResource(R.string.tag_mood))
-                    Spacer(Modifier.width(14.dp))
-                    Column(Modifier.weight(1f)) {
-                        Text(stringResource(R.string.reactions_title), style = MaterialTheme.typography.titleSmall)
-                        Text(
-                            stringResource(R.string.reactions_body),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
-                    Switch(checked = reactions, onCheckedChange = onReactions)
-                }
-            }
-            HorizontalDivider(Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
-            ChoiceRow(
-                tag = stringResource(R.string.tag_size),
-                title = stringResource(R.string.size),
-                value = size,
-                options = BubbleSize.entries,
-                label = { res.getString(it.labelRes) },
-                detail = { res.getString(R.string.unit_dp, it.dp) },
-                onSelect = onSize,
-            )
-            Row(
-                Modifier.padding(start = 20.dp, end = 20.dp, top = 10.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Tag(stringResource(R.string.tag_look))
-                Spacer(Modifier.width(14.dp))
-                Column(Modifier.weight(1f)) {
-                    Text(stringResource(R.string.opacity), style = MaterialTheme.typography.titleSmall)
-                    Text(
-                        stringResource(R.string.opacity_body),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-                Spacer(Modifier.width(8.dp))
+        Column(Modifier.padding(vertical = 12.dp)) {
+            if (section == BubbleSection.APPEARANCE) {
                 Text(
-                    stringResource(R.string.unit_percent, (opacity * 100).roundToInt()),
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.primary,
+                    stringResource(R.string.style_hint),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(horizontal = 20.dp),
                 )
-            }
-            Slider(
-                value = opacity,
-                onValueChange = onOpacity,
-                valueRange = 0.3f..1f,
-                steps = 6, // 30, 40, ... 100
-                modifier = Modifier.padding(start = 90.dp, end = 20.dp),
-            )
-
-            HorizontalDivider(Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
-
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .clickable { onHideFullscreen(!hideFullscreen) }
-                    .padding(horizontal = 20.dp, vertical = 10.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Tag(stringResource(R.string.tag_auto))
-                Spacer(Modifier.width(14.dp))
-                Column(Modifier.weight(1f)) {
-                    Text(stringResource(R.string.hide_fullscreen), style = MaterialTheme.typography.titleSmall)
+                Spacer(Modifier.height(10.dp))
+                CharacterRow(character, palette, onCharacter)
+                Spacer(Modifier.height(10.dp))
+                PaletteRow(palette, onPalette)
+                if (character != BubbleCharacter.CLASSIC) {
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .clickable { onAnimations(!animations) }
+                            .padding(horizontal = 20.dp, vertical = 10.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Tag(stringResource(R.string.tag_anim))
+                        Spacer(Modifier.width(14.dp))
+                        Column(Modifier.weight(1f)) {
+                            Text(stringResource(R.string.animations_title), style = MaterialTheme.typography.titleSmall)
+                            Text(
+                                stringResource(R.string.animations_body),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                        Switch(checked = animations, onCheckedChange = onAnimations)
+                    }
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .clickable { onReactions(!reactions) }
+                            .padding(horizontal = 20.dp, vertical = 10.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Tag(stringResource(R.string.tag_mood))
+                        Spacer(Modifier.width(14.dp))
+                        Column(Modifier.weight(1f)) {
+                            Text(stringResource(R.string.reactions_title), style = MaterialTheme.typography.titleSmall)
+                            Text(
+                                stringResource(R.string.reactions_body),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                        Switch(checked = reactions, onCheckedChange = onReactions)
+                    }
+                }
+                HorizontalDivider(Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
+                ChoiceRow(
+                    tag = stringResource(R.string.tag_size),
+                    title = stringResource(R.string.size),
+                    value = size,
+                    options = BubbleSize.entries,
+                    label = { res.getString(it.labelRes) },
+                    detail = { res.getString(R.string.unit_dp, it.dp) },
+                    onSelect = onSize,
+                )
+                Row(
+                    Modifier.padding(start = 20.dp, end = 20.dp, top = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Tag(stringResource(R.string.tag_look))
+                    Spacer(Modifier.width(14.dp))
+                    Column(Modifier.weight(1f)) {
+                        Text(stringResource(R.string.opacity), style = MaterialTheme.typography.titleSmall)
+                        Text(
+                            stringResource(R.string.opacity_body),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                    Spacer(Modifier.width(8.dp))
                     Text(
-                        stringResource(R.string.hide_fullscreen_body),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        stringResource(R.string.unit_percent, (opacity * 100).roundToInt()),
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.primary,
                     )
                 }
-                Switch(checked = hideFullscreen, onCheckedChange = onHideFullscreen)
-            }
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .clickable(enabled = hasUsage, onClick = onChooseHiddenApps)
-                    .padding(horizontal = 20.dp, vertical = 10.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Tag(stringResource(R.string.tag_apps))
-                Spacer(Modifier.width(14.dp))
-                Column(Modifier.weight(1f)) {
-                    Text(stringResource(R.string.hide_in_apps), style = MaterialTheme.typography.titleSmall)
-                    Text(
-                        when {
-                            !hasUsage -> stringResource(R.string.hide_in_needs_usage)
-                            hiddenAppsCount == 0 -> stringResource(R.string.hide_in_pick)
-                            else -> plural(R.plurals.hidden_in_apps, hiddenAppsCount)
-                        },
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-                TextButton(onClick = onChooseHiddenApps, enabled = hasUsage) { Text(stringResource(R.string.choose)) }
-            }
+                Slider(
+                    value = opacity,
+                    onValueChange = onOpacity,
+                    valueRange = 0.3f..1f,
+                    steps = 6, // 30, 40, ... 100
+                    modifier = Modifier.padding(start = 90.dp, end = 20.dp),
+                )
 
-            HorizontalDivider(Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
+            }
+            if (section == BubbleSection.HIDING) {
 
-            val dotsOn = dots && dotsAccess
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .clickable { onDots(!dotsOn) }
-                    .padding(horizontal = 20.dp, vertical = 10.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Tag(stringResource(R.string.tag_dots))
-                Spacer(Modifier.width(14.dp))
-                Column(Modifier.weight(1f)) {
-                    Text(stringResource(R.string.dots_title), style = MaterialTheme.typography.titleSmall)
-                    Text(
-                        if (dots && !dotsAccess) {
-                            stringResource(R.string.dots_need_access)
-                        } else {
-                            stringResource(R.string.dots_body)
-                        },
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .clickable { onHideFullscreen(!hideFullscreen) }
+                        .padding(horizontal = 20.dp, vertical = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Tag(stringResource(R.string.tag_auto))
+                    Spacer(Modifier.width(14.dp))
+                    Column(Modifier.weight(1f)) {
+                        Text(stringResource(R.string.hide_fullscreen), style = MaterialTheme.typography.titleSmall)
+                        Text(
+                            stringResource(R.string.hide_fullscreen_body),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                    Switch(checked = hideFullscreen, onCheckedChange = onHideFullscreen)
                 }
-                Switch(checked = dotsOn, onCheckedChange = onDots)
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .clickable(enabled = hasUsage, onClick = onChooseHiddenApps)
+                        .padding(horizontal = 20.dp, vertical = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Tag(stringResource(R.string.tag_apps))
+                    Spacer(Modifier.width(14.dp))
+                    Column(Modifier.weight(1f)) {
+                        Text(stringResource(R.string.hide_in_apps), style = MaterialTheme.typography.titleSmall)
+                        Text(
+                            when {
+                                !hasUsage -> stringResource(R.string.hide_in_needs_usage)
+                                hiddenAppsCount == 0 -> stringResource(R.string.hide_in_pick)
+                                else -> plural(R.plurals.hidden_in_apps, hiddenAppsCount)
+                            },
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                    TextButton(onClick = onChooseHiddenApps, enabled = hasUsage) { Text(stringResource(R.string.choose)) }
+                }
+
+            }
+            if (section == BubbleSection.DOTS) {
+
+                val dotsOn = dots && dotsAccess
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .clickable { onDots(!dotsOn) }
+                        .padding(horizontal = 20.dp, vertical = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Tag(stringResource(R.string.tag_dots))
+                    Spacer(Modifier.width(14.dp))
+                    Column(Modifier.weight(1f)) {
+                        Text(stringResource(R.string.dots_title), style = MaterialTheme.typography.titleSmall)
+                        Text(
+                            if (dots && !dotsAccess) {
+                                stringResource(R.string.dots_need_access)
+                            } else {
+                                stringResource(R.string.dots_body)
+                            },
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                    Switch(checked = dotsOn, onCheckedChange = onDots)
+                }
             }
         }
     }
@@ -966,7 +962,6 @@ private fun Tag(text: String) {
 fun RecentsCard(hiddenCount: Int, hasUsage: Boolean, onChooseHidden: () -> Unit) {
     Card(shape = RoundedCornerShape(24.dp)) {
         Column(Modifier.padding(20.dp)) {
-            Text(stringResource(R.string.recents_title), style = MaterialTheme.typography.titleMedium)
             Text(
                 stringResource(if (hasUsage) R.string.recents_hint else R.string.recents_need_usage),
                 style = MaterialTheme.typography.bodySmall,
