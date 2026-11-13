@@ -15,6 +15,7 @@ import android.os.Process
 import android.os.UserHandle
 import android.os.UserManager
 import androidx.core.content.ContextCompat
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
 
 /**
@@ -25,7 +26,8 @@ data class AppEntry(
     val key: String,
     val packageName: String,
     val label: String,
-    val icon: Drawable,
+    /** Loads the icon on first use; app lists fetch hundreds of labels but only show a few icons. */
+    val iconLoader: () -> Drawable,
     /** Null for quick actions. */
     val component: ComponentName?,
     val user: UserHandle?,
@@ -39,6 +41,8 @@ data class AppEntry(
     val children: List<AppEntry> = emptyList(),
 ) {
     val isFolder: Boolean get() = Folders.isFolderKey(key)
+
+    val icon: Drawable by lazy { iconLoader() }
 }
 
 /**
@@ -53,7 +57,8 @@ class AppRepository(context: Context) {
     private val launcherApps = this.context.getSystemService(LauncherApps::class.java)
     private val userManager = this.context.getSystemService(UserManager::class.java)
     private val me = Process.myUserHandle()
-    private val iconCache = HashMap<String, Drawable>()
+    // Shared by background loaders, so it must be thread-safe.
+    private val iconCache = ConcurrentHashMap<String, Drawable>()
 
     /**
      * Favourites key format: a bare package name for the personal profile (the format older
@@ -81,7 +86,7 @@ class AppRepository(context: Context) {
             key = action.key,
             packageName = "",
             label = action.label,
-            icon = icon,
+            iconLoader = { icon },
             component = null,
             user = null,
             isWork = false,
@@ -115,7 +120,7 @@ class AppRepository(context: Context) {
             key = key,
             packageName = "",
             label = folder.name,
-            icon = FolderIcon(children.map { it.icon }),
+            iconLoader = { FolderIcon(children.map { it.icon }) },
             component = null,
             user = null,
             isWork = false,
@@ -198,7 +203,7 @@ class AppRepository(context: Context) {
             packageName = pkg,
             label = info.label.toString(),
             // Badged: work apps get the briefcase, personal apps are unchanged.
-            icon = iconCache.getOrPut(key) { info.getBadgedIcon(0) },
+            iconLoader = { iconCache.getOrPut(key) { info.getBadgedIcon(0) } },
             component = info.componentName,
             user = user,
             isWork = user != me,

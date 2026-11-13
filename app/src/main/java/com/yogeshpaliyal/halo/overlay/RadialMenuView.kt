@@ -66,6 +66,11 @@ class RadialMenuView(
     /** +1 / -1 so that slot 0 is always the top item, whichever side the bubble is on. */
     private val dir = if (onRightEdge) -1f else 1f
 
+    init {
+        // Icons load lazily; fetch them now so the opening animation never stalls on one.
+        (favorites + recents).forEach { app -> app.icon; app.children.forEach { it.icon } }
+    }
+
     private val favRing = favorites.takeIf { it.isNotEmpty() }?.let { Ring(it, dp(INNER_DP)) }
     private val recentRing = recents.takeIf { it.isNotEmpty() }
         ?.let { Ring(it, if (favRing == null) dp(INNER_DP) else dp(OUTER_DP)) }

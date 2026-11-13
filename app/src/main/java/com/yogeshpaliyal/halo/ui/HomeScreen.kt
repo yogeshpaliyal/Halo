@@ -73,18 +73,31 @@ fun HomeScreen() {
     }
 
     var apps by remember { mutableStateOf<List<AppEntry>>(emptyList()) }
-    // Quick actions first, then every app; favourites can hold either.
-    LaunchedEffect(resumeTick) { apps = withContext(Dispatchers.IO) { repo.quickActions() + repo.launchableApps() } }
+    var appsLoaded by remember { mutableStateOf(false) }
+    // Quick actions first, then every app; favourites can hold either. Only needed by the
+    // pickers, so it loads in the background and the screen never waits on it.
+    LaunchedEffect(resumeTick) {
+        apps = withContext(Dispatchers.IO) { repo.quickActions() + repo.launchableApps() }
+        appsLoaded = true
+    }
     var favorites by remember { mutableStateOf(Prefs.favorites(context)) }
     var foldersVersion by remember { mutableIntStateOf(0) }
-    val favoriteEntries = remember(favorites, apps, foldersVersion) {
-        val byKey = apps.associateBy { it.key }
-        favorites.mapNotNull { if (Folders.isFolderKey(it)) repo.entryFor(it) else byKey[it] }
+    // Favourites are looked up one by one (a handful of apps), not from the full app list,
+    // so the card fills in straight away.
+    var favoriteCache by remember { mutableStateOf<Map<String, AppEntry>>(emptyMap()) }
+    LaunchedEffect(favorites, foldersVersion, resumeTick) {
+        val keys = favorites
+        val loaded = withContext(Dispatchers.IO) { keys.mapNotNull { repo.entryFor(it) } }
+        favoriteCache = favoriteCache + loaded.associateBy { it.key }
     }
+    val favoriteEntries = remember(favorites, favoriteCache) { favorites.mapNotNull { favoriteCache[it] } }
     // Folder being created or edited, with its working name and apps.
     var editingFolder by remember { mutableStateOf<Folder?>(null) }
     // Folders are listed in the favourites picker like apps; editing one returns to it.
-    val folderEntries = remember(foldersVersion, apps) { Folders.all(context).mapNotNull { repo.entryFor(it.key) } }
+    var folderEntries by remember { mutableStateOf<List<AppEntry>>(emptyList()) }
+    LaunchedEffect(foldersVersion, resumeTick) {
+        folderEntries = withContext(Dispatchers.IO) { Folders.all(context).mapNotNull { repo.entryFor(it.key) } }
+    }
     var backToPicker by remember { mutableStateOf(false) }
     var showPicker by remember { mutableStateOf(false) }
     var hiddenRecents by remember { mutableStateOf(Prefs.hiddenRecents(context)) }
@@ -219,6 +232,7 @@ fun HomeScreen() {
     if (showHideAppsPicker) {
         // Usage events only cover the personal profile, so offer just those apps.
         AppPickerSheet(
+            loading = !appsLoaded,
             apps = apps.filter { it.action == null && !it.isWork },
             selected = hideInApps.toList(),
             onToggle = { hideInApps = Prefs.toggleHideInApp(context, it.packageName) },
@@ -233,6 +247,7 @@ fun HomeScreen() {
     if (showHiddenPicker) {
         // Recents only ever come from the personal profile, so offer just those apps.
         AppPickerSheet(
+            loading = !appsLoaded,
             apps = apps.filter { it.action == null && !it.isWork },
             selected = hiddenRecents.toList(),
             onToggle = { hiddenRecents = Prefs.toggleHiddenRecent(context, it.packageName) },
@@ -247,6 +262,7 @@ fun HomeScreen() {
     editingFolder?.let { folder ->
         val isNew = Folders.get(context, folder.key) == null
         AppPickerSheet(
+            loading = !appsLoaded,
             apps = apps,
             selected = folder.apps,
             onToggle = { app ->
@@ -306,6 +322,7 @@ fun HomeScreen() {
 
     if (showPicker) {
         AppPickerSheet(
+            loading = !appsLoaded,
             apps = folderEntries + apps,
             selected = favorites,
             onToggle = { favorites = Prefs.toggleFavorite(context, it.key) },

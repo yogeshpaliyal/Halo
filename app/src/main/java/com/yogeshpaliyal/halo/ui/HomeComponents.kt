@@ -74,13 +74,53 @@ import com.yogeshpaliyal.halo.data.BubbleSize
 import com.yogeshpaliyal.halo.data.HoldDelay
 import com.yogeshpaliyal.halo.data.Prefs
 import com.yogeshpaliyal.halo.data.TapAction
+import android.util.LruCache
+import androidx.compose.runtime.produceState
+import androidx.compose.ui.unit.Dp
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlin.math.cos
 import kotlin.math.sin
 
+/** Rendered icons, so scrolling back or reopening a sheet shows them instantly. */
+private val iconBitmaps = LruCache<String, ImageBitmap>(400)
+
+/**
+ * The app's icon as a bitmap, rendered in the background. Null for the first frame or two
+ * while it loads; [AppIcon] shows a placeholder meanwhile.
+ */
 @Composable
-fun rememberIcon(app: AppEntry): ImageBitmap =
+fun rememberIcon(app: AppEntry): ImageBitmap? {
     // Folder icons are drawn from their apps, so they change when the folder is edited.
-    remember(app.key, app.label, app.children.map { it.key }) { app.icon.toBitmap(128, 128).asImageBitmap() }
+    val cacheKey = remember(app.key, app.label, app.children) {
+        app.key + "|" + app.label + "|" + app.children.joinToString(",") { it.key }
+    }
+    val bitmap by produceState<ImageBitmap?>(iconBitmaps.get(cacheKey), cacheKey) {
+        if (value == null) {
+            value = withContext(Dispatchers.Default) {
+                // One drawable can be shown in two places at once; don't render it twice in parallel.
+                synchronized(app.icon) { app.icon.toBitmap(128, 128).asImageBitmap() }
+            }.also { iconBitmaps.put(cacheKey, it) }
+        }
+    }
+    return bitmap
+}
+
+/** App icon with a soft placeholder while it loads. */
+@Composable
+fun AppIcon(app: AppEntry, size: Dp, alpha: Float = 1f) {
+    val bitmap = rememberIcon(app)
+    if (bitmap != null) {
+        Image(bitmap, contentDescription = null, modifier = Modifier.size(size), alpha = alpha)
+    } else {
+        Box(
+            Modifier
+                .size(size)
+                .clip(CircleShape)
+                .background(MaterialTheme.colorScheme.surfaceVariant),
+        )
+    }
+}
 
 // --- Hero: on/off switch plus a live preview of the menu ---------------------------------
 
@@ -134,7 +174,7 @@ fun HeroCard(
 
 /** A miniature of the real menu: bubble on the right, favourites inside, recents outside. */
 @Composable
-fun RadialPreview(favorites: List<ImageBitmap>, modifier: Modifier = Modifier) {
+fun RadialPreview(favorites: List<ImageBitmap?>, modifier: Modifier = Modifier) {
     val band = MaterialTheme.colorScheme.surface.copy(alpha = 0.75f)
     val emptySlot = MaterialTheme.colorScheme.outline.copy(alpha = 0.6f)
     val recent = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.18f)
@@ -451,12 +491,7 @@ private fun FilledSlot(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
-            Image(
-                rememberIcon(app),
-                contentDescription = null,
-                modifier = Modifier.size(44.dp),
-                alpha = if (app.available) 1f else 0.4f,
-            )
+            AppIcon(app, 44.dp, alpha = if (app.available) 1f else 0.4f)
             Spacer(Modifier.height(6.dp))
             Text(
                 app.label,

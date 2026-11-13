@@ -22,6 +22,7 @@ import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -63,6 +64,8 @@ fun AppPickerSheet(
     leadingRow: (@Composable () -> Unit)? = null,
     /** Shows an edit button on folder rows. */
     onEditFolder: ((AppEntry) -> Unit)? = null,
+    /** True while the app list is still being read; shows a spinner under what's ready. */
+    loading: Boolean = false,
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var query by remember { mutableStateOf("") }
@@ -116,6 +119,13 @@ fun AppPickerSheet(
             if (leadingRow != null && query.isBlank()) {
                 item(key = "leading") { leadingRow() }
             }
+            if (loading) {
+                item(key = "loading") {
+                    Box(Modifier.fillMaxWidth().padding(24.dp), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator(Modifier.size(28.dp), strokeWidth = 3.dp)
+                    }
+                }
+            }
             items(filtered, key = { it.key }) { app ->
                 val isSelected = app.key in selected
                 val enabled = isSelected || !full
@@ -127,7 +137,7 @@ fun AppPickerSheet(
                         .padding(horizontal = 20.dp, vertical = 10.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Image(rememberIcon(app), contentDescription = null, modifier = Modifier.size(40.dp))
+                    AppIcon(app, 40.dp)
                     Spacer(Modifier.width(16.dp))
                     Text(app.label, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f, fill = false))
                     if (app.isWork) {
