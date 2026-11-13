@@ -64,6 +64,12 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
+    androidResources {
+        // Lists the app's languages for Android 13+'s per-app language setting
+        // (Settings > Apps > Halo > Language). Default language is in res/resources.properties.
+        generateLocaleConfig = true
+    }
+
     buildFeatures {
         compose = true
     }

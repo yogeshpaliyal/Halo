@@ -1,22 +1,25 @@
 package com.yogeshpaliyal.halo.data
 
+import androidx.annotation.StringRes
+import com.yogeshpaliyal.halo.R
+
 /** What a single tap on the bubble does. */
-enum class TapAction(val label: String, val description: String) {
-    PREVIOUS_APP("Previous app", "Jump back to the app you used last"),
-    OPEN_MENU("Open menu", "Show the menu, then tap an app"),
-    NOTHING("Do nothing", "Ignore taps"),
+enum class TapAction(@StringRes val labelRes: Int, @StringRes val descriptionRes: Int) {
+    PREVIOUS_APP(R.string.tap_previous, R.string.tap_previous_desc),
+    OPEN_MENU(R.string.tap_menu, R.string.tap_menu_desc),
+    NOTHING(R.string.tap_nothing, R.string.tap_nothing_desc),
 }
 
 /** How long you hold the bubble before the menu opens. */
-enum class HoldDelay(val label: String, val millis: Long) {
-    SHORT("Short", 200),
-    MEDIUM("Medium", 280),
-    LONG("Long", 400),
+enum class HoldDelay(@StringRes val labelRes: Int, val millis: Long) {
+    SHORT(R.string.delay_short, 200),
+    MEDIUM(R.string.delay_medium, 280),
+    LONG(R.string.delay_long, 400),
 }
 
 /** Size of the resting bubble. */
-enum class BubbleSize(val label: String, val dp: Int) {
-    SMALL("Small", 44),
-    MEDIUM("Medium", 52),
-    LARGE("Large", 62),
+enum class BubbleSize(@StringRes val labelRes: Int, val dp: Int) {
+    SMALL(R.string.size_small, 44),
+    MEDIUM(R.string.size_medium, 52),
+    LARGE(R.string.size_large, 62),
 }

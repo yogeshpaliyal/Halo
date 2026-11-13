@@ -1,5 +1,6 @@
 package com.yogeshpaliyal.halo.data
 
+import androidx.annotation.StringRes
 import android.content.Context
 import android.hardware.camera2.CameraAccessException
 import android.hardware.camera2.CameraCharacteristics
@@ -17,10 +18,10 @@ import com.yogeshpaliyal.halo.R
  * the torch API doesn't require camera access, the volume panel and media keys are plain
  * AudioManager calls.
  */
-enum class QuickAction(val key: String, val label: String) {
-    FLASHLIGHT("action:flashlight", "Flashlight"),
-    VOLUME("action:volume", "Volume"),
-    PLAY_PAUSE("action:play_pause", "Play / pause"),
+enum class QuickAction(val key: String, @StringRes val labelRes: Int) {
+    FLASHLIGHT("action:flashlight", R.string.action_flashlight),
+    VOLUME("action:volume", R.string.action_volume),
+    PLAY_PAUSE("action:play_pause", R.string.action_play_pause),
     ;
 
     companion object {
@@ -72,7 +73,7 @@ object QuickActions {
             true
         } catch (_: CameraAccessException) {
             // Usually another app (like the camera) is holding the camera right now.
-            Toast.makeText(context, "Flashlight is busy. Close the camera app and try again.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.flashlight_busy, Toast.LENGTH_SHORT).show()
             false
         } catch (_: IllegalArgumentException) {
             false

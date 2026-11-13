@@ -1,5 +1,9 @@
 package com.yogeshpaliyal.halo.ui
 
+import androidx.compose.ui.platform.LocalContext
+import com.yogeshpaliyal.halo.R
+import androidx.annotation.PluralsRes
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
 import androidx.compose.runtime.mutableIntStateOf
@@ -27,6 +31,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -81,6 +86,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlin.math.cos
 import kotlin.math.sin
+
+/** Quantity string ("1 app" / "3 apps") in the current language. */
+@Composable
+fun plural(@PluralsRes id: Int, count: Int): String =
+    LocalContext.current.resources.getQuantityString(id, count, count)
 
 /** Rendered icons, so scrolling back or reopening a sheet shows them instantly. */
 private val iconBitmaps = LruCache<String, ImageBitmap>(400)
@@ -145,16 +155,16 @@ fun HeroCard(
                     .padding(start = 20.dp, top = 20.dp, bottom = 20.dp),
             ) {
                 Text(
-                    if (running) "Bubble is on" else "Bubble is off",
+                    stringResource(if (running) R.string.hero_on else R.string.hero_off),
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.SemiBold,
                 )
                 Spacer(Modifier.height(6.dp))
                 Text(
                     when {
-                        !canOverlay -> "Allow “Display over other apps” to start."
-                        running -> "Long-press it on any screen to switch apps."
-                        else -> "Turn on to show it on the edge of your screen."
+                        !canOverlay -> stringResource(R.string.hero_need_overlay)
+                        running -> stringResource(R.string.hero_running)
+                        else -> stringResource(R.string.hero_off_hint)
                     },
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -247,9 +257,9 @@ fun SetupCard(steps: List<SetupStep>) {
     Card(shape = RoundedCornerShape(24.dp)) {
         Column(Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("Finish setup", style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
+                Text(stringResource(R.string.setup_title), style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
                 Text(
-                    "$done of ${steps.size}",
+                    stringResource(R.string.setup_progress, done, steps.size),
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.primary,
                 )
@@ -276,7 +286,7 @@ fun SetupCard(steps: List<SetupStep>) {
                     }
                     if (!step.done) {
                         Spacer(Modifier.width(8.dp))
-                        FilledTonalButton(onClick = step.onGrant) { Text("Allow") }
+                        FilledTonalButton(onClick = step.onGrant) { Text(stringResource(R.string.allow)) }
                     }
                 }
                 val openAppInfo = step.restrictedHelp
@@ -302,7 +312,7 @@ private fun StepBadge(number: Int, done: Boolean) {
         if (done) {
             Icon(
                 Icons.Rounded.Check,
-                contentDescription = "Done",
+                contentDescription = stringResource(R.string.done),
                 tint = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier.size(18.dp),
             )
@@ -326,20 +336,19 @@ private fun RestrictedHint(onOpenAppInfo: () -> Unit) {
             .padding(12.dp),
     ) {
         Text(
-            "Switch greyed out or “Restricted setting”?",
+            stringResource(R.string.restricted_title),
             style = MaterialTheme.typography.labelLarge,
         )
         Spacer(Modifier.height(4.dp))
         Text(
-            "Android blocks this for apps installed outside an app store. Open App info, tap ⋮ " +
-                "in the top corner, choose “Allow restricted settings”, then come back and tap Allow.",
+            stringResource(R.string.restricted_body),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         TextButton(
             onClick = onOpenAppInfo,
             contentPadding = PaddingValues(horizontal = 0.dp),
-        ) { Text("Open App info") }
+        ) { Text(stringResource(R.string.open_app_info)) }
     }
 }
 
@@ -374,14 +383,14 @@ fun FavoritesCard(
         Column(Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
-                    Text("Favourites", style = MaterialTheme.typography.titleMedium)
+                    Text(stringResource(R.string.favourites), style = MaterialTheme.typography.titleMedium)
                     Text(
-                        "Inner ring, top to bottom. Hold and drag to reorder, tap for options. Add folders from Edit.",
+                        stringResource(R.string.favourites_hint),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
-                TextButton(onClick = onAdd) { Text("Edit") }
+                TextButton(onClick = onAdd) { Text(stringResource(R.string.edit)) }
             }
             Spacer(Modifier.height(14.dp))
             val target = targetIndex()
@@ -506,7 +515,7 @@ private fun FilledSlot(
             }
             if (app.isFolder) {
                 Text(
-                    if (app.children.size == 1) "1 app" else "${app.children.size} apps",
+                    plural(R.plurals.folder_apps, app.children.size),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -521,22 +530,22 @@ private fun FilledSlot(
         DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
             if (onEdit != null) {
                 DropdownMenuItem(
-                    text = { Text("Edit folder") },
+                    text = { Text(stringResource(R.string.folder_edit)) },
                     onClick = { menuOpen = false; onEdit() },
                 )
             }
             DropdownMenuItem(
-                text = { Text("Move earlier") },
+                text = { Text(stringResource(R.string.move_earlier)) },
                 enabled = canMoveUp,
                 onClick = { menuOpen = false; onMove(-1) },
             )
             DropdownMenuItem(
-                text = { Text("Move later") },
+                text = { Text(stringResource(R.string.move_later)) },
                 enabled = canMoveDown,
                 onClick = { menuOpen = false; onMove(1) },
             )
             DropdownMenuItem(
-                text = { Text("Remove", color = MaterialTheme.colorScheme.error) },
+                text = { Text(stringResource(R.string.remove), color = MaterialTheme.colorScheme.error) },
                 onClick = { menuOpen = false; onRemove() },
             )
         }
@@ -556,7 +565,7 @@ private fun EmptySlot(onAdd: () -> Unit) {
     ) {
         Icon(
             Icons.Rounded.Add,
-            contentDescription = "Add favourite",
+            contentDescription = stringResource(R.string.add_favourite),
             tint = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
@@ -573,39 +582,40 @@ fun GesturesCard(
     onHoldDelay: (HoldDelay) -> Unit,
     onHaptics: (Boolean) -> Unit,
 ) {
+    val res = LocalContext.current.resources
     Card(shape = RoundedCornerShape(24.dp)) {
         Column(Modifier.padding(vertical = 20.dp)) {
             Text(
-                "Gestures",
+                stringResource(R.string.gestures),
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.padding(horizontal = 20.dp),
             )
             Spacer(Modifier.height(8.dp))
             GestureRow(
-                tag = "Hold",
-                title = "Hold, slide, let go",
-                body = "Opens the app under your finger. Let go near the bubble to cancel.",
+                tag = stringResource(R.string.tag_hold),
+                title = stringResource(R.string.gesture_hold_title),
+                body = stringResource(R.string.gesture_hold_body),
             )
-            GestureRow(tag = "Drag", title = "Drag", body = "Moves the bubble. It snaps to the nearest side.")
+            GestureRow(tag = stringResource(R.string.tag_drag), title = stringResource(R.string.gesture_drag_title), body = stringResource(R.string.gesture_drag_body))
 
             HorizontalDivider(Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
 
             ChoiceRow(
-                tag = "Tap",
-                title = "Tap",
+                tag = stringResource(R.string.tag_tap),
+                title = stringResource(R.string.gesture_tap_title),
                 value = tapAction,
                 options = TapAction.entries,
-                label = { it.label },
-                detail = { it.description },
+                label = { res.getString(it.labelRes) },
+                detail = { res.getString(it.descriptionRes) },
                 onSelect = onTapAction,
             )
             ChoiceRow(
-                tag = "Hold",
-                title = "Hold delay",
+                tag = stringResource(R.string.tag_hold),
+                title = stringResource(R.string.hold_delay),
                 value = holdDelay,
                 options = HoldDelay.entries,
-                label = { it.label },
-                detail = { "${it.millis} ms" },
+                label = { res.getString(it.labelRes) },
+                detail = { res.getString(R.string.unit_ms, it.millis.toInt()) },
                 onSelect = onHoldDelay,
             )
             Row(
@@ -615,12 +625,12 @@ fun GesturesCard(
                     .padding(horizontal = 20.dp, vertical = 10.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Tag("Feel")
+                Tag(stringResource(R.string.tag_feel))
                 Spacer(Modifier.width(14.dp))
                 Column(Modifier.weight(1f)) {
-                    Text("Haptics", style = MaterialTheme.typography.titleSmall)
+                    Text(stringResource(R.string.haptics), style = MaterialTheme.typography.titleSmall)
                     Text(
-                        "Vibrate on hold and on each app you slide over",
+                        stringResource(R.string.haptics_body),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -647,40 +657,41 @@ fun BubbleCard(
     dotsAccess: Boolean,
     onDots: (Boolean) -> Unit,
 ) {
+    val res = LocalContext.current.resources
     Card(shape = RoundedCornerShape(24.dp)) {
         Column(Modifier.padding(vertical = 20.dp)) {
             Text(
-                "Bubble",
+                stringResource(R.string.bubble),
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.padding(horizontal = 20.dp),
             )
             Spacer(Modifier.height(8.dp))
             ChoiceRow(
-                tag = "Size",
-                title = "Size",
+                tag = stringResource(R.string.tag_size),
+                title = stringResource(R.string.size),
                 value = size,
                 options = BubbleSize.entries,
-                label = { it.label },
-                detail = { "${it.dp} dp" },
+                label = { res.getString(it.labelRes) },
+                detail = { res.getString(R.string.unit_dp, it.dp) },
                 onSelect = onSize,
             )
             Row(
                 Modifier.padding(start = 20.dp, end = 20.dp, top = 10.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Tag("Look")
+                Tag(stringResource(R.string.tag_look))
                 Spacer(Modifier.width(14.dp))
                 Column(Modifier.weight(1f)) {
-                    Text("Opacity", style = MaterialTheme.typography.titleSmall)
+                    Text(stringResource(R.string.opacity), style = MaterialTheme.typography.titleSmall)
                     Text(
-                        "How see-through the resting bubble is. It turns solid while you hold it.",
+                        stringResource(R.string.opacity_body),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
                 Spacer(Modifier.width(8.dp))
                 Text(
-                    "${(opacity * 100).roundToInt()}%",
+                    stringResource(R.string.unit_percent, (opacity * 100).roundToInt()),
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.primary,
                 )
@@ -702,12 +713,12 @@ fun BubbleCard(
                     .padding(horizontal = 20.dp, vertical = 10.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Tag("Auto")
+                Tag(stringResource(R.string.tag_auto))
                 Spacer(Modifier.width(14.dp))
                 Column(Modifier.weight(1f)) {
-                    Text("Hide in full-screen apps", style = MaterialTheme.typography.titleSmall)
+                    Text(stringResource(R.string.hide_fullscreen), style = MaterialTheme.typography.titleSmall)
                     Text(
-                        "Games, videos and OTT apps. Comes back when the status bar does.",
+                        stringResource(R.string.hide_fullscreen_body),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -721,22 +732,21 @@ fun BubbleCard(
                     .padding(horizontal = 20.dp, vertical = 10.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Tag("Apps")
+                Tag(stringResource(R.string.tag_apps))
                 Spacer(Modifier.width(14.dp))
                 Column(Modifier.weight(1f)) {
-                    Text("Hide in these apps", style = MaterialTheme.typography.titleSmall)
+                    Text(stringResource(R.string.hide_in_apps), style = MaterialTheme.typography.titleSmall)
                     Text(
                         when {
-                            !hasUsage -> "Needs Usage access, so Halo can tell which app is open."
-                            hiddenAppsCount == 0 -> "Pick apps where the bubble stays out of sight."
-                            hiddenAppsCount == 1 -> "Hidden in 1 app"
-                            else -> "Hidden in $hiddenAppsCount apps"
+                            !hasUsage -> stringResource(R.string.hide_in_needs_usage)
+                            hiddenAppsCount == 0 -> stringResource(R.string.hide_in_pick)
+                            else -> plural(R.plurals.hidden_in_apps, hiddenAppsCount)
                         },
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
-                TextButton(onClick = onChooseHiddenApps, enabled = hasUsage) { Text("Choose") }
+                TextButton(onClick = onChooseHiddenApps, enabled = hasUsage) { Text(stringResource(R.string.choose)) }
             }
 
             HorizontalDivider(Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
@@ -749,15 +759,15 @@ fun BubbleCard(
                     .padding(horizontal = 20.dp, vertical = 10.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Tag("Dots")
+                Tag(stringResource(R.string.tag_dots))
                 Spacer(Modifier.width(14.dp))
                 Column(Modifier.weight(1f)) {
-                    Text("Notification dots", style = MaterialTheme.typography.titleSmall)
+                    Text(stringResource(R.string.dots_title), style = MaterialTheme.typography.titleSmall)
                     Text(
                         if (dots && !dotsAccess) {
-                            "Turn on Notification access for Halo to see the dots."
+                            stringResource(R.string.dots_need_access)
                         } else {
-                            "A dot on apps with notifications waiting. Halo only sees which apps, never what they say."
+                            stringResource(R.string.dots_body)
                         },
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -828,7 +838,7 @@ private fun <T> ChoiceRow(
                         }
                     },
                     trailingIcon = {
-                        if (option == value) Icon(Icons.Rounded.Check, contentDescription = "Selected")
+                        if (option == value) Icon(Icons.Rounded.Check, contentDescription = stringResource(R.string.selected))
                     },
                     onClick = {
                         open = false
@@ -863,16 +873,18 @@ private fun GestureRow(tag: String, title: String, body: String) {
 private fun Tag(text: String) {
     Box(
         Modifier
-            .width(56.dp)
+            // At least 56dp so rows line up; wider when a language needs a longer word.
+            .widthIn(min = 56.dp)
             .clip(CircleShape)
             .background(MaterialTheme.colorScheme.secondaryContainer)
-            .padding(vertical = 6.dp),
+            .padding(horizontal = 8.dp, vertical = 6.dp),
         contentAlignment = Alignment.Center,
     ) {
         Text(
             text,
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSecondaryContainer,
+            maxLines = 1,
         )
     }
 }
@@ -882,10 +894,9 @@ private fun Tag(text: String) {
 fun RecentsCard(hiddenCount: Int, hasUsage: Boolean, onChooseHidden: () -> Unit) {
     Card(shape = RoundedCornerShape(24.dp)) {
         Column(Modifier.padding(20.dp)) {
-            Text("Recent apps", style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(R.string.recents_title), style = MaterialTheme.typography.titleMedium)
             Text(
-                if (hasUsage) "Outer ring, newest first. Screens Android keeps out of Recents are skipped."
-                else "Allow Usage access in setup to fill the outer ring.",
+                stringResource(if (hasUsage) R.string.recents_hint else R.string.recents_need_usage),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -899,18 +910,17 @@ fun RecentsCard(hiddenCount: Int, hasUsage: Boolean, onChooseHidden: () -> Unit)
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Column(Modifier.weight(1f)) {
-                    Text("Hide from recents", style = MaterialTheme.typography.titleSmall)
+                    Text(stringResource(R.string.hide_recents_title), style = MaterialTheme.typography.titleSmall)
                     Text(
                         when (hiddenCount) {
-                            0 -> "No apps hidden"
-                            1 -> "1 app never shows in the outer ring"
-                            else -> "$hiddenCount apps never show in the outer ring"
+                            0 -> stringResource(R.string.hide_recents_none)
+                            else -> plural(R.plurals.hide_recents_count, hiddenCount)
                         },
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
-                TextButton(onClick = onChooseHidden) { Text("Choose") }
+                TextButton(onClick = onChooseHidden) { Text(stringResource(R.string.choose)) }
             }
         }
     }
@@ -920,7 +930,7 @@ fun RecentsCard(hiddenCount: Int, hasUsage: Boolean, onChooseHidden: () -> Unit)
 @Composable
 fun ActionTag() {
     Text(
-        "Action",
+        stringResource(R.string.tag_action),
         style = MaterialTheme.typography.labelSmall,
         color = MaterialTheme.colorScheme.onSecondaryContainer,
         modifier = Modifier
@@ -934,7 +944,7 @@ fun ActionTag() {
 @Composable
 fun WorkTag(paused: Boolean) {
     Text(
-        if (paused) "Work · paused" else "Work",
+        stringResource(if (paused) R.string.tag_work_paused else R.string.tag_work),
         style = MaterialTheme.typography.labelSmall,
         color = MaterialTheme.colorScheme.onTertiaryContainer,
         modifier = Modifier
@@ -955,9 +965,7 @@ fun PrivateSpaceNote() {
         )
         Spacer(Modifier.width(8.dp))
         Text(
-            "Work apps are supported, but only as favourites: Android's recent-apps data covers your " +
-                "personal profile only. Private space apps can't appear in Halo; Android only shows " +
-                "them to the default home-screen app.",
+            stringResource(R.string.private_space_note),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )

@@ -85,7 +85,7 @@ class AppRepository(context: Context) {
         return AppEntry(
             key = action.key,
             packageName = "",
-            label = action.label,
+            label = context.getString(action.labelRes),
             iconLoader = { icon },
             component = null,
             user = null,

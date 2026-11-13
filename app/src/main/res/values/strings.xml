@@ -1,6 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Halo</string>
+    <string name="app_name" translatable="false">Halo</string>
+
+    <!-- Foreground notification -->
     <string name="notification_channel">Floating bubble</string>
     <string name="notification_text">Bubble is active. Long-press it to switch apps.</string>
     <string name="notification_stop">Stop</string>
+
+    <!-- Dial -->
+    <string name="menu_empty_hint">Pick favourites in the Halo app</string>
+    <string name="flashlight_busy">Flashlight is busy. Close the camera app and try again.</string>
+    <string name="folder_default_name">Folder</string>
+
+    <!-- Quick actions -->
+    <string name="action_flashlight">Flashlight</string>
+    <string name="action_volume">Volume</string>
+    <string name="action_play_pause">Play / pause</string>
+
+    <!-- Settings choices -->
+    <string name="tap_previous">Previous app</string>
+    <string name="tap_previous_desc">Jump back to the app you used last</string>
+    <string name="tap_menu">Open menu</string>
+    <string name="tap_menu_desc">Show the menu, then tap an app</string>
+    <string name="tap_nothing">Do nothing</string>
+    <string name="tap_nothing_desc">Ignore taps</string>
+    <string name="delay_short">Short</string>
+    <string name="delay_medium">Medium</string>
+    <string name="delay_long">Long</string>
+    <string name="size_small">Small</string>
+    <string name="size_medium">Medium</string>
+    <string name="size_large">Large</string>
+    <string name="unit_ms">%d ms</string>
+    <string name="unit_dp">%d dp</string>
+    <string name="unit_percent">%d%%</string>
+
+    <!-- Common -->
+    <string name="done">Done</string>
+    <string name="allow">Allow</string>
+    <string name="edit">Edit</string>
+    <string name="choose">Choose</string>
+    <string name="remove">Remove</string>
+    <string name="selected">Selected</string>
+    <string name="privacy_policy">Privacy policy</string>
+
+    <!-- Hero -->
+    <string name="hero_on">Bubble is on</string>
+    <string name="hero_off">Bubble is off</string>
+    <string name="hero_need_overlay">Allow “Display over other apps” to start.</string>
+    <string name="hero_running">Long-press it on any screen to switch apps.</string>
+    <string name="hero_off_hint">Turn on to show it on the edge of your screen.</string>
+
+    <!-- Setup -->
+    <string name="setup_title">Finish setup</string>
+    <string name="setup_progress">%1$d of %2$d</string>
+    <string name="setup_overlay_title">Display over other apps</string>
+    <string name="setup_overlay_body">Lets Halo draw the bubble.</string>
+    <string name="setup_usage_title">Usage access</string>
+    <string name="setup_usage_body">Fills the outer ring with your recent apps.</string>
+    <string name="setup_notif_title">Notifications</string>
+    <string name="setup_notif_body">A silent notification with a Stop button.</string>
+    <string name="restricted_title">Switch greyed out or “Restricted setting”?</string>
+    <string name="restricted_body">Android blocks this for apps installed outside an app store. Open App info, tap ⋮ in the top corner, choose “Allow restricted settings”, then come back and tap Allow.</string>
+    <string name="open_app_info">Open App info</string>
+
+    <!-- Favourites -->
+    <string name="favourites">Favourites</string>
+    <string name="favourites_hint">Inner ring, top to bottom. Hold and drag to reorder, tap for options. Add folders from Edit.</string>
+    <string name="add_favourite">Add favourite</string>
+    <string name="move_earlier">Move earlier</string>
+    <string name="move_later">Move later</string>
+    <plurals name="folder_apps">
+        <item quantity="one">%d app</item>
+        <item quantity="other">%d apps</item>
+    </plurals>
+
+    <!-- Folders -->
+    <string name="folder_new">New folder</string>
+    <string name="folder_new_desc">Group several apps into one slot</string>
+    <string name="folder_new_full">All slots used. Untick one to add a folder.</string>
+    <string name="folder_edit">Edit folder</string>
+    <string name="folder_delete">Delete folder</string>
+    <string name="folder_name">Folder name</string>
+    <string name="folder_name_hint">e.g. Social, Work, Travel</string>
+    <string name="folder_count">%1$d of %2$d apps. Rest on the folder in the dial to open it.</string>
+    <string name="folder_full_toast">Favourites are full. Remove one to add this folder.</string>
+    <string name="folder_tag">Folder · %d</string>
+
+    <!-- App picker -->
+    <string name="picker_title">Choose favourites</string>
+    <string name="picker_count">%1$d of %2$d picked</string>
+    <string name="picker_full">All %d slots used. Untick one to swap.</string>
+    <string name="search_apps">Search apps</string>
+    <string name="clear_search">Clear search</string>
+    <string name="edit_item">Edit %s</string>
+
+    <!-- Recents -->
+    <string name="recents_title">Recent apps</string>
+    <string name="recents_hint">Outer ring, newest first. Screens Android keeps out of Recents are skipped.</string>
+    <string name="recents_need_usage">Allow Usage access in setup to fill the outer ring.</string>
+    <string name="hide_recents_title">Hide from recents</string>
+    <string name="hide_recents_none">No apps hidden</string>
+    <plurals name="hide_recents_count">
+        <item quantity="one">%d app never shows in the outer ring</item>
+        <item quantity="other">%d apps never show in the outer ring</item>
+    </plurals>
+    <string name="hide_recents_pick">Tick apps to keep out of the outer ring</string>
+    <string name="hide_recents_picked">%d hidden</string>
+
+    <!-- Gestures -->
+    <string name="gestures">Gestures</string>
+    <string name="tag_hold">Hold</string>
+    <string name="tag_drag">Drag</string>
+    <string name="tag_tap">Tap</string>
+    <string name="tag_feel">Feel</string>
+    <string name="gesture_hold_title">Hold, slide, let go</string>
+    <string name="gesture_hold_body">Opens the app under your finger. Let go near the bubble to cancel.</string>
+    <string name="gesture_drag_title">Drag</string>
+    <string name="gesture_drag_body">Moves the bubble. It snaps to the nearest side.</string>
+    <string name="gesture_tap_title">Tap</string>
+    <string name="hold_delay">Hold delay</string>
+    <string name="haptics">Haptics</string>
+    <string name="haptics_body">Vibrate on hold and on each app you slide over</string>
+
+    <!-- Bubble -->
+    <string name="bubble">Bubble</string>
+    <string name="tag_size">Size</string>
+    <string name="tag_look">Look</string>
+    <string name="tag_auto">Auto</string>
+    <string name="tag_apps">Apps</string>
+    <string name="tag_dots">Dots</string>
+    <string name="size">Size</string>
+    <string name="opacity">Opacity</string>
+    <string name="opacity_body">How see-through the resting bubble is. It turns solid while you hold it.</string>
+    <string name="hide_fullscreen">Hide in full-screen apps</string>
+    <string name="hide_fullscreen_body">Games, videos and OTT apps. Comes back when the status bar does.</string>
+    <string name="hide_in_apps">Hide in these apps</string>
+    <string name="hide_in_needs_usage">Needs Usage access, so Halo can tell which app is open.</string>
+    <string name="hide_in_pick">Pick apps where the bubble stays out of sight.</string>
+    <plurals name="hidden_in_apps">
+        <item quantity="one">Hidden in %d app</item>
+        <item quantity="other">Hidden in %d apps</item>
+    </plurals>
+    <string name="hide_in_title">Hide the bubble in</string>
+    <string name="hide_in_picker_none">Tick apps where the bubble should hide</string>
+    <string name="dots_title">Notification dots</string>
+    <string name="dots_need_access">Turn on Notification access for Halo to see the dots.</string>
+    <string name="dots_body">A dot on apps with notifications waiting. Halo only sees which apps, never what they say.</string>
+
+    <!-- Chips and notes -->
+    <string name="tag_action">Action</string>
+    <string name="tag_work">Work</string>
+    <string name="tag_work_paused">Work · paused</string>
+    <string name="private_space_note">Work apps are supported, but only as favourites: Android\'s recent-apps data covers your personal profile only. Private space apps can\'t appear in Halo; Android only shows them to the default home-screen app.</string>
 </resources>

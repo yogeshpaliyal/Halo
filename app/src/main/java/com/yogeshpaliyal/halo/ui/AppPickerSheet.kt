@@ -1,5 +1,8 @@
 package com.yogeshpaliyal.halo.ui
 
+import com.yogeshpaliyal.halo.R
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.background
@@ -52,12 +55,12 @@ fun AppPickerSheet(
     selected: List<String>,
     onToggle: (AppEntry) -> Unit,
     onDismiss: () -> Unit,
-    title: String = "Choose favourites",
+    title: String? = null,
     /** Max items that can be ticked; null = no limit. */
     limit: Int? = Prefs.MAX_FAVORITES,
     /** Show each ticked item's position (favourites are ordered; other lists aren't). */
     showOrder: Boolean = true,
-    countLabel: (Int) -> String = { "$it of ${Prefs.MAX_FAVORITES} picked" },
+    countLabel: ((Int) -> String)? = null,
     /** Extra content under the title, e.g. a folder's name field. */
     header: (@Composable () -> Unit)? = null,
     /** First row of the list, above the apps (e.g. "New folder"). Hidden while searching. */
@@ -67,6 +70,9 @@ fun AppPickerSheet(
     /** True while the app list is still being read; shows a spinner under what's ready. */
     loading: Boolean = false,
 ) {
+    val res = LocalContext.current.resources
+    val titleText = title ?: stringResource(R.string.picker_title)
+    val count: (Int) -> String = countLabel ?: { res.getString(R.string.picker_count, it, Prefs.MAX_FAVORITES) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var query by remember { mutableStateOf("") }
     val full = limit != null && selected.size >= limit
@@ -82,15 +88,15 @@ fun AppPickerSheet(
         Column(Modifier.padding(horizontal = 20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
-                    Text(title, style = MaterialTheme.typography.titleLarge)
+                    Text(titleText, style = MaterialTheme.typography.titleLarge)
                     Text(
-                        if (full) "All $limit slots used. Untick one to swap."
-                        else countLabel(selected.size),
+                        if (full) stringResource(R.string.picker_full, limit ?: 0)
+                        else count(selected.size),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
-                TextButton(onClick = onDismiss) { Text("Done") }
+                TextButton(onClick = onDismiss) { Text(stringResource(R.string.done)) }
             }
             if (header != null) {
                 Spacer(Modifier.height(12.dp))
@@ -100,12 +106,12 @@ fun AppPickerSheet(
             OutlinedTextField(
                 value = query,
                 onValueChange = { query = it },
-                placeholder = { Text("Search apps") },
+                placeholder = { Text(stringResource(R.string.search_apps)) },
                 leadingIcon = { Icon(Icons.Rounded.Search, contentDescription = null) },
                 trailingIcon = {
                     if (query.isNotEmpty()) {
                         IconButton(onClick = { query = "" }) {
-                            Icon(Icons.Rounded.Close, contentDescription = "Clear search")
+                            Icon(Icons.Rounded.Close, contentDescription = stringResource(R.string.clear_search))
                         }
                     }
                 },
@@ -155,7 +161,7 @@ fun AppPickerSheet(
                     Spacer(Modifier.weight(1f))
                     if (app.isFolder && onEditFolder != null) {
                         IconButton(onClick = { onEditFolder(app) }) {
-                            Icon(Icons.Rounded.Edit, contentDescription = "Edit ${app.label}")
+                            Icon(Icons.Rounded.Edit, contentDescription = stringResource(R.string.edit_item, app.label))
                         }
                     }
                     if (isSelected) {
@@ -167,7 +173,7 @@ fun AppPickerSheet(
                             )
                             Spacer(Modifier.width(8.dp))
                         }
-                        Icon(Icons.Rounded.Check, contentDescription = "Selected", tint = MaterialTheme.colorScheme.primary)
+                        Icon(Icons.Rounded.Check, contentDescription = stringResource(R.string.selected), tint = MaterialTheme.colorScheme.primary)
                     }
                 }
             }
@@ -179,7 +185,7 @@ fun AppPickerSheet(
 @Composable
 fun FolderTag(count: Int) {
     Text(
-        "Folder · $count",
+        stringResource(R.string.folder_tag, count),
         style = MaterialTheme.typography.labelSmall,
         color = MaterialTheme.colorScheme.onPrimaryContainer,
         modifier = Modifier
@@ -211,9 +217,9 @@ fun NewFolderRow(enabled: Boolean, onClick: () -> Unit) {
         }
         Spacer(Modifier.width(16.dp))
         Column(Modifier.weight(1f)) {
-            Text("New folder", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.primary)
+            Text(stringResource(R.string.folder_new), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.primary)
             Text(
-                if (enabled) "Group several apps into one slot" else "All slots used. Untick one to add a folder.",
+                stringResource(if (enabled) R.string.folder_new_desc else R.string.folder_new_full),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )

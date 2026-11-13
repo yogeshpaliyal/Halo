@@ -1,5 +1,6 @@
 package com.yogeshpaliyal.halo.overlay
 
+import com.yogeshpaliyal.halo.R
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
@@ -356,7 +357,7 @@ class RadialMenuView(
 
         if (rings.isEmpty()) {
             hint.alpha = (fade * 255).toInt()
-            canvas.drawText("Pick favourites in the Halo app", width / 2f, cy, hint)
+            canvas.drawText(context.getString(R.string.menu_empty_hint), width / 2f, cy, hint)
             return
         }
 

@@ -1,5 +1,7 @@
 package com.yogeshpaliyal.halo.ui
 
+import com.yogeshpaliyal.halo.R
+import androidx.compose.ui.res.stringResource
 import android.Manifest
 import android.os.Build
 import android.widget.Toast
@@ -51,6 +53,7 @@ private const val PRIVACY_POLICY_URL = "https://github.com/yogeshpaliyal/Halo/bl
 @Composable
 fun HomeScreen() {
     val context = LocalContext.current
+    val res = context.resources
     val repo = remember { AppRepository(context) }
     val running by HaloService.running.collectAsStateWithLifecycle()
 
@@ -119,14 +122,14 @@ fun HomeScreen() {
         } else {
             null
         }
-        add(SetupStep("Display over other apps", "Lets Halo draw the bubble.", canOverlay, restrictedHelp) {
+        add(SetupStep(stringResource(R.string.setup_overlay_title), stringResource(R.string.setup_overlay_body), canOverlay, restrictedHelp) {
             context.startActivity(Permissions.overlaySettingsIntent(context))
         })
-        add(SetupStep("Usage access", "Fills the outer ring with your recent apps.", hasUsage, restrictedHelp) {
+        add(SetupStep(stringResource(R.string.setup_usage_title), stringResource(R.string.setup_usage_body), hasUsage, restrictedHelp) {
             context.startActivity(Permissions.usageSettingsIntent())
         })
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            add(SetupStep("Notifications", "A silent notification with a Stop button.", hasNotif) {
+            add(SetupStep(stringResource(R.string.setup_notif_title), stringResource(R.string.setup_notif_body), hasNotif) {
                 notifLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             })
         }
@@ -136,7 +139,7 @@ fun HomeScreen() {
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            LargeTopAppBar(title = { Text("Halo") }, scrollBehavior = scrollBehavior)
+            LargeTopAppBar(title = { Text(stringResource(R.string.app_name)) }, scrollBehavior = scrollBehavior)
         },
     ) { padding ->
         LazyColumn(
@@ -223,7 +226,7 @@ fun HomeScreen() {
                 // Play expects apps that use sensitive permissions to link their policy in-app.
                 val uriHandler = LocalUriHandler.current
                 TextButton(onClick = { uriHandler.openUri(PRIVACY_POLICY_URL) }) {
-                    Text("Privacy policy")
+                    Text(stringResource(R.string.privacy_policy))
                 }
             }
         }
@@ -237,10 +240,10 @@ fun HomeScreen() {
             selected = hideInApps.toList(),
             onToggle = { hideInApps = Prefs.toggleHideInApp(context, it.packageName) },
             onDismiss = { showHideAppsPicker = false },
-            title = "Hide the bubble in",
+            title = stringResource(R.string.hide_in_title),
             limit = null,
             showOrder = false,
-            countLabel = { if (it == 0) "Tick apps where the bubble should hide" else "Hidden in $it" },
+            countLabel = { if (it == 0) res.getString(R.string.hide_in_picker_none) else res.getQuantityString(R.plurals.hidden_in_apps, it, it) },
         )
     }
 
@@ -252,10 +255,10 @@ fun HomeScreen() {
             selected = hiddenRecents.toList(),
             onToggle = { hiddenRecents = Prefs.toggleHiddenRecent(context, it.packageName) },
             onDismiss = { showHiddenPicker = false },
-            title = "Hide from recents",
+            title = stringResource(R.string.hide_recents_title),
             limit = null,
             showOrder = false,
-            countLabel = { if (it == 0) "Tick apps to keep out of the outer ring" else "$it hidden" },
+            countLabel = { if (it == 0) res.getString(R.string.hide_recents_pick) else res.getString(R.string.hide_recents_picked, it) },
         )
     }
 
@@ -275,7 +278,7 @@ fun HomeScreen() {
                 if (folder.apps.isEmpty()) {
                     if (!isNew) Folders.delete(context, folder.key)
                 } else if (!Folders.save(context, folder)) {
-                    Toast.makeText(context, "Favourites are full. Remove one to add this folder.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, R.string.folder_full_toast, Toast.LENGTH_LONG).show()
                 }
                 favorites = Prefs.favorites(context)
                 foldersVersion++
@@ -285,15 +288,15 @@ fun HomeScreen() {
                     showPicker = true
                 }
             },
-            title = if (isNew) "New folder" else "Edit folder",
+            title = stringResource(if (isNew) R.string.folder_new else R.string.folder_edit),
             limit = Folders.MAX_APPS,
-            countLabel = { "$it of ${Folders.MAX_APPS} apps. Rest on the folder in the dial to open it." },
+            countLabel = { res.getString(R.string.folder_count, it, Folders.MAX_APPS) },
             header = {
                 OutlinedTextField(
                     value = folder.name,
                     onValueChange = { editingFolder = folder.copy(name = it.take(24)) },
-                    label = { Text("Folder name") },
-                    placeholder = { Text("e.g. Social, Work, Travel") },
+                    label = { Text(stringResource(R.string.folder_name)) },
+                    placeholder = { Text(stringResource(R.string.folder_name_hint)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                 )
@@ -313,7 +316,7 @@ fun HomeScreen() {
                         },
                         contentPadding = PaddingValues(horizontal = 0.dp),
                     ) {
-                        Text("Delete folder", color = MaterialTheme.colorScheme.error)
+                        Text(stringResource(R.string.folder_delete), color = MaterialTheme.colorScheme.error)
                     }
                 }
             },

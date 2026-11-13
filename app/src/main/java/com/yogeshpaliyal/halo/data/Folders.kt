@@ -1,5 +1,6 @@
 package com.yogeshpaliyal.halo.data
 
+import com.yogeshpaliyal.halo.R
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.ColorFilter
@@ -56,7 +57,7 @@ object Folders {
      */
     fun save(context: Context, folder: Folder): Boolean {
         val clean = folder.copy(
-            name = folder.name.trim().ifEmpty { "Folder" },
+            name = folder.name.trim().ifEmpty { context.getString(R.string.folder_default_name) },
             apps = folder.apps.filterNot(::isFolderKey).distinct().take(MAX_APPS),
         )
         val list = all(context).toMutableList()
