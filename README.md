@@ -10,6 +10,7 @@ A floating bubble that sticks to the edge of your screen and lets you switch app
 - **Drag** the bubble anywhere; it snaps to the nearest side and remembers its position.
 - **Configurable**: tap action, hold delay (200 / 280 / 400 ms) and haptics.
 - **Quick actions** as favourites: flashlight, volume panel and play/pause. No extra permissions.
+- **Folders** (optional): group up to 8 apps in one favourite slot. Rest on it in the dial and its apps fan out; slide to one and let go.
 - **Hide from recents**: keep any app out of the recent-apps ring.
 - **Hides in full-screen apps** like games, videos and OTT apps, and in any apps you choose.
 - **Bubble size** (small, medium, large) and opacity.
