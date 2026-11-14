@@ -34,6 +34,7 @@ import com.yogeshpaliyal.halo.data.AppRepository
 import com.yogeshpaliyal.halo.data.Folders
 import com.yogeshpaliyal.halo.data.Permissions
 import com.yogeshpaliyal.halo.data.Prefs
+import com.yogeshpaliyal.halo.data.Stats
 import com.yogeshpaliyal.halo.data.TapAction
 import com.yogeshpaliyal.halo.ui.MainActivity
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -466,20 +467,24 @@ class HaloService : Service(), BubbleView.Listener {
     // --- BubbleView.Listener --------------------------------------------------------------
 
     /** Opens an app and counts the switch (it unlocks accessories; stays on the phone). */
-    private fun launch(app: AppEntry) {
-        if (repo.launch(app)) Prefs.addSwitch(this)
+    private fun launch(app: AppEntry, kind: Stats.Kind) {
+        if (repo.launch(app)) {
+            Prefs.addSwitch(this)
+            // Local tally for the Recap; quick actions aren't app switches.
+            if (app.action == null && !app.isFolder) Stats.record(this, app.key, kind)
+        }
     }
 
-    override fun onTap() = perform(Prefs.tapAction(this))
+    override fun onTap() = perform(Prefs.tapAction(this), Stats.Kind.TAP)
 
-    override fun onDoubleTap() = perform(Prefs.doubleTapAction(this))
+    override fun onDoubleTap() = perform(Prefs.doubleTapAction(this), Stats.Kind.DOUBLE)
 
-    private fun perform(action: TapAction) {
+    private fun perform(action: TapAction, kind: Stats.Kind) {
         when (action) {
             // Quick toggle, like Alt+Tab.
-            TapAction.PREVIOUS_APP -> repo.recents(1).firstOrNull()?.let { launch(it) }
+            TapAction.PREVIOUS_APP -> repo.recents(1).firstOrNull()?.let { launch(it, kind) }
             // The one before that: tap and double tap cover your two latest apps.
-            TapAction.SECOND_APP -> repo.recents(2).getOrNull(1)?.let { launch(it) }
+            TapAction.SECOND_APP -> repo.recents(2).getOrNull(1)?.let { launch(it, kind) }
             TapAction.OPEN_MENU -> showMenu(tapMode = true)
             TapAction.NOTHING -> Unit
         }
@@ -517,14 +522,14 @@ class HaloService : Service(), BubbleView.Listener {
             return
         }
         removeMenu()
-        target?.let { launch(it) }
+        target?.let { launch(it, Stats.Kind.DIAL) }
     }
 
     /** Menu takes touches itself: tapping an app opens it, a folder opens the folder, anything else closes. */
     private fun armTapMode(view: RadialMenuView) {
         view.onPick = { app ->
             removeMenu()
-            app?.let { launch(it) }
+            app?.let { launch(it, Stats.Kind.DIAL) }
         }
     }
 

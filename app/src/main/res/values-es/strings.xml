@@ -214,4 +214,52 @@
         <item quantity="one">%d cambio de app con Halo hasta ahora. Desbloquea más con el uso.</item>
         <item quantity="other">%d cambios de app con Halo hasta ahora. Desbloquea más con el uso.</item>
     </plurals>
+
+    <!-- Recap -->
+    <string name="recap_week">7 días</string>
+    <string name="recap_month">30 días</string>
+    <string name="recap_close">Cerrar</string>
+    <string name="recap_empty_title">Tu resumen se está calentando</string>
+    <string name="recap_empty_body">Cambia de app con Halo unos días y vuelve para ver lo más destacado.</string>
+    <string name="recap_total_week">Esta semana cambiaste de app</string>
+    <string name="recap_total_month">Este mes cambiaste de app</string>
+    <string name="recap_total_unit">veces con Halo</string>
+    <string name="recap_top_title">Tus apps más abiertas</string>
+    <string name="recap_duo_title">Tu dúo favorito</string>
+    <string name="recap_duo_none">Aún no hay dúo. Alterna entre dos apps unas cuantas veces.</string>
+    <string name="recap_rhythm_early">Madrugador</string>
+    <string name="recap_rhythm_day">Activo de día</string>
+    <string name="recap_rhythm_evening">De tarde</string>
+    <string name="recap_rhythm_night">Búho nocturno</string>
+    <string name="recap_peak_hour">Más activo hacia las %s</string>
+    <string name="recap_style_dial">Pro del dial</string>
+    <string name="recap_style_tap">Toque rápido</string>
+    <string name="recap_style_double">Fan del doble toque</string>
+    <string name="recap_kind_dial">Dial</string>
+    <string name="recap_kind_tap">Toque</string>
+    <string name="recap_kind_double">Doble toque</string>
+    <string name="recap_share">Compartir mi resumen</string>
+    <string name="recap_reset">Borrar datos del resumen</string>
+    <string name="recap_private">Tu resumen se crea en tu teléfono a partir de un conteo local. No se sube nada.</string>
+    <string name="recap_share_text">Hecho con Halo, el selector de apps flotante: https://github.com/yogeshpaliyal/Halo</string>
+    <string name="recap_card_week">Mi semana con Halo</string>
+    <string name="recap_card_month">Mi mes con Halo</string>
+    <string name="recap_card_credit">Halo · selector de apps gratis y de código abierto</string>
+    <string name="recap_card_title">Tu resumen de Halo</string>
+    <plurals name="recap_active_days">
+        <item quantity="one">en %d día</item>
+        <item quantity="other">en %d días</item>
+    </plurals>
+    <plurals name="recap_duo_count">
+        <item quantity="one">Cambiaste entre ellas %d vez</item>
+        <item quantity="other">Cambiaste entre ellas %d veces</item>
+    </plurals>
+    <plurals name="recap_streak">
+        <item quantity="one">Racha de %d día</item>
+        <item quantity="other">Racha de %d días</item>
+    </plurals>
+    <plurals name="recap_card_body">
+        <item quantity="one">%d cambio hasta ahora · ver lo destacado</item>
+        <item quantity="other">%d cambios hasta ahora · ver lo destacado</item>
+    </plurals>
 </resources>

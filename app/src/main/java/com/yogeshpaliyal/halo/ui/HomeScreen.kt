@@ -136,6 +136,7 @@ fun HomeScreen() {
     var accessory by remember { mutableStateOf(Prefs.bubbleAccessory(context)) }
     val switches = remember(resumeTick) { Prefs.switchCount(context) }
     var showTutorial by remember { mutableStateOf(false) }
+    var showRecap by remember { mutableStateOf(false) }
     var avatar by remember { mutableStateOf(CustomAvatar.load(context)) }
     val scope = rememberCoroutineScope()
     // Android's photo picker: no storage permission, and only the chosen photo is shared.
@@ -319,6 +320,9 @@ fun HomeScreen() {
             item {
                 StyleTeaserCard(bubbleCharacter, bubblePalette, avatar, accessory) { page = Page.APPEARANCE }
             }
+            if (switches > 0) {
+                item { RecapCard(switches) { showRecap = true } }
+            }
             item {
                 Section(stringResource(R.string.gestures)) {
                 GesturesCard(
@@ -358,6 +362,10 @@ fun HomeScreen() {
             }
         }
         }
+    }
+
+    if (showRecap) {
+        RecapDialog(bubbleCharacter, bubblePalette, avatar, accessory) { showRecap = false }
     }
 
     if (showTutorial) {

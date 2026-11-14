@@ -210,4 +210,48 @@
     <plurals name="accessories_progress">
         <item quantity="other">これまでに Halo でアプリを %d 回切り替えました。使うほど解放されます。</item>
     </plurals>
+
+    <!-- Recap -->
+    <string name="recap_week">7 日間</string>
+    <string name="recap_month">30 日間</string>
+    <string name="recap_close">閉じる</string>
+    <string name="recap_empty_title">まとめを準備中</string>
+    <string name="recap_empty_body">数日間 Halo でアプリを切り替えてから、ハイライトを見に来てください。</string>
+    <string name="recap_total_week">今週のアプリ切り替え</string>
+    <string name="recap_total_month">今月のアプリ切り替え</string>
+    <string name="recap_total_unit">回 (Halo)</string>
+    <string name="recap_top_title">よく開いたアプリ</string>
+    <string name="recap_duo_title">いつものコンビ</string>
+    <string name="recap_duo_none">まだコンビはありません。2 つのアプリを何度か行き来してみてください。</string>
+    <string name="recap_rhythm_early">朝型</string>
+    <string name="recap_rhythm_day">昼型</string>
+    <string name="recap_rhythm_evening">夕方型</string>
+    <string name="recap_rhythm_night">夜型</string>
+    <string name="recap_peak_hour">いちばん多いのは %s ごろ</string>
+    <string name="recap_style_dial">ダイヤル派</string>
+    <string name="recap_style_tap">タップ派</string>
+    <string name="recap_style_double">ダブルタップ派</string>
+    <string name="recap_kind_dial">ダイヤル</string>
+    <string name="recap_kind_tap">タップ</string>
+    <string name="recap_kind_double">ダブルタップ</string>
+    <string name="recap_share">まとめをシェア</string>
+    <string name="recap_reset">まとめのデータをリセット</string>
+    <string name="recap_private">まとめは端末内の集計から作られます。何もアップロードされません。</string>
+    <string name="recap_share_text">Halo で作成 (フローティング アプリスイッチャー): https://github.com/yogeshpaliyal/Halo</string>
+    <string name="recap_card_week">Halo との 1 週間</string>
+    <string name="recap_card_month">Halo との 1 か月</string>
+    <string name="recap_card_credit">Halo · 無料のオープンソース アプリスイッチャー</string>
+    <string name="recap_card_title">Halo のまとめ</string>
+    <plurals name="recap_active_days">
+        <item quantity="other">%d 日間で</item>
+    </plurals>
+    <plurals name="recap_duo_count">
+        <item quantity="other">この 2 つを %d 回行き来</item>
+    </plurals>
+    <plurals name="recap_streak">
+        <item quantity="other">%d 日連続</item>
+    </plurals>
+    <plurals name="recap_card_body">
+        <item quantity="other">これまで %d 回 · ハイライトを見る</item>
+    </plurals>
 </resources>

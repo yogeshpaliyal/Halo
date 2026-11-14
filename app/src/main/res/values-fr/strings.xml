@@ -218,4 +218,56 @@
         <item quantity="many">%d changements d’app avec Halo pour l’instant. D’autres se débloquent à l’usage.</item>
         <item quantity="other">%d changements d’app avec Halo pour l’instant. D’autres se débloquent à l’usage.</item>
     </plurals>
+
+    <!-- Recap -->
+    <string name="recap_week">7 jours</string>
+    <string name="recap_month">30 jours</string>
+    <string name="recap_close">Fermer</string>
+    <string name="recap_empty_title">Votre bilan se prépare</string>
+    <string name="recap_empty_body">Changez d’app avec Halo pendant quelques jours, puis revenez voir vos temps forts.</string>
+    <string name="recap_total_week">Cette semaine, vous avez changé d’app</string>
+    <string name="recap_total_month">Ce mois-ci, vous avez changé d’app</string>
+    <string name="recap_total_unit">fois avec Halo</string>
+    <string name="recap_top_title">Vos apps les plus ouvertes</string>
+    <string name="recap_duo_title">Votre duo favori</string>
+    <string name="recap_duo_none">Pas encore de duo. Passez quelques fois d’une app à l’autre.</string>
+    <string name="recap_rhythm_early">Lève-tôt</string>
+    <string name="recap_rhythm_day">Actif en journée</string>
+    <string name="recap_rhythm_evening">Du soir</string>
+    <string name="recap_rhythm_night">Oiseau de nuit</string>
+    <string name="recap_peak_hour">Le plus actif vers %s</string>
+    <string name="recap_style_dial">Pro du cadran</string>
+    <string name="recap_style_tap">Tapeur rapide</string>
+    <string name="recap_style_double">Fan du double appui</string>
+    <string name="recap_kind_dial">Cadran</string>
+    <string name="recap_kind_tap">Appui</string>
+    <string name="recap_kind_double">Double appui</string>
+    <string name="recap_share">Partager mon bilan</string>
+    <string name="recap_reset">Réinitialiser le bilan</string>
+    <string name="recap_private">Votre bilan est créé sur votre téléphone à partir d’un comptage local. Rien n’est envoyé.</string>
+    <string name="recap_share_text">Fait avec Halo, le sélecteur d’apps flottant : https://github.com/yogeshpaliyal/Halo</string>
+    <string name="recap_card_week">Ma semaine avec Halo</string>
+    <string name="recap_card_month">Mon mois avec Halo</string>
+    <string name="recap_card_credit">Halo · sélecteur d’apps gratuit et open source</string>
+    <string name="recap_card_title">Votre bilan Halo</string>
+    <plurals name="recap_active_days">
+        <item quantity="one">sur %d jour</item>
+        <item quantity="many">sur %d jours</item>
+        <item quantity="other">sur %d jours</item>
+    </plurals>
+    <plurals name="recap_duo_count">
+        <item quantity="one">Passé de l’une à l’autre %d fois</item>
+        <item quantity="many">Passé de l’une à l’autre %d fois</item>
+        <item quantity="other">Passé de l’une à l’autre %d fois</item>
+    </plurals>
+    <plurals name="recap_streak">
+        <item quantity="one">%d jour d’affilée</item>
+        <item quantity="many">%d jours d’affilée</item>
+        <item quantity="other">%d jours d’affilée</item>
+    </plurals>
+    <plurals name="recap_card_body">
+        <item quantity="one">%d changement · voir vos temps forts</item>
+        <item quantity="many">%d changements · voir vos temps forts</item>
+        <item quantity="other">%d changements · voir vos temps forts</item>
+    </plurals>
 </resources>

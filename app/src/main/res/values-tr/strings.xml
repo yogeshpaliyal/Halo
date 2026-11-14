@@ -214,4 +214,52 @@
         <item quantity="one">Şimdiye kadar Halo ile %d uygulama geçişi. Kullandıkça daha fazlası açılır.</item>
         <item quantity="other">Şimdiye kadar Halo ile %d uygulama geçişi. Kullandıkça daha fazlası açılır.</item>
     </plurals>
+
+    <!-- Recap -->
+    <string name="recap_week">7 gün</string>
+    <string name="recap_month">30 gün</string>
+    <string name="recap_close">Kapat</string>
+    <string name="recap_empty_title">Özetin hazırlanıyor</string>
+    <string name="recap_empty_body">Birkaç gün Halo ile uygulama değiştir, sonra öne çıkanları görmek için geri gel.</string>
+    <string name="recap_total_week">Bu hafta uygulama değiştirdin</string>
+    <string name="recap_total_month">Bu ay uygulama değiştirdin</string>
+    <string name="recap_total_unit">kez Halo ile</string>
+    <string name="recap_top_title">En çok açtığın uygulamalar</string>
+    <string name="recap_duo_title">Vazgeçilmez ikilin</string>
+    <string name="recap_duo_none">Henüz ikili yok. İki uygulama arasında birkaç kez gidip gel.</string>
+    <string name="recap_rhythm_early">Erkenci</string>
+    <string name="recap_rhythm_day">Gündüzcü</string>
+    <string name="recap_rhythm_evening">Akşamcı</string>
+    <string name="recap_rhythm_night">Gece kuşu</string>
+    <string name="recap_peak_hour">En çok %s civarında</string>
+    <string name="recap_style_dial">Kadran ustası</string>
+    <string name="recap_style_tap">Hızlı dokunan</string>
+    <string name="recap_style_double">Çift dokunma hayranı</string>
+    <string name="recap_kind_dial">Kadran</string>
+    <string name="recap_kind_tap">Dokunma</string>
+    <string name="recap_kind_double">Çift dokunma</string>
+    <string name="recap_share">Özetimi paylaş</string>
+    <string name="recap_reset">Özet verilerini sıfırla</string>
+    <string name="recap_private">Özetin telefonunda yerel bir sayımdan oluşturulur. Hiçbir şey yüklenmez.</string>
+    <string name="recap_share_text">Halo ile yapıldı, yüzen uygulama değiştirici: https://github.com/yogeshpaliyal/Halo</string>
+    <string name="recap_card_week">Halo ile haftam</string>
+    <string name="recap_card_month">Halo ile ayım</string>
+    <string name="recap_card_credit">Halo · ücretsiz, açık kaynak uygulama değiştirici</string>
+    <string name="recap_card_title">Halo özetin</string>
+    <plurals name="recap_active_days">
+        <item quantity="one">%d günde</item>
+        <item quantity="other">%d günde</item>
+    </plurals>
+    <plurals name="recap_duo_count">
+        <item quantity="one">Aralarında %d kez geçiş</item>
+        <item quantity="other">Aralarında %d kez geçiş</item>
+    </plurals>
+    <plurals name="recap_streak">
+        <item quantity="one">%d günlük seri</item>
+        <item quantity="other">%d günlük seri</item>
+    </plurals>
+    <plurals name="recap_card_body">
+        <item quantity="one">Şimdiye kadar %d geçiş · öne çıkanları gör</item>
+        <item quantity="other">Şimdiye kadar %d geçiş · öne çıkanları gör</item>
+    </plurals>
 </resources>

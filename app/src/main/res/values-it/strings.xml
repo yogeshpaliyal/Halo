@@ -218,4 +218,56 @@
         <item quantity="many">%d cambi di app con Halo finora. Altri si sbloccano usandolo.</item>
         <item quantity="other">%d cambi di app con Halo finora. Altri si sbloccano usandolo.</item>
     </plurals>
+
+    <!-- Recap -->
+    <string name="recap_week">7 giorni</string>
+    <string name="recap_month">30 giorni</string>
+    <string name="recap_close">Chiudi</string>
+    <string name="recap_empty_title">Il tuo riepilogo si sta scaldando</string>
+    <string name="recap_empty_body">Cambia app con Halo per qualche giorno, poi torna a vedere i momenti salienti.</string>
+    <string name="recap_total_week">Questa settimana hai cambiato app</string>
+    <string name="recap_total_month">Questo mese hai cambiato app</string>
+    <string name="recap_total_unit">volte con Halo</string>
+    <string name="recap_top_title">Le app che apri di più</string>
+    <string name="recap_duo_title">Il tuo duo preferito</string>
+    <string name="recap_duo_none">Ancora nessun duo. Passa da un’app all’altra qualche volta.</string>
+    <string name="recap_rhythm_early">Mattiniero</string>
+    <string name="recap_rhythm_day">Attivo di giorno</string>
+    <string name="recap_rhythm_evening">Serale</string>
+    <string name="recap_rhythm_night">Nottambulo</string>
+    <string name="recap_peak_hour">Più attivo verso le %s</string>
+    <string name="recap_style_dial">Pro del quadrante</string>
+    <string name="recap_style_tap">Tocco rapido</string>
+    <string name="recap_style_double">Fan del doppio tocco</string>
+    <string name="recap_kind_dial">Quadrante</string>
+    <string name="recap_kind_tap">Tocco</string>
+    <string name="recap_kind_double">Doppio tocco</string>
+    <string name="recap_share">Condividi il mio riepilogo</string>
+    <string name="recap_reset">Azzera i dati del riepilogo</string>
+    <string name="recap_private">Il riepilogo è creato sul tuo telefono da un conteggio locale. Niente viene caricato.</string>
+    <string name="recap_share_text">Fatto con Halo, il selettore di app fluttuante: https://github.com/yogeshpaliyal/Halo</string>
+    <string name="recap_card_week">La mia settimana con Halo</string>
+    <string name="recap_card_month">Il mio mese con Halo</string>
+    <string name="recap_card_credit">Halo · selettore di app gratuito e open source</string>
+    <string name="recap_card_title">Il tuo riepilogo Halo</string>
+    <plurals name="recap_active_days">
+        <item quantity="one">in %d giorno</item>
+        <item quantity="many">in %d giorni</item>
+        <item quantity="other">in %d giorni</item>
+    </plurals>
+    <plurals name="recap_duo_count">
+        <item quantity="one">Passato tra loro %d volta</item>
+        <item quantity="many">Passato tra loro %d volte</item>
+        <item quantity="other">Passato tra loro %d volte</item>
+    </plurals>
+    <plurals name="recap_streak">
+        <item quantity="one">%d giorno di fila</item>
+        <item quantity="many">%d giorni di fila</item>
+        <item quantity="other">%d giorni di fila</item>
+    </plurals>
+    <plurals name="recap_card_body">
+        <item quantity="one">%d cambio finora · guarda i momenti salienti</item>
+        <item quantity="many">%d cambi finora · guarda i momenti salienti</item>
+        <item quantity="other">%d cambi finora · guarda i momenti salienti</item>
+    </plurals>
 </resources>

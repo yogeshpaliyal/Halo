@@ -27,6 +27,7 @@ This information never leaves your phone through Halo. It is deleted when you un
 | Run at startup | Turns the bubble back on after your phone restarts or Halo updates, but only if it was on before. |
 | Notification access | Optional and off by default. Used only to know which apps have notifications waiting, so Halo can show a dot on them. Halo never reads, stores or sends what a notification says. |
 | Photo picker (optional) | Only if you choose "Your photo" for the bubble: Android shares just the one image you pick. Halo keeps a small 256 px copy in its private storage. It never leaves your phone. |
+| Recap tally (on your phone) | Which apps you open with Halo, when (hour) and with which gesture, as daily counts for the last 62 days. Used only to make your Recap on your phone; never uploaded. You can reset it from the Recap. |
 | List installed apps | Shows your apps so you can choose favourites, and opens the app you pick. The list stays on your phone. |
 
 Halo has **no** internet, location, contacts, camera, microphone, storage or accessibility permissions.

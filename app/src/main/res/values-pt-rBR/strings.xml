@@ -218,4 +218,56 @@
         <item quantity="many">%d trocas de app com o Halo até agora. Mais itens são liberados com o uso.</item>
         <item quantity="other">%d trocas de app com o Halo até agora. Mais itens são liberados com o uso.</item>
     </plurals>
+
+    <!-- Recap -->
+    <string name="recap_week">7 dias</string>
+    <string name="recap_month">30 dias</string>
+    <string name="recap_close">Fechar</string>
+    <string name="recap_empty_title">Seu resumo está esquentando</string>
+    <string name="recap_empty_body">Troque de app com o Halo por alguns dias e volte para ver seus destaques.</string>
+    <string name="recap_total_week">Nesta semana você trocou de app</string>
+    <string name="recap_total_month">Neste mês você trocou de app</string>
+    <string name="recap_total_unit">vezes com o Halo</string>
+    <string name="recap_top_title">Seus apps mais abertos</string>
+    <string name="recap_duo_title">Sua dupla favorita</string>
+    <string name="recap_duo_none">Ainda sem dupla. Alterne entre dois apps algumas vezes.</string>
+    <string name="recap_rhythm_early">Madrugador</string>
+    <string name="recap_rhythm_day">Ativo de dia</string>
+    <string name="recap_rhythm_evening">Do fim de tarde</string>
+    <string name="recap_rhythm_night">Coruja</string>
+    <string name="recap_peak_hour">Mais ativo por volta de %s</string>
+    <string name="recap_style_dial">Pro do disco</string>
+    <string name="recap_style_tap">Toque rápido</string>
+    <string name="recap_style_double">Fã do toque duplo</string>
+    <string name="recap_kind_dial">Disco</string>
+    <string name="recap_kind_tap">Toque</string>
+    <string name="recap_kind_double">Toque duplo</string>
+    <string name="recap_share">Compartilhar meu resumo</string>
+    <string name="recap_reset">Zerar dados do resumo</string>
+    <string name="recap_private">Seu resumo é feito no seu celular a partir de uma contagem local. Nada é enviado.</string>
+    <string name="recap_share_text">Feito com o Halo, o alternador de apps flutuante: https://github.com/yogeshpaliyal/Halo</string>
+    <string name="recap_card_week">Minha semana com o Halo</string>
+    <string name="recap_card_month">Meu mês com o Halo</string>
+    <string name="recap_card_credit">Halo · alternador de apps grátis e de código aberto</string>
+    <string name="recap_card_title">Seu resumo do Halo</string>
+    <plurals name="recap_active_days">
+        <item quantity="one">em %d dia</item>
+        <item quantity="many">em %d dias</item>
+        <item quantity="other">em %d dias</item>
+    </plurals>
+    <plurals name="recap_duo_count">
+        <item quantity="one">Alternou entre eles %d vez</item>
+        <item quantity="many">Alternou entre eles %d vezes</item>
+        <item quantity="other">Alternou entre eles %d vezes</item>
+    </plurals>
+    <plurals name="recap_streak">
+        <item quantity="one">%d dia seguido</item>
+        <item quantity="many">%d dias seguidos</item>
+        <item quantity="other">%d dias seguidos</item>
+    </plurals>
+    <plurals name="recap_card_body">
+        <item quantity="one">%d troca até agora · ver destaques</item>
+        <item quantity="many">%d trocas até agora · ver destaques</item>
+        <item quantity="other">%d trocas até agora · ver destaques</item>
+    </plurals>
 </resources>

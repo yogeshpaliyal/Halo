@@ -243,4 +243,52 @@
         <item quantity="one">%d app switch with Halo so far. More unlock as you go.</item>
         <item quantity="other">%d app switches with Halo so far. More unlock as you go.</item>
     </plurals>
+
+    <!-- Recap -->
+    <string name="recap_week">7 days</string>
+    <string name="recap_month">30 days</string>
+    <string name="recap_close">Close</string>
+    <string name="recap_empty_title">Your recap is warming up</string>
+    <string name="recap_empty_body">Switch apps with Halo for a few days, then come back to see your highlights.</string>
+    <string name="recap_total_week">This week you switched apps</string>
+    <string name="recap_total_month">This month you switched apps</string>
+    <string name="recap_total_unit">times with Halo</string>
+    <string name="recap_top_title">Your most-opened apps</string>
+    <string name="recap_duo_title">Your go-to duo</string>
+    <string name="recap_duo_none">No duo yet. Bounce between two apps a few times and one will show up.</string>
+    <string name="recap_rhythm_early">Early bird</string>
+    <string name="recap_rhythm_day">Daytime hustler</string>
+    <string name="recap_rhythm_evening">Evening switcher</string>
+    <string name="recap_rhythm_night">Night owl</string>
+    <string name="recap_peak_hour">Busiest around %s</string>
+    <string name="recap_style_dial">Dial pro</string>
+    <string name="recap_style_tap">Quick tapper</string>
+    <string name="recap_style_double">Double-tap fan</string>
+    <string name="recap_kind_dial">Dial</string>
+    <string name="recap_kind_tap">Tap</string>
+    <string name="recap_kind_double">Double tap</string>
+    <string name="recap_share">Share my recap</string>
+    <string name="recap_reset">Reset recap data</string>
+    <string name="recap_private">Your recap is made on your phone from a local tally. Nothing is uploaded.</string>
+    <string name="recap_share_text">Made with Halo, the floating app switcher: https://github.com/yogeshpaliyal/Halo</string>
+    <string name="recap_card_week">My week with Halo</string>
+    <string name="recap_card_month">My month with Halo</string>
+    <string name="recap_card_credit">Halo · free, open-source app switcher</string>
+    <string name="recap_card_title">Your Halo recap</string>
+    <plurals name="recap_active_days">
+        <item quantity="one">on %d day</item>
+        <item quantity="other">across %d days</item>
+    </plurals>
+    <plurals name="recap_duo_count">
+        <item quantity="one">Switched between them %d time</item>
+        <item quantity="other">Switched between them %d times</item>
+    </plurals>
+    <plurals name="recap_streak">
+        <item quantity="one">%d-day streak</item>
+        <item quantity="other">%d-day streak</item>
+    </plurals>
+    <plurals name="recap_card_body">
+        <item quantity="one">%d switch so far · see your highlights</item>
+        <item quantity="other">%d switches so far · see your highlights</item>
+    </plurals>
 </resources>

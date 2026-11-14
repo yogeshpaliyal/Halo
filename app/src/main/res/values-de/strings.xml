@@ -214,4 +214,52 @@
         <item quantity="one">Bisher %d App-Wechsel mit Halo. Mit der Zeit wird mehr freigeschaltet.</item>
         <item quantity="other">Bisher %d App-Wechsel mit Halo. Mit der Zeit wird mehr freigeschaltet.</item>
     </plurals>
+
+    <!-- Recap -->
+    <string name="recap_week">7 Tage</string>
+    <string name="recap_month">30 Tage</string>
+    <string name="recap_close">Schließen</string>
+    <string name="recap_empty_title">Dein Rückblick wärmt sich auf</string>
+    <string name="recap_empty_body">Wechsle ein paar Tage mit Halo Apps und schau dann deine Highlights an.</string>
+    <string name="recap_total_week">Diese Woche hast du Apps gewechselt</string>
+    <string name="recap_total_month">Diesen Monat hast du Apps gewechselt</string>
+    <string name="recap_total_unit">Mal mit Halo</string>
+    <string name="recap_top_title">Deine meistgeöffneten Apps</string>
+    <string name="recap_duo_title">Dein Lieblingsduo</string>
+    <string name="recap_duo_none">Noch kein Duo. Wechsle ein paar Mal zwischen zwei Apps hin und her.</string>
+    <string name="recap_rhythm_early">Frühaufsteher</string>
+    <string name="recap_rhythm_day">Tagesmacher</string>
+    <string name="recap_rhythm_evening">Abendwechsler</string>
+    <string name="recap_rhythm_night">Nachteule</string>
+    <string name="recap_peak_hour">Am aktivsten gegen %s</string>
+    <string name="recap_style_dial">Kreis-Profi</string>
+    <string name="recap_style_tap">Schnelltipper</string>
+    <string name="recap_style_double">Doppeltipp-Fan</string>
+    <string name="recap_kind_dial">Kreis</string>
+    <string name="recap_kind_tap">Tippen</string>
+    <string name="recap_kind_double">Doppeltippen</string>
+    <string name="recap_share">Rückblick teilen</string>
+    <string name="recap_reset">Rückblick-Daten zurücksetzen</string>
+    <string name="recap_private">Dein Rückblick entsteht auf deinem Handy aus einer lokalen Zählung. Nichts wird hochgeladen.</string>
+    <string name="recap_share_text">Gemacht mit Halo, dem schwebenden App-Umschalter: https://github.com/yogeshpaliyal/Halo</string>
+    <string name="recap_card_week">Meine Woche mit Halo</string>
+    <string name="recap_card_month">Mein Monat mit Halo</string>
+    <string name="recap_card_credit">Halo · kostenloser Open-Source-App-Umschalter</string>
+    <string name="recap_card_title">Dein Halo-Rückblick</string>
+    <plurals name="recap_active_days">
+        <item quantity="one">an %d Tag</item>
+        <item quantity="other">an %d Tagen</item>
+    </plurals>
+    <plurals name="recap_duo_count">
+        <item quantity="one">%d Mal zwischen ihnen gewechselt</item>
+        <item quantity="other">%d Mal zwischen ihnen gewechselt</item>
+    </plurals>
+    <plurals name="recap_streak">
+        <item quantity="one">%d Tag in Folge</item>
+        <item quantity="other">%d Tage in Folge</item>
+    </plurals>
+    <plurals name="recap_card_body">
+        <item quantity="one">Bisher %d Wechsel · Highlights ansehen</item>
+        <item quantity="other">Bisher %d Wechsel · Highlights ansehen</item>
+    </plurals>
 </resources>

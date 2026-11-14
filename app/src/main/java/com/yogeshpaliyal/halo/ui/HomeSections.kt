@@ -73,6 +73,43 @@ fun StyleTeaserCard(
     }
 }
 
+/** Home card leading to the recap. */
+@Composable
+fun RecapCard(switches: Int, onOpen: () -> Unit) {
+    Card(
+        shape = RoundedCornerShape(24.dp),
+        modifier = Modifier.clickable(onClick = onOpen),
+        colors = CardDefaults.cardColors(containerColor = androidx.compose.ui.graphics.Color.Transparent),
+    ) {
+        Box(
+            Modifier
+                .fillMaxWidth()
+                .background(
+                    androidx.compose.ui.graphics.Brush.linearGradient(
+                        listOf(androidx.compose.ui.graphics.Color(0xFF6A3DE8), androidx.compose.ui.graphics.Color(0xFFE0459B)),
+                    ),
+                )
+                .padding(20.dp),
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Column(Modifier.weight(1f)) {
+                    Text(
+                        stringResource(R.string.recap_card_title),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = androidx.compose.ui.graphics.Color.White,
+                    )
+                    Text(
+                        plural(R.plurals.recap_card_body, switches),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = androidx.compose.ui.graphics.Color.White.copy(alpha = 0.85f),
+                    )
+                }
+                Text("✨", style = MaterialTheme.typography.headlineMedium)
+            }
+        }
+    }
+}
+
 /** A labelled group of options on the home screen: a small title, then its card. */
 @Composable
 fun Section(title: String, content: @Composable () -> Unit) {

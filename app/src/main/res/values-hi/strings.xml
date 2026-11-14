@@ -214,4 +214,52 @@
         <item quantity="one">अब तक Halo से %d बार ऐप बदला। इस्तेमाल के साथ और खुलेंगे।</item>
         <item quantity="other">अब तक Halo से %d बार ऐप बदला। इस्तेमाल के साथ और खुलेंगे।</item>
     </plurals>
+
+    <!-- Recap -->
+    <string name="recap_week">7 दिन</string>
+    <string name="recap_month">30 दिन</string>
+    <string name="recap_close">बंद करें</string>
+    <string name="recap_empty_title">आपकी रिकैप तैयार हो रही है</string>
+    <string name="recap_empty_body">कुछ दिन Halo से ऐप बदलें, फिर अपनी हाइलाइट देखने आएं।</string>
+    <string name="recap_total_week">इस हफ़्ते आपने ऐप बदले</string>
+    <string name="recap_total_month">इस महीने आपने ऐप बदले</string>
+    <string name="recap_total_unit">बार Halo से</string>
+    <string name="recap_top_title">आपके सबसे ज़्यादा खोले गए ऐप</string>
+    <string name="recap_duo_title">आपकी पसंदीदा जोड़ी</string>
+    <string name="recap_duo_none">अभी कोई जोड़ी नहीं। दो ऐप के बीच कुछ बार आना-जाना करें।</string>
+    <string name="recap_rhythm_early">सुबह वाले</string>
+    <string name="recap_rhythm_day">दिन के खिलाड़ी</string>
+    <string name="recap_rhythm_evening">शाम वाले</string>
+    <string name="recap_rhythm_night">रात के उल्लू</string>
+    <string name="recap_peak_hour">सबसे ज़्यादा %s के आसपास</string>
+    <string name="recap_style_dial">डायल प्रो</string>
+    <string name="recap_style_tap">तेज़ टैपर</string>
+    <string name="recap_style_double">डबल-टैप फ़ैन</string>
+    <string name="recap_kind_dial">डायल</string>
+    <string name="recap_kind_tap">टैप</string>
+    <string name="recap_kind_double">दो बार टैप</string>
+    <string name="recap_share">मेरी रिकैप शेयर करें</string>
+    <string name="recap_reset">रिकैप डेटा रीसेट करें</string>
+    <string name="recap_private">आपकी रिकैप आपके फ़ोन पर लोकल गिनती से बनती है। कुछ भी अपलोड नहीं होता।</string>
+    <string name="recap_share_text">Halo से बनाया, फ़्लोटिंग ऐप स्विचर: https://github.com/yogeshpaliyal/Halo</string>
+    <string name="recap_card_week">Halo के साथ मेरा हफ़्ता</string>
+    <string name="recap_card_month">Halo के साथ मेरा महीना</string>
+    <string name="recap_card_credit">Halo · मुफ़्त, ओपन-सोर्स ऐप स्विचर</string>
+    <string name="recap_card_title">आपकी Halo रिकैप</string>
+    <plurals name="recap_active_days">
+        <item quantity="one">%d दिन में</item>
+        <item quantity="other">%d दिनों में</item>
+    </plurals>
+    <plurals name="recap_duo_count">
+        <item quantity="one">इनके बीच %d बार बदला</item>
+        <item quantity="other">इनके बीच %d बार बदला</item>
+    </plurals>
+    <plurals name="recap_streak">
+        <item quantity="one">%d दिन की स्ट्रीक</item>
+        <item quantity="other">%d दिन की स्ट्रीक</item>
+    </plurals>
+    <plurals name="recap_card_body">
+        <item quantity="one">अब तक %d स्विच · हाइलाइट देखें</item>
+        <item quantity="other">अब तक %d स्विच · हाइलाइट देखें</item>
+    </plurals>
 </resources>

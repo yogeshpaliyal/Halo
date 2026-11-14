@@ -222,4 +222,60 @@
         <item quantity="many">%d переключений приложений с Halo. Новые открываются по мере использования.</item>
         <item quantity="other">%d переключения приложений с Halo. Новые открываются по мере использования.</item>
     </plurals>
+
+    <!-- Recap -->
+    <string name="recap_week">7 дней</string>
+    <string name="recap_month">30 дней</string>
+    <string name="recap_close">Закрыть</string>
+    <string name="recap_empty_title">Итоги готовятся</string>
+    <string name="recap_empty_body">Попереключайтесь с Halo несколько дней и возвращайтесь за итогами.</string>
+    <string name="recap_total_week">За неделю вы переключали приложения</string>
+    <string name="recap_total_month">За месяц вы переключали приложения</string>
+    <string name="recap_total_unit">раз с Halo</string>
+    <string name="recap_top_title">Чаще всего открывали</string>
+    <string name="recap_duo_title">Ваш любимый дуэт</string>
+    <string name="recap_duo_none">Дуэта пока нет. Попереключайтесь несколько раз между двумя приложениями.</string>
+    <string name="recap_rhythm_early">Жаворонок</string>
+    <string name="recap_rhythm_day">Дневной</string>
+    <string name="recap_rhythm_evening">Вечерний</string>
+    <string name="recap_rhythm_night">Сова</string>
+    <string name="recap_peak_hour">Чаще всего около %s</string>
+    <string name="recap_style_dial">Мастер меню</string>
+    <string name="recap_style_tap">Быстрый тап</string>
+    <string name="recap_style_double">Фанат двойного</string>
+    <string name="recap_kind_dial">Меню</string>
+    <string name="recap_kind_tap">Нажатие</string>
+    <string name="recap_kind_double">Двойное</string>
+    <string name="recap_share">Поделиться итогами</string>
+    <string name="recap_reset">Сбросить данные итогов</string>
+    <string name="recap_private">Итоги собираются на телефоне из локального счётчика. Ничего не загружается.</string>
+    <string name="recap_share_text">Сделано с Halo, плавающим переключателем приложений: https://github.com/yogeshpaliyal/Halo</string>
+    <string name="recap_card_week">Моя неделя с Halo</string>
+    <string name="recap_card_month">Мой месяц с Halo</string>
+    <string name="recap_card_credit">Halo · бесплатный переключатель с открытым кодом</string>
+    <string name="recap_card_title">Ваши итоги Halo</string>
+    <plurals name="recap_active_days">
+        <item quantity="one">за %d день</item>
+        <item quantity="few">за %d дня</item>
+        <item quantity="many">за %d дней</item>
+        <item quantity="other">за %d дня</item>
+    </plurals>
+    <plurals name="recap_duo_count">
+        <item quantity="one">Переключались между ними %d раз</item>
+        <item quantity="few">Переключались между ними %d раза</item>
+        <item quantity="many">Переключались между ними %d раз</item>
+        <item quantity="other">Переключались между ними %d раза</item>
+    </plurals>
+    <plurals name="recap_streak">
+        <item quantity="one">%d день подряд</item>
+        <item quantity="few">%d дня подряд</item>
+        <item quantity="many">%d дней подряд</item>
+        <item quantity="other">%d дня подряд</item>
+    </plurals>
+    <plurals name="recap_card_body">
+        <item quantity="one">%d переключение · смотреть итоги</item>
+        <item quantity="few">%d переключения · смотреть итоги</item>
+        <item quantity="many">%d переключений · смотреть итоги</item>
+        <item quantity="other">%d переключения · смотреть итоги</item>
+    </plurals>
 </resources>

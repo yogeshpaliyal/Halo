@@ -210,4 +210,48 @@
     <plurals name="accessories_progress">
         <item quantity="other">%d pergantian aplikasi dengan Halo sejauh ini. Lebih banyak terbuka seiring pemakaian.</item>
     </plurals>
+
+    <!-- Recap -->
+    <string name="recap_week">7 hari</string>
+    <string name="recap_month">30 hari</string>
+    <string name="recap_close">Tutup</string>
+    <string name="recap_empty_title">Rekapmu sedang disiapkan</string>
+    <string name="recap_empty_body">Ganti aplikasi dengan Halo selama beberapa hari, lalu kembali untuk melihat sorotanmu.</string>
+    <string name="recap_total_week">Minggu ini kamu berganti aplikasi</string>
+    <string name="recap_total_month">Bulan ini kamu berganti aplikasi</string>
+    <string name="recap_total_unit">kali dengan Halo</string>
+    <string name="recap_top_title">Aplikasi yang paling sering kamu buka</string>
+    <string name="recap_duo_title">Duo andalanmu</string>
+    <string name="recap_duo_none">Belum ada duo. Bolak-balik antara dua aplikasi beberapa kali.</string>
+    <string name="recap_rhythm_early">Si pagi</string>
+    <string name="recap_rhythm_day">Aktif siang hari</string>
+    <string name="recap_rhythm_evening">Si sore</string>
+    <string name="recap_rhythm_night">Burung hantu</string>
+    <string name="recap_peak_hour">Paling aktif sekitar %s</string>
+    <string name="recap_style_dial">Jago dial</string>
+    <string name="recap_style_tap">Pengetuk cepat</string>
+    <string name="recap_style_double">Penggemar ketuk dua kali</string>
+    <string name="recap_kind_dial">Dial</string>
+    <string name="recap_kind_tap">Ketuk</string>
+    <string name="recap_kind_double">Ketuk dua kali</string>
+    <string name="recap_share">Bagikan rekapku</string>
+    <string name="recap_reset">Reset data rekap</string>
+    <string name="recap_private">Rekapmu dibuat di ponselmu dari hitungan lokal. Tidak ada yang diunggah.</string>
+    <string name="recap_share_text">Dibuat dengan Halo, pengalih aplikasi mengambang: https://github.com/yogeshpaliyal/Halo</string>
+    <string name="recap_card_week">Mingguku bersama Halo</string>
+    <string name="recap_card_month">Bulanku bersama Halo</string>
+    <string name="recap_card_credit">Halo · pengalih aplikasi gratis dan open source</string>
+    <string name="recap_card_title">Rekap Halo-mu</string>
+    <plurals name="recap_active_days">
+        <item quantity="other">dalam %d hari</item>
+    </plurals>
+    <plurals name="recap_duo_count">
+        <item quantity="other">Berganti di antara keduanya %d kali</item>
+    </plurals>
+    <plurals name="recap_streak">
+        <item quantity="other">%d hari berturut-turut</item>
+    </plurals>
+    <plurals name="recap_card_body">
+        <item quantity="other">%d pergantian sejauh ini · lihat sorotanmu</item>
+    </plurals>
 </resources>
