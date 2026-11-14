@@ -166,4 +166,13 @@
     <string name="customise">Настроить</string>
     <string name="about_source">Исходный код</string>
     <string name="about_version">Версия %s</string>
+
+    <!-- Dial themes -->
+    <string name="dial_title">Тема меню</string>
+    <string name="dial_hint">Как выглядит меню при удержании кнопки. «Стекло» размывает экран позади на Android 12 и новее.</string>
+    <string name="dial_classic">Классика</string>
+    <string name="dial_match">Как у кнопки</string>
+    <string name="dial_glass">Стекло</string>
+    <string name="dial_neon">Неон</string>
+    <string name="dial_daylight">День</string>
 </resources>

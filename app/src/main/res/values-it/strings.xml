@@ -163,4 +163,13 @@
     <string name="customise">Personalizza</string>
     <string name="about_source">Codice sorgente</string>
     <string name="about_version">Versione %s</string>
+
+    <!-- Dial themes -->
+    <string name="dial_title">Tema del quadrante</string>
+    <string name="dial_hint">Come appare il menu quando tieni premuta la bolla. Vetro sfoca lo schermo dietro su Android 12 e successivi.</string>
+    <string name="dial_classic">Classico</string>
+    <string name="dial_match">Come la bolla</string>
+    <string name="dial_glass">Vetro</string>
+    <string name="dial_neon">Neon</string>
+    <string name="dial_daylight">Giorno</string>
 </resources>

@@ -123,6 +123,7 @@ fun HomeScreen() {
     var bubblePalette by remember { mutableStateOf(Prefs.bubblePalette(context)) }
     var bubbleAnimations by remember { mutableStateOf(Prefs.bubbleAnimations(context)) }
     var bubbleReactions by remember { mutableStateOf(Prefs.bubbleReactions(context)) }
+    var dialTheme by remember { mutableStateOf(Prefs.dialTheme(context)) }
     var doubleTapAction by remember { mutableStateOf(Prefs.doubleTapAction(context)) }
     var holdDelay by remember { mutableStateOf(Prefs.holdDelay(context)) }
     var haptics by remember { mutableStateOf(Prefs.haptics(context)) }
@@ -300,7 +301,14 @@ fun HomeScreen() {
             item { HomeFooter(version) }
                 }
 
-                Page.APPEARANCE -> item { bubbleCard(BubbleSection.APPEARANCE) }
+                Page.APPEARANCE -> {
+                    item { Section(stringResource(R.string.bubble)) { bubbleCard(BubbleSection.APPEARANCE) } }
+                    item {
+                        Section(stringResource(R.string.dial_title)) {
+                            DialThemeCard(dialTheme, bubblePalette) { dialTheme = it; Prefs.setDialTheme(context, it) }
+                        }
+                    }
+                }
             }
         }
         }

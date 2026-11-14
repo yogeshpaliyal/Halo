@@ -160,4 +160,13 @@
     <string name="customise">Anpassen</string>
     <string name="about_source">Quellcode</string>
     <string name="about_version">Version %s</string>
+
+    <!-- Dial themes -->
+    <string name="dial_title">Kreis-Design</string>
+    <string name="dial_hint">So sieht das Menü aus, wenn du die Blase hältst. Glas macht den Bildschirm dahinter ab Android 12 unscharf.</string>
+    <string name="dial_classic">Klassisch</string>
+    <string name="dial_match">Wie Blase</string>
+    <string name="dial_glass">Glas</string>
+    <string name="dial_neon">Neon</string>
+    <string name="dial_daylight">Tageslicht</string>
 </resources>

@@ -337,6 +337,14 @@ class HaloService : Service(), BubbleView.Listener {
         )
         params.x = 0
         params.y = 0
+        // Glass theme: blur whatever is behind the dial, on phones that support it.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
+            DialColors.of(Prefs.dialTheme(this), Prefs.bubblePalette(this)).blur &&
+            wm.isCrossWindowBlurEnabled
+        ) {
+            params.flags = params.flags or WindowManager.LayoutParams.FLAG_BLUR_BEHIND
+            params.blurBehindRadius = (24 * resources.displayMetrics.density).toInt()
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             // Don't let the system shrink the window to avoid the status and navigation bars.
             params.setFitInsetsTypes(0)
@@ -367,7 +375,9 @@ class HaloService : Service(), BubbleView.Listener {
             if (animate && view.isAttachedToWindow) {
                 // Let touches through to the app underneath while the dial fades out.
                 (view.layoutParams as? WindowManager.LayoutParams)?.let { lp ->
-                    lp.flags = lp.flags or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                    // Drop the glass blur as it closes, and let touches through to the app.
+                    lp.flags = (lp.flags or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE) and
+                        WindowManager.LayoutParams.FLAG_BLUR_BEHIND.inv()
                     runCatching { wm.updateViewLayout(view, lp) }
                 }
                 closingMenus += view

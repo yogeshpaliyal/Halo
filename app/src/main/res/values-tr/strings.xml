@@ -160,4 +160,13 @@
     <string name="customise">Özelleştir</string>
     <string name="about_source">Kaynak kodu</string>
     <string name="about_version">Sürüm %s</string>
+
+    <!-- Dial themes -->
+    <string name="dial_title">Kadran teması</string>
+    <string name="dial_hint">Baloncuğa basılı tutunca menünün görünümü. Cam, Android 12 ve sonrasında arkadaki ekranı bulanıklaştırır.</string>
+    <string name="dial_classic">Klasik</string>
+    <string name="dial_match">Baloncuğa uy</string>
+    <string name="dial_glass">Cam</string>
+    <string name="dial_neon">Neon</string>
+    <string name="dial_daylight">Gün ışığı</string>
 </resources>

@@ -163,4 +163,13 @@
     <string name="customise">Personnaliser</string>
     <string name="about_source">Code source</string>
     <string name="about_version">Version %s</string>
+
+    <!-- Dial themes -->
+    <string name="dial_title">Thème du cadran</string>
+    <string name="dial_hint">L’apparence du menu quand vous maintenez la bulle. Verre floute l’écran derrière sur Android 12 et plus.</string>
+    <string name="dial_classic">Classique</string>
+    <string name="dial_match">Comme la bulle</string>
+    <string name="dial_glass">Verre</string>
+    <string name="dial_neon">Néon</string>
+    <string name="dial_daylight">Jour</string>
 </resources>

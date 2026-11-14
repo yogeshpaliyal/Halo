@@ -105,24 +105,33 @@ class RadialMenuView(
     private var fingerX = anchorScreenX
     private var fingerY = anchorScreenY
 
-    private val scrim = Paint().apply { color = Color.BLACK }
+    /** Colours from the chosen dial theme (and the bubble's palette for "Match bubble"). */
+    private val theme = DialColors.of(Prefs.dialTheme(context), Prefs.bubblePalette(context))
+    private val bandAlpha = Color.alpha(theme.band)
+    private val scrim = Paint().apply { color = theme.scrim }
     private val band = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
         strokeCap = Paint.Cap.ROUND
         strokeWidth = iconSize + dp(18f)
-        color = Color.parseColor("#E61E1B2E")
+        color = theme.band
+    }
+    /** Thin lines along the band's outer and inner edges (glass, neon, daylight). */
+    private val edge = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.STROKE
+        strokeCap = Paint.Cap.ROUND
+        strokeWidth = dp(if (theme.edgeGlow) 2f else 1.5f)
     }
     private val badgePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.parseColor("#FFFF5A5F") }
     private val badgeRim = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.WHITE }
-    private val glow = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.parseColor("#59B9A8FF") }
-    private val pill = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.parseColor("#F2F1EDFF") }
+    private val glow = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = theme.glow }
+    private val pill = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = theme.pill }
     private val label = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = Color.parseColor("#FF14121F")
+        color = theme.pillText
         textSize = dp(14f)
         isFakeBoldText = true
     }
     private val hint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = Color.WHITE
+        color = theme.hintText
         textSize = dp(15f)
         textAlign = Paint.Align.CENTER
     }
@@ -349,7 +358,7 @@ class RadialMenuView(
         getLocationOnScreen(screenLoc)
         val p = progress.coerceIn(0f, 1.2f)
         val fade = progress.coerceIn(0f, 1f)
-        scrim.alpha = (fade * 175).toInt()
+        scrim.alpha = (fade * theme.scrimAlpha).toInt()
         canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), scrim)
 
         val cx = centerX()
@@ -366,16 +375,19 @@ class RadialMenuView(
             if (angles == null) {
                 val r = ring.radius * (0.55f + 0.45f * p)
                 arcRect.set(cx - r, cy - r, cx + r, cy + r)
-                band.alpha = (fade * 235).toInt()
+                band.alpha = (fade * bandAlpha).toInt()
                 canvas.drawArc(arcRect, facing - span / 2f - 4f, span + 8f, false, band)
+                drawEdges(canvas, cx, cy, r, facing - span / 2f - 4f, span + 8f, fade)
             } else {
                 // Open folder: a short band under just its apps, growing out from the folder.
                 val r = folderRadius(ring) * (0.55f + 0.45f * p)
                 val half = Math.toDegrees(((iconSize + dp(16f)) / ring.radius).toDouble()).toFloat() / 2f
                 val start = angles.min() - half + 4f
                 arcRect.set(cx - r, cy - r, cx + r, cy + r)
-                band.alpha = (fade * folderProgress.coerceIn(0f, 1f) * 235).toInt()
+                val folderFade = fade * folderProgress.coerceIn(0f, 1f)
+                band.alpha = (folderFade * bandAlpha).toInt()
                 canvas.drawArc(arcRect, start, angles.max() - angles.min() + 2 * half - 8f, false, band)
+                drawEdges(canvas, cx, cy, r, start, angles.max() - angles.min() + 2 * half - 8f, folderFade)
             }
         }
 
@@ -416,6 +428,20 @@ class RadialMenuView(
         }
 
         selected?.let { drawLabel(canvas, it.label, selCenterX, selCenterY) }
+    }
+
+    /** Outline along both edges of a band, following its rounded ends' arc. */
+    private fun drawEdges(canvas: Canvas, cx: Float, cy: Float, r: Float, start: Float, sweep: Float, fade: Float) {
+        val half = band.strokeWidth / 2f
+        for ((color, rr) in listOf(theme.edgeOuter to r + half, theme.edgeInner to r - half)) {
+            if (color == 0 || rr <= 0f) continue
+            edge.color = color
+            edge.alpha = (fade * Color.alpha(color)).toInt()
+            // Neon edges glow (drawn by the GPU on Android 9+; plain lines before that).
+            if (theme.edgeGlow) edge.setShadowLayer(dp(7f), 0f, 0f, color) else edge.clearShadowLayer()
+            arcRect.set(cx - rr, cy - rr, cx + rr, cy + rr)
+            canvas.drawArc(arcRect, start, sweep, false, edge)
+        }
     }
 
     /** Open-folder apps glide out from the inner ring to the outer one. */

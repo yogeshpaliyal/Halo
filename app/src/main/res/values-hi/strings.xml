@@ -160,4 +160,13 @@
     <string name="customise">पसंद के मुताबिक बनाएं</string>
     <string name="about_source">सोर्स कोड</string>
     <string name="about_version">वर्शन %s</string>
+
+    <!-- Dial themes -->
+    <string name="dial_title">डायल थीम</string>
+    <string name="dial_hint">बबल दबाने पर मेन्यू कैसा दिखे। ग्लास Android 12 और नए वर्शन पर पीछे की स्क्रीन धुंधली कर देता है।</string>
+    <string name="dial_classic">क्लासिक</string>
+    <string name="dial_match">बबल जैसा</string>
+    <string name="dial_glass">ग्लास</string>
+    <string name="dial_neon">नियॉन</string>
+    <string name="dial_daylight">दिन</string>
 </resources>

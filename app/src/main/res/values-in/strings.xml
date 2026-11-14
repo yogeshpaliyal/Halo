@@ -157,4 +157,13 @@
     <string name="customise">Sesuaikan</string>
     <string name="about_source">Kode sumber</string>
     <string name="about_version">Versi %s</string>
+
+    <!-- Dial themes -->
+    <string name="dial_title">Tema dial</string>
+    <string name="dial_hint">Tampilan menu saat Anda menahan gelembung. Kaca memburamkan layar di belakangnya di Android 12 dan yang lebih baru.</string>
+    <string name="dial_classic">Klasik</string>
+    <string name="dial_match">Ikuti gelembung</string>
+    <string name="dial_glass">Kaca</string>
+    <string name="dial_neon">Neon</string>
+    <string name="dial_daylight">Siang</string>
 </resources>

@@ -3,6 +3,7 @@ package com.yogeshpaliyal.halo.data
 import android.content.Context
 import com.yogeshpaliyal.halo.overlay.BubbleCharacter
 import com.yogeshpaliyal.halo.overlay.BubblePalette
+import com.yogeshpaliyal.halo.overlay.DialTheme
 import android.content.SharedPreferences
 import androidx.core.content.edit
 
@@ -31,6 +32,7 @@ object Prefs {
     const val KEY_BUBBLE_CHARACTER = "bubble_character"
     const val KEY_BUBBLE_ANIMATIONS = "bubble_animations"
     const val KEY_BUBBLE_REACTIONS = "bubble_reactions"
+    const val KEY_DIAL_THEME = "dial_theme"
 
     private fun sp(context: Context): SharedPreferences =
         context.getSharedPreferences(FILE, Context.MODE_PRIVATE)
@@ -112,6 +114,13 @@ object Prefs {
     /** Blinks and idle moves for characters. Touch reactions always play. */
     fun bubbleAnimations(context: Context): Boolean = sp(context).getBoolean(KEY_BUBBLE_ANIMATIONS, true)
     fun setBubbleAnimations(context: Context, on: Boolean) = sp(context).edit { putBoolean(KEY_BUBBLE_ANIMATIONS, on) }
+
+    fun dialTheme(context: Context): DialTheme =
+        sp(context).getString(KEY_DIAL_THEME, null)
+            ?.let { runCatching { DialTheme.valueOf(it) }.getOrNull() }
+            ?: DialTheme.CLASSIC
+
+    fun setDialTheme(context: Context, theme: DialTheme) = sp(context).edit { putString(KEY_DIAL_THEME, theme.name) }
 
     /** Characters sleep at night, sweat on low battery, show a bolt while charging, hop for notifications. */
     fun bubbleReactions(context: Context): Boolean = sp(context).getBoolean(KEY_BUBBLE_REACTIONS, true)

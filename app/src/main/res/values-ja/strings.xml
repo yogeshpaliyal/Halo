@@ -157,4 +157,13 @@
     <string name="customise">カスタマイズ</string>
     <string name="about_source">ソースコード</string>
     <string name="about_version">バージョン %s</string>
+
+    <!-- Dial themes -->
+    <string name="dial_title">ダイヤルのテーマ</string>
+    <string name="dial_hint">バブルを長押ししたときのメニューの見た目。ガラスは Android 12 以降で背後の画面をぼかします。</string>
+    <string name="dial_classic">クラシック</string>
+    <string name="dial_match">バブルに合わせる</string>
+    <string name="dial_glass">ガラス</string>
+    <string name="dial_neon">ネオン</string>
+    <string name="dial_daylight">デイライト</string>
 </resources>

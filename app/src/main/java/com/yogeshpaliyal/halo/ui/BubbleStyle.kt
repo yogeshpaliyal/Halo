@@ -41,6 +41,9 @@ import androidx.compose.ui.unit.dp
 import com.yogeshpaliyal.halo.overlay.BubbleCharacter
 import com.yogeshpaliyal.halo.overlay.BubblePalette
 import com.yogeshpaliyal.halo.overlay.BubbleRenderer
+import androidx.compose.ui.draw.blur
+import com.yogeshpaliyal.halo.overlay.DialColors
+import com.yogeshpaliyal.halo.overlay.DialTheme
 import kotlinx.coroutines.delay
 
 /**
@@ -172,6 +175,125 @@ fun PaletteRow(palette: BubblePalette, onPalette: (BubblePalette) -> Unit) {
                     maxLines = 1,
                 )
             }
+        }
+    }
+}
+
+/**
+ * A tiny dial in the given theme over a stand-in wallpaper, so the scrim, glass and glow
+ * read the way they will on screen.
+ */
+@Composable
+fun DialPreview(theme: DialTheme, palette: BubblePalette, modifier: Modifier) {
+    val c = DialColors.of(theme, palette)
+    Box(modifier.clip(RoundedCornerShape(16.dp))) {
+        // Stand-in wallpaper, blurred for glass like the real thing.
+        Box(
+            Modifier
+                .matchParentSize()
+                .then(if (c.blur) Modifier.blur(6.dp) else Modifier)
+                .background(Brush.linearGradient(listOf(Color(0xFF6A8DFF), Color(0xFFFF8FB1), Color(0xFFFFD27A)))),
+        )
+        Canvas(Modifier.matchParentSize()) {
+            drawRect(Color(c.scrim).copy(alpha = c.scrimAlpha / 255f))
+            val cx = size.width * 0.06f
+            val cy = size.height / 2f
+            val r = size.height * 0.36f
+            val bandW = size.height * 0.22f
+            val topLeft = androidx.compose.ui.geometry.Offset(cx - r, cy - r)
+            val arcSize = androidx.compose.ui.geometry.Size(r * 2, r * 2)
+            drawArc(
+                Color(c.band), -80f, 160f, useCenter = false, topLeft = topLeft, size = arcSize,
+                style = androidx.compose.ui.graphics.drawscope.Stroke(bandW, cap = androidx.compose.ui.graphics.StrokeCap.Round),
+            )
+            for ((col, rr) in listOf(c.edgeOuter to r + bandW / 2, c.edgeInner to r - bandW / 2)) {
+                if (col == 0) continue
+                drawArc(
+                    Color(col), -80f, 160f, useCenter = false,
+                    topLeft = androidx.compose.ui.geometry.Offset(cx - rr, cy - rr),
+                    size = androidx.compose.ui.geometry.Size(rr * 2, rr * 2),
+                    style = androidx.compose.ui.graphics.drawscope.Stroke(size.height * 0.02f),
+                )
+            }
+            // Four "apps", the second one highlighted.
+            val dots = listOf(Color(0xFF4CAF50), Color(0xFFE53935), Color(0xFF1E88E5), Color(0xFFFFB300))
+            dots.forEachIndexed { i, col ->
+                val a = Math.toRadians((-60 + i * 40).toDouble())
+                val x = cx + r * kotlin.math.cos(a).toFloat()
+                val y = cy + r * kotlin.math.sin(a).toFloat()
+                if (i == 1) drawCircle(Color(c.glow), radius = bandW * 0.62f, center = androidx.compose.ui.geometry.Offset(x, y))
+                drawCircle(col, radius = bandW * (if (i == 1) 0.4f else 0.32f), center = androidx.compose.ui.geometry.Offset(x, y))
+            }
+            // Label pill.
+            val a = Math.toRadians(-20.0)
+            val px = cx + r * kotlin.math.cos(a).toFloat() - bandW * 1.9f
+            val py = cy + r * kotlin.math.sin(a).toFloat() + bandW * 0.55f
+            drawRoundRect(
+                Color(c.pill),
+                topLeft = androidx.compose.ui.geometry.Offset(px, py),
+                size = androidx.compose.ui.geometry.Size(bandW * 2.2f, bandW * 0.6f),
+                cornerRadius = androidx.compose.ui.geometry.CornerRadius(bandW * 0.3f),
+            )
+        }
+    }
+}
+
+/** Dial theme picker: mini dials in each theme. */
+@Composable
+fun DialThemeRow(theme: DialTheme, palette: BubblePalette, onTheme: (DialTheme) -> Unit) {
+    Row(
+        Modifier
+            .horizontalScroll(rememberScrollState())
+            .padding(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
+    ) {
+        DialTheme.entries.forEach { t ->
+            val selected = t == theme
+            Column(
+                Modifier
+                    .clip(RoundedCornerShape(16.dp))
+                    .clickable { onTheme(t) }
+                    .padding(6.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                DialPreview(
+                    t, palette,
+                    Modifier
+                        .size(width = 84.dp, height = 64.dp)
+                        .then(
+                            if (selected) {
+                                Modifier.border(2.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(16.dp))
+                            } else {
+                                Modifier
+                            },
+                        ),
+                )
+                Spacer(Modifier.height(4.dp))
+                Text(
+                    stringResource(t.labelRes),
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
+                    color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                )
+            }
+        }
+    }
+}
+
+/** The dial theme card on the Customise screen. */
+@Composable
+fun DialThemeCard(theme: DialTheme, palette: BubblePalette, onTheme: (DialTheme) -> Unit) {
+    androidx.compose.material3.Card(shape = RoundedCornerShape(24.dp)) {
+        Column(Modifier.padding(vertical = 14.dp)) {
+            Text(
+                stringResource(com.yogeshpaliyal.halo.R.string.dial_hint),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(horizontal = 20.dp),
+            )
+            Spacer(Modifier.height(10.dp))
+            DialThemeRow(theme, palette, onTheme)
         }
     }
 }

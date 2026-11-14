@@ -160,4 +160,13 @@
     <string name="customise">Personalizar</string>
     <string name="about_source">Código fuente</string>
     <string name="about_version">Versión %s</string>
+
+    <!-- Dial themes -->
+    <string name="dial_title">Tema del dial</string>
+    <string name="dial_hint">Cómo se ve el menú al mantener la burbuja. Cristal desenfoca la pantalla detrás en Android 12 y posteriores.</string>
+    <string name="dial_classic">Clásico</string>
+    <string name="dial_match">Como la burbuja</string>
+    <string name="dial_glass">Cristal</string>
+    <string name="dial_neon">Neón</string>
+    <string name="dial_daylight">Día</string>
 </resources>

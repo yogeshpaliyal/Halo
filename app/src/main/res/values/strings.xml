@@ -189,4 +189,13 @@
     <string name="customise">Customise</string>
     <string name="about_source">Source code</string>
     <string name="about_version">Version %s</string>
+
+    <!-- Dial themes -->
+    <string name="dial_title">Dial theme</string>
+    <string name="dial_hint">How the menu looks when you hold the bubble. Glass blurs the screen behind it on Android 12 and newer.</string>
+    <string name="dial_classic">Classic</string>
+    <string name="dial_match">Match bubble</string>
+    <string name="dial_glass">Glass</string>
+    <string name="dial_neon">Neon</string>
+    <string name="dial_daylight">Daylight</string>
 </resources>

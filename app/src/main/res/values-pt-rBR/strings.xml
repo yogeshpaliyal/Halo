@@ -163,4 +163,13 @@
     <string name="customise">Personalizar</string>
     <string name="about_source">Código-fonte</string>
     <string name="about_version">Versão %s</string>
+
+    <!-- Dial themes -->
+    <string name="dial_title">Tema do disco</string>
+    <string name="dial_hint">Como o menu aparece ao segurar a bolha. Vidro desfoca a tela atrás no Android 12 ou mais recente.</string>
+    <string name="dial_classic">Clássico</string>
+    <string name="dial_match">Igual à bolha</string>
+    <string name="dial_glass">Vidro</string>
+    <string name="dial_neon">Neon</string>
+    <string name="dial_daylight">Dia</string>
 </resources>
