@@ -270,4 +270,8 @@
         <item quantity="many">%d changements · voir vos temps forts</item>
         <item quantity="other">%d changements · voir vos temps forts</item>
     </plurals>
+    <string name="share_layout_summary">Résumé</string>
+    <string name="share_layout_top">Top apps</string>
+    <string name="share_layout_duo">Duo</string>
+    <string name="share_layout_rhythm">Rythme</string>
 </resources>

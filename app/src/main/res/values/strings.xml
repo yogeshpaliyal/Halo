@@ -291,4 +291,8 @@
         <item quantity="one">%d switch so far · see your highlights</item>
         <item quantity="other">%d switches so far · see your highlights</item>
     </plurals>
+    <string name="share_layout_summary">Summary</string>
+    <string name="share_layout_top">Top apps</string>
+    <string name="share_layout_duo">Duo</string>
+    <string name="share_layout_rhythm">Rhythm</string>
 </resources>

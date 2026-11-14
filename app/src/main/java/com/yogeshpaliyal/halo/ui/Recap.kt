@@ -7,6 +7,8 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -410,9 +412,39 @@ private fun ColumnScope.SharePage(
     onReset: () -> Unit,
 ) {
     val context = LocalContext.current
-    val card = remember(s, entries) {
-        RecapShareCard.render(context, s, entries, character, palette, customImage, accessory)
+    var layout by remember { mutableStateOf(ShareLayout.SUMMARY) }
+    var theme by remember { mutableStateOf(ShareTheme.AURORA) }
+    val card = remember(s, entries, layout, theme) {
+        RecapShareCard.render(context, s, entries, character, palette, customImage, accessory, layout, theme)
     }
+    // Which card, then which colours.
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .horizontalScroll(rememberScrollState()),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        ShareLayout.entries.forEach { l ->
+            RangeChip(stringResource(l.labelRes), l == layout) { layout = l }
+        }
+    }
+    Spacer(Modifier.height(10.dp))
+    Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+        ShareTheme.entries.forEach { t ->
+            val (a1, a2) = t.colors(palette)
+            Box(
+                Modifier
+                    .size(34.dp)
+                    .clip(CircleShape)
+                    .background(Color.White.copy(alpha = if (t == theme) 1f else 0.3f))
+                    .padding(if (t == theme) 3.dp else 1.5.dp)
+                    .clip(CircleShape)
+                    .background(Brush.linearGradient(listOf(Color(a1), Color(a2))))
+                    .clickable { theme = t },
+            )
+        }
+    }
+    Spacer(Modifier.height(14.dp))
     Box(Modifier.fillMaxWidth().weight(1f, fill = false), contentAlignment = Alignment.Center) {
         androidx.compose.foundation.Image(
             card.asImageBitmap(),

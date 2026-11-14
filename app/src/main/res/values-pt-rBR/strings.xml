@@ -270,4 +270,8 @@
         <item quantity="many">%d trocas até agora · ver destaques</item>
         <item quantity="other">%d trocas até agora · ver destaques</item>
     </plurals>
+    <string name="share_layout_summary">Resumo</string>
+    <string name="share_layout_top">Top apps</string>
+    <string name="share_layout_duo">Dupla</string>
+    <string name="share_layout_rhythm">Ritmo</string>
 </resources>

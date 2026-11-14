@@ -270,4 +270,8 @@
         <item quantity="many">%d cambi finora · guarda i momenti salienti</item>
         <item quantity="other">%d cambi finora · guarda i momenti salienti</item>
     </plurals>
+    <string name="share_layout_summary">Riepilogo</string>
+    <string name="share_layout_top">Top app</string>
+    <string name="share_layout_duo">Duo</string>
+    <string name="share_layout_rhythm">Ritmo</string>
 </resources>

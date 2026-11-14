@@ -262,4 +262,8 @@
         <item quantity="one">%d cambio hasta ahora · ver lo destacado</item>
         <item quantity="other">%d cambios hasta ahora · ver lo destacado</item>
     </plurals>
+    <string name="share_layout_summary">Resumen</string>
+    <string name="share_layout_top">Top apps</string>
+    <string name="share_layout_duo">Dúo</string>
+    <string name="share_layout_rhythm">Ritmo</string>
 </resources>

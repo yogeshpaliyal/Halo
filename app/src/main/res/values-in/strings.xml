@@ -254,4 +254,8 @@
     <plurals name="recap_card_body">
         <item quantity="other">%d pergantian sejauh ini · lihat sorotanmu</item>
     </plurals>
+    <string name="share_layout_summary">Ringkasan</string>
+    <string name="share_layout_top">Aplikasi teratas</string>
+    <string name="share_layout_duo">Duo</string>
+    <string name="share_layout_rhythm">Ritme</string>
 </resources>

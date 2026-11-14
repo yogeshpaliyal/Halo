@@ -254,4 +254,8 @@
     <plurals name="recap_card_body">
         <item quantity="other">これまで %d 回 · ハイライトを見る</item>
     </plurals>
+    <string name="share_layout_summary">まとめ</string>
+    <string name="share_layout_top">トップアプリ</string>
+    <string name="share_layout_duo">コンビ</string>
+    <string name="share_layout_rhythm">リズム</string>
 </resources>

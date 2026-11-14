@@ -262,4 +262,8 @@
         <item quantity="one">Şimdiye kadar %d geçiş · öne çıkanları gör</item>
         <item quantity="other">Şimdiye kadar %d geçiş · öne çıkanları gör</item>
     </plurals>
+    <string name="share_layout_summary">Özet</string>
+    <string name="share_layout_top">En iyiler</string>
+    <string name="share_layout_duo">İkili</string>
+    <string name="share_layout_rhythm">Ritim</string>
 </resources>
