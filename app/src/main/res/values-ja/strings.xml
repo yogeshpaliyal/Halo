@@ -176,4 +176,24 @@
     <string name="crop_rotate">回転</string>
     <string name="crop_use">この写真を使う</string>
     <string name="cancel">キャンセル</string>
+
+    <!-- Tutorial -->
+    <string name="tut_title">ジェスチャーを試す</string>
+    <string name="tut_skip">スキップ</string>
+    <string name="tut_step1">バブルを長押し</string>
+    <string name="tut_step2">押したまま ⭐ のアプリまでスライドして離す</string>
+    <string name="tut_hold_longer">もう少し長く押してください</string>
+    <string name="tut_missed">惜しい！⭐ のアプリまでスライドしてから離してください</string>
+    <string name="tut_missed_none">離す前にアプリまでスライドしてください</string>
+    <string name="tut_success">できました！🎉</string>
+    <string name="tut_success_body">長押し、スライド、離すだけ。あと 2 つのコツ:</string>
+    <string name="tut_tip_tap">タップ: %s</string>
+    <string name="tut_tip_double">ダブルタップ: %s</string>
+    <string name="tut_tip_drag">ドラッグで端に沿って移動</string>
+    <string name="tut_done">完了</string>
+    <string name="tut_card_title">はじめての方へ: ジェスチャーを覚えよう</string>
+    <string name="tut_card_body">ここで 20 秒の練習ができます。</string>
+    <string name="tut_card_start">試す</string>
+    <string name="tut_card_later">あとで</string>
+    <string name="tut_replay">チュートリアルをもう一度</string>
 </resources>

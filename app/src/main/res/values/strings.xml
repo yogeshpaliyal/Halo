@@ -208,4 +208,24 @@
     <string name="crop_rotate">Rotate</string>
     <string name="crop_use">Use photo</string>
     <string name="cancel">Cancel</string>
+
+    <!-- Tutorial -->
+    <string name="tut_title">Try the gesture</string>
+    <string name="tut_skip">Skip</string>
+    <string name="tut_step1">Press and hold the bubble</string>
+    <string name="tut_step2">Keep holding, slide to the ⭐ app, then let go</string>
+    <string name="tut_hold_longer">Keep your finger down a little longer</string>
+    <string name="tut_missed">Almost! Slide onto the ⭐ app before letting go</string>
+    <string name="tut_missed_none">Slide onto an app before letting go</string>
+    <string name="tut_success">You got it! 🎉</string>
+    <string name="tut_success_body">That’s all it takes: hold, slide, let go. Two more tricks:</string>
+    <string name="tut_tip_tap">Tap: %s</string>
+    <string name="tut_tip_double">Double tap: %s</string>
+    <string name="tut_tip_drag">Drag it to move it anywhere along the edge</string>
+    <string name="tut_done">Done</string>
+    <string name="tut_card_title">New here? Learn the gesture</string>
+    <string name="tut_card_body">A 20-second practice run, right here.</string>
+    <string name="tut_card_start">Try it</string>
+    <string name="tut_card_later">Later</string>
+    <string name="tut_replay">Replay tutorial</string>
 </resources>

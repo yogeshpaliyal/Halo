@@ -182,4 +182,24 @@
     <string name="crop_rotate">Ruota</string>
     <string name="crop_use">Usa foto</string>
     <string name="cancel">Annulla</string>
+
+    <!-- Tutorial -->
+    <string name="tut_title">Prova il gesto</string>
+    <string name="tut_skip">Salta</string>
+    <string name="tut_step1">Tieni premuta la bolla</string>
+    <string name="tut_step2">Continua a tenere, scorri sull’app ⭐, poi rilascia</string>
+    <string name="tut_hold_longer">Tieni il dito ancora un attimo</string>
+    <string name="tut_missed">Quasi! Scorri sull’app ⭐ prima di rilasciare</string>
+    <string name="tut_missed_none">Scorri su un’app prima di rilasciare</string>
+    <string name="tut_success">Ce l’hai fatta! 🎉</string>
+    <string name="tut_success_body">Tutto qui: tieni, scorri, rilascia. Altri due trucchi:</string>
+    <string name="tut_tip_tap">Tocco: %s</string>
+    <string name="tut_tip_double">Doppio tocco: %s</string>
+    <string name="tut_tip_drag">Trascinala per spostarla lungo il bordo</string>
+    <string name="tut_done">Fatto</string>
+    <string name="tut_card_title">Nuovo? Impara il gesto</string>
+    <string name="tut_card_body">Una prova di 20 secondi, proprio qui.</string>
+    <string name="tut_card_start">Prova</string>
+    <string name="tut_card_later">Più tardi</string>
+    <string name="tut_replay">Rivedi il tutorial</string>
 </resources>

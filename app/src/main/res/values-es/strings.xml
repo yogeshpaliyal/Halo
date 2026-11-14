@@ -179,4 +179,24 @@
     <string name="crop_rotate">Girar</string>
     <string name="crop_use">Usar foto</string>
     <string name="cancel">Cancelar</string>
+
+    <!-- Tutorial -->
+    <string name="tut_title">Prueba el gesto</string>
+    <string name="tut_skip">Omitir</string>
+    <string name="tut_step1">Mantén presionada la burbuja</string>
+    <string name="tut_step2">Sigue presionando, desliza a la app ⭐ y suelta</string>
+    <string name="tut_hold_longer">Mantén el dedo un poco más</string>
+    <string name="tut_missed">¡Casi! Desliza hasta la app ⭐ antes de soltar</string>
+    <string name="tut_missed_none">Desliza hasta una app antes de soltar</string>
+    <string name="tut_success">¡Lo lograste! 🎉</string>
+    <string name="tut_success_body">Eso es todo: mantén, desliza, suelta. Dos trucos más:</string>
+    <string name="tut_tip_tap">Toque: %s</string>
+    <string name="tut_tip_double">Doble toque: %s</string>
+    <string name="tut_tip_drag">Arrástrala para moverla por el borde</string>
+    <string name="tut_done">Listo</string>
+    <string name="tut_card_title">¿Eres nuevo? Aprende el gesto</string>
+    <string name="tut_card_body">Una práctica de 20 segundos, aquí mismo.</string>
+    <string name="tut_card_start">Probar</string>
+    <string name="tut_card_later">Luego</string>
+    <string name="tut_replay">Repetir tutorial</string>
 </resources>

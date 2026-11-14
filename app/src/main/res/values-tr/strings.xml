@@ -179,4 +179,24 @@
     <string name="crop_rotate">Döndür</string>
     <string name="crop_use">Fotoğrafı kullan</string>
     <string name="cancel">İptal</string>
+
+    <!-- Tutorial -->
+    <string name="tut_title">Hareketi dene</string>
+    <string name="tut_skip">Atla</string>
+    <string name="tut_step1">Baloncuğa basılı tut</string>
+    <string name="tut_step2">Basılı tutarak ⭐ uygulamasına kaydır, sonra bırak</string>
+    <string name="tut_hold_longer">Parmağını biraz daha uzun tut</string>
+    <string name="tut_missed">Az kaldı! Bırakmadan önce ⭐ uygulamasına kaydır</string>
+    <string name="tut_missed_none">Bırakmadan önce bir uygulamaya kaydır</string>
+    <string name="tut_success">Başardın! 🎉</string>
+    <string name="tut_success_body">Hepsi bu: tut, kaydır, bırak. İki ipucu daha:</string>
+    <string name="tut_tip_tap">Dokunma: %s</string>
+    <string name="tut_tip_double">Çift dokunma: %s</string>
+    <string name="tut_tip_drag">Kenar boyunca taşımak için sürükle</string>
+    <string name="tut_done">Bitti</string>
+    <string name="tut_card_title">Yeni misin? Hareketi öğren</string>
+    <string name="tut_card_body">Burada 20 saniyelik bir alıştırma.</string>
+    <string name="tut_card_start">Dene</string>
+    <string name="tut_card_later">Sonra</string>
+    <string name="tut_replay">Eğitimi tekrar oynat</string>
 </resources>

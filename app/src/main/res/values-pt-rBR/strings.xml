@@ -182,4 +182,24 @@
     <string name="crop_rotate">Girar</string>
     <string name="crop_use">Usar foto</string>
     <string name="cancel">Cancelar</string>
+
+    <!-- Tutorial -->
+    <string name="tut_title">Teste o gesto</string>
+    <string name="tut_skip">Pular</string>
+    <string name="tut_step1">Toque e segure a bolha</string>
+    <string name="tut_step2">Continue segurando, deslize até o app ⭐ e solte</string>
+    <string name="tut_hold_longer">Segure o dedo um pouco mais</string>
+    <string name="tut_missed">Quase! Deslize até o app ⭐ antes de soltar</string>
+    <string name="tut_missed_none">Deslize até um app antes de soltar</string>
+    <string name="tut_success">Conseguiu! 🎉</string>
+    <string name="tut_success_body">É só isso: segure, deslize, solte. Mais dois truques:</string>
+    <string name="tut_tip_tap">Toque: %s</string>
+    <string name="tut_tip_double">Toque duplo: %s</string>
+    <string name="tut_tip_drag">Arraste para mover pela borda</string>
+    <string name="tut_done">Concluído</string>
+    <string name="tut_card_title">Novo por aqui? Aprenda o gesto</string>
+    <string name="tut_card_body">Um treino de 20 segundos, aqui mesmo.</string>
+    <string name="tut_card_start">Testar</string>
+    <string name="tut_card_later">Depois</string>
+    <string name="tut_replay">Rever tutorial</string>
 </resources>

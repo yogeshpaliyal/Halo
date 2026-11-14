@@ -182,4 +182,24 @@
     <string name="crop_rotate">Pivoter</string>
     <string name="crop_use">Utiliser la photo</string>
     <string name="cancel">Annuler</string>
+
+    <!-- Tutorial -->
+    <string name="tut_title">Essayez le geste</string>
+    <string name="tut_skip">Passer</string>
+    <string name="tut_step1">Maintenez la bulle appuyée</string>
+    <string name="tut_step2">Continuez d’appuyer, glissez vers l’app ⭐ puis relâchez</string>
+    <string name="tut_hold_longer">Gardez le doigt un peu plus longtemps</string>
+    <string name="tut_missed">Presque ! Glissez sur l’app ⭐ avant de relâcher</string>
+    <string name="tut_missed_none">Glissez sur une app avant de relâcher</string>
+    <string name="tut_success">Bravo ! 🎉</string>
+    <string name="tut_success_body">C’est tout : maintenir, glisser, relâcher. Deux astuces de plus :</string>
+    <string name="tut_tip_tap">Appui : %s</string>
+    <string name="tut_tip_double">Double appui : %s</string>
+    <string name="tut_tip_drag">Faites-la glisser pour la déplacer le long du bord</string>
+    <string name="tut_done">OK</string>
+    <string name="tut_card_title">Nouveau ? Apprenez le geste</string>
+    <string name="tut_card_body">Un essai de 20 secondes, ici même.</string>
+    <string name="tut_card_start">Essayer</string>
+    <string name="tut_card_later">Plus tard</string>
+    <string name="tut_replay">Revoir le tutoriel</string>
 </resources>

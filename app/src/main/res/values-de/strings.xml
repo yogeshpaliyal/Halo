@@ -179,4 +179,24 @@
     <string name="crop_rotate">Drehen</string>
     <string name="crop_use">Foto verwenden</string>
     <string name="cancel">Abbrechen</string>
+
+    <!-- Tutorial -->
+    <string name="tut_title">Probier die Geste</string>
+    <string name="tut_skip">Überspringen</string>
+    <string name="tut_step1">Halte die Blase gedrückt</string>
+    <string name="tut_step2">Weiter halten, zur ⭐-App gleiten, dann loslassen</string>
+    <string name="tut_hold_longer">Halte den Finger etwas länger</string>
+    <string name="tut_missed">Fast! Gleite vor dem Loslassen auf die ⭐-App</string>
+    <string name="tut_missed_none">Gleite vor dem Loslassen auf eine App</string>
+    <string name="tut_success">Geschafft! 🎉</string>
+    <string name="tut_success_body">Mehr braucht es nicht: halten, gleiten, loslassen. Noch zwei Tricks:</string>
+    <string name="tut_tip_tap">Tippen: %s</string>
+    <string name="tut_tip_double">Doppeltippen: %s</string>
+    <string name="tut_tip_drag">Ziehen, um sie am Rand zu verschieben</string>
+    <string name="tut_done">Fertig</string>
+    <string name="tut_card_title">Neu hier? Lerne die Geste</string>
+    <string name="tut_card_body">Eine 20-Sekunden-Übung, direkt hier.</string>
+    <string name="tut_card_start">Ausprobieren</string>
+    <string name="tut_card_later">Später</string>
+    <string name="tut_replay">Anleitung wiederholen</string>
 </resources>

@@ -34,6 +34,7 @@ object Prefs {
     const val KEY_BUBBLE_REACTIONS = "bubble_reactions"
     const val KEY_DIAL_THEME = "dial_theme"
     const val KEY_AVATAR_VERSION = "avatar_version"
+    private const val KEY_TUTORIAL_DONE = "tutorial_done"
 
     private fun sp(context: Context): SharedPreferences =
         context.getSharedPreferences(FILE, Context.MODE_PRIVATE)
@@ -116,6 +117,10 @@ object Prefs {
     /** Blinks and idle moves for characters. Touch reactions always play. */
     fun bubbleAnimations(context: Context): Boolean = sp(context).getBoolean(KEY_BUBBLE_ANIMATIONS, true)
     fun setBubbleAnimations(context: Context, on: Boolean) = sp(context).edit { putBoolean(KEY_BUBBLE_ANIMATIONS, on) }
+
+    /** The gesture tutorial was finished or dismissed; hides its card on the home screen. */
+    fun tutorialDone(context: Context): Boolean = sp(context).getBoolean(KEY_TUTORIAL_DONE, false)
+    fun setTutorialDone(context: Context) = sp(context).edit { putBoolean(KEY_TUTORIAL_DONE, true) }
 
     /** Bumped when a new avatar photo is saved, so the bubble reloads it. */
     fun bumpAvatarVersion(context: Context) =

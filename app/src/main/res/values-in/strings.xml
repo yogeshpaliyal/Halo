@@ -176,4 +176,24 @@
     <string name="crop_rotate">Putar</string>
     <string name="crop_use">Pakai foto</string>
     <string name="cancel">Batal</string>
+
+    <!-- Tutorial -->
+    <string name="tut_title">Coba gesturnya</string>
+    <string name="tut_skip">Lewati</string>
+    <string name="tut_step1">Tekan dan tahan gelembung</string>
+    <string name="tut_step2">Tetap tahan, geser ke aplikasi ⭐, lalu lepas</string>
+    <string name="tut_hold_longer">Tahan jari sedikit lebih lama</string>
+    <string name="tut_missed">Hampir! Geser ke aplikasi ⭐ sebelum melepas</string>
+    <string name="tut_missed_none">Geser ke aplikasi sebelum melepas</string>
+    <string name="tut_success">Berhasil! 🎉</string>
+    <string name="tut_success_body">Cukup itu: tahan, geser, lepas. Dua trik lagi:</string>
+    <string name="tut_tip_tap">Ketuk: %s</string>
+    <string name="tut_tip_double">Ketuk dua kali: %s</string>
+    <string name="tut_tip_drag">Seret untuk memindahkannya di sepanjang tepi</string>
+    <string name="tut_done">Selesai</string>
+    <string name="tut_card_title">Baru di sini? Pelajari gesturnya</string>
+    <string name="tut_card_body">Latihan 20 detik, di sini saja.</string>
+    <string name="tut_card_start">Coba</string>
+    <string name="tut_card_later">Nanti</string>
+    <string name="tut_replay">Putar ulang tutorial</string>
 </resources>

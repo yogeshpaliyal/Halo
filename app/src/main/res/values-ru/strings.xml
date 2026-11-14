@@ -185,4 +185,24 @@
     <string name="crop_rotate">Повернуть</string>
     <string name="crop_use">Использовать фото</string>
     <string name="cancel">Отмена</string>
+
+    <!-- Tutorial -->
+    <string name="tut_title">Попробуйте жест</string>
+    <string name="tut_skip">Пропустить</string>
+    <string name="tut_step1">Нажмите и удерживайте кнопку</string>
+    <string name="tut_step2">Не отпуская, ведите к приложению ⭐ и отпустите</string>
+    <string name="tut_hold_longer">Подержите палец чуть дольше</string>
+    <string name="tut_missed">Почти! Доведите до приложения ⭐ перед тем, как отпустить</string>
+    <string name="tut_missed_none">Доведите палец до приложения перед тем, как отпустить</string>
+    <string name="tut_success">Получилось! 🎉</string>
+    <string name="tut_success_body">Вот и всё: удержать, провести, отпустить. Ещё два приёма:</string>
+    <string name="tut_tip_tap">Нажатие: %s</string>
+    <string name="tut_tip_double">Двойное нажатие: %s</string>
+    <string name="tut_tip_drag">Перетащите, чтобы переместить вдоль края</string>
+    <string name="tut_done">Готово</string>
+    <string name="tut_card_title">Впервые здесь? Освойте жест</string>
+    <string name="tut_card_body">20-секундная тренировка прямо здесь.</string>
+    <string name="tut_card_start">Попробовать</string>
+    <string name="tut_card_later">Позже</string>
+    <string name="tut_replay">Повторить обучение</string>
 </resources>

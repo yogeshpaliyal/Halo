@@ -179,4 +179,24 @@
     <string name="crop_rotate">घुमाएं</string>
     <string name="crop_use">फ़ोटो इस्तेमाल करें</string>
     <string name="cancel">रद्द करें</string>
+
+    <!-- Tutorial -->
+    <string name="tut_title">जेस्चर आज़माएं</string>
+    <string name="tut_skip">छोड़ें</string>
+    <string name="tut_step1">बबल को दबाकर रखें</string>
+    <string name="tut_step2">दबाए रखें, ⭐ वाले ऐप तक सरकाएं, फिर छोड़ें</string>
+    <string name="tut_hold_longer">उंगली थोड़ी देर और रखें</string>
+    <string name="tut_missed">लगभग! छोड़ने से पहले ⭐ वाले ऐप पर सरकाएं</string>
+    <string name="tut_missed_none">छोड़ने से पहले किसी ऐप पर सरकाएं</string>
+    <string name="tut_success">हो गया! 🎉</string>
+    <string name="tut_success_body">बस इतना ही: दबाएं, सरकाएं, छोड़ें। दो और ट्रिक:</string>
+    <string name="tut_tip_tap">टैप: %s</string>
+    <string name="tut_tip_double">दो बार टैप: %s</string>
+    <string name="tut_tip_drag">किनारे पर कहीं भी ले जाने के लिए खींचें</string>
+    <string name="tut_done">हो गया</string>
+    <string name="tut_card_title">नए हैं? जेस्चर सीखें</string>
+    <string name="tut_card_body">यहीं 20 सेकंड की प्रैक्टिस।</string>
+    <string name="tut_card_start">आज़माएं</string>
+    <string name="tut_card_later">बाद में</string>
+    <string name="tut_replay">ट्यूटोरियल फिर देखें</string>
 </resources>

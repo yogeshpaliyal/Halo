@@ -88,13 +88,14 @@ fun Section(title: String, content: @Composable () -> Unit) {
 
 /** Privacy policy and source links, and the version. */
 @Composable
-fun HomeFooter(version: String) {
+fun HomeFooter(version: String, onReplayTutorial: () -> Unit) {
     val uri = LocalUriHandler.current
     Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         Row(horizontalArrangement = Arrangement.Center) {
             TextButton(onClick = { uri.openUri(PRIVACY_POLICY_URL) }) { Text(stringResource(R.string.privacy_policy)) }
             TextButton(onClick = { uri.openUri(SOURCE_URL) }) { Text(stringResource(R.string.about_source)) }
         }
+        TextButton(onClick = onReplayTutorial) { Text(stringResource(R.string.tut_replay)) }
         Text(
             stringResource(R.string.about_version, version),
             style = MaterialTheme.typography.bodySmall,
