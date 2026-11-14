@@ -169,6 +169,10 @@
 
     <!-- Custom avatar -->
     <string name="character_custom">あなたの写真</string>
-    <string name="avatar_change">写真を変更</string>
     <string name="avatar_failed">その画像は使えませんでした。別の画像をお試しください。</string>
+    <string name="crop_title">移動と拡大縮小</string>
+    <string name="crop_hint">ピンチで拡大縮小、ドラッグで移動。</string>
+    <string name="crop_rotate">回転</string>
+    <string name="crop_use">この写真を使う</string>
+    <string name="cancel">キャンセル</string>
 </resources>

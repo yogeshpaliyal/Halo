@@ -172,6 +172,10 @@
 
     <!-- Custom avatar -->
     <string name="character_custom">Fotoğrafın</string>
-    <string name="avatar_change">Fotoğrafı değiştir</string>
     <string name="avatar_failed">Bu görsel kullanılamadı. Başka birini dene.</string>
+    <string name="crop_title">Taşı ve ölçekle</string>
+    <string name="crop_hint">Yakınlaştırmak için sıkıştır, taşımak için sürükle.</string>
+    <string name="crop_rotate">Döndür</string>
+    <string name="crop_use">Fotoğrafı kullan</string>
+    <string name="cancel">İptal</string>
 </resources>

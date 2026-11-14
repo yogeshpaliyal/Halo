@@ -132,14 +132,14 @@ fun HomeScreen() {
     var avatar by remember { mutableStateOf(CustomAvatar.load(context)) }
     val scope = rememberCoroutineScope()
     // Android's photo picker: no storage permission, and only the chosen photo is shared.
+    // Picked photo waiting on the crop screen.
+    var cropSource by remember { mutableStateOf<android.graphics.Bitmap?>(null) }
     val pickPhoto = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         if (uri != null) {
             scope.launch {
-                val ok = withContext(Dispatchers.IO) { CustomAvatar.save(context, uri) }
-                if (ok) {
-                    avatar = CustomAvatar.load(context)
-                    bubbleCharacter = BubbleCharacter.CUSTOM
-                    Prefs.setBubbleCharacter(context, BubbleCharacter.CUSTOM)
+                val bitmap = withContext(Dispatchers.IO) { CustomAvatar.decodeForCrop(context, uri) }
+                if (bitmap != null) {
+                    cropSource = bitmap
                 } else {
                     Toast.makeText(context, R.string.avatar_failed, Toast.LENGTH_LONG).show()
                 }
@@ -339,6 +339,26 @@ fun HomeScreen() {
             }
         }
         }
+    }
+
+    cropSource?.let { source ->
+        AvatarCropper(
+            source = source,
+            onCancel = { cropSource = null },
+            onDone = { bitmap, left, top, side ->
+                cropSource = null
+                scope.launch {
+                    val ok = withContext(Dispatchers.IO) { CustomAvatar.saveCrop(context, bitmap, left, top, side) }
+                    if (ok) {
+                        avatar = CustomAvatar.load(context)
+                        bubbleCharacter = BubbleCharacter.CUSTOM
+                        Prefs.setBubbleCharacter(context, BubbleCharacter.CUSTOM)
+                    } else {
+                        Toast.makeText(context, R.string.avatar_failed, Toast.LENGTH_LONG).show()
+                    }
+                }
+            },
+        )
     }
 
     if (showHideAppsPicker) {

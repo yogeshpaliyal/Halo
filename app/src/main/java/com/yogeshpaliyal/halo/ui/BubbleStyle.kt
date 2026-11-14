@@ -116,8 +116,8 @@ fun CharacterRow(
                 Modifier
                     .clip(RoundedCornerShape(16.dp))
                     .clickable {
-                        // "Your photo" without a photo yet goes straight to the photo picker.
-                        if (c == BubbleCharacter.CUSTOM && customImage == null) onPickPhoto() else onCharacter(c)
+                        // "Your photo" always opens the photo picker, to pick a new one or re-crop.
+                        if (c == BubbleCharacter.CUSTOM) onPickPhoto() else onCharacter(c)
                     }
                     .padding(6.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,

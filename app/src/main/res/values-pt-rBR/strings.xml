@@ -175,6 +175,10 @@
 
     <!-- Custom avatar -->
     <string name="character_custom">Sua foto</string>
-    <string name="avatar_change">Trocar foto</string>
     <string name="avatar_failed">Não deu para usar essa imagem. Tente outra.</string>
+    <string name="crop_title">Mover e ajustar</string>
+    <string name="crop_hint">Faça pinça para zoom e arraste para mover.</string>
+    <string name="crop_rotate">Girar</string>
+    <string name="crop_use">Usar foto</string>
+    <string name="cancel">Cancelar</string>
 </resources>

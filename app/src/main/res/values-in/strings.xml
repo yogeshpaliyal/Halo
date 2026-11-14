@@ -169,6 +169,10 @@
 
     <!-- Custom avatar -->
     <string name="character_custom">Fotomu</string>
-    <string name="avatar_change">Ganti foto</string>
     <string name="avatar_failed">Gambar itu tidak bisa dipakai. Coba yang lain.</string>
+    <string name="crop_title">Geser dan skala</string>
+    <string name="crop_hint">Cubit untuk zoom, seret untuk menggeser.</string>
+    <string name="crop_rotate">Putar</string>
+    <string name="crop_use">Pakai foto</string>
+    <string name="cancel">Batal</string>
 </resources>

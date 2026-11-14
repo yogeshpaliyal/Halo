@@ -14,6 +14,8 @@ import java.io.File
  */
 object CustomAvatar {
     private const val SIZE = 256
+    /** Enough detail to zoom in on while cropping. */
+    private const val MAX_CROP = 1600
 
     private fun file(context: Context) = File(context.filesDir, "avatar.png")
 
@@ -24,13 +26,20 @@ object CustomAvatar {
         file(context).takeIf { it.exists() }?.let { runCatching { BitmapFactory.decodeFile(it.path) }.getOrNull() }
 
     /**
-     * Copies [uri] from the photo picker: centre-cropped to a square and scaled down.
-     * Call off the main thread. Returns false if the image couldn't be read.
+     * Reads the picked photo for the crop screen, upright and at most ~2048 px on its short
+     * side. Call off the main thread; null if it can't be read.
      */
-    fun save(context: Context, uri: Uri): Boolean = runCatching {
-        val source = decode(context, uri) ?: return false
-        val side = minOf(source.width, source.height)
-        val square = Bitmap.createBitmap(source, (source.width - side) / 2, (source.height - side) / 2, side, side)
+    fun decodeForCrop(context: Context, uri: Uri): Bitmap? = runCatching { decode(context, uri) }.getOrNull()
+
+    /**
+     * Saves the square [side]×[side] area of [source] starting at ([left], [top]) as the
+     * avatar, scaled to 256 px. Call off the main thread.
+     */
+    fun saveCrop(context: Context, source: Bitmap, left: Int, top: Int, side: Int): Boolean = runCatching {
+        val s = side.coerceIn(1, minOf(source.width, source.height))
+        val l = left.coerceIn(0, source.width - s)
+        val t = top.coerceIn(0, source.height - s)
+        val square = Bitmap.createBitmap(source, l, t, s, s)
         val scaled = Bitmap.createScaledBitmap(square, SIZE, SIZE, true)
         file(context).outputStream().use { scaled.compress(Bitmap.CompressFormat.PNG, 100, it) }
         Prefs.bumpAvatarVersion(context)
@@ -43,8 +52,8 @@ object CustomAvatar {
             ImageDecoder.decodeBitmap(ImageDecoder.createSource(context.contentResolver, uri)) { decoder, info, _ ->
                 decoder.allocator = ImageDecoder.ALLOCATOR_SOFTWARE
                 val shortSide = minOf(info.size.width, info.size.height)
-                if (shortSide > SIZE * 2) {
-                    val k = SIZE * 2f / shortSide
+                if (shortSide > MAX_CROP) {
+                    val k = MAX_CROP.toFloat() / shortSide
                     decoder.setTargetSize((info.size.width * k).toInt(), (info.size.height * k).toInt())
                 }
             }
@@ -52,7 +61,7 @@ object CustomAvatar {
             val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
             context.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it, null, bounds) }
             var sample = 1
-            while (minOf(bounds.outWidth, bounds.outHeight) / (sample * 2) >= SIZE * 2) sample *= 2
+            while (minOf(bounds.outWidth, bounds.outHeight) / (sample * 2) >= MAX_CROP) sample *= 2
             context.contentResolver.openInputStream(uri)?.use {
                 BitmapFactory.decodeStream(it, null, BitmapFactory.Options().apply { inSampleSize = sample })
             }

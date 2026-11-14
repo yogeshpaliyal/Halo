@@ -172,6 +172,10 @@
 
     <!-- Custom avatar -->
     <string name="character_custom">आपकी फ़ोटो</string>
-    <string name="avatar_change">फ़ोटो बदलें</string>
     <string name="avatar_failed">यह इमेज इस्तेमाल नहीं हो सकी। कोई दूसरी आज़माएं।</string>
+    <string name="crop_title">खिसकाएं और ज़ूम करें</string>
+    <string name="crop_hint">ज़ूम के लिए पिंच करें, खिसकाने के लिए खींचें।</string>
+    <string name="crop_rotate">घुमाएं</string>
+    <string name="crop_use">फ़ोटो इस्तेमाल करें</string>
+    <string name="cancel">रद्द करें</string>
 </resources>
