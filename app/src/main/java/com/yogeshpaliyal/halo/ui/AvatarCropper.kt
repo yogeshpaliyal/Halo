@@ -32,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Path
@@ -104,6 +105,8 @@ fun AvatarCropper(
                 Modifier
                     .weight(1f)
                     .fillMaxWidth()
+                    // Keep the zoomed photo inside this area, off the title and buttons.
+                    .clipToBounds()
                     .onSizeChanged { view = it }
                     .pointerInput(bitmap) {
                         detectTransformGestures { _, pan, gestureZoom, _ ->
