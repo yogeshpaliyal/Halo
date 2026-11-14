@@ -14,6 +14,8 @@ on:
 
 permissions:
   contents: write
+  # Posts the release announcement in GitHub Discussions.
+  discussions: write
 
 # One release at a time, never cancelled half way through.
 concurrency:
@@ -188,3 +190,20 @@ jobs:
             --title "Halo $TAG" \
             --notes-file notes.md \
             --verify-tag
+
+      # Tell people: Discussions always; Telegram, Bluesky and Mastodon once their secrets
+      # are added; and an XDA post to copy-paste (in this run's summary). Never fails the release.
+      - name: Announce the release
+        continue-on-error: true
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+          REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
+          NOTES_FILE: notes.md
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
+          MASTODON_INSTANCE: ${{ secrets.MASTODON_INSTANCE }}
+          MASTODON_TOKEN: ${{ secrets.MASTODON_TOKEN }}
+        run: python3 .github/scripts/announce.py
