@@ -83,6 +83,22 @@ They install as **Halo Debug** (`com.yogeshpaliyal.halo.debug`, amber icon), nex
 and are signed with the public `keystore/debug.keystore`, so their fingerprint won't match the one above.
 Obtainium ignores this pre-release by default and tracks only signed releases.
 
+## Featured
+
+Videos, posts and write-ups about Halo. Thank you!
+
+<a href="https://youtu.be/Lzc-hnSZY08?t=63"><img src="https://img.youtube.com/vi/Lzc-hnSZY08/hqdefault.jpg" alt="Halo featured on YouTube" width="360"></a>
+
+- [Halo on YouTube](https://youtu.be/Lzc-hnSZY08?t=63) (Halo from 1:03)
+
+Made a video, blog post or thread about Halo? Share it in [Discussions](https://github.com/yogeshpaliyal/Halo/discussions) and it'll be added here.
+
+## Community
+
+- **Show your setup:** post your recap card or bubble style in [Discussions → Show your setup](https://github.com/yogeshpaliyal/Halo/discussions/categories/show-your-setup), or share it anywhere with **#HaloRecap**.
+- **Ideas and questions:** [Ideas](https://github.com/yogeshpaliyal/Halo/discussions/categories/ideas) and [Q&A](https://github.com/yogeshpaliyal/Halo/discussions/categories/q-a).
+- **Bugs:** [open an issue](https://github.com/yogeshpaliyal/Halo/issues).
+
 ## Setup
 
 1. Open the project in Android Studio (or run `./gradlew installDebug`), or install the APK above.

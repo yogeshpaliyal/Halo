@@ -241,7 +241,7 @@
     <string name="recap_share">Compartir mi resumen</string>
     <string name="recap_reset">Borrar datos del resumen</string>
     <string name="recap_private">Tu resumen se crea en tu teléfono a partir de un conteo local. No se sube nada.</string>
-    <string name="recap_share_text">Hecho con Halo, el selector de apps flotante: https://play.google.com/store/apps/details?id=com.yogeshpaliyal.halo</string>
+    <string name="recap_share_text">Hecho con Halo, el selector de apps flotante: https://play.google.com/store/apps/details?id=com.yogeshpaliyal.halo #HaloRecap</string>
     <string name="recap_card_week">Mi semana con Halo</string>
     <string name="recap_card_month">Mi mes con Halo</string>
     <string name="recap_card_credit">Halo · selector de apps gratis y de código abierto</string>

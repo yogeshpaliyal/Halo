@@ -245,7 +245,7 @@
     <string name="recap_share">Compartilhar meu resumo</string>
     <string name="recap_reset">Zerar dados do resumo</string>
     <string name="recap_private">Seu resumo é feito no seu celular a partir de uma contagem local. Nada é enviado.</string>
-    <string name="recap_share_text">Feito com o Halo, o alternador de apps flutuante: https://play.google.com/store/apps/details?id=com.yogeshpaliyal.halo</string>
+    <string name="recap_share_text">Feito com o Halo, o alternador de apps flutuante: https://play.google.com/store/apps/details?id=com.yogeshpaliyal.halo #HaloRecap</string>
     <string name="recap_card_week">Minha semana com o Halo</string>
     <string name="recap_card_month">Meu mês com o Halo</string>
     <string name="recap_card_credit">Halo · alternador de apps grátis e de código aberto</string>

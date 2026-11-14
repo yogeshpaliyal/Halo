@@ -1,0 +1,17 @@
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Ask anything about using Halo. For something clearly broken, an [issue](https://github.com/yogeshpaliyal/Halo/issues/new) is better.
+  - type: textarea
+    id: question
+    attributes:
+      label: Your question
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Halo version and phone (optional)
+      placeholder: "e.g. Halo 0.1.3 from Play, Pixel 9, Android 16"

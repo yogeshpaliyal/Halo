@@ -237,7 +237,7 @@
     <string name="recap_share">まとめをシェア</string>
     <string name="recap_reset">まとめのデータをリセット</string>
     <string name="recap_private">まとめは端末内の集計から作られます。何もアップロードされません。</string>
-    <string name="recap_share_text">Halo で作成 (フローティング アプリスイッチャー): https://play.google.com/store/apps/details?id=com.yogeshpaliyal.halo</string>
+    <string name="recap_share_text">Halo で作成 (フローティング アプリスイッチャー): https://play.google.com/store/apps/details?id=com.yogeshpaliyal.halo #HaloRecap</string>
     <string name="recap_card_week">Halo との 1 週間</string>
     <string name="recap_card_month">Halo との 1 か月</string>
     <string name="recap_card_credit">Halo · 無料のオープンソース アプリスイッチャー</string>

@@ -1,0 +1,20 @@
+title: "My setup: "
+labels: ["setup"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Show off your Halo! Share your recap card, your bubble character and colours, or how you use folders and gestures.
+        Tip: in the app, open your recap and tap **Share my recap** to get an image.
+  - type: textarea
+    id: setup
+    attributes:
+      label: Your setup
+      description: Character, colours, dial theme, favourites, folders... whatever you like. Drag images or screenshots in here.
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Phone (optional)
+      placeholder: "e.g. Pixel 9, Android 16"

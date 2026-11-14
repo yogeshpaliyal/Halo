@@ -241,7 +241,7 @@
     <string name="recap_share">Rückblick teilen</string>
     <string name="recap_reset">Rückblick-Daten zurücksetzen</string>
     <string name="recap_private">Dein Rückblick entsteht auf deinem Handy aus einer lokalen Zählung. Nichts wird hochgeladen.</string>
-    <string name="recap_share_text">Gemacht mit Halo, dem schwebenden App-Umschalter: https://play.google.com/store/apps/details?id=com.yogeshpaliyal.halo</string>
+    <string name="recap_share_text">Gemacht mit Halo, dem schwebenden App-Umschalter: https://play.google.com/store/apps/details?id=com.yogeshpaliyal.halo #HaloRecap</string>
     <string name="recap_card_week">Meine Woche mit Halo</string>
     <string name="recap_card_month">Mein Monat mit Halo</string>
     <string name="recap_card_credit">Halo · kostenloser Open-Source-App-Umschalter</string>

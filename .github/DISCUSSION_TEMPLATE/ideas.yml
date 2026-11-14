@@ -1,0 +1,18 @@
+labels: ["idea"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Got an idea for Halo? Great. Please check the existing ideas first and give a 👍 to ones you'd also like.
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would you like Halo to do?
+      description: Describe the idea and the moment you'd use it.
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why does it matter to you?
+      description: Optional, but it helps decide what to build first.

@@ -241,7 +241,7 @@
     <string name="recap_share">Özetimi paylaş</string>
     <string name="recap_reset">Özet verilerini sıfırla</string>
     <string name="recap_private">Özetin telefonunda yerel bir sayımdan oluşturulur. Hiçbir şey yüklenmez.</string>
-    <string name="recap_share_text">Halo ile yapıldı, yüzen uygulama değiştirici: https://play.google.com/store/apps/details?id=com.yogeshpaliyal.halo</string>
+    <string name="recap_share_text">Halo ile yapıldı, yüzen uygulama değiştirici: https://play.google.com/store/apps/details?id=com.yogeshpaliyal.halo #HaloRecap</string>
     <string name="recap_card_week">Halo ile haftam</string>
     <string name="recap_card_month">Halo ile ayım</string>
     <string name="recap_card_credit">Halo · ücretsiz, açık kaynak uygulama değiştirici</string>
