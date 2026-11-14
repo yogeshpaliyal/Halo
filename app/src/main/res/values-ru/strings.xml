@@ -205,4 +205,21 @@
     <string name="tut_card_start">Попробовать</string>
     <string name="tut_card_later">Позже</string>
     <string name="tut_replay">Повторить обучение</string>
+
+    <!-- Accessories -->
+    <string name="accessories_title">Аксессуары</string>
+    <string name="accessory_none">Нет</string>
+    <string name="accessory_sunglasses">Очки</string>
+    <string name="accessory_cap">Кепка</string>
+    <string name="accessory_headphones">Наушники</string>
+    <string name="accessory_bow">Бантик</string>
+    <string name="accessory_party_hat">Колпак</string>
+    <string name="accessory_crown">Корона</string>
+    <string name="accessory_locked">%d переключ.</string>
+    <plurals name="accessories_progress">
+        <item quantity="one">%d переключение приложений с Halo. Новые открываются по мере использования.</item>
+        <item quantity="few">%d переключения приложений с Halo. Новые открываются по мере использования.</item>
+        <item quantity="many">%d переключений приложений с Halo. Новые открываются по мере использования.</item>
+        <item quantity="other">%d переключения приложений с Halo. Новые открываются по мере использования.</item>
+    </plurals>
 </resources>

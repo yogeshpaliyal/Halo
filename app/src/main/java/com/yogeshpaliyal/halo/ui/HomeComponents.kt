@@ -670,6 +670,9 @@ fun BubbleCard(
     onReactions: (Boolean) -> Unit,
     customImage: android.graphics.Bitmap?,
     onPickPhoto: () -> Unit,
+    accessory: com.yogeshpaliyal.halo.overlay.Accessory,
+    switches: Int,
+    onAccessory: (com.yogeshpaliyal.halo.overlay.Accessory) -> Unit,
     size: BubbleSize,
     onSize: (BubbleSize) -> Unit,
     opacity: Float,
@@ -697,6 +700,22 @@ fun BubbleCard(
                 CharacterRow(character, palette, onCharacter, customImage, onPickPhoto)
                 Spacer(Modifier.height(10.dp))
                 PaletteRow(palette, onPalette)
+                if (character != BubbleCharacter.CLASSIC) {
+                    Spacer(Modifier.height(14.dp))
+                    Text(
+                        stringResource(R.string.accessories_title),
+                        style = MaterialTheme.typography.titleSmall,
+                        modifier = Modifier.padding(horizontal = 20.dp),
+                    )
+                    Text(
+                        plural(R.plurals.accessories_progress, switches),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(horizontal = 20.dp),
+                    )
+                    Spacer(Modifier.height(6.dp))
+                    AccessoryRow(character, palette, customImage, accessory, switches, onAccessory)
+                }
                 if (character != BubbleCharacter.CLASSIC) {
                     Row(
                         Modifier

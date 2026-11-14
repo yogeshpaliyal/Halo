@@ -196,4 +196,18 @@
     <string name="tut_card_start">Coba</string>
     <string name="tut_card_later">Nanti</string>
     <string name="tut_replay">Putar ulang tutorial</string>
+
+    <!-- Accessories -->
+    <string name="accessories_title">Aksesori</string>
+    <string name="accessory_none">Tidak ada</string>
+    <string name="accessory_sunglasses">Kacamata</string>
+    <string name="accessory_cap">Topi</string>
+    <string name="accessory_headphones">Headphone</string>
+    <string name="accessory_bow">Pita</string>
+    <string name="accessory_party_hat">Topi pesta</string>
+    <string name="accessory_crown">Mahkota</string>
+    <string name="accessory_locked">%d pergantian</string>
+    <plurals name="accessories_progress">
+        <item quantity="other">%d pergantian aplikasi dengan Halo sejauh ini. Lebih banyak terbuka seiring pemakaian.</item>
+    </plurals>
 </resources>

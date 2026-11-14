@@ -228,4 +228,19 @@
     <string name="tut_card_start">Try it</string>
     <string name="tut_card_later">Later</string>
     <string name="tut_replay">Replay tutorial</string>
+
+    <!-- Accessories -->
+    <string name="accessories_title">Accessories</string>
+    <string name="accessory_none">None</string>
+    <string name="accessory_sunglasses">Shades</string>
+    <string name="accessory_cap">Cap</string>
+    <string name="accessory_headphones">Headphones</string>
+    <string name="accessory_bow">Bow</string>
+    <string name="accessory_party_hat">Party hat</string>
+    <string name="accessory_crown">Crown</string>
+    <string name="accessory_locked">%d switches</string>
+    <plurals name="accessories_progress">
+        <item quantity="one">%d app switch with Halo so far. More unlock as you go.</item>
+        <item quantity="other">%d app switches with Halo so far. More unlock as you go.</item>
+    </plurals>
 </resources>

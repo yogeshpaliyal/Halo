@@ -69,6 +69,7 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
         palette = Prefs.bubblePalette(context)
         character = Prefs.bubbleCharacter(context)
         customImage = CustomAvatar.load(context)
+        accessory = Prefs.bubbleAccessory(context)
     }
     private val badgePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.parseColor("#FFFF5A5F") }
     private val badgeRim = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.parseColor("#FF14121F") }
@@ -495,6 +496,7 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
         renderer.palette = Prefs.bubblePalette(context)
         renderer.character = Prefs.bubbleCharacter(context)
         renderer.customImage = CustomAvatar.load(context)
+        renderer.accessory = Prefs.bubbleAccessory(context)
         updateDay()
         stopIdle()
         scheduleIdle()

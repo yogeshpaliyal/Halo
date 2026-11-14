@@ -199,4 +199,19 @@
     <string name="tut_card_start">Dene</string>
     <string name="tut_card_later">Sonra</string>
     <string name="tut_replay">Eğitimi tekrar oynat</string>
+
+    <!-- Accessories -->
+    <string name="accessories_title">Aksesuarlar</string>
+    <string name="accessory_none">Yok</string>
+    <string name="accessory_sunglasses">Gözlük</string>
+    <string name="accessory_cap">Şapka</string>
+    <string name="accessory_headphones">Kulaklık</string>
+    <string name="accessory_bow">Fiyonk</string>
+    <string name="accessory_party_hat">Parti şapkası</string>
+    <string name="accessory_crown">Taç</string>
+    <string name="accessory_locked">%d geçiş</string>
+    <plurals name="accessories_progress">
+        <item quantity="one">Şimdiye kadar Halo ile %d uygulama geçişi. Kullandıkça daha fazlası açılır.</item>
+        <item quantity="other">Şimdiye kadar Halo ile %d uygulama geçişi. Kullandıkça daha fazlası açılır.</item>
+    </plurals>
 </resources>

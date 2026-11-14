@@ -202,4 +202,20 @@
     <string name="tut_card_start">Prova</string>
     <string name="tut_card_later">Più tardi</string>
     <string name="tut_replay">Rivedi il tutorial</string>
+
+    <!-- Accessories -->
+    <string name="accessories_title">Accessori</string>
+    <string name="accessory_none">Nessuno</string>
+    <string name="accessory_sunglasses">Occhiali</string>
+    <string name="accessory_cap">Cappellino</string>
+    <string name="accessory_headphones">Cuffie</string>
+    <string name="accessory_bow">Fiocco</string>
+    <string name="accessory_party_hat">Cappello da festa</string>
+    <string name="accessory_crown">Corona</string>
+    <string name="accessory_locked">%d cambi</string>
+    <plurals name="accessories_progress">
+        <item quantity="one">%d cambio di app con Halo finora. Altri si sbloccano usandolo.</item>
+        <item quantity="many">%d cambi di app con Halo finora. Altri si sbloccano usandolo.</item>
+        <item quantity="other">%d cambi di app con Halo finora. Altri si sbloccano usandolo.</item>
+    </plurals>
 </resources>

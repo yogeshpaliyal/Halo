@@ -45,6 +45,7 @@ import androidx.compose.ui.draw.blur
 import com.yogeshpaliyal.halo.overlay.DialColors
 import com.yogeshpaliyal.halo.overlay.DialTheme
 import androidx.compose.material.icons.rounded.Add
+import androidx.compose.ui.graphics.graphicsLayer
 import kotlinx.coroutines.delay
 
 /**
@@ -58,6 +59,7 @@ fun BubblePreview(
     modifier: Modifier,
     live: Boolean = false,
     customImage: android.graphics.Bitmap? = null,
+    accessory: com.yogeshpaliyal.halo.overlay.Accessory = com.yogeshpaliyal.halo.overlay.Accessory.NONE,
 ) {
     val renderer = remember { BubbleRenderer() }
     var blink by remember { mutableFloatStateOf(0f) }
@@ -88,6 +90,7 @@ fun BubblePreview(
         renderer.character = character
         renderer.palette = palette
         renderer.customImage = customImage
+        renderer.accessory = accessory
         renderer.blink = blink
         renderer.wiggle = wiggle
         renderer.lookX = look
@@ -316,6 +319,71 @@ fun DialThemeCard(theme: DialTheme, palette: BubblePalette, onTheme: (DialTheme)
             )
             Spacer(Modifier.height(10.dp))
             DialThemeRow(theme, palette, onTheme)
+        }
+    }
+}
+
+/** Accessory picker: previews on your character; locked ones show how many switches to go. */
+@Composable
+fun AccessoryRow(
+    character: BubbleCharacter,
+    palette: BubblePalette,
+    customImage: android.graphics.Bitmap?,
+    accessory: com.yogeshpaliyal.halo.overlay.Accessory,
+    switches: Int,
+    onAccessory: (com.yogeshpaliyal.halo.overlay.Accessory) -> Unit,
+) {
+    Row(
+        Modifier
+            .horizontalScroll(rememberScrollState())
+            .padding(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
+    ) {
+        com.yogeshpaliyal.halo.overlay.Accessory.entries.forEach { a ->
+            val unlocked = switches >= a.unlockAt
+            val selected = a == accessory
+            Column(
+                Modifier
+                    .clip(RoundedCornerShape(16.dp))
+                    .clickable(enabled = unlocked) { onAccessory(a) }
+                    .padding(6.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Box(
+                    Modifier
+                        .size(60.dp)
+                        .clip(RoundedCornerShape(18.dp))
+                        .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+                        .then(
+                            if (selected) {
+                                Modifier.border(2.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(18.dp))
+                            } else {
+                                Modifier
+                            },
+                        ),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    BubblePreview(
+                        character, palette,
+                        Modifier
+                            .size(44.dp)
+                            .then(if (unlocked) Modifier else Modifier.graphicsLayer(alpha = 0.35f)),
+                        customImage = customImage,
+                        accessory = a,
+                    )
+                    if (!unlocked) Text("🔒", style = MaterialTheme.typography.titleMedium)
+                }
+                Spacer(Modifier.height(4.dp))
+                Text(
+                    if (unlocked) stringResource(a.labelRes) else stringResource(com.yogeshpaliyal.halo.R.string.accessory_locked, a.unlockAt),
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
+                    color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.width(64.dp),
+                    maxLines = 1,
+                )
+            }
         }
     }
 }

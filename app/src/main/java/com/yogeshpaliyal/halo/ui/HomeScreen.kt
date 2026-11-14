@@ -133,6 +133,8 @@ fun HomeScreen() {
     var bubbleReactions by remember { mutableStateOf(Prefs.bubbleReactions(context)) }
     var dialTheme by remember { mutableStateOf(Prefs.dialTheme(context)) }
     var tutorialDone by remember { mutableStateOf(Prefs.tutorialDone(context)) }
+    var accessory by remember { mutableStateOf(Prefs.bubbleAccessory(context)) }
+    val switches = remember(resumeTick) { Prefs.switchCount(context) }
     var showTutorial by remember { mutableStateOf(false) }
     var avatar by remember { mutableStateOf(CustomAvatar.load(context)) }
     val scope = rememberCoroutineScope()
@@ -198,6 +200,9 @@ fun HomeScreen() {
             onReactions = { bubbleReactions = it; Prefs.setBubbleReactions(context, it) },
             customImage = avatar,
             onPickPhoto = onPickPhoto,
+            accessory = accessory,
+            switches = switches,
+            onAccessory = { accessory = it; Prefs.setBubbleAccessory(context, it) },
             size = bubbleSize,
             onSize = { bubbleSize = it; Prefs.setBubbleSize(context, it) },
             opacity = opacity,
@@ -312,7 +317,7 @@ fun HomeScreen() {
                 )
             }
             item {
-                StyleTeaserCard(bubbleCharacter, bubblePalette, avatar) { page = Page.APPEARANCE }
+                StyleTeaserCard(bubbleCharacter, bubblePalette, avatar, accessory) { page = Page.APPEARANCE }
             }
             item {
                 Section(stringResource(R.string.gestures)) {

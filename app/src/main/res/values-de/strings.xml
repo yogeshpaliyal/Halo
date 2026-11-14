@@ -199,4 +199,19 @@
     <string name="tut_card_start">Ausprobieren</string>
     <string name="tut_card_later">Später</string>
     <string name="tut_replay">Anleitung wiederholen</string>
+
+    <!-- Accessories -->
+    <string name="accessories_title">Accessoires</string>
+    <string name="accessory_none">Keins</string>
+    <string name="accessory_sunglasses">Sonnenbrille</string>
+    <string name="accessory_cap">Kappe</string>
+    <string name="accessory_headphones">Kopfhörer</string>
+    <string name="accessory_bow">Schleife</string>
+    <string name="accessory_party_hat">Partyhut</string>
+    <string name="accessory_crown">Krone</string>
+    <string name="accessory_locked">%d Wechsel</string>
+    <plurals name="accessories_progress">
+        <item quantity="one">Bisher %d App-Wechsel mit Halo. Mit der Zeit wird mehr freigeschaltet.</item>
+        <item quantity="other">Bisher %d App-Wechsel mit Halo. Mit der Zeit wird mehr freigeschaltet.</item>
+    </plurals>
 </resources>

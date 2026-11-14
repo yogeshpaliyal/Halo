@@ -199,4 +199,19 @@
     <string name="tut_card_start">आज़माएं</string>
     <string name="tut_card_later">बाद में</string>
     <string name="tut_replay">ट्यूटोरियल फिर देखें</string>
+
+    <!-- Accessories -->
+    <string name="accessories_title">एक्सेसरी</string>
+    <string name="accessory_none">कोई नहीं</string>
+    <string name="accessory_sunglasses">चश्मा</string>
+    <string name="accessory_cap">टोपी</string>
+    <string name="accessory_headphones">हेडफ़ोन</string>
+    <string name="accessory_bow">रिबन</string>
+    <string name="accessory_party_hat">पार्टी टोपी</string>
+    <string name="accessory_crown">ताज</string>
+    <string name="accessory_locked">%d स्विच</string>
+    <plurals name="accessories_progress">
+        <item quantity="one">अब तक Halo से %d बार ऐप बदला। इस्तेमाल के साथ और खुलेंगे।</item>
+        <item quantity="other">अब तक Halo से %d बार ऐप बदला। इस्तेमाल के साथ और खुलेंगे।</item>
+    </plurals>
 </resources>

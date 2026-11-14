@@ -1,6 +1,7 @@
 package com.yogeshpaliyal.halo.data
 
 import android.content.Context
+import com.yogeshpaliyal.halo.overlay.Accessory
 import com.yogeshpaliyal.halo.overlay.BubbleCharacter
 import com.yogeshpaliyal.halo.overlay.BubblePalette
 import com.yogeshpaliyal.halo.overlay.DialTheme
@@ -35,6 +36,8 @@ object Prefs {
     const val KEY_DIAL_THEME = "dial_theme"
     const val KEY_AVATAR_VERSION = "avatar_version"
     private const val KEY_TUTORIAL_DONE = "tutorial_done"
+    const val KEY_BUBBLE_ACCESSORY = "bubble_accessory"
+    const val KEY_SWITCH_COUNT = "switch_count"
 
     private fun sp(context: Context): SharedPreferences =
         context.getSharedPreferences(FILE, Context.MODE_PRIVATE)
@@ -117,6 +120,20 @@ object Prefs {
     /** Blinks and idle moves for characters. Touch reactions always play. */
     fun bubbleAnimations(context: Context): Boolean = sp(context).getBoolean(KEY_BUBBLE_ANIMATIONS, true)
     fun setBubbleAnimations(context: Context, on: Boolean) = sp(context).edit { putBoolean(KEY_BUBBLE_ANIMATIONS, on) }
+
+    /** What the character wears; falls back to nothing if not unlocked (yet). */
+    fun bubbleAccessory(context: Context): Accessory =
+        sp(context).getString(KEY_BUBBLE_ACCESSORY, null)
+            ?.let { runCatching { Accessory.valueOf(it) }.getOrNull() }
+            ?.takeIf { switchCount(context) >= it.unlockAt }
+            ?: Accessory.NONE
+
+    fun setBubbleAccessory(context: Context, accessory: Accessory) =
+        sp(context).edit { putString(KEY_BUBBLE_ACCESSORY, accessory.name) }
+
+    /** App switches made with Halo. Only a number, kept on the phone, for unlocking accessories. */
+    fun switchCount(context: Context): Int = sp(context).getInt(KEY_SWITCH_COUNT, 0)
+    fun addSwitch(context: Context) = sp(context).edit { putInt(KEY_SWITCH_COUNT, switchCount(context) + 1) }
 
     /** The gesture tutorial was finished or dismissed; hides its card on the home screen. */
     fun tutorialDone(context: Context): Boolean = sp(context).getBoolean(KEY_TUTORIAL_DONE, false)

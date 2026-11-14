@@ -57,6 +57,20 @@ enum class BubblePalette(
     }
 }
 
+/**
+ * Something for the character to wear. Each unlocks after [unlockAt] app switches made
+ * with Halo. [onTop] ones sit on the head, so the character shrinks a little to fit.
+ */
+enum class Accessory(@StringRes val labelRes: Int, val unlockAt: Int, val onTop: Boolean) {
+    NONE(R.string.accessory_none, 0, false),
+    SUNGLASSES(R.string.accessory_sunglasses, 0, false),
+    CAP(R.string.accessory_cap, 10, true),
+    HEADPHONES(R.string.accessory_headphones, 25, true),
+    BOW(R.string.accessory_bow, 50, true),
+    PARTY_HAT(R.string.accessory_party_hat, 100, true),
+    CROWN(R.string.accessory_crown, 200, true),
+}
+
 /** What the bubble looks like. All original drawings, made from simple shapes. */
 enum class BubbleCharacter(@StringRes val labelRes: Int) {
     CLASSIC(R.string.character_classic),
@@ -81,6 +95,8 @@ class BubbleRenderer {
     var character = BubbleCharacter.CLASSIC
     /** Photo for [BubbleCharacter.CUSTOM]; falls back to Classic when missing. */
     var customImage: android.graphics.Bitmap? = null
+    /** Worn by every character except Classic. */
+    var accessory = Accessory.NONE
 
     enum class Mood { NORMAL, PRESSED, HAPPY }
 
@@ -142,6 +158,19 @@ class BubbleRenderer {
             body.shader = LinearGradient(cx, cy - r, cx, cy + r, palette.top, palette.bottom, Shader.TileMode.CLAMP)
             shaderKey = key
         }
+        val wearing = if (character == BubbleCharacter.CLASSIC) Accessory.NONE else accessory
+        if (wearing.onTop) {
+            // Shrink toward the bottom so the hat has room inside the bubble.
+            canvas.save()
+            canvas.scale(HAT_SCALE, HAT_SCALE, cx, cy + r * 0.9f)
+        }
+        drawCharacter(canvas, cx, cy, r)
+        if (wearing != Accessory.NONE) wear(canvas, wearing, anchor(cx, cy, r))
+        if (wearing.onTop) canvas.restore()
+        if (animated) extras(canvas, cx, cy, r)
+    }
+
+    private fun drawCharacter(canvas: Canvas, cx: Float, cy: Float, r: Float) {
         when (character) {
             BubbleCharacter.CLASSIC -> classic(canvas, cx, cy, r)
             BubbleCharacter.BLOB -> blob(canvas, cx, cy, r)
@@ -152,7 +181,144 @@ class BubbleRenderer {
             BubbleCharacter.BOT -> bot(canvas, cx, cy, r)
             BubbleCharacter.CUSTOM -> customImage?.let { photo(canvas, cx, cy, r, it) } ?: classic(canvas, cx, cy, r)
         }
-        if (animated) extras(canvas, cx, cy, r)
+    }
+
+    // --- accessories -----------------------------------------------------------------------
+
+    /** Where a character's head and eyes are, for fitting accessories. */
+    private class Anchor(val cx: Float, val top: Float, val half: Float, val eyeY: Float, val eyeDx: Float, val s: Float)
+
+    private fun anchor(cx: Float, cy: Float, r: Float): Anchor = when (character) {
+        BubbleCharacter.KITTY -> { val hr = r * 0.8f; val hy = cy + r * 0.12f; Anchor(cx, hy - hr, hr, hy - hr * 0.05f, hr * 0.36f, hr) }
+        BubbleCharacter.GHOST -> { val bob = wiggle * r * 0.06f; Anchor(cx, cy - r * 0.86f + bob, r * 0.8f, cy - r * 0.12f + bob, r * 0.28f, r) }
+        BubbleCharacter.SPROUT -> { val hr = r * 0.78f; val hy = cy + r * 0.18f; Anchor(cx, hy - hr, hr, hy - hr * 0.08f, hr * 0.34f, hr) }
+        BubbleCharacter.STAR -> Anchor(cx, cy - r * 0.84f, r * 0.55f, cy + r * 0.04f, r * 0.82f * 0.26f, r * 0.82f)
+        BubbleCharacter.BOT -> { val hw = r * 0.78f; val hy = cy + r * 0.14f; Anchor(cx, hy - hw * 0.84f, hw, hy - hw * 0.1f, hw * 0.36f, hw) }
+        BubbleCharacter.CUSTOM -> Anchor(cx, cy - r * 0.86f, r * 0.86f, cy - r * 0.1f, r * 0.3f, r)
+        else -> Anchor(cx, cy - r * 0.86f, r * 0.94f, cy - r * 0.08f, r * 0.3f, r) // Blob
+    }
+
+    private val acc = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val accLine = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.STROKE
+        strokeCap = Paint.Cap.ROUND
+        strokeJoin = Paint.Join.ROUND
+    }
+
+    private fun wear(c: Canvas, item: Accessory, a: Anchor) {
+        when (item) {
+            Accessory.SUNGLASSES -> {
+                val w = a.s * 0.32f
+                val h = a.s * 0.22f
+                acc.color = 0xFF151515.toInt()
+                for (side in listOf(-1f, 1f)) {
+                    val x = a.cx + side * a.eyeDx
+                    rect.set(x - w / 2, a.eyeY - h / 2, x + w / 2, a.eyeY + h / 2)
+                    c.drawRoundRect(rect, h * 0.45f, h * 0.45f, acc)
+                    accLine.color = 0x66FFFFFF
+                    accLine.strokeWidth = a.s * 0.03f
+                    c.drawLine(x - w * 0.25f, a.eyeY - h * 0.2f, x - w * 0.05f, a.eyeY - h * 0.2f, accLine)
+                }
+                accLine.color = 0xFF151515.toInt()
+                accLine.strokeWidth = a.s * 0.05f
+                c.drawLine(a.cx - a.eyeDx + w / 2, a.eyeY - h * 0.15f, a.cx + a.eyeDx - w / 2, a.eyeY - h * 0.15f, accLine)
+            }
+            Accessory.CAP -> {
+                val w = a.half * 0.8f
+                val h = a.half * 0.42f
+                acc.color = 0xFFE53935.toInt()
+                rect.set(a.cx - w, a.top - h, a.cx + w, a.top + h)
+                c.drawArc(rect, 180f, 180f, true, acc)
+                // Brim to the side, then the button on top.
+                rect.set(a.cx + w * 0.2f, a.top - h * 0.08f, a.cx + w * 1.35f, a.top + h * 0.22f)
+                c.drawOval(rect, acc)
+                acc.color = 0xFFFFFFFF.toInt()
+                c.drawCircle(a.cx, a.top - h * 0.95f, a.half * 0.06f, acc)
+            }
+            Accessory.HEADPHONES -> {
+                val rr = (a.eyeY - a.top) + a.half * 0.14f
+                accLine.color = 0xFF263238.toInt()
+                accLine.strokeWidth = a.s * 0.1f
+                rect.set(a.cx - rr, a.eyeY - rr, a.cx + rr, a.eyeY + rr)
+                c.drawArc(rect, 205f, 130f, false, accLine)
+                for (side in listOf(-1f, 1f)) {
+                    val x = a.cx + side * a.half * 0.96f
+                    acc.color = 0xFF263238.toInt()
+                    rect.set(x - a.half * 0.15f, a.eyeY - a.half * 0.26f, x + a.half * 0.15f, a.eyeY + a.half * 0.24f)
+                    c.drawRoundRect(rect, a.half * 0.12f, a.half * 0.12f, acc)
+                    acc.color = 0xFFFF6F61.toInt()
+                    rect.inset(a.half * 0.05f, a.half * 0.07f)
+                    c.drawRoundRect(rect, a.half * 0.08f, a.half * 0.08f, acc)
+                }
+            }
+            Accessory.BOW -> {
+                val x = a.cx + a.half * 0.5f
+                val y = a.top + a.half * 0.1f
+                val s = a.half * 0.3f
+                acc.color = 0xFFFF4FA3.toInt()
+                for (side in listOf(-1f, 1f)) {
+                    path.reset()
+                    path.moveTo(x, y)
+                    path.lineTo(x + side * s, y - s * 0.7f)
+                    path.lineTo(x + side * s, y + s * 0.7f)
+                    path.close()
+                    c.drawPath(path, acc)
+                }
+                acc.color = 0xFFD81B7A.toInt()
+                c.drawCircle(x, y, s * 0.3f, acc)
+            }
+            Accessory.PARTY_HAT -> {
+                val baseY = a.top + a.half * 0.06f
+                val w = a.half * 0.42f
+                val h = a.half * 0.62f
+                c.save()
+                c.rotate(-14f, a.cx, baseY)
+                path.reset()
+                path.moveTo(a.cx - w, baseY)
+                path.lineTo(a.cx, baseY - h)
+                path.lineTo(a.cx + w, baseY)
+                path.close()
+                acc.color = 0xFF7C4DFF.toInt()
+                c.drawPath(path, acc)
+                c.save()
+                c.clipPath(path)
+                accLine.color = 0xFFFFD54F.toInt()
+                accLine.strokeWidth = a.half * 0.08f
+                for (k in 1..3) {
+                    val yy = baseY - h * k / 4f
+                    c.drawLine(a.cx - w, yy + h * 0.12f, a.cx + w, yy - h * 0.12f, accLine)
+                }
+                c.restore()
+                acc.color = 0xFFFFFFFF.toInt()
+                c.drawCircle(a.cx, baseY - h, a.half * 0.1f, acc)
+                c.restore()
+            }
+            Accessory.CROWN -> {
+                val w = a.half * 0.5f
+                val h = a.half * 0.48f
+                val baseY = a.top + a.half * 0.1f
+                path.reset()
+                path.moveTo(a.cx - w, baseY)
+                path.lineTo(a.cx - w, baseY - h * 0.75f)
+                path.lineTo(a.cx - w * 0.5f, baseY - h * 0.35f)
+                path.lineTo(a.cx, baseY - h)
+                path.lineTo(a.cx + w * 0.5f, baseY - h * 0.35f)
+                path.lineTo(a.cx + w, baseY - h * 0.75f)
+                path.lineTo(a.cx + w, baseY)
+                path.close()
+                acc.color = 0xFFFFC83D.toInt()
+                c.drawPath(path, acc)
+                accLine.color = 0xFFB8860B.toInt()
+                accLine.strokeWidth = a.half * 0.035f
+                c.drawPath(path, accLine)
+                acc.color = 0xFFE53935.toInt()
+                c.drawCircle(a.cx, baseY - h * 0.3f, a.half * 0.07f, acc)
+                acc.color = 0xFF1E88E5.toInt()
+                c.drawCircle(a.cx - w * 0.55f, baseY - h * 0.2f, a.half * 0.05f, acc)
+                c.drawCircle(a.cx + w * 0.55f, baseY - h * 0.2f, a.half * 0.05f, acc)
+            }
+            Accessory.NONE -> Unit
+        }
     }
 
     /** Asleep only while nobody's touching it. */
@@ -329,8 +495,9 @@ class BubbleRenderer {
     private fun sprout(c: Canvas, cx: Float, cy: Float, r: Float) {
         val hr = r * 0.78f
         val hy = cy + r * 0.18f
-        // Stem and leaf, swaying from the top of the head.
+        // Stem and leaf, swaying from the top of the head (tucked away under a hat).
         val baseY = hy - hr
+        if (!accessory.onTop) {
         c.save()
         c.rotate(wiggle * 16f, cx, baseY)
         stroke.color = 0xFF3FA34D.toInt()
@@ -343,6 +510,7 @@ class BubbleRenderer {
         path.quadTo(cx + r * 0.2f, baseY - r * 0.02f, cx, baseY - r * 0.14f)
         c.drawPath(path, leaf)
         c.restore()
+        }
         stroke.color = palette.face
         c.drawCircle(cx, hy, hr, body)
         eyes(c, cx, hy - hr * 0.08f, hr, spacing = 0.34f)
@@ -377,12 +545,14 @@ class BubbleRenderer {
     private fun bot(c: Canvas, cx: Float, cy: Float, r: Float) {
         val hw = r * 0.78f
         val hy = cy + r * 0.14f
-        // Antenna with a light that glows on wiggle.
-        stroke.color = palette.face
-        stroke.strokeWidth = r * 0.07f
-        c.drawLine(cx, hy - hw * 0.84f, cx, hy - hw * 1.08f, stroke)
-        leaf.color = if (wiggle != 0f) 0xFFFF5A5F.toInt() else palette.face
-        c.drawCircle(cx, hy - hw * 1.12f, r * 0.1f + kotlin.math.abs(wiggle) * r * 0.04f, leaf)
+        // Antenna with a light that glows on wiggle (folded away under a hat).
+        if (!accessory.onTop) {
+            stroke.color = palette.face
+            stroke.strokeWidth = r * 0.07f
+            c.drawLine(cx, hy - hw * 0.84f, cx, hy - hw * 1.08f, stroke)
+            leaf.color = if (wiggle != 0f) 0xFFFF5A5F.toInt() else palette.face
+            c.drawCircle(cx, hy - hw * 1.12f, r * 0.1f + kotlin.math.abs(wiggle) * r * 0.04f, leaf)
+        }
         rect.set(cx - hw, hy - hw * 0.84f, cx + hw, hy + hw * 0.84f)
         c.drawRoundRect(rect, hw * 0.42f, hw * 0.42f, body)
         // Screen-like eyes.
@@ -446,5 +616,10 @@ class BubbleRenderer {
         val big = if (mood == Mood.HAPPY) 1.4f else 1f
         rect.set(cx - w * big, cy - w * big, cx + w * big, cy + w * big)
         c.drawArc(rect, 20f, 140f, false, stroke)
+    }
+
+    private companion object {
+        /** How much a character shrinks while wearing something on its head. */
+        const val HAT_SCALE = 0.78f
     }
 }

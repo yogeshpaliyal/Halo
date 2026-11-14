@@ -196,4 +196,18 @@
     <string name="tut_card_start">試す</string>
     <string name="tut_card_later">あとで</string>
     <string name="tut_replay">チュートリアルをもう一度</string>
+
+    <!-- Accessories -->
+    <string name="accessories_title">アクセサリー</string>
+    <string name="accessory_none">なし</string>
+    <string name="accessory_sunglasses">サングラス</string>
+    <string name="accessory_cap">キャップ</string>
+    <string name="accessory_headphones">ヘッドホン</string>
+    <string name="accessory_bow">リボン</string>
+    <string name="accessory_party_hat">パーティー帽</string>
+    <string name="accessory_crown">王冠</string>
+    <string name="accessory_locked">%d 回で解放</string>
+    <plurals name="accessories_progress">
+        <item quantity="other">これまでに Halo でアプリを %d 回切り替えました。使うほど解放されます。</item>
+    </plurals>
 </resources>

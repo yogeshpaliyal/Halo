@@ -40,6 +40,7 @@ fun StyleTeaserCard(
     character: BubbleCharacter,
     palette: BubblePalette,
     customImage: android.graphics.Bitmap?,
+    accessory: com.yogeshpaliyal.halo.overlay.Accessory,
     onCustomise: () -> Unit,
 ) {
     Card(
@@ -55,7 +56,7 @@ fun StyleTeaserCard(
                     .background(MaterialTheme.colorScheme.surface),
                 contentAlignment = Alignment.Center,
             ) {
-                BubblePreview(character, palette, Modifier.size(54.dp), live = true, customImage = customImage)
+                BubblePreview(character, palette, Modifier.size(54.dp), live = true, customImage = customImage, accessory = accessory)
             }
             Spacer(Modifier.width(16.dp))
             Column(Modifier.weight(1f)) {
