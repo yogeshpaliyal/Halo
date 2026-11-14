@@ -41,6 +41,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
@@ -97,7 +98,7 @@ fun TutorialDialog(
         Paint(Paint.ANTI_ALIAS_FLAG).apply { textAlign = Paint.Align.CENTER }
     }
 
-    Dialog(onDismissRequest = onDone, properties = DialogProperties(usePlatformDefaultWidth = false)) {
+    FullScreenDialog(onDismiss = onDone, lightContent = !isLightTheme()) {
         Column(
             Modifier
                 .fillMaxSize()
@@ -303,3 +304,7 @@ fun TutorialCard(onStart: () -> Unit, onDismiss: () -> Unit) {
         }
     }
 }
+
+/** True when the app is showing its light colour scheme. */
+@Composable
+private fun isLightTheme(): Boolean = MaterialTheme.colorScheme.surface.luminance() > 0.5f

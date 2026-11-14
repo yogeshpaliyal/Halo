@@ -83,7 +83,7 @@ fun AvatarCropper(
         return Offset(o.x.coerceIn(-maxX, maxX), o.y.coerceIn(-maxY, maxY))
     }
 
-    Dialog(onDismissRequest = onCancel, properties = DialogProperties(usePlatformDefaultWidth = false)) {
+    FullScreenDialog(onDismiss = onCancel, lightContent = true) {
         Column(
             Modifier
                 .fillMaxSize()

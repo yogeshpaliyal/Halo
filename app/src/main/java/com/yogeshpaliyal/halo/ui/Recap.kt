@@ -133,7 +133,7 @@ fun RecapDialog(
         summary = s
     }
 
-    Dialog(onDismissRequest = onClose, properties = DialogProperties(usePlatformDefaultWidth = false)) {
+    FullScreenDialog(onDismiss = onClose, lightContent = true) {
         val s = summary
         val pages = 6
         val pager = rememberPagerState { pages }
@@ -149,9 +149,10 @@ fun RecapDialog(
                     .statusBarsPadding()
                     .navigationBarsPadding(),
             ) {
-                // Progress bars like stories, then range and close.
-                Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                    repeat(pages) { i ->
+                // Progress bars like stories (only when there are cards to swipe), then range and close.
+                val hasCards = s != null && s.total >= 3
+                Row(Modifier.fillMaxWidth().height(23.dp).padding(horizontal = 16.dp, vertical = 10.dp), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                    if (hasCards) repeat(pages) { i ->
                         Box(
                             Modifier
                                 .weight(1f)
