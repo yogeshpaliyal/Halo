@@ -88,6 +88,8 @@ class HaloService : Service(), BubbleView.Listener {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
+        // New wallpaper colours (Material You), language or dark mode.
+        bubble?.refreshStyle()
         // Rotation or fold/unfold: re-dock to the same side of the new screen size.
         if (bubble != null) {
             val homeY = restY ?: bubbleParams.y

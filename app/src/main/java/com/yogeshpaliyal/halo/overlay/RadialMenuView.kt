@@ -106,7 +106,10 @@ class RadialMenuView(
     private var fingerY = anchorScreenY
 
     /** Colours from the chosen dial theme (and the bubble's palette for "Match bubble"). */
-    private val theme = DialColors.of(Prefs.dialTheme(context), Prefs.bubblePalette(context))
+    private val theme = run {
+        BubblePalette.refresh(context)
+        DialColors.of(Prefs.dialTheme(context), Prefs.bubblePalette(context))
+    }
     private val bandAlpha = Color.alpha(theme.band)
     private val scrim = Paint().apply { color = theme.scrim }
     private val band = Paint(Paint.ANTI_ALIAS_FLAG).apply {

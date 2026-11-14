@@ -65,6 +65,7 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
     private val touchSlop = ViewConfiguration.get(context).scaledTouchSlop.toFloat()
 
     private val renderer = BubbleRenderer().apply {
+        BubblePalette.refresh(context)
         palette = Prefs.bubblePalette(context)
         character = Prefs.bubbleCharacter(context)
         customImage = CustomAvatar.load(context)
@@ -490,6 +491,7 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
 
     /** Applies a new look from settings. */
     fun refreshStyle() {
+        BubblePalette.refresh(context)
         renderer.palette = Prefs.bubblePalette(context)
         renderer.character = Prefs.bubbleCharacter(context)
         renderer.customImage = CustomAvatar.load(context)
@@ -522,7 +524,15 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
     private val idleMoment = Runnable {
         // Skip while the screen is off; the timer itself never wakes a sleeping phone.
         val screenOn = power?.isInteractive != false
-        if (screenOn) updateDay()
+        if (screenOn) {
+            updateDay()
+            // Wallpaper colours may have changed since the last look.
+            if (renderer.palette == BubblePalette.WALLPAPER) {
+                val before = BubblePalette.WALLPAPER.top
+                BubblePalette.refresh(context)
+                if (BubblePalette.WALLPAPER.top != before) invalidate()
+            }
+        }
         if (screenOn && state == State.IDLE && !hidden && renderer.animated && motion?.isRunning != true) playIdle()
         scheduleIdle()
     }

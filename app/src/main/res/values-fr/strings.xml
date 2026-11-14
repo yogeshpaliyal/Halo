@@ -143,6 +143,7 @@
     <string name="character_sprout">Pousse</string>
     <string name="character_star">Étoile</string>
     <string name="character_bot">Robot</string>
+    <string name="palette_wallpaper">Fond d’écran</string>
     <string name="palette_midnight">Minuit</string>
     <string name="palette_sunset">Coucher de soleil</string>
     <string name="palette_ocean">Océan</string>

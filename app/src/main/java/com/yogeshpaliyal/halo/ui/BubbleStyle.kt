@@ -171,7 +171,7 @@ fun PaletteRow(palette: BubblePalette, onPalette: (BubblePalette) -> Unit) {
             .padding(horizontal = 20.dp),
         horizontalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        BubblePalette.entries.forEach { p ->
+        BubblePalette.available().forEach { p ->
             val selected = p == palette
             val label = stringResource(p.labelRes)
             Column(horizontalAlignment = Alignment.CenterHorizontally) {

@@ -99,6 +99,7 @@ object Prefs {
     fun bubblePalette(context: Context): BubblePalette =
         sp(context).getString(KEY_BUBBLE_PALETTE, null)
             ?.let { runCatching { BubblePalette.valueOf(it) }.getOrNull() }
+            ?.takeIf { it in BubblePalette.available() }
             ?: BubblePalette.MIDNIGHT
 
     fun setBubblePalette(context: Context, palette: BubblePalette) =

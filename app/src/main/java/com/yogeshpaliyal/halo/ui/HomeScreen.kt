@@ -3,6 +3,7 @@ package com.yogeshpaliyal.halo.ui
 import com.yogeshpaliyal.halo.R
 import androidx.compose.ui.res.stringResource
 import android.Manifest
+import com.yogeshpaliyal.halo.overlay.BubblePalette
 import com.yogeshpaliyal.halo.overlay.BubbleCharacter
 import com.yogeshpaliyal.halo.data.CustomAvatar
 import kotlinx.coroutines.launch
@@ -125,6 +126,8 @@ fun HomeScreen() {
     var showHiddenPicker by remember { mutableStateOf(false) }
     var tapAction by remember { mutableStateOf(Prefs.tapAction(context)) }
     var bubbleCharacter by remember { mutableStateOf(Prefs.bubbleCharacter(context)) }
+    // Wallpaper colours can change while Halo is in the background.
+    remember(resumeTick) { BubblePalette.refresh(context) }
     var bubblePalette by remember { mutableStateOf(Prefs.bubblePalette(context)) }
     var bubbleAnimations by remember { mutableStateOf(Prefs.bubbleAnimations(context)) }
     var bubbleReactions by remember { mutableStateOf(Prefs.bubbleReactions(context)) }

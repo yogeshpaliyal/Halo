@@ -1,6 +1,7 @@
 package com.yogeshpaliyal.halo.overlay
 
 import android.graphics.Canvas
+import android.os.Build
 import android.graphics.Color
 import android.graphics.CornerPathEffect
 import android.graphics.LinearGradient
@@ -13,14 +14,18 @@ import com.yogeshpaliyal.halo.R
 import kotlin.math.cos
 import kotlin.math.sin
 
-/** Colour themes for the bubble. [face] is the colour of eyes and features on that body. */
+/**
+ * Colour themes for the bubble. [face] is the colour of eyes and features on that body.
+ * [WALLPAPER] follows Material You: its colours are filled in from the system by [refresh].
+ */
 enum class BubblePalette(
     @StringRes val labelRes: Int,
-    val top: Int,
-    val bottom: Int,
-    val face: Int,
-    val accent: Int,
+    var top: Int,
+    var bottom: Int,
+    var face: Int,
+    var accent: Int,
 ) {
+    WALLPAPER(R.string.palette_wallpaper, 0xFFB9C3FF.toInt(), 0xFF4A5BB3.toInt(), 0xFF101A47.toInt(), Color.WHITE),
     MIDNIGHT(R.string.palette_midnight, 0xFF3A3358.toInt(), 0xFF14121F.toInt(), Color.WHITE, 0xFFB9A8FF.toInt()),
     SUNSET(R.string.palette_sunset, 0xFFFFB36B.toInt(), 0xFFFF5E7E.toInt(), 0xFF2B1430.toInt(), Color.WHITE),
     OCEAN(R.string.palette_ocean, 0xFF7FDBFF.toInt(), 0xFF2D7FF9.toInt(), 0xFF0E1B3D.toInt(), Color.WHITE),
@@ -29,6 +34,27 @@ enum class BubblePalette(
     LEMON(R.string.palette_lemon, 0xFFFFF7A8.toInt(), 0xFFFFC93C.toInt(), 0xFF3A2A00.toInt(), 0xFF3A2A00.toInt()),
     GRAPE(R.string.palette_grape, 0xFFD2B0FF.toInt(), 0xFF7A3DF0.toInt(), 0xFF1F0B3D.toInt(), Color.WHITE),
     MONO(R.string.palette_mono, 0xFFFFFFFF.toInt(), 0xFFCFCFCF.toInt(), 0xFF1A1A1A.toInt(), 0xFF1A1A1A.toInt()),
+    ;
+
+    companion object {
+        /** Material You colours exist from Android 12. */
+        val wallpaperSupported: Boolean get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+
+        /** Palettes to offer in settings. */
+        fun available(): List<BubblePalette> = entries.filter { it != WALLPAPER || wallpaperSupported }
+
+        /**
+         * Reads the current wallpaper colours into [WALLPAPER]. Cheap; called whenever the
+         * bubble, dial or settings draw, so a new wallpaper shows up on its own.
+         */
+        fun refresh(context: android.content.Context) {
+            if (!wallpaperSupported) return
+            WALLPAPER.top = context.getColor(android.R.color.system_accent1_200)
+            WALLPAPER.bottom = context.getColor(android.R.color.system_accent1_600)
+            WALLPAPER.face = context.getColor(android.R.color.system_accent1_900)
+            WALLPAPER.accent = context.getColor(android.R.color.system_accent1_50)
+        }
+    }
 }
 
 /** What the bubble looks like. All original drawings, made from simple shapes. */
@@ -111,7 +137,7 @@ class BubbleRenderer {
     fun draw(canvas: Canvas, cx: Float, cy: Float, r: Float) {
         face.color = palette.face
         stroke.color = palette.face
-        val key = "${palette.name}|$cx|$cy|$r"
+        val key = "${palette.top}|${palette.bottom}|$cx|$cy|$r"
         if (key != shaderKey) {
             body.shader = LinearGradient(cx, cy - r, cx, cy + r, palette.top, palette.bottom, Shader.TileMode.CLAMP)
             shaderKey = key
