@@ -33,13 +33,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.PathFillType
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.res.stringResource
@@ -112,12 +112,7 @@ fun AvatarCropper(
                         }
                     },
             ) {
-                Canvas(
-                    Modifier
-                        .fillMaxSize()
-                        // Offscreen layer so the frame can punch a clear hole in the dim.
-                        .graphicsLayer(compositingStrategy = CompositingStrategy.Offscreen),
-                ) {
+                Canvas(Modifier.fillMaxSize()) {
                     val c = Offset(size.width / 2f, size.height / 2f)
                     val w = bitmap.width * scale
                     val h = bitmap.height * scale
@@ -127,8 +122,13 @@ fun AvatarCropper(
                         dstSize = IntSize(w.roundToInt(), h.roundToInt()),
                         filterQuality = FilterQuality.High,
                     )
-                    drawRect(Color.Black.copy(alpha = 0.6f))
-                    drawCircle(Color.Transparent, radius = frameR, center = c, blendMode = BlendMode.Clear)
+                    // Dim everything except the frame: one shape, the screen minus a circle.
+                    val dim = Path().apply {
+                        fillType = PathFillType.EvenOdd
+                        addRect(Rect(Offset.Zero, size))
+                        addOval(Rect(c, frameR))
+                    }
+                    drawPath(dim, Color.Black.copy(alpha = 0.6f))
                     drawCircle(Color.White, radius = frameR, center = c, style = Stroke(2.dp.toPx()))
                 }
             }
