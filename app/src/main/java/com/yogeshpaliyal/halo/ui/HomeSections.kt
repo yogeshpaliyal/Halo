@@ -132,6 +132,7 @@ fun HomeFooter(version: String, onReplayTutorial: () -> Unit) {
         Row(horizontalArrangement = Arrangement.Center) {
             TextButton(onClick = { uri.openUri(PRIVACY_POLICY_URL) }) { Text(stringResource(R.string.privacy_policy)) }
             TextButton(onClick = { uri.openUri(SOURCE_URL) }) { Text(stringResource(R.string.about_source)) }
+            TextButton(onClick = { uri.openUri(COMMUNITY_URL) }) { Text(stringResource(R.string.community)) }
         }
         TextButton(onClick = onReplayTutorial) { Text(stringResource(R.string.tut_replay)) }
         Text(
@@ -144,3 +145,4 @@ fun HomeFooter(version: String, onReplayTutorial: () -> Unit) {
 }
 
 const val SOURCE_URL = "https://github.com/yogeshpaliyal/Halo"
+const val COMMUNITY_URL = "https://github.com/yogeshpaliyal/Halo/discussions"
