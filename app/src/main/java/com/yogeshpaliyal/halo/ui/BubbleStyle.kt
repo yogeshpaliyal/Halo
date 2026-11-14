@@ -44,6 +44,7 @@ import com.yogeshpaliyal.halo.overlay.BubbleRenderer
 import androidx.compose.ui.draw.blur
 import com.yogeshpaliyal.halo.overlay.DialColors
 import com.yogeshpaliyal.halo.overlay.DialTheme
+import androidx.compose.material.icons.rounded.Add
 import kotlinx.coroutines.delay
 
 /**
@@ -51,7 +52,13 @@ import kotlinx.coroutines.delay
  * does its character move every couple of seconds, like the real one.
  */
 @Composable
-fun BubblePreview(character: BubbleCharacter, palette: BubblePalette, modifier: Modifier, live: Boolean = false) {
+fun BubblePreview(
+    character: BubbleCharacter,
+    palette: BubblePalette,
+    modifier: Modifier,
+    live: Boolean = false,
+    customImage: android.graphics.Bitmap? = null,
+) {
     val renderer = remember { BubbleRenderer() }
     var blink by remember { mutableFloatStateOf(0f) }
     var wiggle by remember { mutableFloatStateOf(0f) }
@@ -80,6 +87,7 @@ fun BubblePreview(character: BubbleCharacter, palette: BubblePalette, modifier: 
     Canvas(modifier) {
         renderer.character = character
         renderer.palette = palette
+        renderer.customImage = customImage
         renderer.blink = blink
         renderer.wiggle = wiggle
         renderer.lookX = look
@@ -93,6 +101,8 @@ fun CharacterRow(
     character: BubbleCharacter,
     palette: BubblePalette,
     onCharacter: (BubbleCharacter) -> Unit,
+    customImage: android.graphics.Bitmap?,
+    onPickPhoto: () -> Unit,
 ) {
     Row(
         Modifier
@@ -105,7 +115,10 @@ fun CharacterRow(
             Column(
                 Modifier
                     .clip(RoundedCornerShape(16.dp))
-                    .clickable { onCharacter(c) }
+                    .clickable {
+                        // "Your photo" without a photo yet goes straight to the photo picker.
+                        if (c == BubbleCharacter.CUSTOM && customImage == null) onPickPhoto() else onCharacter(c)
+                    }
                     .padding(6.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
@@ -123,7 +136,16 @@ fun CharacterRow(
                         ),
                     contentAlignment = Alignment.Center,
                 ) {
-                    BubblePreview(c, palette, Modifier.size(44.dp), live = selected)
+                    if (c == BubbleCharacter.CUSTOM && customImage == null) {
+                        androidx.compose.material3.Icon(
+                            androidx.compose.material.icons.Icons.Rounded.Add,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(28.dp),
+                        )
+                    } else {
+                        BubblePreview(c, palette, Modifier.size(44.dp), live = selected, customImage = customImage)
+                    }
                 }
                 Spacer(Modifier.height(4.dp))
                 Text(

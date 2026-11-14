@@ -33,6 +33,7 @@ object Prefs {
     const val KEY_BUBBLE_ANIMATIONS = "bubble_animations"
     const val KEY_BUBBLE_REACTIONS = "bubble_reactions"
     const val KEY_DIAL_THEME = "dial_theme"
+    const val KEY_AVATAR_VERSION = "avatar_version"
 
     private fun sp(context: Context): SharedPreferences =
         context.getSharedPreferences(FILE, Context.MODE_PRIVATE)
@@ -114,6 +115,10 @@ object Prefs {
     /** Blinks and idle moves for characters. Touch reactions always play. */
     fun bubbleAnimations(context: Context): Boolean = sp(context).getBoolean(KEY_BUBBLE_ANIMATIONS, true)
     fun setBubbleAnimations(context: Context, on: Boolean) = sp(context).edit { putBoolean(KEY_BUBBLE_ANIMATIONS, on) }
+
+    /** Bumped when a new avatar photo is saved, so the bubble reloads it. */
+    fun bumpAvatarVersion(context: Context) =
+        sp(context).edit { putLong(KEY_AVATAR_VERSION, System.currentTimeMillis()) }
 
     fun dialTheme(context: Context): DialTheme =
         sp(context).getString(KEY_DIAL_THEME, null)

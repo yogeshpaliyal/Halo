@@ -175,4 +175,9 @@
     <string name="dial_glass">Стекло</string>
     <string name="dial_neon">Неон</string>
     <string name="dial_daylight">День</string>
+
+    <!-- Custom avatar -->
+    <string name="character_custom">Ваше фото</string>
+    <string name="avatar_change">Сменить фото</string>
+    <string name="avatar_failed">Не удалось использовать это изображение. Попробуйте другое.</string>
 </resources>

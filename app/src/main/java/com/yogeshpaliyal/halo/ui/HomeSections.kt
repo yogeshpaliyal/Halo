@@ -36,7 +36,12 @@ enum class Page { HOME, APPEARANCE }
 
 /** The fun part, front and centre: your bubble, live, with a way into Appearance. */
 @Composable
-fun StyleTeaserCard(character: BubbleCharacter, palette: BubblePalette, onCustomise: () -> Unit) {
+fun StyleTeaserCard(
+    character: BubbleCharacter,
+    palette: BubblePalette,
+    customImage: android.graphics.Bitmap?,
+    onCustomise: () -> Unit,
+) {
     Card(
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
@@ -50,7 +55,7 @@ fun StyleTeaserCard(character: BubbleCharacter, palette: BubblePalette, onCustom
                     .background(MaterialTheme.colorScheme.surface),
                 contentAlignment = Alignment.Center,
             ) {
-                BubblePreview(character, palette, Modifier.size(54.dp), live = true)
+                BubblePreview(character, palette, Modifier.size(54.dp), live = true, customImage = customImage)
             }
             Spacer(Modifier.width(16.dp))
             Column(Modifier.weight(1f)) {

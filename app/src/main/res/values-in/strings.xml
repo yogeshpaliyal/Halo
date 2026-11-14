@@ -166,4 +166,9 @@
     <string name="dial_glass">Kaca</string>
     <string name="dial_neon">Neon</string>
     <string name="dial_daylight">Siang</string>
+
+    <!-- Custom avatar -->
+    <string name="character_custom">Fotomu</string>
+    <string name="avatar_change">Ganti foto</string>
+    <string name="avatar_failed">Gambar itu tidak bisa dipakai. Coba yang lain.</string>
 </resources>

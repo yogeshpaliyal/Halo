@@ -169,4 +169,9 @@
     <string name="dial_glass">Cam</string>
     <string name="dial_neon">Neon</string>
     <string name="dial_daylight">Gün ışığı</string>
+
+    <!-- Custom avatar -->
+    <string name="character_custom">Fotoğrafın</string>
+    <string name="avatar_change">Fotoğrafı değiştir</string>
+    <string name="avatar_failed">Bu görsel kullanılamadı. Başka birini dene.</string>
 </resources>

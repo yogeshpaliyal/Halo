@@ -13,6 +13,7 @@ import android.view.HapticFeedbackConstants
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
+import com.yogeshpaliyal.halo.data.CustomAvatar
 import com.yogeshpaliyal.halo.data.Prefs
 import com.yogeshpaliyal.halo.data.TapAction
 import kotlin.math.PI
@@ -66,6 +67,7 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
     private val renderer = BubbleRenderer().apply {
         palette = Prefs.bubblePalette(context)
         character = Prefs.bubbleCharacter(context)
+        customImage = CustomAvatar.load(context)
     }
     private val badgePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.parseColor("#FFFF5A5F") }
     private val badgeRim = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.parseColor("#FF14121F") }
@@ -490,6 +492,7 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
     fun refreshStyle() {
         renderer.palette = Prefs.bubblePalette(context)
         renderer.character = Prefs.bubbleCharacter(context)
+        renderer.customImage = CustomAvatar.load(context)
         updateDay()
         stopIdle()
         scheduleIdle()
@@ -606,7 +609,10 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
         if ((renderer.sleepy || random.nextInt(3) == 0) && playDayMoment()) return
         idleAnim?.cancel()
         val roll = random.nextInt(10)
+        // A photo has no eyes to blink or move: it just rocks now and then.
+        val photo = renderer.character == BubbleCharacter.CUSTOM
         idleAnim = when {
+            photo -> idleTween(700L) { t -> renderer.wiggle = sin(t * PI.toFloat() * 3f) * (1f - t) }
             // Mostly blinks, sometimes twice.
             roll < 5 -> idleTween(if (roll == 0) 420L else 180L) { t ->
                 val phase = if (roll == 0) (t * 2f) % 1f else t

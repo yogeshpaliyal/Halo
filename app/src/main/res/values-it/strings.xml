@@ -172,4 +172,9 @@
     <string name="dial_glass">Vetro</string>
     <string name="dial_neon">Neon</string>
     <string name="dial_daylight">Giorno</string>
+
+    <!-- Custom avatar -->
+    <string name="character_custom">La tua foto</string>
+    <string name="avatar_change">Cambia foto</string>
+    <string name="avatar_failed">Impossibile usare quell’immagine. Provane un’altra.</string>
 </resources>

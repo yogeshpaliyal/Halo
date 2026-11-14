@@ -40,6 +40,8 @@ enum class BubbleCharacter(@StringRes val labelRes: Int) {
     SPROUT(R.string.character_sprout),
     STAR(R.string.character_star),
     BOT(R.string.character_bot),
+    /** The user's own photo, in a ring of the chosen colour. */
+    CUSTOM(R.string.character_custom),
 }
 
 /**
@@ -51,6 +53,8 @@ enum class BubbleCharacter(@StringRes val labelRes: Int) {
 class BubbleRenderer {
     var palette = BubblePalette.MIDNIGHT
     var character = BubbleCharacter.CLASSIC
+    /** Photo for [BubbleCharacter.CUSTOM]; falls back to Classic when missing. */
+    var customImage: android.graphics.Bitmap? = null
 
     enum class Mood { NORMAL, PRESSED, HAPPY }
 
@@ -120,6 +124,7 @@ class BubbleRenderer {
             BubbleCharacter.SPROUT -> sprout(canvas, cx, cy, r)
             BubbleCharacter.STAR -> star(canvas, cx, cy, r)
             BubbleCharacter.BOT -> bot(canvas, cx, cy, r)
+            BubbleCharacter.CUSTOM -> customImage?.let { photo(canvas, cx, cy, r, it) } ?: classic(canvas, cx, cy, r)
         }
         if (animated) extras(canvas, cx, cy, r)
     }
@@ -189,6 +194,28 @@ class BubbleRenderer {
     val animated: Boolean get() = character != BubbleCharacter.CLASSIC
 
     // --- characters ------------------------------------------------------------------------
+
+    private val photoPaint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG)
+    private val photoClip = Path()
+    private val photoRect = RectF()
+
+    private fun photo(c: Canvas, cx: Float, cy: Float, r: Float, bmp: android.graphics.Bitmap) {
+        val inner = r * 0.86f
+        c.save()
+        // A gentle rock on wiggle, since photos have no face to animate.
+        c.rotate(wiggle * 10f, cx, cy)
+        photoClip.reset()
+        photoClip.addCircle(cx, cy, inner, Path.Direction.CW)
+        c.clipPath(photoClip)
+        photoRect.set(cx - inner, cy - inner, cx + inner, cy + inner)
+        c.drawBitmap(bmp, null, photoRect, photoPaint)
+        c.restore()
+        // Ring in the chosen colour, so the palette still matters.
+        stroke.color = if (palette == BubblePalette.MIDNIGHT) palette.accent else palette.bottom
+        stroke.strokeWidth = r * 0.12f
+        c.drawCircle(cx, cy, r * 0.88f, stroke)
+        stroke.color = palette.face
+    }
 
     private fun classic(c: Canvas, cx: Float, cy: Float, r: Float) {
         c.drawCircle(cx, cy, r * 0.94f, body)

@@ -198,4 +198,9 @@
     <string name="dial_glass">Glass</string>
     <string name="dial_neon">Neon</string>
     <string name="dial_daylight">Daylight</string>
+
+    <!-- Custom avatar -->
+    <string name="character_custom">Your photo</string>
+    <string name="avatar_change">Change photo</string>
+    <string name="avatar_failed">Couldn’t use that image. Try another one.</string>
 </resources>

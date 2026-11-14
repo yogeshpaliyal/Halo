@@ -166,4 +166,9 @@
     <string name="dial_glass">ガラス</string>
     <string name="dial_neon">ネオン</string>
     <string name="dial_daylight">デイライト</string>
+
+    <!-- Custom avatar -->
+    <string name="character_custom">あなたの写真</string>
+    <string name="avatar_change">写真を変更</string>
+    <string name="avatar_failed">その画像は使えませんでした。別の画像をお試しください。</string>
 </resources>

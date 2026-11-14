@@ -668,6 +668,8 @@ fun BubbleCard(
     onAnimations: (Boolean) -> Unit,
     reactions: Boolean,
     onReactions: (Boolean) -> Unit,
+    customImage: android.graphics.Bitmap?,
+    onPickPhoto: () -> Unit,
     size: BubbleSize,
     onSize: (BubbleSize) -> Unit,
     opacity: Float,
@@ -692,7 +694,12 @@ fun BubbleCard(
                     modifier = Modifier.padding(horizontal = 20.dp),
                 )
                 Spacer(Modifier.height(10.dp))
-                CharacterRow(character, palette, onCharacter)
+                CharacterRow(character, palette, onCharacter, customImage, onPickPhoto)
+                if (character == BubbleCharacter.CUSTOM && customImage != null) {
+                    TextButton(onClick = onPickPhoto, modifier = Modifier.padding(horizontal = 12.dp)) {
+                        Text(stringResource(R.string.avatar_change))
+                    }
+                }
                 Spacer(Modifier.height(10.dp))
                 PaletteRow(palette, onPalette)
                 if (character != BubbleCharacter.CLASSIC) {

@@ -3,6 +3,11 @@ package com.yogeshpaliyal.halo.ui
 import com.yogeshpaliyal.halo.R
 import androidx.compose.ui.res.stringResource
 import android.Manifest
+import com.yogeshpaliyal.halo.overlay.BubbleCharacter
+import com.yogeshpaliyal.halo.data.CustomAvatar
+import kotlinx.coroutines.launch
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
@@ -124,6 +129,26 @@ fun HomeScreen() {
     var bubbleAnimations by remember { mutableStateOf(Prefs.bubbleAnimations(context)) }
     var bubbleReactions by remember { mutableStateOf(Prefs.bubbleReactions(context)) }
     var dialTheme by remember { mutableStateOf(Prefs.dialTheme(context)) }
+    var avatar by remember { mutableStateOf(CustomAvatar.load(context)) }
+    val scope = rememberCoroutineScope()
+    // Android's photo picker: no storage permission, and only the chosen photo is shared.
+    val pickPhoto = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        if (uri != null) {
+            scope.launch {
+                val ok = withContext(Dispatchers.IO) { CustomAvatar.save(context, uri) }
+                if (ok) {
+                    avatar = CustomAvatar.load(context)
+                    bubbleCharacter = BubbleCharacter.CUSTOM
+                    Prefs.setBubbleCharacter(context, BubbleCharacter.CUSTOM)
+                } else {
+                    Toast.makeText(context, R.string.avatar_failed, Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    }
+    val onPickPhoto = {
+        pickPhoto.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+    }
     var doubleTapAction by remember { mutableStateOf(Prefs.doubleTapAction(context)) }
     var holdDelay by remember { mutableStateOf(Prefs.holdDelay(context)) }
     var haptics by remember { mutableStateOf(Prefs.haptics(context)) }
@@ -166,6 +191,8 @@ fun HomeScreen() {
             onAnimations = { bubbleAnimations = it; Prefs.setBubbleAnimations(context, it) },
             reactions = bubbleReactions,
             onReactions = { bubbleReactions = it; Prefs.setBubbleReactions(context, it) },
+            customImage = avatar,
+            onPickPhoto = onPickPhoto,
             size = bubbleSize,
             onSize = { bubbleSize = it; Prefs.setBubbleSize(context, it) },
             opacity = opacity,
@@ -271,7 +298,7 @@ fun HomeScreen() {
                 )
             }
             item {
-                StyleTeaserCard(bubbleCharacter, bubblePalette) { page = Page.APPEARANCE }
+                StyleTeaserCard(bubbleCharacter, bubblePalette, avatar) { page = Page.APPEARANCE }
             }
             item {
                 Section(stringResource(R.string.gestures)) {

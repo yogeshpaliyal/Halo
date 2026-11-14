@@ -169,4 +169,9 @@
     <string name="dial_glass">ग्लास</string>
     <string name="dial_neon">नियॉन</string>
     <string name="dial_daylight">दिन</string>
+
+    <!-- Custom avatar -->
+    <string name="character_custom">आपकी फ़ोटो</string>
+    <string name="avatar_change">फ़ोटो बदलें</string>
+    <string name="avatar_failed">यह इमेज इस्तेमाल नहीं हो सकी। कोई दूसरी आज़माएं।</string>
 </resources>
