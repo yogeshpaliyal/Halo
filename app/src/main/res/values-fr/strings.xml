@@ -245,7 +245,7 @@
     <string name="recap_share">Partager mon bilan</string>
     <string name="recap_reset">Réinitialiser le bilan</string>
     <string name="recap_private">Votre bilan est créé sur votre téléphone à partir d’un comptage local. Rien n’est envoyé.</string>
-    <string name="recap_share_text">Fait avec Halo, le sélecteur d’apps flottant : https://github.com/yogeshpaliyal/Halo</string>
+    <string name="recap_share_text">Fait avec Halo, le sélecteur d’apps flottant : https://play.google.com/store/apps/details?id=com.yogeshpaliyal.halo</string>
     <string name="recap_card_week">Ma semaine avec Halo</string>
     <string name="recap_card_month">Mon mois avec Halo</string>
     <string name="recap_card_credit">Halo · sélecteur d’apps gratuit et open source</string>

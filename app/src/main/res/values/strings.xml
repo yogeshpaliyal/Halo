@@ -270,7 +270,7 @@
     <string name="recap_share">Share my recap</string>
     <string name="recap_reset">Reset recap data</string>
     <string name="recap_private">Your recap is made on your phone from a local tally. Nothing is uploaded.</string>
-    <string name="recap_share_text">Made with Halo, the floating app switcher: https://github.com/yogeshpaliyal/Halo</string>
+    <string name="recap_share_text">Made with Halo, the floating app switcher: https://play.google.com/store/apps/details?id=com.yogeshpaliyal.halo</string>
     <string name="recap_card_week">My week with Halo</string>
     <string name="recap_card_month">My month with Halo</string>
     <string name="recap_card_credit">Halo · free, open-source app switcher</string>

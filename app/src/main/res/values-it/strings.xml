@@ -245,7 +245,7 @@
     <string name="recap_share">Condividi il mio riepilogo</string>
     <string name="recap_reset">Azzera i dati del riepilogo</string>
     <string name="recap_private">Il riepilogo è creato sul tuo telefono da un conteggio locale. Niente viene caricato.</string>
-    <string name="recap_share_text">Fatto con Halo, il selettore di app fluttuante: https://github.com/yogeshpaliyal/Halo</string>
+    <string name="recap_share_text">Fatto con Halo, il selettore di app fluttuante: https://play.google.com/store/apps/details?id=com.yogeshpaliyal.halo</string>
     <string name="recap_card_week">La mia settimana con Halo</string>
     <string name="recap_card_month">Il mio mese con Halo</string>
     <string name="recap_card_credit">Halo · selettore di app gratuito e open source</string>

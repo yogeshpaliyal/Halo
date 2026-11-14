@@ -249,7 +249,7 @@
     <string name="recap_share">Поделиться итогами</string>
     <string name="recap_reset">Сбросить данные итогов</string>
     <string name="recap_private">Итоги собираются на телефоне из локального счётчика. Ничего не загружается.</string>
-    <string name="recap_share_text">Сделано с Halo, плавающим переключателем приложений: https://github.com/yogeshpaliyal/Halo</string>
+    <string name="recap_share_text">Сделано с Halo, плавающим переключателем приложений: https://play.google.com/store/apps/details?id=com.yogeshpaliyal.halo</string>
     <string name="recap_card_week">Моя неделя с Halo</string>
     <string name="recap_card_month">Мой месяц с Halo</string>
     <string name="recap_card_credit">Halo · бесплатный переключатель с открытым кодом</string>
