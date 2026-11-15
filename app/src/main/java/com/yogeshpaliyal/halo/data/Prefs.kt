@@ -20,6 +20,8 @@ object Prefs {
     private const val KEY_ENABLED = "enabled"
     private const val KEY_TAP_ACTION = "tap_action"
     private const val KEY_DOUBLE_TAP_ACTION = "double_tap_action"
+    private const val KEY_TAP_APP = "tap_app"
+    private const val KEY_DOUBLE_TAP_APP = "double_tap_app"
     private const val KEY_HOLD_DELAY = "hold_delay"
     private const val KEY_HAPTICS = "haptics"
     private const val KEY_HIDDEN_RECENTS = "hidden_recents"
@@ -198,6 +200,12 @@ object Prefs {
 
     fun setDoubleTapAction(context: Context, action: TapAction) =
         sp(context).edit { putString(KEY_DOUBLE_TAP_ACTION, action.name) }
+
+    /** The app (or quick action) key opened by tap / double tap when set to "Open an app". */
+    fun tapApp(context: Context): String? = sp(context).getString(KEY_TAP_APP, null)
+    fun setTapApp(context: Context, key: String) = sp(context).edit { putString(KEY_TAP_APP, key) }
+    fun doubleTapApp(context: Context): String? = sp(context).getString(KEY_DOUBLE_TAP_APP, null)
+    fun setDoubleTapApp(context: Context, key: String) = sp(context).edit { putString(KEY_DOUBLE_TAP_APP, key) }
 
     fun holdDelay(context: Context): HoldDelay =
         sp(context).getString(KEY_HOLD_DELAY, null)

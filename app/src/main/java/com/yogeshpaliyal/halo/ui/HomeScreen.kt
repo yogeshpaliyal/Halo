@@ -3,6 +3,7 @@ package com.yogeshpaliyal.halo.ui
 import com.yogeshpaliyal.halo.R
 import androidx.compose.ui.res.stringResource
 import android.Manifest
+import com.yogeshpaliyal.halo.data.TapAction
 import com.yogeshpaliyal.halo.overlay.BubblePalette
 import com.yogeshpaliyal.halo.overlay.BubbleCharacter
 import com.yogeshpaliyal.halo.data.CustomAvatar
@@ -124,6 +125,18 @@ fun HomeScreen() {
     var showPicker by remember { mutableStateOf(false) }
     var hiddenRecents by remember { mutableStateOf(Prefs.hiddenRecents(context)) }
     var showHiddenPicker by remember { mutableStateOf(false) }
+    // Apps opened by tap / double tap when set to "Open an app".
+    var tapAppKey by remember { mutableStateOf(Prefs.tapApp(context)) }
+    var doubleTapAppKey by remember { mutableStateOf(Prefs.doubleTapApp(context)) }
+    var tapAppEntry by remember { mutableStateOf<AppEntry?>(null) }
+    var doubleTapAppEntry by remember { mutableStateOf<AppEntry?>(null) }
+    LaunchedEffect(tapAppKey, resumeTick) {
+        tapAppEntry = withContext(Dispatchers.IO) { tapAppKey?.let(repo::entryFor) }
+    }
+    LaunchedEffect(doubleTapAppKey, resumeTick) {
+        doubleTapAppEntry = withContext(Dispatchers.IO) { doubleTapAppKey?.let(repo::entryFor) }
+    }
+    var appPickerFor by remember { mutableStateOf<Int?>(null) }
     var tapAction by remember { mutableStateOf(Prefs.tapAction(context)) }
     var bubbleCharacter by remember { mutableStateOf(Prefs.bubbleCharacter(context)) }
     // Wallpaper colours can change while Halo is in the background.
@@ -329,9 +342,22 @@ fun HomeScreen() {
                     tapAction = tapAction,
                     holdDelay = holdDelay,
                     haptics = haptics,
-                    onTapAction = { tapAction = it; Prefs.setTapAction(context, it) },
+                    onTapAction = {
+                        tapAction = it
+                        Prefs.setTapAction(context, it)
+                        // Picked "Open an app" with no app yet: ask which one right away.
+                        if (it == TapAction.OPEN_APP && tapAppKey == null) appPickerFor = TAP
+                    },
                     doubleTapAction = doubleTapAction,
-                    onDoubleTapAction = { doubleTapAction = it; Prefs.setDoubleTapAction(context, it) },
+                    onDoubleTapAction = {
+                        doubleTapAction = it
+                        Prefs.setDoubleTapAction(context, it)
+                        if (it == TapAction.OPEN_APP && doubleTapAppKey == null) appPickerFor = DOUBLE_TAP
+                    },
+                    tapApp = tapAppEntry,
+                    doubleTapApp = doubleTapAppEntry,
+                    onChooseTapApp = { appPickerFor = TAP },
+                    onChooseDoubleTapApp = { appPickerFor = DOUBLE_TAP },
                     onHoldDelay = { holdDelay = it; Prefs.setHoldDelay(context, it) },
                     onHaptics = { haptics = it; Prefs.setHaptics(context, it) },
                 )
@@ -415,6 +441,30 @@ fun HomeScreen() {
             limit = null,
             showOrder = false,
             countLabel = { if (it == 0) res.getString(R.string.hide_in_picker_none) else res.getQuantityString(R.plurals.hidden_in_apps, it, it) },
+        )
+    }
+
+    appPickerFor?.let { which ->
+        // One app (or quick action) per gesture: picking one saves it and closes.
+        AppPickerSheet(
+            loading = !appsLoaded,
+            apps = apps,
+            selected = listOfNotNull(if (which == TAP) tapAppKey else doubleTapAppKey),
+            onToggle = { app ->
+                if (which == TAP) {
+                    tapAppKey = app.key
+                    Prefs.setTapApp(context, app.key)
+                } else {
+                    doubleTapAppKey = app.key
+                    Prefs.setDoubleTapApp(context, app.key)
+                }
+                appPickerFor = null
+            },
+            onDismiss = { appPickerFor = null },
+            title = stringResource(if (which == TAP) R.string.pick_tap_app_title else R.string.pick_double_app_title),
+            limit = null,
+            showOrder = false,
+            countLabel = { res.getString(R.string.pick_one_app) },
         )
     }
 
@@ -516,3 +566,7 @@ fun HomeScreen() {
         )
     }
 }
+
+/** Which gesture the single-app picker is choosing for. */
+private const val TAP = 0
+private const val DOUBLE_TAP = 1

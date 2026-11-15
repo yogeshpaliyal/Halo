@@ -275,4 +275,12 @@
     <string name="share_layout_duo">Duo</string>
     <string name="share_layout_rhythm">Rythme</string>
     <string name="community">Communauté</string>
+    <string name="tap_open_app">Ouvrir une app</string>
+    <string name="tap_open_app_desc">Ouvre l’app ou l’action rapide de votre choix</string>
+    <string name="tap_opens">Ouvre %s</string>
+    <string name="gesture_app_none">Choisir l’app</string>
+    <string name="gesture_app_change">Changer</string>
+    <string name="pick_tap_app_title">L’appui ouvre</string>
+    <string name="pick_double_app_title">Le double appui ouvre</string>
+    <string name="pick_one_app">Choisissez une app ou une action rapide</string>
 </resources>

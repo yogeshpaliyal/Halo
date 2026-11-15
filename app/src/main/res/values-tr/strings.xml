@@ -267,4 +267,12 @@
     <string name="share_layout_duo">İkili</string>
     <string name="share_layout_rhythm">Ritim</string>
     <string name="community">Topluluk</string>
+    <string name="tap_open_app">Uygulama aç</string>
+    <string name="tap_open_app_desc">Seçtiğin uygulamayı veya hızlı işlemi açar</string>
+    <string name="tap_opens">%s açılır</string>
+    <string name="gesture_app_none">Uygulama seç</string>
+    <string name="gesture_app_change">Değiştir</string>
+    <string name="pick_tap_app_title">Dokunma açar</string>
+    <string name="pick_double_app_title">Çift dokunma açar</string>
+    <string name="pick_one_app">Bir uygulama veya hızlı işlem seç</string>
 </resources>

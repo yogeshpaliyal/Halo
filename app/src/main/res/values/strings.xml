@@ -296,4 +296,12 @@
     <string name="share_layout_duo">Duo</string>
     <string name="share_layout_rhythm">Rhythm</string>
     <string name="community">Community</string>
+    <string name="tap_open_app">Open an app</string>
+    <string name="tap_open_app_desc">Opens an app or quick action you pick</string>
+    <string name="tap_opens">Opens %s</string>
+    <string name="gesture_app_none">Choose which app</string>
+    <string name="gesture_app_change">Change</string>
+    <string name="pick_tap_app_title">Tap opens</string>
+    <string name="pick_double_app_title">Double tap opens</string>
+    <string name="pick_one_app">Pick one app or quick action</string>
 </resources>

@@ -475,17 +475,19 @@ class HaloService : Service(), BubbleView.Listener {
         }
     }
 
-    override fun onTap() = perform(Prefs.tapAction(this), Stats.Kind.TAP)
+    override fun onTap() = perform(Prefs.tapAction(this), Stats.Kind.TAP, Prefs.tapApp(this))
 
-    override fun onDoubleTap() = perform(Prefs.doubleTapAction(this), Stats.Kind.DOUBLE)
+    override fun onDoubleTap() = perform(Prefs.doubleTapAction(this), Stats.Kind.DOUBLE, Prefs.doubleTapApp(this))
 
-    private fun perform(action: TapAction, kind: Stats.Kind) {
+    private fun perform(action: TapAction, kind: Stats.Kind, appKey: String?) {
         when (action) {
             // Quick toggle, like Alt+Tab.
             TapAction.PREVIOUS_APP -> repo.recents(1).firstOrNull()?.let { launch(it, kind) }
             // The one before that: tap and double tap cover your two latest apps.
             TapAction.SECOND_APP -> repo.recents(2).getOrNull(1)?.let { launch(it, kind) }
             TapAction.OPEN_MENU -> showMenu(tapMode = true)
+            // The app picked for this gesture; works for quick actions and work apps too.
+            TapAction.OPEN_APP -> appKey?.let(repo::entryFor)?.let { launch(it, kind) }
             TapAction.NOTHING -> Unit
         }
     }

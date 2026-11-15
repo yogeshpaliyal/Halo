@@ -267,4 +267,12 @@
     <string name="share_layout_duo">जोड़ी</string>
     <string name="share_layout_rhythm">रिदम</string>
     <string name="community">कम्युनिटी</string>
+    <string name="tap_open_app">कोई ऐप खोलें</string>
+    <string name="tap_open_app_desc">आपका चुना ऐप या क्विक ऐक्शन खोलता है</string>
+    <string name="tap_opens">%s खोलता है</string>
+    <string name="gesture_app_none">ऐप चुनें</string>
+    <string name="gesture_app_change">बदलें</string>
+    <string name="pick_tap_app_title">टैप से खुले</string>
+    <string name="pick_double_app_title">दो बार टैप से खुले</string>
+    <string name="pick_one_app">एक ऐप या क्विक ऐक्शन चुनें</string>
 </resources>

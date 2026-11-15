@@ -583,6 +583,10 @@ fun GesturesCard(
     onTapAction: (TapAction) -> Unit,
     doubleTapAction: TapAction,
     onDoubleTapAction: (TapAction) -> Unit,
+    tapApp: AppEntry?,
+    doubleTapApp: AppEntry?,
+    onChooseTapApp: () -> Unit,
+    onChooseDoubleTapApp: () -> Unit,
     onHoldDelay: (HoldDelay) -> Unit,
     onHaptics: (Boolean) -> Unit,
 ) {
@@ -604,18 +608,20 @@ fun GesturesCard(
                 value = tapAction,
                 options = TapAction.entries,
                 label = { res.getString(it.labelRes) },
-                detail = { res.getString(it.descriptionRes) },
+                detail = { tapDetail(res, it, tapApp) },
                 onSelect = onTapAction,
             )
+            if (tapAction == TapAction.OPEN_APP) GestureAppRow(tapApp, onChooseTapApp)
             ChoiceRow(
                 tag = stringResource(R.string.tag_double),
                 title = stringResource(R.string.gesture_double_title),
                 value = doubleTapAction,
                 options = TapAction.entries,
                 label = { res.getString(it.labelRes) },
-                detail = { res.getString(it.descriptionRes) },
+                detail = { tapDetail(res, it, doubleTapApp) },
                 onSelect = onDoubleTapAction,
             )
+            if (doubleTapAction == TapAction.OPEN_APP) GestureAppRow(doubleTapApp, onChooseDoubleTapApp)
             ChoiceRow(
                 tag = stringResource(R.string.tag_hold),
                 title = stringResource(R.string.hold_delay),
@@ -1065,5 +1071,36 @@ fun PrivateSpaceNote() {
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
+    }
+}
+
+/** "Opens Instagram" once an app is picked for that gesture. */
+private fun tapDetail(res: android.content.res.Resources, action: TapAction, app: AppEntry?): String =
+    if (action == TapAction.OPEN_APP && app != null) res.getString(R.string.tap_opens, app.label)
+    else res.getString(action.descriptionRes)
+
+/** Under a tap gesture set to "Open an app": the chosen app, and a button to change it. */
+@Composable
+private fun GestureAppRow(app: AppEntry?, onChoose: () -> Unit) {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onChoose)
+            .padding(start = 90.dp, end = 20.dp, top = 2.dp, bottom = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        if (app != null) {
+            AppIcon(app, 28.dp)
+            Spacer(Modifier.width(10.dp))
+        }
+        Text(
+            app?.label ?: stringResource(R.string.gesture_app_none),
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.weight(1f),
+            maxLines = 1,
+        )
+        TextButton(onClick = onChoose) {
+            Text(stringResource(if (app == null) R.string.choose else R.string.gesture_app_change))
+        }
     }
 }

@@ -283,4 +283,12 @@
     <string name="share_layout_duo">Дуэт</string>
     <string name="share_layout_rhythm">Ритм</string>
     <string name="community">Сообщество</string>
+    <string name="tap_open_app">Открыть приложение</string>
+    <string name="tap_open_app_desc">Открывает выбранное приложение или быстрое действие</string>
+    <string name="tap_opens">Открывает %s</string>
+    <string name="gesture_app_none">Выберите приложение</string>
+    <string name="gesture_app_change">Изменить</string>
+    <string name="pick_tap_app_title">Нажатие открывает</string>
+    <string name="pick_double_app_title">Двойное нажатие открывает</string>
+    <string name="pick_one_app">Выберите одно приложение или действие</string>
 </resources>

@@ -259,4 +259,12 @@
     <string name="share_layout_duo">コンビ</string>
     <string name="share_layout_rhythm">リズム</string>
     <string name="community">コミュニティ</string>
+    <string name="tap_open_app">アプリを開く</string>
+    <string name="tap_open_app_desc">選んだアプリやクイック操作を開きます</string>
+    <string name="tap_opens">%s を開く</string>
+    <string name="gesture_app_none">アプリを選択</string>
+    <string name="gesture_app_change">変更</string>
+    <string name="pick_tap_app_title">タップで開く</string>
+    <string name="pick_double_app_title">ダブルタップで開く</string>
+    <string name="pick_one_app">アプリかクイック操作を 1 つ選択</string>
 </resources>
