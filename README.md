@@ -1,12 +1,12 @@
 # Halo stats
 
-Updated 2026-11-15T10:47:50+00:00 by the `Stats snapshot` workflow on [yogeshpaliyal/Halo](https://github.com/yogeshpaliyal/Halo).
+Updated 2026-11-16T11:10:29+00:00 by the `Stats snapshot` workflow on [yogeshpaliyal/Halo](https://github.com/yogeshpaliyal/Halo).
 Collected from GitHub's APIs only; the Halo app contains no tracking.
 
 | Metric | Value |
 | --- | --- |
-| Total APK downloads (all releases) | 495 |
-| Stars | 15 |
+| Total APK downloads (all releases) | 508 |
+| Stars | 15 (+15 in 7 days) |
 | Forks | 0 |
 | Open issues and PRs | 0 |
 | Repo views, last 14 days | 856 (352 unique-day visitors) |
@@ -15,13 +15,13 @@ Collected from GitHub's APIs only; the Halo app contains no tracking.
 
 | Release | Downloads |
 | --- | --- |
-| v0.1.3 | 312 |
-| latest-master | 43 |
+| v0.1.3 | 313 |
+| latest-master | 46 |
+| v0.1.6 | 38 |
 | v0.1.1 | 35 |
 | v0.1.4 | 35 |
-| v0.1.6 | 30 |
 | v0.1.0 | 22 |
-| v0.1.5 | 18 |
+| v0.1.5 | 19 |
 
 ## Top referrers (last 14 days)
 
