@@ -111,6 +111,8 @@
     <string name="brightness_slider_body">डायल के चारों ओर ऊपर वाला आधा चाप</string>
     <string name="volume_slider">आवाज़ स्लाइडर</string>
     <string name="volume_slider_body">डायल के चारों ओर नीचे वाला आधा चाप, मीडिया आवाज़ के लिए</string>
+    <string name="volume_on_top">आवाज़ ऊपर</string>
+    <string name="volume_on_top_body">स्लाइडर बदलें: आवाज़ ऊपर, चमक नीचे</string>
     <string name="bubble">बबल</string>
     <string name="tag_size">आकार</string>
     <string name="tag_look">रूप</string>

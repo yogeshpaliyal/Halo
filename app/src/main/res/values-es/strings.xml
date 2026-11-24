@@ -111,6 +111,8 @@
     <string name="brightness_slider_body">Medio arco superior alrededor del menú</string>
     <string name="volume_slider">Control de volumen</string>
     <string name="volume_slider_body">Medio arco inferior alrededor del menú, para el volumen multimedia</string>
+    <string name="volume_on_top">Volumen arriba</string>
+    <string name="volume_on_top_body">Intercambiar: volumen en la mitad superior, brillo abajo</string>
     <string name="bubble">Burbuja</string>
     <string name="tag_size">Tamaño</string>
     <string name="tag_look">Estilo</string>

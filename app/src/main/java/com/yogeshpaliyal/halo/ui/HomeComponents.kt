@@ -593,6 +593,8 @@ fun GesturesCard(
     onBrightnessSlider: (Boolean) -> Unit,
     volumeSlider: Boolean,
     onVolumeSlider: (Boolean) -> Unit,
+    volumeOnTop: Boolean,
+    onVolumeOnTop: (Boolean) -> Unit,
 ) {
     val res = LocalContext.current.resources
     Card(shape = RoundedCornerShape(24.dp)) {
@@ -666,6 +668,15 @@ fun GesturesCard(
                 checked = volumeSlider,
                 onChange = onVolumeSlider,
             )
+            // Only matters when both sliders are on.
+            if (brightnessSlider && volumeSlider) {
+                DialSliderRow(
+                    title = stringResource(R.string.volume_on_top),
+                    body = stringResource(R.string.volume_on_top_body),
+                    checked = volumeOnTop,
+                    onChange = onVolumeOnTop,
+                )
+            }
         }
     }
 }

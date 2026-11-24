@@ -6,7 +6,7 @@ A floating bubble that sticks to the edge of your screen and lets you switch app
 
 - **Long-press** the bubble → a radial menu opens: your **favourites** on the inner ring, **recent apps** on the outer ring.
 - **Slide** to an app (you feel a tick on each one), **let go** to open it. Let go near the bubble to cancel.
-- **Brightness and volume sliders** wrap around the outside of the dial, each half its arc: brightness on top, media volume below, each showing its current level. Slide out onto one and move along it; both go up towards the top. The speaker at the start of the volume slider mutes and unmutes. Brightness asks once for "Modify system settings" and looks switched off until you allow it. Either slider can be hidden in Settings.
+- **Brightness and volume sliders** wrap around the outside of the dial, each half its arc: brightness on top, media volume below, each showing its current level. Slide out onto one and move along it; both go up towards the top. The speaker at the start of the volume slider mutes and unmutes. Brightness asks once for "Modify system settings" and looks switched off until you allow it. Either slider can be hidden in Settings, and the two can swap halves.
 - **Tap** the bubble to jump back to your previous app (or set it to open the menu, or do nothing).
 - **Double-tap** it to jump to the app before that, so your two latest apps are one gesture away. Both taps can be set to any action.
 - **Drag** the bubble anywhere; it snaps to the nearest side and remembers its position.

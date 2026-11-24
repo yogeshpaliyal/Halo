@@ -113,6 +113,8 @@
     <string name="brightness_slider_body">Semiarco superiore intorno al menu</string>
     <string name="volume_slider">Cursore volume</string>
     <string name="volume_slider_body">Semiarco inferiore intorno al menu, per il volume multimediale</string>
+    <string name="volume_on_top">Volume in alto</string>
+    <string name="volume_on_top_body">Scambia i cursori: volume in alto, luminosità in basso</string>
     <string name="bubble">Bolla</string>
     <string name="tag_size">Misura</string>
     <string name="tag_look">Aspetto</string>
