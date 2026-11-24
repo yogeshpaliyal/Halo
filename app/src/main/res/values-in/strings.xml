@@ -173,6 +173,10 @@
     <!-- Dial themes -->
     <string name="dial_title">Tema dial</string>
     <string name="dial_hint">Tampilan menu saat Anda menahan gelembung. Kaca memburamkan layar di belakangnya di Android 12 dan yang lebih baru.</string>
+    <string name="icon_shape_title">Bentuk ikon</string>
+    <string name="icon_shape_body">Bentuk ikon aplikasi di dial dan di Halo. Lingkaran membuat setiap ikon bulat, apa pun bentuk bawaan ponsel Anda.</string>
+    <string name="icon_shape_system">Bawaan ponsel</string>
+    <string name="icon_shape_circle">Lingkaran</string>
     <string name="dial_classic">Klasik</string>
     <string name="dial_match">Ikuti gelembung</string>
     <string name="dial_glass">Kaca</string>

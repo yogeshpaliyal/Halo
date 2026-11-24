@@ -176,6 +176,10 @@
     <!-- Dial themes -->
     <string name="dial_title">Kadran teması</string>
     <string name="dial_hint">Baloncuğa basılı tutunca menünün görünümü. Cam, Android 12 ve sonrasında arkadaki ekranı bulanıklaştırır.</string>
+    <string name="icon_shape_title">Simge şekli</string>
+    <string name="icon_shape_body">Kadranda ve Halo\'da uygulama simgelerinin şekli. Daire, telefonun kullandığı şekilden bağımsız olarak her simgeyi yuvarlak yapar.</string>
+    <string name="icon_shape_system">Telefon varsayılanı</string>
+    <string name="icon_shape_circle">Daire</string>
     <string name="dial_classic">Klasik</string>
     <string name="dial_match">Baloncuğa uy</string>
     <string name="dial_glass">Cam</string>

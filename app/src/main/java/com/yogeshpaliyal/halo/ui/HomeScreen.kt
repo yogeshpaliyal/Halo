@@ -145,6 +145,7 @@ fun HomeScreen() {
     var bubbleAnimations by remember { mutableStateOf(Prefs.bubbleAnimations(context)) }
     var bubbleReactions by remember { mutableStateOf(Prefs.bubbleReactions(context)) }
     var dialTheme by remember { mutableStateOf(Prefs.dialTheme(context)) }
+    var iconShape by remember { mutableStateOf(Prefs.iconShape(context)) }
     var tutorialDone by remember { mutableStateOf(Prefs.tutorialDone(context)) }
     var accessory by remember { mutableStateOf(Prefs.bubbleAccessory(context)) }
     val switches = remember(resumeTick) { Prefs.switchCount(context) }
@@ -387,7 +388,13 @@ fun HomeScreen() {
                     item { Section(stringResource(R.string.bubble)) { bubbleCard(BubbleSection.APPEARANCE) } }
                     item {
                         Section(stringResource(R.string.dial_title)) {
-                            DialThemeCard(dialTheme, bubblePalette) { dialTheme = it; Prefs.setDialTheme(context, it) }
+                            DialThemeCard(
+                                theme = dialTheme,
+                                palette = bubblePalette,
+                                onTheme = { dialTheme = it; Prefs.setDialTheme(context, it) },
+                                iconShape = iconShape,
+                                onIconShape = { iconShape = it; Prefs.setIconShape(context, it) },
+                            )
                         }
                     }
                 }

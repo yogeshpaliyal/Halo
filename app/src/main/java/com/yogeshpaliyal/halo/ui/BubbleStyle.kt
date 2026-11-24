@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,6 +39,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.yogeshpaliyal.halo.data.IconShape
 import com.yogeshpaliyal.halo.overlay.BubbleCharacter
 import com.yogeshpaliyal.halo.overlay.BubblePalette
 import com.yogeshpaliyal.halo.overlay.BubbleRenderer
@@ -308,7 +310,13 @@ fun DialThemeRow(theme: DialTheme, palette: BubblePalette, onTheme: (DialTheme) 
 
 /** The dial theme card on the Customise screen. */
 @Composable
-fun DialThemeCard(theme: DialTheme, palette: BubblePalette, onTheme: (DialTheme) -> Unit) {
+fun DialThemeCard(
+    theme: DialTheme,
+    palette: BubblePalette,
+    onTheme: (DialTheme) -> Unit,
+    iconShape: IconShape,
+    onIconShape: (IconShape) -> Unit,
+) {
     androidx.compose.material3.Card(shape = RoundedCornerShape(24.dp)) {
         Column(Modifier.padding(vertical = 14.dp)) {
             Text(
@@ -319,6 +327,31 @@ fun DialThemeCard(theme: DialTheme, palette: BubblePalette, onTheme: (DialTheme)
             )
             Spacer(Modifier.height(10.dp))
             DialThemeRow(theme, palette, onTheme)
+            Spacer(Modifier.height(14.dp))
+            Text(
+                stringResource(com.yogeshpaliyal.halo.R.string.icon_shape_title),
+                style = MaterialTheme.typography.titleSmall,
+                modifier = Modifier.padding(horizontal = 20.dp),
+            )
+            Text(
+                stringResource(com.yogeshpaliyal.halo.R.string.icon_shape_body),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(horizontal = 20.dp),
+            )
+            Spacer(Modifier.height(6.dp))
+            Row(
+                Modifier.padding(horizontal = 20.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                IconShape.entries.forEach { shape ->
+                    FilterChip(
+                        selected = shape == iconShape,
+                        onClick = { onIconShape(shape) },
+                        label = { Text(stringResource(shape.labelRes)) },
+                    )
+                }
+            }
         }
     }
 }
