@@ -179,6 +179,10 @@
     <!-- Dial themes -->
     <string name="dial_title">Thème du cadran</string>
     <string name="dial_hint">L’apparence du menu quand vous maintenez la bulle. Verre floute l’écran derrière sur Android 12 et plus.</string>
+    <string name="icon_shape_title">Forme des icônes</string>
+    <string name="icon_shape_body">Forme des icônes d’apps dans le cadran et dans Halo. Cercle rend chaque icône ronde, quelle que soit la forme utilisée par votre téléphone.</string>
+    <string name="icon_shape_system">Par défaut</string>
+    <string name="icon_shape_circle">Cercle</string>
     <string name="dial_classic">Classique</string>
     <string name="dial_match">Comme la bulle</string>
     <string name="dial_glass">Verre</string>

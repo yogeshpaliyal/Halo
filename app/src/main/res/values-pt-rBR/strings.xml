@@ -179,6 +179,10 @@
     <!-- Dial themes -->
     <string name="dial_title">Tema do disco</string>
     <string name="dial_hint">Como o menu aparece ao segurar a bolha. Vidro desfoca a tela atrás no Android 12 ou mais recente.</string>
+    <string name="icon_shape_title">Formato dos ícones</string>
+    <string name="icon_shape_body">Formato dos ícones de apps no disco e no Halo. Círculo deixa todos redondos, seja qual for o formato do seu celular.</string>
+    <string name="icon_shape_system">Padrão do celular</string>
+    <string name="icon_shape_circle">Círculo</string>
     <string name="dial_classic">Clássico</string>
     <string name="dial_match">Igual à bolha</string>
     <string name="dial_glass">Vidro</string>

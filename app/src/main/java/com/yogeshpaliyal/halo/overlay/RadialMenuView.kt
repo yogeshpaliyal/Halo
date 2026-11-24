@@ -69,7 +69,7 @@ class RadialMenuView(
 
     private val iconSize = dp(ICON_DP)
     private val deadZone = dp(52f)
-    private val span = 160f
+    private val span = SPAN_DEG
     /** Direction the half-rings open towards: left when docked right, right when docked left. */
     private val facing = if (onRightEdge) 180f else 0f
     /** +1 / -1 so that slot 0 is always the top item, whichever side the bubble is on. */
@@ -81,14 +81,16 @@ class RadialMenuView(
     }
 
     private val favRing = favorites.takeIf { it.isNotEmpty() }?.let { Ring(it, dp(INNER_DP)) }
+    // Alone, recents take the inner ring, pushed out far enough that they don't overlap.
     private val recentRing = recents.takeIf { it.isNotEmpty() }
-        ?.let { Ring(it, if (favRing == null) dp(INNER_DP) else dp(OUTER_DP)) }
+        ?.let { Ring(it, if (favRing == null) dp(soloRingDp(it.size)) else dp(OUTER_DP)) }
     private var rings: List<Ring> = listOfNotNull(favRing, recentRing)
 
     /** Furthest ring the menu can show, open folders included; keeps its position fixed. */
     private val extent = when {
         favRing != null && (recentRing != null || favorites.any { it.isFolder }) -> dp(OUTER_DP)
-        favRing != null || recentRing != null -> dp(INNER_DP)
+        favRing != null -> dp(INNER_DP)
+        recentRing != null -> recentRing.radius
         else -> 0f
     }
 
@@ -819,6 +821,10 @@ class RadialMenuView(
         private const val INNER_DP = 122f
         private const val OUTER_DP = 208f
         private const val ICON_DP = 46f
+        /** Matches the dial's [span]; used to fit a ring's icons side by side. */
+        private const val SPAN_DEG = 160f
+        /** Space between neighbouring icons on a ring. */
+        private const val ICON_GAP_DP = 12f
         private const val FOLDER_DWELL_MS = 280L
         /** Slider arcs: track thickness, and distance from the outermost ring's centre line. */
         private const val SLIDER_TRACK_DP = 30f
@@ -830,6 +836,13 @@ class RadialMenuView(
         /** How far back in towards the apps a held slider lets go. */
         private const val SLIDER_RELEASE_DP = 28f
 
+        /**
+         * Radius of the only ring when there are no favourites: the inner ring, or further out
+         * if [count] icons wouldn't fit on it without overlapping.
+         */
+        private fun soloRingDp(count: Int): Float =
+            maxOf(INNER_DP, count * (ICON_DP + ICON_GAP_DP) / Math.toRadians(SPAN_DEG.toDouble()).toFloat())
+
         /** How far the menu reaches above and below its centre, in px. */
         /** Pass hasRecents = true when favourites include a folder: open folders use the outer ring. */
         fun halfExtentPx(
@@ -840,7 +853,9 @@ class RadialMenuView(
         ): Float {
             val outer = when {
                 hasFavorites && hasRecents -> OUTER_DP
-                hasFavorites || hasRecents -> INNER_DP
+                hasFavorites -> INNER_DP
+                // Recents alone: their ring can sit a little further out (see soloRingDp).
+                hasRecents -> soloRingDp(Prefs.MAX_RECENTS)
                 else -> 0f
             }
             // The brightness and volume sliders sit outside the outermost ring.

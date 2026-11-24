@@ -176,6 +176,10 @@
     <!-- Dial themes -->
     <string name="dial_title">डायल थीम</string>
     <string name="dial_hint">बबल दबाने पर मेन्यू कैसा दिखे। ग्लास Android 12 और नए वर्शन पर पीछे की स्क्रीन धुंधली कर देता है।</string>
+    <string name="icon_shape_title">आइकन का आकार</string>
+    <string name="icon_shape_body">डायल और Halo में ऐप आइकन का आकार। गोल चुनने पर हर आइकन गोल दिखेगा, चाहे फ़ोन कोई भी आकार इस्तेमाल करे।</string>
+    <string name="icon_shape_system">फ़ोन का डिफ़ॉल्ट</string>
+    <string name="icon_shape_circle">गोल</string>
     <string name="dial_classic">क्लासिक</string>
     <string name="dial_match">बबल जैसा</string>
     <string name="dial_glass">ग्लास</string>

@@ -38,6 +38,7 @@ object Prefs {
     const val KEY_BUBBLE_ANIMATIONS = "bubble_animations"
     const val KEY_BUBBLE_REACTIONS = "bubble_reactions"
     const val KEY_DIAL_THEME = "dial_theme"
+    const val KEY_ICON_SHAPE = "icon_shape"
     const val KEY_AVATAR_VERSION = "avatar_version"
     private const val KEY_TUTORIAL_DONE = "tutorial_done"
     const val KEY_BUBBLE_ACCESSORY = "bubble_accessory"
@@ -153,6 +154,13 @@ object Prefs {
             ?: DialTheme.CLASSIC
 
     fun setDialTheme(context: Context, theme: DialTheme) = sp(context).edit { putString(KEY_DIAL_THEME, theme.name) }
+
+    fun iconShape(context: Context): IconShape =
+        sp(context).getString(KEY_ICON_SHAPE, null)
+            ?.let { runCatching { IconShape.valueOf(it) }.getOrNull() }
+            ?: IconShape.SYSTEM
+
+    fun setIconShape(context: Context, shape: IconShape) = sp(context).edit { putString(KEY_ICON_SHAPE, shape.name) }
 
     /** Characters sleep at night, sweat on low battery, show a bolt while charging, hop for notifications. */
     fun bubbleReactions(context: Context): Boolean = sp(context).getBoolean(KEY_BUBBLE_REACTIONS, true)
