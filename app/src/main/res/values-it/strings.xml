@@ -6,6 +6,10 @@
     <string name="menu_empty_hint">Scegli i preferiti nell’app Halo</string>
     <string name="flashlight_busy">La torcia è occupata. Chiudi l’app Fotocamera e riprova.</string>
     <string name="folder_default_name">Cartella</string>
+    <string name="slider_brightness">Luminosità %d%%</string>
+    <string name="slider_volume">Volume %d%%</string>
+    <string name="slider_brightness_locked">Rilascia per consentire il controllo della luminosità</string>
+    <string name="slider_brightness_locked_tap">Tocca per consentire il controllo della luminosità</string>
     <string name="action_flashlight">Torcia</string>
     <string name="action_volume">Volume</string>
     <string name="action_play_pause">Riproduci / pausa</string>

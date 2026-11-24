@@ -6,6 +6,10 @@
     <string name="menu_empty_hint">Halo uygulamasında favorileri seçin</string>
     <string name="flashlight_busy">Fener kullanımda. Kamera uygulamasını kapatıp tekrar deneyin.</string>
     <string name="folder_default_name">Klasör</string>
+    <string name="slider_brightness">Parlaklık %d%%</string>
+    <string name="slider_volume">Ses %d%%</string>
+    <string name="slider_brightness_locked">Parlaklık kontrolüne izin vermek için bırakın</string>
+    <string name="slider_brightness_locked_tap">Parlaklık kontrolüne izin vermek için dokunun</string>
     <string name="action_flashlight">Fener</string>
     <string name="action_volume">Ses</string>
     <string name="action_play_pause">Oynat / duraklat</string>

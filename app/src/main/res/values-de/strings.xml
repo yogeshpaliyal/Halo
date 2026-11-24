@@ -6,6 +6,10 @@
     <string name="menu_empty_hint">Wähle Favoriten in der Halo-App</string>
     <string name="flashlight_busy">Taschenlampe wird gerade verwendet. Schließe die Kamera-App und versuche es erneut.</string>
     <string name="folder_default_name">Ordner</string>
+    <string name="slider_brightness">Helligkeit %d%%</string>
+    <string name="slider_volume">Lautstärke %d%%</string>
+    <string name="slider_brightness_locked">Loslassen, um die Helligkeitssteuerung zu erlauben</string>
+    <string name="slider_brightness_locked_tap">Tippen, um die Helligkeitssteuerung zu erlauben</string>
     <string name="action_flashlight">Taschenlampe</string>
     <string name="action_volume">Lautstärke</string>
     <string name="action_play_pause">Wiedergabe / Pause</string>

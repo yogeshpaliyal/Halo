@@ -6,6 +6,10 @@
     <string name="menu_empty_hint">Выберите избранное в приложении Halo</string>
     <string name="flashlight_busy">Фонарик занят. Закройте приложение камеры и попробуйте снова.</string>
     <string name="folder_default_name">Папка</string>
+    <string name="slider_brightness">Яркость %d%%</string>
+    <string name="slider_volume">Громкость %d%%</string>
+    <string name="slider_brightness_locked">Отпустите, чтобы разрешить управление яркостью</string>
+    <string name="slider_brightness_locked_tap">Нажмите, чтобы разрешить управление яркостью</string>
     <string name="action_flashlight">Фонарик</string>
     <string name="action_volume">Громкость</string>
     <string name="action_play_pause">Пуск / пауза</string>

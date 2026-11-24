@@ -6,6 +6,10 @@
     <string name="menu_empty_hint">Elige favoritos en la app Halo</string>
     <string name="flashlight_busy">La linterna está en uso. Cierra la app de cámara y vuelve a intentarlo.</string>
     <string name="folder_default_name">Carpeta</string>
+    <string name="slider_brightness">Brillo %d%%</string>
+    <string name="slider_volume">Volumen %d%%</string>
+    <string name="slider_brightness_locked">Suelta para permitir el control del brillo</string>
+    <string name="slider_brightness_locked_tap">Toca para permitir el control del brillo</string>
     <string name="action_flashlight">Linterna</string>
     <string name="action_volume">Volumen</string>
     <string name="action_play_pause">Reproducir / pausar</string>

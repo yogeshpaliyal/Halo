@@ -355,6 +355,11 @@ class HaloService : Service(), BubbleView.Listener {
             params.setFitInsetsSides(0)
             params.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS
         }
+        // Brightness slider used before "Modify system settings" is allowed: take them there.
+        view.onBrightnessLocked = {
+            removeMenu()
+            runCatching { startActivity(SystemControls.writeSettingsIntent(this)) }
+        }
         if (tapMode) armTapMode(view)
         wm.addView(view, params)
         menu = view
@@ -512,6 +517,11 @@ class HaloService : Service(), BubbleView.Listener {
     override fun onMenuRelease(rawX: Float, rawY: Float) {
         val view = menu
         view?.updateFinger(rawX, rawY)
+        // Let go on the brightness or volume slider: the change is already made, just close.
+        if (view?.endSlider() == true) {
+            removeMenu()
+            return
+        }
         val target = view?.selected
         if (view != null && target != null && target.isFolder) {
             // Let go on a folder: keep the dial up with the folder open, and take the next tap.

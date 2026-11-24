@@ -6,6 +6,10 @@
     <string name="menu_empty_hint">Halo ऐप में पसंदीदा चुनें</string>
     <string name="flashlight_busy">फ़्लैशलाइट अभी इस्तेमाल में है। कैमरा ऐप बंद करके फिर से कोशिश करें।</string>
     <string name="folder_default_name">फ़ोल्डर</string>
+    <string name="slider_brightness">चमक %d%%</string>
+    <string name="slider_volume">आवाज़ %d%%</string>
+    <string name="slider_brightness_locked">चमक नियंत्रण की अनुमति देने के लिए छोड़ें</string>
+    <string name="slider_brightness_locked_tap">चमक नियंत्रण की अनुमति देने के लिए टैप करें</string>
     <string name="action_flashlight">फ़्लैशलाइट</string>
     <string name="action_volume">आवाज़</string>
     <string name="action_play_pause">चलाएं / रोकें</string>
