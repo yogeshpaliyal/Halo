@@ -39,6 +39,7 @@ object Prefs {
     const val KEY_BUBBLE_REACTIONS = "bubble_reactions"
     const val KEY_DIAL_THEME = "dial_theme"
     const val KEY_ICON_SHAPE = "icon_shape"
+    const val KEY_THEMED_ICONS = "themed_icons"
     const val KEY_AVATAR_VERSION = "avatar_version"
     private const val KEY_TUTORIAL_DONE = "tutorial_done"
     const val KEY_BUBBLE_ACCESSORY = "bubble_accessory"
@@ -161,6 +162,10 @@ object Prefs {
             ?: IconShape.SYSTEM
 
     fun setIconShape(context: Context, shape: IconShape) = sp(context).edit { putString(KEY_ICON_SHAPE, shape.name) }
+
+    /** Single-colour icons in wallpaper colours, like the launcher's themed icons (Android 13+). */
+    fun themedIcons(context: Context): Boolean = sp(context).getBoolean(KEY_THEMED_ICONS, false)
+    fun setThemedIcons(context: Context, on: Boolean) = sp(context).edit { putBoolean(KEY_THEMED_ICONS, on) }
 
     /** Characters sleep at night, sweat on low battery, show a bolt while charging, hop for notifications. */
     fun bubbleReactions(context: Context): Boolean = sp(context).getBoolean(KEY_BUBBLE_REACTIONS, true)

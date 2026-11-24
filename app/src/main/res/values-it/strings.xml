@@ -180,9 +180,14 @@
     <string name="dial_title">Tema del quadrante</string>
     <string name="dial_hint">Come appare il menu quando tieni premuta la bolla. Vetro sfoca lo schermo dietro su Android 12 e successivi.</string>
     <string name="icon_shape_title">Forma delle icone</string>
-    <string name="icon_shape_body">Forma delle icone delle app nel quadrante e in Halo. Cerchio rende tonda ogni icona, qualunque forma usi il telefono.</string>
+    <string name="icon_shape_body">Halo non può leggere la forma delle icone della schermata Home, quindi scegli quella corrispondente. Predefinita usa la forma che Android dà alle icone su questo telefono.</string>
     <string name="icon_shape_system">Predefinita</string>
     <string name="icon_shape_circle">Cerchio</string>
+    <string name="icon_shape_squircle">Squircle</string>
+    <string name="icon_shape_rounded">Quadrato arrotondato</string>
+    <string name="icon_shape_teardrop">Goccia</string>
+    <string name="themed_icons">Icone a tema</string>
+    <string name="themed_icons_body">Icone monocolore con i colori dello sfondo, come le icone a tema della schermata Home. Le app senza icona a tema mantengono quella abituale.</string>
     <string name="dial_classic">Classico</string>
     <string name="dial_match">Come la bolla</string>
     <string name="dial_glass">Vetro</string>
