@@ -8,6 +8,8 @@
     <string name="folder_default_name">フォルダ</string>
     <string name="slider_brightness">明るさ %d%%</string>
     <string name="slider_volume">音量 %d%%</string>
+    <string name="slider_mute">ミュート</string>
+    <string name="slider_unmute">ミュート解除</string>
     <string name="slider_brightness_locked">指を離して明るさの調整を許可</string>
     <string name="slider_brightness_locked_tap">タップして明るさの調整を許可</string>
     <string name="action_flashlight">ライト</string>
@@ -102,6 +104,11 @@
     <string name="hold_delay">長押しの時間</string>
     <string name="haptics">振動</string>
     <string name="haptics_body">長押し時と、アプリの上を通るたびに振動</string>
+    <string name="tag_dial">ダイアル</string>
+    <string name="brightness_slider">明るさスライダー</string>
+    <string name="brightness_slider_body">ダイアルの外側、上半分の弧</string>
+    <string name="volume_slider">音量スライダー</string>
+    <string name="volume_slider_body">ダイアルの外側、下半分の弧（メディア音量）</string>
     <string name="bubble">バブル</string>
     <string name="tag_size">サイズ</string>
     <string name="tag_look">見た目</string>

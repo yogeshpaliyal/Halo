@@ -8,6 +8,8 @@
     <string name="folder_default_name">फ़ोल्डर</string>
     <string name="slider_brightness">चमक %d%%</string>
     <string name="slider_volume">आवाज़ %d%%</string>
+    <string name="slider_mute">म्यूट</string>
+    <string name="slider_unmute">अनम्यूट</string>
     <string name="slider_brightness_locked">चमक नियंत्रण की अनुमति देने के लिए छोड़ें</string>
     <string name="slider_brightness_locked_tap">चमक नियंत्रण की अनुमति देने के लिए टैप करें</string>
     <string name="action_flashlight">फ़्लैशलाइट</string>
@@ -104,6 +106,11 @@
     <string name="hold_delay">दबाने का समय</string>
     <string name="haptics">वाइब्रेशन</string>
     <string name="haptics_body">दबाने पर और हर ऐप पर उंगली सरकाते समय वाइब्रेट करें</string>
+    <string name="tag_dial">डायल</string>
+    <string name="brightness_slider">चमक स्लाइडर</string>
+    <string name="brightness_slider_body">डायल के चारों ओर ऊपर वाला आधा चाप</string>
+    <string name="volume_slider">आवाज़ स्लाइडर</string>
+    <string name="volume_slider_body">डायल के चारों ओर नीचे वाला आधा चाप, मीडिया आवाज़ के लिए</string>
     <string name="bubble">बबल</string>
     <string name="tag_size">आकार</string>
     <string name="tag_look">रूप</string>

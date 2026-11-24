@@ -8,6 +8,8 @@
     <string name="folder_default_name">Папка</string>
     <string name="slider_brightness">Яркость %d%%</string>
     <string name="slider_volume">Громкость %d%%</string>
+    <string name="slider_mute">Без звука</string>
+    <string name="slider_unmute">Включить звук</string>
     <string name="slider_brightness_locked">Отпустите, чтобы разрешить управление яркостью</string>
     <string name="slider_brightness_locked_tap">Нажмите, чтобы разрешить управление яркостью</string>
     <string name="action_flashlight">Фонарик</string>
@@ -108,6 +110,11 @@
     <string name="hold_delay">Время удержания</string>
     <string name="haptics">Вибрация</string>
     <string name="haptics_body">Вибрация при удержании и на каждом приложении под пальцем</string>
+    <string name="tag_dial">Меню</string>
+    <string name="brightness_slider">Ползунок яркости</string>
+    <string name="brightness_slider_body">Верхняя полудуга вокруг меню</string>
+    <string name="volume_slider">Ползунок громкости</string>
+    <string name="volume_slider_body">Нижняя полудуга вокруг меню, громкость медиа</string>
     <string name="bubble">Кнопка</string>
     <string name="tag_size">Размер</string>
     <string name="tag_look">Вид</string>

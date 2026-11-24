@@ -8,6 +8,8 @@
     <string name="folder_default_name">Cartella</string>
     <string name="slider_brightness">Luminosità %d%%</string>
     <string name="slider_volume">Volume %d%%</string>
+    <string name="slider_mute">Silenzia</string>
+    <string name="slider_unmute">Riattiva audio</string>
     <string name="slider_brightness_locked">Rilascia per consentire il controllo della luminosità</string>
     <string name="slider_brightness_locked_tap">Tocca per consentire il controllo della luminosità</string>
     <string name="action_flashlight">Torcia</string>
@@ -106,6 +108,11 @@
     <string name="hold_delay">Durata pressione</string>
     <string name="haptics">Vibrazione</string>
     <string name="haptics_body">Vibra quando tieni premuto e su ogni app su cui scorri</string>
+    <string name="tag_dial">Menu</string>
+    <string name="brightness_slider">Cursore luminosità</string>
+    <string name="brightness_slider_body">Semiarco superiore intorno al menu</string>
+    <string name="volume_slider">Cursore volume</string>
+    <string name="volume_slider_body">Semiarco inferiore intorno al menu, per il volume multimediale</string>
     <string name="bubble">Bolla</string>
     <string name="tag_size">Misura</string>
     <string name="tag_look">Aspetto</string>

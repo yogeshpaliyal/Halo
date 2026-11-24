@@ -24,6 +24,8 @@ object Prefs {
     private const val KEY_DOUBLE_TAP_APP = "double_tap_app"
     private const val KEY_HOLD_DELAY = "hold_delay"
     private const val KEY_HAPTICS = "haptics"
+    private const val KEY_BRIGHTNESS_SLIDER = "brightness_slider"
+    private const val KEY_VOLUME_SLIDER = "volume_slider"
     private const val KEY_HIDDEN_RECENTS = "hidden_recents"
     const val KEY_HIDE_FULLSCREEN = "hide_fullscreen"
     const val KEY_BUBBLE_OPACITY = "bubble_opacity"
@@ -216,6 +218,12 @@ object Prefs {
         sp(context).edit { putString(KEY_HOLD_DELAY, delay.name) }
 
     fun haptics(context: Context): Boolean = sp(context).getBoolean(KEY_HAPTICS, true)
+
+    /** Brightness and volume sliders around the dial; both on by default. */
+    fun brightnessSlider(context: Context): Boolean = sp(context).getBoolean(KEY_BRIGHTNESS_SLIDER, true)
+    fun setBrightnessSlider(context: Context, on: Boolean) = sp(context).edit { putBoolean(KEY_BRIGHTNESS_SLIDER, on) }
+    fun volumeSlider(context: Context): Boolean = sp(context).getBoolean(KEY_VOLUME_SLIDER, true)
+    fun setVolumeSlider(context: Context, on: Boolean) = sp(context).edit { putBoolean(KEY_VOLUME_SLIDER, on) }
     fun setHaptics(context: Context, on: Boolean) = sp(context).edit { putBoolean(KEY_HAPTICS, on) }
 
     fun enabled(context: Context): Boolean = sp(context).getBoolean(KEY_ENABLED, false)

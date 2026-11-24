@@ -8,6 +8,8 @@
     <string name="folder_default_name">Dossier</string>
     <string name="slider_brightness">Luminosité %d%%</string>
     <string name="slider_volume">Volume %d%%</string>
+    <string name="slider_mute">Couper le son</string>
+    <string name="slider_unmute">Rétablir le son</string>
     <string name="slider_brightness_locked">Relâchez pour autoriser le réglage de la luminosité</string>
     <string name="slider_brightness_locked_tap">Touchez pour autoriser le réglage de la luminosité</string>
     <string name="action_flashlight">Lampe torche</string>
@@ -106,6 +108,11 @@
     <string name="hold_delay">Durée d’appui</string>
     <string name="haptics">Vibrations</string>
     <string name="haptics_body">Vibrer à l’appui et sur chaque app survolée</string>
+    <string name="tag_dial">Cadran</string>
+    <string name="brightness_slider">Curseur de luminosité</string>
+    <string name="brightness_slider_body">Demi-arc du haut autour du menu</string>
+    <string name="volume_slider">Curseur de volume</string>
+    <string name="volume_slider_body">Demi-arc du bas autour du menu, pour le volume multimédia</string>
     <string name="bubble">Bulle</string>
     <string name="tag_size">Taille</string>
     <string name="tag_look">Style</string>
