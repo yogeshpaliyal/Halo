@@ -173,6 +173,8 @@ fun HomeScreen() {
     var doubleTapAction by remember { mutableStateOf(Prefs.doubleTapAction(context)) }
     var holdDelay by remember { mutableStateOf(Prefs.holdDelay(context)) }
     var haptics by remember { mutableStateOf(Prefs.haptics(context)) }
+    var brightnessSlider by remember { mutableStateOf(Prefs.brightnessSlider(context)) }
+    var volumeSlider by remember { mutableStateOf(Prefs.volumeSlider(context)) }
     var hideFullscreen by remember { mutableStateOf(Prefs.hideInFullscreen(context)) }
     var opacity by remember { mutableFloatStateOf(Prefs.bubbleOpacity(context)) }
     var bubbleSize by remember { mutableStateOf(Prefs.bubbleSize(context)) }
@@ -360,6 +362,10 @@ fun HomeScreen() {
                     onChooseDoubleTapApp = { appPickerFor = DOUBLE_TAP },
                     onHoldDelay = { holdDelay = it; Prefs.setHoldDelay(context, it) },
                     onHaptics = { haptics = it; Prefs.setHaptics(context, it) },
+                    brightnessSlider = brightnessSlider,
+                    onBrightnessSlider = { brightnessSlider = it; Prefs.setBrightnessSlider(context, it) },
+                    volumeSlider = volumeSlider,
+                    onVolumeSlider = { volumeSlider = it; Prefs.setVolumeSlider(context, it) },
                 )
                 }
             }

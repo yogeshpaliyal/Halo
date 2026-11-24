@@ -8,6 +8,8 @@
     <string name="folder_default_name">Klasör</string>
     <string name="slider_brightness">Parlaklık %d%%</string>
     <string name="slider_volume">Ses %d%%</string>
+    <string name="slider_mute">Sessiz</string>
+    <string name="slider_unmute">Sesi aç</string>
     <string name="slider_brightness_locked">Parlaklık kontrolüne izin vermek için bırakın</string>
     <string name="slider_brightness_locked_tap">Parlaklık kontrolüne izin vermek için dokunun</string>
     <string name="action_flashlight">Fener</string>
@@ -104,6 +106,11 @@
     <string name="hold_delay">Basılı tutma süresi</string>
     <string name="haptics">Titreşim</string>
     <string name="haptics_body">Basılı tutunca ve üzerinden geçtiğiniz her uygulamada titreşir</string>
+    <string name="tag_dial">Menü</string>
+    <string name="brightness_slider">Parlaklık kaydırıcısı</string>
+    <string name="brightness_slider_body">Menünün etrafındaki üst yarım yay</string>
+    <string name="volume_slider">Ses kaydırıcısı</string>
+    <string name="volume_slider_body">Menünün etrafındaki alt yarım yay, medya sesi için</string>
     <string name="bubble">Baloncuk</string>
     <string name="tag_size">Boyut</string>
     <string name="tag_look">Görünüm</string>

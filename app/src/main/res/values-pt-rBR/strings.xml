@@ -8,6 +8,8 @@
     <string name="folder_default_name">Pasta</string>
     <string name="slider_brightness">Brilho %d%%</string>
     <string name="slider_volume">Volume %d%%</string>
+    <string name="slider_mute">Silenciar</string>
+    <string name="slider_unmute">Ativar som</string>
     <string name="slider_brightness_locked">Solte para permitir o controle de brilho</string>
     <string name="slider_brightness_locked_tap">Toque para permitir o controle de brilho</string>
     <string name="action_flashlight">Lanterna</string>
@@ -106,6 +108,11 @@
     <string name="hold_delay">Tempo de pressionar</string>
     <string name="haptics">Vibração</string>
     <string name="haptics_body">Vibrar ao segurar e em cada app que você desliza por cima</string>
+    <string name="tag_dial">Dial</string>
+    <string name="brightness_slider">Controle de brilho</string>
+    <string name="brightness_slider_body">Meio arco superior ao redor do menu</string>
+    <string name="volume_slider">Controle de volume</string>
+    <string name="volume_slider_body">Meio arco inferior ao redor do menu, para o volume de mídia</string>
     <string name="bubble">Bolha</string>
     <string name="tag_size">Tamanho</string>
     <string name="tag_look">Visual</string>

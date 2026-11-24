@@ -23,6 +23,7 @@ import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.floor
 import kotlin.math.hypot
+import kotlin.math.roundToInt
 import kotlin.math.sin
 
 /**
@@ -55,6 +56,9 @@ class RadialMenuView(
     recents: List<AppEntry>,
     /** Keys of apps that have notifications waiting; each gets a small dot. */
     private val badged: Set<String> = emptySet(),
+    /** Which of the brightness and volume sliders to show (Settings). */
+    private val showBrightness: Boolean = true,
+    private val showVolume: Boolean = true,
 ) : View(context) {
 
     /** [angles] is set for an open folder: its apps sit on a short arc instead of evenly spread. */
@@ -91,6 +95,12 @@ class RadialMenuView(
     // --- brightness and volume sliders ---------------------------------------------------
 
     private enum class Slider { BRIGHTNESS, VOLUME }
+
+    /** The sliders turned on in Settings; empty means none are drawn or touchable. */
+    private val sliders = buildList {
+        if (showBrightness) add(Slider.BRIGHTNESS)
+        if (showVolume) add(Slider.VOLUME)
+    }
 
     private val sliderTrack = dp(SLIDER_TRACK_DP)
     private val sliderRadius = (if (extent > 0f) extent else dp(INNER_DP)) + dp(SLIDER_GAP_DP)
@@ -168,7 +178,23 @@ class RadialMenuView(
     }
     private val brightnessIcon = context.getDrawable(R.drawable.ic_slider_brightness)!!.mutate()
     private val volumeIcon = context.getDrawable(R.drawable.ic_slider_volume)!!.mutate()
+    private val mutedIcon = context.getDrawable(R.drawable.ic_slider_volume_off)!!.mutate()
+    /** Finger on the mute button at the start (bottom tip) of the volume slider. */
+    private var muteHover = false
     private val sliderIconSize = dp(18f)
+    private val thumbPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = theme.pill }
+    private val thumbRim = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = theme.band }
+    private val thumbText = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = theme.pillText
+        textSize = dp(10f)
+        isFakeBoldText = true
+        textAlign = Paint.Align.CENTER
+    }
+    private val offLine = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.STROKE
+        strokeCap = Paint.Cap.ROUND
+        strokeWidth = dp(2f)
+    }
     private val arcRect = RectF()
     private val pillRect = RectF()
 
@@ -212,6 +238,19 @@ class RadialMenuView(
     fun updateFinger(rawX: Float, rawY: Float): Boolean {
         fingerX = rawX
         fingerY = rawY
+        val onMute = showVolume && activeSlider == null && onMuteButton(rawX, rawY)
+        if (onMute != muteHover) {
+            muteHover = onMute
+            invalidate()
+            if (onMute) {
+                removeCallbacks(openFolderLater)
+                selRing = -1
+                selSlot = -1
+                selected = null
+                return true
+            }
+        }
+        if (onMute) return false
         trackSlider(rawX, rawY)?.let { tick ->
             removeCallbacks(openFolderLater)
             selRing = -1
@@ -261,7 +300,11 @@ class RadialMenuView(
                 activeSlider = null
                 return null
             }
-            s = if (u < 0.5f) Slider.BRIGHTNESS else Slider.VOLUME
+            s = (if (u < 0.5f) Slider.BRIGHTNESS else Slider.VOLUME).takeIf { it in sliders }
+            if (s == null) {
+                activeSlider = null
+                return null
+            }
         }
         val grabbed = s != activeSlider
         activeSlider = s
@@ -300,12 +343,49 @@ class RadialMenuView(
      * a brightness slider Halo can't use yet asks for access through [onBrightnessLocked].
      */
     fun endSlider(): Boolean {
+        if (muteHover) {
+            muteHover = false
+            toggleMute()
+            invalidate()
+            return true
+        }
         val s = activeSlider ?: return false
         activeSlider = null
         sliderStep = -1
         invalidate()
         if (s == Slider.BRIGHTNESS && !brightnessAllowed) onBrightnessLocked?.invoke()
         return true
+    }
+
+    /** Mute, or bring back the volume from before muting. */
+    private fun toggleMute() {
+        val target = if (volume > 0f) {
+            SystemControls.volumeBeforeMute = volume
+            0f
+        } else {
+            SystemControls.volumeBeforeMute.takeIf { it > 0f } ?: 0.5f
+        }
+        volume = target
+        volumeIndex = SystemControls.volumeIndex(context, target)
+        SystemControls.setVolumeIndex(context, volumeIndex)
+        if (Prefs.haptics(context)) performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
+    }
+
+    /** Span (0..1) from a slider's arc end to the centre of the icon or button past it. */
+    private fun tipIconSpan(r: Float): Float =
+        Math.toDegrees(((sliderTrack + dp(3f)) / r).toDouble()).toFloat() / span
+
+    /** Centre of the mute button, at radius [r]. */
+    private fun mutePoint(r: Float, cx: Float, cy: Float): Pair<Float, Float> {
+        val b = sliderRange(Slider.VOLUME).second - capSpan(r)
+        val ang = Math.toRadians(spanAngle(b + tipIconSpan(r)).toDouble())
+        return (cx + r * cos(ang).toFloat()) to (cy + r * sin(ang).toFloat())
+    }
+
+    private fun onMuteButton(rawX: Float, rawY: Float): Boolean {
+        getLocationOnScreen(screenLoc)
+        val (mx, my) = mutePoint(sliderRadius, centerX(), centerY())
+        return hypot(rawX - screenLoc[0] - mx, rawY - screenLoc[1] - my) < sliderTrack * 0.9f
     }
 
     /** Opens the highlighted folder right away (finger lifted on it). */
@@ -384,6 +464,7 @@ class RadialMenuView(
             }
             MotionEvent.ACTION_CANCEL -> {
                 activeSlider = null
+                muteHover = false
                 onPick = null
                 pick(null)
             }
@@ -397,7 +478,7 @@ class RadialMenuView(
 
     /** Keep the whole menu on screen when the bubble sits near the top or bottom. */
     private fun centerY(): Float {
-        val outer = maxOf(extent + iconSize, sliderRadius + sliderTrack)
+        val outer = if (sliders.isEmpty()) extent + iconSize else maxOf(extent + iconSize, sliderRadius + sliderTrack)
         val y = anchorScreenY - screenLoc[1]
         return if (height <= 2 * outer) height / 2f else y.coerceIn(outer, height - outer)
     }
@@ -592,7 +673,7 @@ class RadialMenuView(
     private fun drawSliders(canvas: Canvas, cx: Float, cy: Float, p: Float, fade: Float) {
         val r = sliderDrawRadius(p)
         val cap = capSpan(r)
-        for (s in Slider.entries) {
+        for (s in sliders) {
             val (lo, hi) = sliderRange(s)
             // Round caps end exactly at the range ends.
             val a = lo + cap
@@ -602,41 +683,75 @@ class RadialMenuView(
 
             sliderPaint.strokeWidth = sliderTrack
             sliderPaint.color = theme.band
-            sliderPaint.alpha = (fade * bandAlpha * if (locked) 0.6f else 1f).toInt()
+            // No "Modify system settings" access yet: a faint, empty track reads as switched off.
+            sliderPaint.alpha = (fade * bandAlpha * if (locked) 0.35f else 1f).toInt()
             drawSpanArc(canvas, cx, cy, r, a, b, sliderPaint)
-            val sa = spanAngle(a)
-            val sb = spanAngle(b)
-            drawEdges(canvas, cx, cy, r, minOf(sa, sb), kotlin.math.abs(sa - sb), fade, sliderTrack / 2f)
-
-            val fillEnd = b - (b - a) * value
             if (!locked) {
+                val sa = spanAngle(a)
+                val sb = spanAngle(b)
+                drawEdges(canvas, cx, cy, r, minOf(sa, sb), kotlin.math.abs(sa - sb), fade, sliderTrack / 2f)
+
+                val fillEnd = b - (b - a) * value
                 sliderPaint.strokeWidth = sliderTrack - dp(8f)
                 sliderPaint.color = theme.pill
                 sliderPaint.alpha = (fade * if (s == activeSlider) 255 else 220).toInt()
                 drawSpanArc(canvas, cx, cy, r, b, fillEnd, sliderPaint)
-                if (s == activeSlider) {
-                    val (tx, ty) = sliderPoint(s, r, cx, cy)
-                    canvas.drawCircle(tx, ty, sliderTrack * 0.8f, glow)
-                }
+
+                // Knob with the current level, so it reads at a glance without touching it.
+                val (tx, ty) = sliderPoint(s, r, cx, cy)
+                if (s == activeSlider) canvas.drawCircle(tx, ty, sliderTrack * 0.8f, glow)
+                thumbPaint.alpha = (fade * 255).toInt()
+                canvas.drawCircle(tx, ty, sliderTrack / 2f + dp(2f), thumbRim)
+                canvas.drawCircle(tx, ty, sliderTrack / 2f, thumbPaint)
+                thumbText.alpha = (fade * 255).toInt()
+                canvas.drawText(
+                    (value * 100).roundToInt().toString(),
+                    tx,
+                    ty - (thumbText.descent() + thumbText.ascent()) / 2f,
+                    thumbText,
+                )
             }
 
-            // Icon at the slider's outer tip: top for brightness, bottom for volume.
-            val tip = if (s == Slider.BRIGHTNESS) a else b
-            val covered = !locked && if (s == Slider.BRIGHTNESS) fillEnd <= a + cap else value > 0f
+            // Icon just past the slider's outer tip (top for brightness, bottom for volume),
+            // so the knob never covers it. Volume's is the mute button.
+            val tip = if (s == Slider.BRIGHTNESS) a - tipIconSpan(r) else b + tipIconSpan(r)
             val ang = Math.toRadians(spanAngle(tip).toDouble())
             val ix = cx + r * cos(ang).toFloat()
             val iy = cy + r * sin(ang).toFloat()
-            val icon = if (s == Slider.BRIGHTNESS) brightnessIcon else volumeIcon
+            if (s == Slider.VOLUME) {
+                if (muteHover) canvas.drawCircle(ix, iy, sliderTrack * 0.8f, glow)
+                sliderPaint.style = Paint.Style.FILL
+                sliderPaint.color = theme.band
+                sliderPaint.alpha = (fade * bandAlpha).toInt()
+                canvas.drawCircle(ix, iy, sliderTrack / 2f, sliderPaint)
+                sliderPaint.style = Paint.Style.STROKE
+            }
+            val icon = when {
+                s == Slider.BRIGHTNESS -> brightnessIcon
+                volume <= 0f -> mutedIcon
+                else -> volumeIcon
+            }
             val half = (sliderIconSize / 2f).toInt()
             icon.setBounds(ix.toInt() - half, iy.toInt() - half, ix.toInt() + half, iy.toInt() + half)
-            icon.setTint(if (covered) theme.pillText else theme.hintText)
-            icon.alpha = (fade * if (locked) 140 else 255).toInt()
+            icon.setTint(theme.hintText)
+            icon.alpha = (fade * if (locked) 100 else 255).toInt()
             icon.draw(canvas)
+            if (locked) {
+                // Struck-through sun: brightness control is off.
+                offLine.color = theme.hintText
+                offLine.alpha = (fade * 160).toInt()
+                canvas.drawLine(ix - half, iy + half, ix + half, iy - half, offLine)
+            }
         }
     }
 
     /** "Brightness 60%" next to the slider being dragged. */
     private fun drawSliderLabel(canvas: Canvas, cx: Float, cy: Float, p: Float) {
+        if (muteHover) {
+            val (mx, my) = mutePoint(sliderDrawRadius(p), cx, cy)
+            drawLabel(canvas, context.getString(if (volume > 0f) R.string.slider_mute else R.string.slider_unmute), mx, my)
+            return
+        }
         val s = activeSlider ?: return
         val (x, y) = sliderPoint(s, sliderDrawRadius(p), cx, cy)
         val text = when {
@@ -709,7 +824,12 @@ class RadialMenuView(
 
         /** How far the menu reaches above and below its centre, in px. */
         /** Pass hasRecents = true when favourites include a folder: open folders use the outer ring. */
-        fun halfExtentPx(context: Context, hasFavorites: Boolean, hasRecents: Boolean): Float {
+        fun halfExtentPx(
+            context: Context,
+            hasFavorites: Boolean,
+            hasRecents: Boolean,
+            hasSliders: Boolean = true,
+        ): Float {
             val outer = when {
                 hasFavorites && hasRecents -> OUTER_DP
                 hasFavorites || hasRecents -> INNER_DP
@@ -717,7 +837,7 @@ class RadialMenuView(
             }
             // The brightness and volume sliders sit outside the outermost ring.
             val slider = (if (outer > 0f) outer else INNER_DP) + SLIDER_GAP_DP + SLIDER_TRACK_DP
-            return maxOf(outer + ICON_DP, slider) * context.resources.displayMetrics.density
+            return maxOf(outer + ICON_DP, if (hasSliders) slider else 0f) * context.resources.displayMetrics.density
         }
     }
 }

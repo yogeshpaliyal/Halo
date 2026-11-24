@@ -8,6 +8,8 @@
     <string name="folder_default_name">Ordner</string>
     <string name="slider_brightness">Helligkeit %d%%</string>
     <string name="slider_volume">Lautstärke %d%%</string>
+    <string name="slider_mute">Stumm</string>
+    <string name="slider_unmute">Ton an</string>
     <string name="slider_brightness_locked">Loslassen, um die Helligkeitssteuerung zu erlauben</string>
     <string name="slider_brightness_locked_tap">Tippen, um die Helligkeitssteuerung zu erlauben</string>
     <string name="action_flashlight">Taschenlampe</string>
@@ -104,6 +106,11 @@
     <string name="hold_delay">Haltedauer</string>
     <string name="haptics">Vibration</string>
     <string name="haptics_body">Vibrieren beim Halten und bei jeder App, über die du gleitest</string>
+    <string name="tag_dial">Ring</string>
+    <string name="brightness_slider">Helligkeitsregler</string>
+    <string name="brightness_slider_body">Oberer Halbbogen um das Menü</string>
+    <string name="volume_slider">Lautstärkeregler</string>
+    <string name="volume_slider_body">Unterer Halbbogen um das Menü, für Medienlautstärke</string>
     <string name="bubble">Blase</string>
     <string name="tag_size">Größe</string>
     <string name="tag_look">Optik</string>

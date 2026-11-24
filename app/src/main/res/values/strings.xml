@@ -13,6 +13,8 @@
     <string name="folder_default_name">Folder</string>
     <string name="slider_brightness">Brightness %d%%</string>
     <string name="slider_volume">Volume %d%%</string>
+    <string name="slider_mute">Mute</string>
+    <string name="slider_unmute">Unmute</string>
     <string name="slider_brightness_locked">Let go to allow brightness control</string>
     <string name="slider_brightness_locked_tap">Tap to allow brightness control</string>
 
@@ -129,6 +131,11 @@
     <string name="hold_delay">Hold delay</string>
     <string name="haptics">Haptics</string>
     <string name="haptics_body">Vibrate on hold and on each app you slide over</string>
+    <string name="tag_dial">Dial</string>
+    <string name="brightness_slider">Brightness slider</string>
+    <string name="brightness_slider_body">Upper half-arc around the dial</string>
+    <string name="volume_slider">Volume slider</string>
+    <string name="volume_slider_body">Lower half-arc around the dial, for media volume</string>
 
     <!-- Bubble -->
     <string name="bubble">Bubble</string>

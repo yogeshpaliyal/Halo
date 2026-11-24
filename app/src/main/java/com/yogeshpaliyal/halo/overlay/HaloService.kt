@@ -304,8 +304,13 @@ class HaloService : Service(), BubbleView.Listener {
 
         // Near the top or bottom the dial can't be centred on the bubble without spilling
         // off screen, so centre it where it fits and slide the bubble there while it's open.
+        val showBrightness = Prefs.brightnessSlider(this)
+        val showVolume = Prefs.volumeSlider(this)
         val half = RadialMenuView.halfExtentPx(
-            this, favorites.isNotEmpty(), recents.isNotEmpty() || favorites.any { it.isFolder },
+            this,
+            favorites.isNotEmpty(),
+            recents.isNotEmpty() || favorites.any { it.isFolder },
+            hasSliders = showBrightness || showVolume,
         )
         val screenH = screenSize().y
         val (top, bottom) = safeInsets()
@@ -326,6 +331,8 @@ class HaloService : Service(), BubbleView.Listener {
             favorites = favorites,
             recents = recents,
             badged = if (Prefs.notificationDots(this)) NotificationBadges.keys else emptySet(),
+            showBrightness = showBrightness,
+            showVolume = showVolume,
         )
         // Exact display size instead of MATCH_PARENT: an overlay sized MATCH_PARENT stops at the
         // navigation bar, which left an undimmed strip at the bottom.

@@ -8,6 +8,8 @@
     <string name="folder_default_name">Carpeta</string>
     <string name="slider_brightness">Brillo %d%%</string>
     <string name="slider_volume">Volumen %d%%</string>
+    <string name="slider_mute">Silenciar</string>
+    <string name="slider_unmute">Activar sonido</string>
     <string name="slider_brightness_locked">Suelta para permitir el control del brillo</string>
     <string name="slider_brightness_locked_tap">Toca para permitir el control del brillo</string>
     <string name="action_flashlight">Linterna</string>
@@ -104,6 +106,11 @@
     <string name="hold_delay">Tiempo de pulsación</string>
     <string name="haptics">Vibración</string>
     <string name="haptics_body">Vibra al mantener y en cada app sobre la que deslizas</string>
+    <string name="tag_dial">Dial</string>
+    <string name="brightness_slider">Control de brillo</string>
+    <string name="brightness_slider_body">Medio arco superior alrededor del menú</string>
+    <string name="volume_slider">Control de volumen</string>
+    <string name="volume_slider_body">Medio arco inferior alrededor del menú, para el volumen multimedia</string>
     <string name="bubble">Burbuja</string>
     <string name="tag_size">Tamaño</string>
     <string name="tag_look">Estilo</string>

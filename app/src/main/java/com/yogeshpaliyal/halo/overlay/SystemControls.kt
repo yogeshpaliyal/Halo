@@ -19,6 +19,9 @@ object SystemControls {
 
     private const val MAX_BRIGHTNESS = 255
 
+    /** Media volume (0..1) from before the dial's mute button was used, to bring it back. */
+    var volumeBeforeMute = 0f
+
     fun canWriteBrightness(context: Context): Boolean = Settings.System.canWrite(context)
 
     fun writeSettingsIntent(context: Context): Intent =

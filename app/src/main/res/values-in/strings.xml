@@ -8,6 +8,8 @@
     <string name="folder_default_name">Folder</string>
     <string name="slider_brightness">Kecerahan %d%%</string>
     <string name="slider_volume">Volume %d%%</string>
+    <string name="slider_mute">Bisukan</string>
+    <string name="slider_unmute">Bunyikan</string>
     <string name="slider_brightness_locked">Lepaskan untuk mengizinkan kontrol kecerahan</string>
     <string name="slider_brightness_locked_tap">Ketuk untuk mengizinkan kontrol kecerahan</string>
     <string name="action_flashlight">Senter</string>
@@ -102,6 +104,11 @@
     <string name="hold_delay">Durasi tahan</string>
     <string name="haptics">Getaran</string>
     <string name="haptics_body">Bergetar saat menahan dan pada setiap aplikasi yang dilewati</string>
+    <string name="tag_dial">Dial</string>
+    <string name="brightness_slider">Penggeser kecerahan</string>
+    <string name="brightness_slider_body">Setengah busur atas di sekitar menu</string>
+    <string name="volume_slider">Penggeser volume</string>
+    <string name="volume_slider_body">Setengah busur bawah di sekitar menu, untuk volume media</string>
     <string name="bubble">Gelembung</string>
     <string name="tag_size">Ukuran</string>
     <string name="tag_look">Tampilan</string>
