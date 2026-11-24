@@ -109,6 +109,8 @@
     <string name="brightness_slider_body">ダイアルの外側、上半分の弧</string>
     <string name="volume_slider">音量スライダー</string>
     <string name="volume_slider_body">ダイアルの外側、下半分の弧（メディア音量）</string>
+    <string name="volume_on_top">音量を上に</string>
+    <string name="volume_on_top_body">スライダーを入れ替え：上に音量、下に明るさ</string>
     <string name="bubble">バブル</string>
     <string name="tag_size">サイズ</string>
     <string name="tag_look">見た目</string>

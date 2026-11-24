@@ -109,6 +109,8 @@
     <string name="brightness_slider_body">Setengah busur atas di sekitar menu</string>
     <string name="volume_slider">Penggeser volume</string>
     <string name="volume_slider_body">Setengah busur bawah di sekitar menu, untuk volume media</string>
+    <string name="volume_on_top">Volume di atas</string>
+    <string name="volume_on_top_body">Tukar penggeser: volume di atas, kecerahan di bawah</string>
     <string name="bubble">Gelembung</string>
     <string name="tag_size">Ukuran</string>
     <string name="tag_look">Tampilan</string>

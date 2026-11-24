@@ -177,6 +177,7 @@ fun HomeScreen() {
     var haptics by remember { mutableStateOf(Prefs.haptics(context)) }
     var brightnessSlider by remember { mutableStateOf(Prefs.brightnessSlider(context)) }
     var volumeSlider by remember { mutableStateOf(Prefs.volumeSlider(context)) }
+    var volumeOnTop by remember { mutableStateOf(Prefs.volumeOnTop(context)) }
     var hideFullscreen by remember { mutableStateOf(Prefs.hideInFullscreen(context)) }
     var opacity by remember { mutableFloatStateOf(Prefs.bubbleOpacity(context)) }
     var bubbleSize by remember { mutableStateOf(Prefs.bubbleSize(context)) }
@@ -368,6 +369,8 @@ fun HomeScreen() {
                     onBrightnessSlider = { brightnessSlider = it; Prefs.setBrightnessSlider(context, it) },
                     volumeSlider = volumeSlider,
                     onVolumeSlider = { volumeSlider = it; Prefs.setVolumeSlider(context, it) },
+                    volumeOnTop = volumeOnTop,
+                    onVolumeOnTop = { volumeOnTop = it; Prefs.setVolumeOnTop(context, it) },
                 )
                 }
             }

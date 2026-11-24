@@ -41,7 +41,7 @@ import kotlin.math.sin
  * to another favourite closes it again.
  *
  * Outside both rings sit two sliders, each half of the dial's arc: screen brightness on the
- * upper half and media volume on the lower half. Both rise towards the top. Sliding (or
+ * upper half and media volume on the lower half (swappable in Settings). Both rise towards the top. Sliding (or
  * touching) out onto one adjusts it live; lifting there picks no app.
  *
  * Angles use the Canvas convention: 0° points right and angles grow clockwise (y is down).
@@ -59,6 +59,8 @@ class RadialMenuView(
     /** Which of the brightness and volume sliders to show (Settings). */
     private val showBrightness: Boolean = true,
     private val showVolume: Boolean = true,
+    /** Swap the halves: volume on the upper half, brightness on the lower (Settings). */
+    private val volumeOnTop: Boolean = false,
 ) : View(context) {
 
     /** [angles] is set for an open folder: its apps sit on a short arc instead of evenly spread. */
@@ -99,6 +101,9 @@ class RadialMenuView(
     private enum class Slider { BRIGHTNESS, VOLUME }
 
     /** The sliders turned on in Settings; empty means none are drawn or touchable. */
+    private val topSlider = if (volumeOnTop) Slider.VOLUME else Slider.BRIGHTNESS
+    private val bottomSlider = if (volumeOnTop) Slider.BRIGHTNESS else Slider.VOLUME
+
     private val sliders = buildList {
         if (showBrightness) add(Slider.BRIGHTNESS)
         if (showVolume) add(Slider.VOLUME)
@@ -303,7 +308,7 @@ class RadialMenuView(
                 activeSlider = null
                 return null
             }
-            s = (if (u < 0.5f) Slider.BRIGHTNESS else Slider.VOLUME).takeIf { it in sliders }
+            s = (if (u < 0.5f) topSlider else bottomSlider).takeIf { it in sliders }
             if (s == null) {
                 activeSlider = null
                 return null
@@ -387,8 +392,10 @@ class RadialMenuView(
 
     /** Centre of the mute button, at radius [r]. */
     private fun mutePoint(r: Float, cx: Float, cy: Float): Pair<Float, Float> {
-        val b = sliderRange(Slider.VOLUME).second - capSpan(r)
-        val ang = Math.toRadians(spanAngle(b + tipIconSpan(r)).toDouble())
+        val (lo, hi) = sliderRange(Slider.VOLUME)
+        // Past the slider's outer tip: the bottom end below, the top end above.
+        val tip = if (volumeOnTop) lo + capSpan(r) - tipIconSpan(r) else hi - capSpan(r) + tipIconSpan(r)
+        val ang = Math.toRadians(spanAngle(tip).toDouble())
         return (cx + r * cos(ang).toFloat()) to (cy + r * sin(ang).toFloat())
     }
 
@@ -517,8 +524,8 @@ class RadialMenuView(
      * [Pair.first] (full), so both rise towards the top.
      */
     private fun sliderRange(s: Slider): Pair<Float, Float> = when (s) {
-        Slider.BRIGHTNESS -> 0f to 0.5f - SLIDER_SPLIT
-        Slider.VOLUME -> 0.5f + SLIDER_SPLIT to 1f
+        topSlider -> 0f to 0.5f - SLIDER_SPLIT
+        else -> 0.5f + SLIDER_SPLIT to 1f
     }
 
     private fun hitTest(rawX: Float, rawY: Float): Pair<Int, Int> {
@@ -722,9 +729,9 @@ class RadialMenuView(
                 )
             }
 
-            // Icon just past the slider's outer tip (top for brightness, bottom for volume),
+            // Icon just past the slider's outer tip (above the top slider, below the bottom one),
             // so the knob never covers it. Volume's is the mute button.
-            val tip = if (s == Slider.BRIGHTNESS) a - tipIconSpan(r) else b + tipIconSpan(r)
+            val tip = if (s == topSlider) a - tipIconSpan(r) else b + tipIconSpan(r)
             val ang = Math.toRadians(spanAngle(tip).toDouble())
             val ix = cx + r * cos(ang).toFloat()
             val iy = cy + r * sin(ang).toFloat()

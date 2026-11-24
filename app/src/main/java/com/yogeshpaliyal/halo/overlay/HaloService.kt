@@ -333,6 +333,7 @@ class HaloService : Service(), BubbleView.Listener {
             badged = if (Prefs.notificationDots(this)) NotificationBadges.keys else emptySet(),
             showBrightness = showBrightness,
             showVolume = showVolume,
+            volumeOnTop = Prefs.volumeOnTop(this),
         )
         // Exact display size instead of MATCH_PARENT: an overlay sized MATCH_PARENT stops at the
         // navigation bar, which left an undimmed strip at the bottom.

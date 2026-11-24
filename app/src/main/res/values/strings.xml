@@ -136,6 +136,8 @@
     <string name="brightness_slider_body">Upper half-arc around the dial</string>
     <string name="volume_slider">Volume slider</string>
     <string name="volume_slider_body">Lower half-arc around the dial, for media volume</string>
+    <string name="volume_on_top">Volume on top</string>
+    <string name="volume_on_top_body">Swap the sliders: volume on the upper half, brightness below</string>
 
     <!-- Bubble -->
     <string name="bubble">Bubble</string>

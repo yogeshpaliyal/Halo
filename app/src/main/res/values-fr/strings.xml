@@ -113,6 +113,8 @@
     <string name="brightness_slider_body">Demi-arc du haut autour du menu</string>
     <string name="volume_slider">Curseur de volume</string>
     <string name="volume_slider_body">Demi-arc du bas autour du menu, pour le volume multimédia</string>
+    <string name="volume_on_top">Volume en haut</string>
+    <string name="volume_on_top_body">Inverser : volume en haut, luminosité en bas</string>
     <string name="bubble">Bulle</string>
     <string name="tag_size">Taille</string>
     <string name="tag_look">Style</string>

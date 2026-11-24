@@ -111,6 +111,8 @@
     <string name="brightness_slider_body">Menünün etrafındaki üst yarım yay</string>
     <string name="volume_slider">Ses kaydırıcısı</string>
     <string name="volume_slider_body">Menünün etrafındaki alt yarım yay, medya sesi için</string>
+    <string name="volume_on_top">Ses üstte</string>
+    <string name="volume_on_top_body">Kaydırıcıları değiştir: ses üstte, parlaklık altta</string>
     <string name="bubble">Baloncuk</string>
     <string name="tag_size">Boyut</string>
     <string name="tag_look">Görünüm</string>

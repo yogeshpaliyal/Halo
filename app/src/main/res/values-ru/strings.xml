@@ -115,6 +115,8 @@
     <string name="brightness_slider_body">Верхняя полудуга вокруг меню</string>
     <string name="volume_slider">Ползунок громкости</string>
     <string name="volume_slider_body">Нижняя полудуга вокруг меню, громкость медиа</string>
+    <string name="volume_on_top">Громкость сверху</string>
+    <string name="volume_on_top_body">Поменять местами: громкость сверху, яркость снизу</string>
     <string name="bubble">Кнопка</string>
     <string name="tag_size">Размер</string>
     <string name="tag_look">Вид</string>
