@@ -177,9 +177,14 @@
     <string name="dial_title">Tema del dial</string>
     <string name="dial_hint">Cómo se ve el menú al mantener la burbuja. Cristal desenfoca la pantalla detrás en Android 12 y posteriores.</string>
     <string name="icon_shape_title">Forma de los iconos</string>
-    <string name="icon_shape_body">Forma de los iconos de apps en el dial y en Halo. Círculo hace que todos sean redondos, sin importar la forma de tu teléfono.</string>
+    <string name="icon_shape_body">Halo no puede leer la forma de los iconos de tu pantalla de inicio, así que elige la que coincida. Del teléfono usa la forma que Android da a los iconos en este teléfono.</string>
     <string name="icon_shape_system">Del teléfono</string>
     <string name="icon_shape_circle">Círculo</string>
+    <string name="icon_shape_squircle">Squircle</string>
+    <string name="icon_shape_rounded">Cuadrado redondeado</string>
+    <string name="icon_shape_teardrop">Gota</string>
+    <string name="themed_icons">Iconos temáticos</string>
+    <string name="themed_icons_body">Iconos de un solo color con los colores de tu fondo, como los iconos temáticos de la pantalla de inicio. Las apps sin icono temático mantienen el suyo.</string>
     <string name="dial_classic">Clásico</string>
     <string name="dial_match">Como la burbuja</string>
     <string name="dial_glass">Cristal</string>

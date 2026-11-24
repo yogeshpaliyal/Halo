@@ -183,9 +183,14 @@
     <string name="dial_title">Тема меню</string>
     <string name="dial_hint">Как выглядит меню при удержании кнопки. «Стекло» размывает экран позади на Android 12 и новее.</string>
     <string name="icon_shape_title">Форма значков</string>
-    <string name="icon_shape_body">Форма значков приложений в меню и в Halo. «Круг» делает все значки круглыми, какую бы форму ни использовал телефон.</string>
+    <string name="icon_shape_body">Halo не может узнать форму значков на главном экране, поэтому выберите подходящую. «Как в телефоне» — форма, которую Android использует на этом телефоне.</string>
     <string name="icon_shape_system">Как в телефоне</string>
     <string name="icon_shape_circle">Круг</string>
+    <string name="icon_shape_squircle">Сквиркл</string>
+    <string name="icon_shape_rounded">Скруглённый квадрат</string>
+    <string name="icon_shape_teardrop">Капля</string>
+    <string name="themed_icons">Тематические значки</string>
+    <string name="themed_icons_body">Одноцветные значки в цветах обоев, как тематические значки на главном экране. Приложения без тематического значка сохраняют обычный.</string>
     <string name="dial_classic">Классика</string>
     <string name="dial_match">Как у кнопки</string>
     <string name="dial_glass">Стекло</string>

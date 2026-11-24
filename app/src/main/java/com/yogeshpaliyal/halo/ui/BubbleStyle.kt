@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -21,6 +22,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -40,6 +42,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.yogeshpaliyal.halo.data.IconShape
+import com.yogeshpaliyal.halo.data.IconShapes
 import com.yogeshpaliyal.halo.overlay.BubbleCharacter
 import com.yogeshpaliyal.halo.overlay.BubblePalette
 import com.yogeshpaliyal.halo.overlay.BubbleRenderer
@@ -316,6 +319,8 @@ fun DialThemeCard(
     onTheme: (DialTheme) -> Unit,
     iconShape: IconShape,
     onIconShape: (IconShape) -> Unit,
+    themedIcons: Boolean,
+    onThemedIcons: (Boolean) -> Unit,
 ) {
     androidx.compose.material3.Card(shape = RoundedCornerShape(24.dp)) {
         Column(Modifier.padding(vertical = 14.dp)) {
@@ -341,7 +346,9 @@ fun DialThemeCard(
             )
             Spacer(Modifier.height(6.dp))
             Row(
-                Modifier.padding(horizontal = 20.dp),
+                Modifier
+                    .horizontalScroll(rememberScrollState())
+                    .padding(horizontal = 20.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 IconShape.entries.forEach { shape ->
@@ -350,6 +357,29 @@ fun DialThemeCard(
                         onClick = { onIconShape(shape) },
                         label = { Text(stringResource(shape.labelRes)) },
                     )
+                }
+            }
+            if (IconShapes.themedSupported) {
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .clickable { onThemedIcons(!themedIcons) }
+                        .padding(horizontal = 20.dp, vertical = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Column(Modifier.weight(1f)) {
+                        Text(
+                            stringResource(com.yogeshpaliyal.halo.R.string.themed_icons),
+                            style = MaterialTheme.typography.titleSmall,
+                        )
+                        Text(
+                            stringResource(com.yogeshpaliyal.halo.R.string.themed_icons_body),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                    Spacer(Modifier.width(12.dp))
+                    Switch(checked = themedIcons, onCheckedChange = onThemedIcons)
                 }
             }
         }

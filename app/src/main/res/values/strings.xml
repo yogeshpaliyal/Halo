@@ -206,9 +206,14 @@
     <string name="dial_title">Dial theme</string>
     <string name="dial_hint">How the menu looks when you hold the bubble. Glass blurs the screen behind it on Android 12 and newer.</string>
     <string name="icon_shape_title">Icon shape</string>
-    <string name="icon_shape_body">Shape of app icons in the dial and in Halo. Circle makes every icon round, whatever shape your phone uses.</string>
+    <string name="icon_shape_body">Halo can\'t read your home screen\'s icon shape, so pick the one that matches it. Phone default uses the shape Android gives icons on this phone.</string>
     <string name="icon_shape_system">Phone default</string>
     <string name="icon_shape_circle">Circle</string>
+    <string name="icon_shape_squircle">Squircle</string>
+    <string name="icon_shape_rounded">Rounded square</string>
+    <string name="icon_shape_teardrop">Teardrop</string>
+    <string name="themed_icons">Themed icons</string>
+    <string name="themed_icons_body">Single-colour icons in your wallpaper colours, like themed icons on the home screen. Apps without a themed icon keep their usual one.</string>
     <string name="dial_classic">Classic</string>
     <string name="dial_match">Match bubble</string>
     <string name="dial_glass">Glass</string>

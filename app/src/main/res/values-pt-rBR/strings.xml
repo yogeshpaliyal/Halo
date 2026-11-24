@@ -180,9 +180,14 @@
     <string name="dial_title">Tema do disco</string>
     <string name="dial_hint">Como o menu aparece ao segurar a bolha. Vidro desfoca a tela atrás no Android 12 ou mais recente.</string>
     <string name="icon_shape_title">Formato dos ícones</string>
-    <string name="icon_shape_body">Formato dos ícones de apps no disco e no Halo. Círculo deixa todos redondos, seja qual for o formato do seu celular.</string>
+    <string name="icon_shape_body">O Halo não consegue ler o formato dos ícones da sua tela inicial, então escolha o que combina. Padrão do celular usa o formato que o Android dá aos ícones neste celular.</string>
     <string name="icon_shape_system">Padrão do celular</string>
     <string name="icon_shape_circle">Círculo</string>
+    <string name="icon_shape_squircle">Squircle</string>
+    <string name="icon_shape_rounded">Quadrado arredondado</string>
+    <string name="icon_shape_teardrop">Gota</string>
+    <string name="themed_icons">Ícones com tema</string>
+    <string name="themed_icons_body">Ícones de uma cor nas cores do seu plano de fundo, como os ícones com tema da tela inicial. Apps sem ícone com tema mantêm o normal.</string>
     <string name="dial_classic">Clássico</string>
     <string name="dial_match">Igual à bolha</string>
     <string name="dial_glass">Vidro</string>
