@@ -238,7 +238,7 @@ class RadialMenuView(
     fun updateFinger(rawX: Float, rawY: Float): Boolean {
         fingerX = rawX
         fingerY = rawY
-        val onMute = showVolume && activeSlider == null && onMuteButton(rawX, rawY)
+        val onMute = showVolume && laidOut && activeSlider == null && onMuteButton(rawX, rawY)
         if (onMute != muteHover) {
             muteHover = onMute
             invalidate()
@@ -287,6 +287,7 @@ class RadialMenuView(
      * (the rings take it), otherwise whether the value moved a step (for a haptic tick).
      */
     private fun trackSlider(rawX: Float, rawY: Float): Boolean? {
+        if (!laidOut) return null
         getLocationOnScreen(screenLoc)
         val dx = rawX - screenLoc[0] - centerX()
         val dy = rawY - screenLoc[1] - centerY()
@@ -356,6 +357,13 @@ class RadialMenuView(
         if (s == Slider.BRIGHTNESS && !brightnessAllowed) onBrightnessLocked?.invoke()
         return true
     }
+
+    /**
+     * True once the window has its size. The first finger moves arrive right after the dial is
+     * added, before layout: [centerY] is then 0, so the bubble looked far below the centre and
+     * grabbed the bottom of the volume slider, setting media volume to 0 on every open.
+     */
+    private val laidOut: Boolean get() = width > 0 && height > 0
 
     /** Mute, or bring back the volume from before muting. */
     private fun toggleMute() {
