@@ -6,6 +6,10 @@
     <string name="menu_empty_hint">Choisissez vos favoris dans l’app Halo</string>
     <string name="flashlight_busy">La lampe torche est occupée. Fermez l’app Appareil photo et réessayez.</string>
     <string name="folder_default_name">Dossier</string>
+    <string name="slider_brightness">Luminosité %d%%</string>
+    <string name="slider_volume">Volume %d%%</string>
+    <string name="slider_brightness_locked">Relâchez pour autoriser le réglage de la luminosité</string>
+    <string name="slider_brightness_locked_tap">Touchez pour autoriser le réglage de la luminosité</string>
     <string name="action_flashlight">Lampe torche</string>
     <string name="action_volume">Volume</string>
     <string name="action_play_pause">Lecture / pause</string>

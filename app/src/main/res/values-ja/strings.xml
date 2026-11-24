@@ -6,6 +6,10 @@
     <string name="menu_empty_hint">Halo アプリでお気に入りを選んでください</string>
     <string name="flashlight_busy">ライトは使用中です。カメラアプリを閉じてからもう一度お試しください。</string>
     <string name="folder_default_name">フォルダ</string>
+    <string name="slider_brightness">明るさ %d%%</string>
+    <string name="slider_volume">音量 %d%%</string>
+    <string name="slider_brightness_locked">指を離して明るさの調整を許可</string>
+    <string name="slider_brightness_locked_tap">タップして明るさの調整を許可</string>
     <string name="action_flashlight">ライト</string>
     <string name="action_volume">音量</string>
     <string name="action_play_pause">再生 / 一時停止</string>

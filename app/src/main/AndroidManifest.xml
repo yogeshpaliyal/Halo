@@ -15,6 +15,11 @@
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
 
+    <!-- Brightness slider around the dial (user grants in Settings > Modify system settings). -->
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+
     <!-- Package visibility: only launchable apps and home screens. -->
     <queries>
         <intent>

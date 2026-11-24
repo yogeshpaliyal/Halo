@@ -6,6 +6,10 @@
     <string name="menu_empty_hint">Pilih favorit di aplikasi Halo</string>
     <string name="flashlight_busy">Senter sedang dipakai. Tutup aplikasi kamera lalu coba lagi.</string>
     <string name="folder_default_name">Folder</string>
+    <string name="slider_brightness">Kecerahan %d%%</string>
+    <string name="slider_volume">Volume %d%%</string>
+    <string name="slider_brightness_locked">Lepaskan untuk mengizinkan kontrol kecerahan</string>
+    <string name="slider_brightness_locked_tap">Ketuk untuk mengizinkan kontrol kecerahan</string>
     <string name="action_flashlight">Senter</string>
     <string name="action_volume">Volume</string>
     <string name="action_play_pause">Putar / jeda</string>

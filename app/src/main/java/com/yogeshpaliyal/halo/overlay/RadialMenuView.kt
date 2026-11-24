@@ -39,6 +39,10 @@ import kotlin.math.sin
  * it in tap mode) swaps the outer ring for the folder's apps, fanned out next to it. Moving
  * to another favourite closes it again.
  *
+ * Outside both rings sit two sliders, each half of the dial's arc: screen brightness on the
+ * upper half and media volume on the lower half. Both rise towards the top. Sliding (or
+ * touching) out onto one adjusts it live; lifting there picks no app.
+ *
  * Angles use the Canvas convention: 0° points right and angles grow clockwise (y is down).
  */
 @SuppressLint("ViewConstructor")
@@ -83,6 +87,26 @@ class RadialMenuView(
         favRing != null || recentRing != null -> dp(INNER_DP)
         else -> 0f
     }
+
+    // --- brightness and volume sliders ---------------------------------------------------
+
+    private enum class Slider { BRIGHTNESS, VOLUME }
+
+    private val sliderTrack = dp(SLIDER_TRACK_DP)
+    private val sliderRadius = (if (extent > 0f) extent else dp(INNER_DP)) + dp(SLIDER_GAP_DP)
+    /** A finger at least this far from the centre is on a slider rather than on the app rings. */
+    private val sliderZone = sliderRadius - sliderTrack / 2f - dp(12f)
+    private val brightnessAllowed = SystemControls.canWriteBrightness(context)
+    private var brightness = if (brightnessAllowed) SystemControls.brightness(context) else 0f
+    private var volume = SystemControls.volume(context)
+    private var brightnessLevel = -1
+    private var volumeIndex = -1
+    private var activeSlider: Slider? = null
+    /** Coarse position of the active slider, for one haptic tick per step. */
+    private var sliderStep = -1
+
+    /** Called when the finger lifts on the brightness slider before Halo may change brightness. */
+    var onBrightnessLocked: (() -> Unit)? = null
 
     /** The folder whose apps are on the outer ring right now, and its inner-ring slot. */
     private var openFolder: AppEntry? = null
@@ -138,6 +162,13 @@ class RadialMenuView(
         textSize = dp(15f)
         textAlign = Paint.Align.CENTER
     }
+    private val sliderPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.STROKE
+        strokeCap = Paint.Cap.ROUND
+    }
+    private val brightnessIcon = context.getDrawable(R.drawable.ic_slider_brightness)!!.mutate()
+    private val volumeIcon = context.getDrawable(R.drawable.ic_slider_volume)!!.mutate()
+    private val sliderIconSize = dp(18f)
     private val arcRect = RectF()
     private val pillRect = RectF()
 
@@ -181,6 +212,14 @@ class RadialMenuView(
     fun updateFinger(rawX: Float, rawY: Float): Boolean {
         fingerX = rawX
         fingerY = rawY
+        trackSlider(rawX, rawY)?.let { tick ->
+            removeCallbacks(openFolderLater)
+            selRing = -1
+            selSlot = -1
+            selected = null
+            invalidate()
+            return tick
+        }
         var (ring, slot) = hitTest(rawX, rawY)
         // Back on the inner ring on a different favourite: fold the open folder away.
         if (openFolder != null && ring == 0 && slot != folderSlot) {
@@ -202,6 +241,71 @@ class RadialMenuView(
             invalidate()
         }
         return changed && selected != null
+    }
+
+    /**
+     * Brightness/volume part of a finger update. Returns null when the finger isn't on a slider
+     * (the rings take it), otherwise whether the value moved a step (for a haptic tick).
+     */
+    private fun trackSlider(rawX: Float, rawY: Float): Boolean? {
+        getLocationOnScreen(screenLoc)
+        val dx = rawX - screenLoc[0] - centerX()
+        val dy = rawY - screenLoc[1] - centerY()
+        val dist = hypot(dx, dy)
+        val u = spanPos(dx, dy)
+        var s = activeSlider
+        // Sliding back in towards the apps lets go of the slider.
+        if (s != null && dist < sliderZone - dp(SLIDER_RELEASE_DP)) s = null
+        if (s == null) {
+            if (dist < sliderZone || u < -SLIDER_SLACK || u > 1f + SLIDER_SLACK) {
+                activeSlider = null
+                return null
+            }
+            s = if (u < 0.5f) Slider.BRIGHTNESS else Slider.VOLUME
+        }
+        val grabbed = s != activeSlider
+        activeSlider = s
+        val (lo, hi) = sliderRange(s)
+        // Within the half that was grabbed: sliding past the middle doesn't jump to the other one.
+        val value = ((hi - u.coerceIn(lo, hi)) / (hi - lo)).coerceIn(0f, 1f)
+        val step: Int
+        when (s) {
+            Slider.BRIGHTNESS -> {
+                if (!brightnessAllowed) return grabbed
+                brightness = value
+                val level = SystemControls.brightnessLevel(value)
+                if (level != brightnessLevel) {
+                    brightnessLevel = level
+                    SystemControls.setBrightnessLevel(context, level)
+                }
+                step = (value * 20f).toInt()
+            }
+            Slider.VOLUME -> {
+                volume = value
+                val index = SystemControls.volumeIndex(context, value)
+                if (index != volumeIndex) {
+                    volumeIndex = index
+                    SystemControls.setVolumeIndex(context, index)
+                }
+                step = index
+            }
+        }
+        val ticked = grabbed || step != sliderStep
+        sliderStep = step
+        return ticked
+    }
+
+    /**
+     * Finger lifted. Returns true when it was on a slider, so the lift picks no app. Lifting on
+     * a brightness slider Halo can't use yet asks for access through [onBrightnessLocked].
+     */
+    fun endSlider(): Boolean {
+        val s = activeSlider ?: return false
+        activeSlider = null
+        sliderStep = -1
+        invalidate()
+        if (s == Slider.BRIGHTNESS && !brightnessAllowed) onBrightnessLocked?.invoke()
+        return true
     }
 
     /** Opens the highlighted folder right away (finger lifted on it). */
@@ -267,6 +371,8 @@ class RadialMenuView(
                 }
             MotionEvent.ACTION_UP -> {
                 updateFinger(event.rawX, event.rawY)
+                // Lifting off a slider keeps the dial up for another go.
+                if (endSlider()) return true
                 val sel = selected
                 if (sel != null && sel.isFolder) {
                     // Tapping a folder opens it; the next tap picks one of its apps.
@@ -277,6 +383,7 @@ class RadialMenuView(
                 pick(sel)
             }
             MotionEvent.ACTION_CANCEL -> {
+                activeSlider = null
                 onPick = null
                 pick(null)
             }
@@ -290,7 +397,7 @@ class RadialMenuView(
 
     /** Keep the whole menu on screen when the bubble sits near the top or bottom. */
     private fun centerY(): Float {
-        val outer = extent + iconSize
+        val outer = maxOf(extent + iconSize, sliderRadius + sliderTrack)
         val y = anchorScreenY - screenLoc[1]
         return if (height <= 2 * outer) height / 2f else y.coerceIn(outer, height - outer)
     }
@@ -301,6 +408,26 @@ class RadialMenuView(
     private fun slotAngle(slot: Int, count: Int): Float {
         val step = span / count
         return facing + dir * (-span / 2f + (slot + 0.5f) * step)
+    }
+
+    /** Canvas angle of a point along the dial's span: 0 is its top tip, 1 its bottom tip. */
+    private fun spanAngle(u: Float): Float = facing + dir * (-span / 2f + u * span)
+
+    /** Inverse of [spanAngle] for a point relative to the centre (may fall outside 0..1). */
+    private fun spanPos(dx: Float, dy: Float): Float {
+        var rel = Math.toDegrees(atan2(dy, dx).toDouble()).toFloat() - facing
+        while (rel < -180f) rel += 360f
+        while (rel >= 180f) rel -= 360f
+        return (dir * rel + span / 2f) / span
+    }
+
+    /**
+     * Where each slider sits along the span. The value grows from [Pair.second] (empty) to
+     * [Pair.first] (full), so both rise towards the top.
+     */
+    private fun sliderRange(s: Slider): Pair<Float, Float> = when (s) {
+        Slider.BRIGHTNESS -> 0f to 0.5f - SLIDER_SPLIT
+        Slider.VOLUME -> 0.5f + SLIDER_SPLIT to 1f
     }
 
     private fun hitTest(rawX: Float, rawY: Float): Pair<Int, Int> {
@@ -367,9 +494,12 @@ class RadialMenuView(
         val cx = centerX()
         val cy = centerY()
 
+        drawSliders(canvas, cx, cy, p, fade)
+
         if (rings.isEmpty()) {
             hint.alpha = (fade * 255).toInt()
             canvas.drawText(context.getString(R.string.menu_empty_hint), width / 2f, cy, hint)
+            drawSliderLabel(canvas, cx, cy, p)
             return
         }
 
@@ -431,11 +561,105 @@ class RadialMenuView(
         }
 
         selected?.let { drawLabel(canvas, it.label, selCenterX, selCenterY) }
+        drawSliderLabel(canvas, cx, cy, p)
+    }
+
+    private fun sliderDrawRadius(p: Float) = sliderRadius * (0.55f + 0.45f * p)
+
+    /** Span (0..1) that a round cap of the slider track reaches past its arc's end. */
+    private fun capSpan(r: Float) = Math.toDegrees((sliderTrack / 2f / r).toDouble()).toFloat() / span
+
+    /** Where on the screen a slider's value sits, at radius [r]. */
+    private fun sliderPoint(s: Slider, r: Float, cx: Float, cy: Float): Pair<Float, Float> {
+        val (lo, hi) = sliderRange(s)
+        val cap = capSpan(r)
+        val a = lo + cap
+        val b = hi - cap
+        val value = if (s == Slider.BRIGHTNESS) brightness else volume
+        val ang = Math.toRadians(spanAngle(b - (b - a) * value).toDouble())
+        return (cx + r * cos(ang).toFloat()) to (cy + r * sin(ang).toFloat())
+    }
+
+    /** Arc along the span from [from] to [to] (span units, either order). */
+    private fun drawSpanArc(canvas: Canvas, cx: Float, cy: Float, r: Float, from: Float, to: Float, paint: Paint) {
+        val x = spanAngle(from)
+        val y = spanAngle(to)
+        arcRect.set(cx - r, cy - r, cx + r, cy + r)
+        canvas.drawArc(arcRect, minOf(x, y), kotlin.math.abs(x - y).coerceAtLeast(0.1f), false, paint)
+    }
+
+    /** The two half-arc sliders outside the rings: track, filled part, icon. */
+    private fun drawSliders(canvas: Canvas, cx: Float, cy: Float, p: Float, fade: Float) {
+        val r = sliderDrawRadius(p)
+        val cap = capSpan(r)
+        for (s in Slider.entries) {
+            val (lo, hi) = sliderRange(s)
+            // Round caps end exactly at the range ends.
+            val a = lo + cap
+            val b = hi - cap
+            val locked = s == Slider.BRIGHTNESS && !brightnessAllowed
+            val value = if (s == Slider.BRIGHTNESS) brightness else volume
+
+            sliderPaint.strokeWidth = sliderTrack
+            sliderPaint.color = theme.band
+            sliderPaint.alpha = (fade * bandAlpha * if (locked) 0.6f else 1f).toInt()
+            drawSpanArc(canvas, cx, cy, r, a, b, sliderPaint)
+            val sa = spanAngle(a)
+            val sb = spanAngle(b)
+            drawEdges(canvas, cx, cy, r, minOf(sa, sb), kotlin.math.abs(sa - sb), fade, sliderTrack / 2f)
+
+            val fillEnd = b - (b - a) * value
+            if (!locked) {
+                sliderPaint.strokeWidth = sliderTrack - dp(8f)
+                sliderPaint.color = theme.pill
+                sliderPaint.alpha = (fade * if (s == activeSlider) 255 else 220).toInt()
+                drawSpanArc(canvas, cx, cy, r, b, fillEnd, sliderPaint)
+                if (s == activeSlider) {
+                    val (tx, ty) = sliderPoint(s, r, cx, cy)
+                    canvas.drawCircle(tx, ty, sliderTrack * 0.8f, glow)
+                }
+            }
+
+            // Icon at the slider's outer tip: top for brightness, bottom for volume.
+            val tip = if (s == Slider.BRIGHTNESS) a else b
+            val covered = !locked && if (s == Slider.BRIGHTNESS) fillEnd <= a + cap else value > 0f
+            val ang = Math.toRadians(spanAngle(tip).toDouble())
+            val ix = cx + r * cos(ang).toFloat()
+            val iy = cy + r * sin(ang).toFloat()
+            val icon = if (s == Slider.BRIGHTNESS) brightnessIcon else volumeIcon
+            val half = (sliderIconSize / 2f).toInt()
+            icon.setBounds(ix.toInt() - half, iy.toInt() - half, ix.toInt() + half, iy.toInt() + half)
+            icon.setTint(if (covered) theme.pillText else theme.hintText)
+            icon.alpha = (fade * if (locked) 140 else 255).toInt()
+            icon.draw(canvas)
+        }
+    }
+
+    /** "Brightness 60%" next to the slider being dragged. */
+    private fun drawSliderLabel(canvas: Canvas, cx: Float, cy: Float, p: Float) {
+        val s = activeSlider ?: return
+        val (x, y) = sliderPoint(s, sliderDrawRadius(p), cx, cy)
+        val text = when {
+            s == Slider.BRIGHTNESS && !brightnessAllowed -> context.getString(
+                if (onPick != null) R.string.slider_brightness_locked_tap else R.string.slider_brightness_locked,
+            )
+            s == Slider.BRIGHTNESS -> context.getString(R.string.slider_brightness, (brightness * 100).toInt())
+            else -> context.getString(R.string.slider_volume, (volume * 100).toInt())
+        }
+        drawLabel(canvas, text, x, y)
     }
 
     /** Outline along both edges of a band, following its rounded ends' arc. */
-    private fun drawEdges(canvas: Canvas, cx: Float, cy: Float, r: Float, start: Float, sweep: Float, fade: Float) {
-        val half = band.strokeWidth / 2f
+    private fun drawEdges(
+        canvas: Canvas,
+        cx: Float,
+        cy: Float,
+        r: Float,
+        start: Float,
+        sweep: Float,
+        fade: Float,
+        half: Float = band.strokeWidth / 2f,
+    ) {
         for ((color, rr) in listOf(theme.edgeOuter to r + half, theme.edgeInner to r - half)) {
             if (color == 0 || rr <= 0f) continue
             edge.color = color
@@ -473,6 +697,15 @@ class RadialMenuView(
         private const val OUTER_DP = 208f
         private const val ICON_DP = 46f
         private const val FOLDER_DWELL_MS = 280L
+        /** Slider arcs: track thickness, and distance from the outermost ring's centre line. */
+        private const val SLIDER_TRACK_DP = 30f
+        private const val SLIDER_GAP_DP = 58f
+        /** Half the gap between the two sliders, as a share of the dial's span. */
+        private const val SLIDER_SPLIT = 0.02f
+        /** How far past either tip a finger still grabs a slider, as a share of the span. */
+        private const val SLIDER_SLACK = 0.08f
+        /** How far back in towards the apps a held slider lets go. */
+        private const val SLIDER_RELEASE_DP = 28f
 
         /** How far the menu reaches above and below its centre, in px. */
         /** Pass hasRecents = true when favourites include a folder: open folders use the outer ring. */
@@ -482,7 +715,9 @@ class RadialMenuView(
                 hasFavorites || hasRecents -> INNER_DP
                 else -> 0f
             }
-            return (outer + ICON_DP) * context.resources.displayMetrics.density
+            // The brightness and volume sliders sit outside the outermost ring.
+            val slider = (if (outer > 0f) outer else INNER_DP) + SLIDER_GAP_DP + SLIDER_TRACK_DP
+            return maxOf(outer + ICON_DP, slider) * context.resources.displayMetrics.density
         }
     }
 }

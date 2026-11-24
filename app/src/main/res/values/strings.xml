@@ -11,6 +11,10 @@
     <string name="menu_empty_hint">Pick favourites in the Halo app</string>
     <string name="flashlight_busy">Flashlight is busy. Close the camera app and try again.</string>
     <string name="folder_default_name">Folder</string>
+    <string name="slider_brightness">Brightness %d%%</string>
+    <string name="slider_volume">Volume %d%%</string>
+    <string name="slider_brightness_locked">Let go to allow brightness control</string>
+    <string name="slider_brightness_locked_tap">Tap to allow brightness control</string>
 
     <!-- Quick actions -->
     <string name="action_flashlight">Flashlight</string>
