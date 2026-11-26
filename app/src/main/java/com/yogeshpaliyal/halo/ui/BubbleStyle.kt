@@ -372,20 +372,7 @@ fun DialThemeCard(
                 modifier = Modifier.padding(horizontal = 20.dp),
             )
             Spacer(Modifier.height(6.dp))
-            Row(
-                Modifier
-                    .horizontalScroll(rememberScrollState())
-                    .padding(horizontal = 20.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                IconShape.entries.forEach { shape ->
-                    FilterChip(
-                        selected = shape == iconShape,
-                        onClick = { onIconShape(shape) },
-                        label = { Text(stringResource(shape.labelRes)) },
-                    )
-                }
-            }
+            IconShapePicker(iconShape, onIconShape, Modifier.padding(horizontal = 14.dp))
             if (IconShapes.themedSupported) {
                 Row(
                     Modifier

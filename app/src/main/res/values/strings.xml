@@ -136,21 +136,15 @@
 
     <!-- Gestures -->
     <string name="gestures">Gestures</string>
-    <string name="tag_hold">Hold</string>
-    <string name="tag_drag">Drag</string>
-    <string name="tag_tap">Tap</string>
-    <string name="tag_feel">Feel</string>
     <string name="gesture_hold_title">Hold, slide, let go</string>
     <string name="gesture_hold_body">Opens the app under your finger. Let go near the bubble to cancel.</string>
     <string name="gesture_drag_title">Drag</string>
     <string name="gesture_drag_body">Moves the bubble. It snaps to the nearest side.</string>
     <string name="gesture_tap_title">Tap</string>
-    <string name="tag_double">Double</string>
     <string name="gesture_double_title">Double tap</string>
     <string name="hold_delay">Hold delay</string>
     <string name="haptics">Haptics</string>
     <string name="haptics_body">Vibrate on hold and on each app you slide over</string>
-    <string name="tag_dial">Dial</string>
     <string name="brightness_slider">Brightness slider</string>
     <string name="brightness_slider_body">Upper half-arc around the dial</string>
     <string name="volume_slider">Volume slider</string>
@@ -160,15 +154,9 @@
 
     <!-- Bubble -->
     <string name="bubble">Bubble</string>
-    <string name="tag_size">Size</string>
-    <string name="tag_look">Look</string>
-    <string name="tag_auto">Auto</string>
-    <string name="tag_apps">Apps</string>
-    <string name="tag_dots">Dots</string>
     <string name="size">Size</string>
     <string name="opacity">Opacity</string>
     <string name="opacity_body">How see-through the resting bubble is. It turns solid while you hold it.</string>
-    <string name="tag_edge">Edge</string>
     <string name="tuck_bubble">Tuck into the edge</string>
     <string name="tuck_bubble_body">Half the bubble hides past the screen edge and slides out when you touch it.</string>
     <string name="hide_fullscreen">Hide in full-screen apps</string>
@@ -194,7 +182,6 @@
 
     <!-- Bubble style -->
     <string name="style_hint">Pick a character and a colour. Characters blink, look around and react when you touch them.</string>
-    <string name="tag_anim">Anim</string>
     <string name="animations_title">Idle animations</string>
     <string name="animations_body">Blinks and little moves every few seconds. Turn off for a still bubble.</string>
     <string name="character_classic">Classic</string>
@@ -213,7 +200,6 @@
     <string name="palette_lemon">Lemon</string>
     <string name="palette_grape">Grape</string>
     <string name="palette_mono">Mono</string>
-    <string name="tag_mood">Mood</string>
     <string name="reactions_title">Reacts to your day</string>
     <string name="reactions_body">Sleeps at night, sweats when the battery is low, glows while charging and hops for new notifications.</string>
 
@@ -355,4 +341,12 @@
     <string name="pick_tap_app_title">Tap opens</string>
     <string name="pick_double_app_title">Double tap opens</string>
     <string name="pick_one_app">Pick one app or quick action</string>
+    <!-- Settings group headers -->
+    <string name="group_tap_actions">Tap actions</string>
+    <string name="group_hold">Hold</string>
+    <string name="group_dial_sliders">Dial sliders</string>
+    <string name="group_look">Look</string>
+    <string name="group_position">Position</string>
+    <string name="group_auto_hide">Auto-hide</string>
+    <string name="group_notifications">Notifications</string>
 </resources>

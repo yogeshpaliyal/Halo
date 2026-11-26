@@ -111,21 +111,15 @@
     <string name="show_recents">हाल के ऐप दिखाएँ</string>
     <string name="show_recents_off">बंद: बबल दबाए रखने पर सिर्फ़ पसंदीदा और स्लाइडर दिखते हैं।</string>
     <string name="gestures">जेस्चर</string>
-    <string name="tag_hold">दबाएं</string>
-    <string name="tag_drag">खींचें</string>
-    <string name="tag_tap">टैप</string>
-    <string name="tag_feel">कंपन</string>
     <string name="gesture_hold_title">दबाएं, सरकाएं, छोड़ें</string>
     <string name="gesture_hold_body">उंगली के नीचे वाला ऐप खोलता है। रद्द करने के लिए बबल के पास छोड़ें।</string>
     <string name="gesture_drag_title">खींचें</string>
     <string name="gesture_drag_body">बबल को हिलाता है। यह सबसे पास वाले किनारे पर टिक जाता है।</string>
     <string name="gesture_tap_title">टैप</string>
-    <string name="tag_double">दो बार</string>
     <string name="gesture_double_title">दो बार टैप</string>
     <string name="hold_delay">दबाने का समय</string>
     <string name="haptics">वाइब्रेशन</string>
     <string name="haptics_body">दबाने पर और हर ऐप पर उंगली सरकाते समय वाइब्रेट करें</string>
-    <string name="tag_dial">डायल</string>
     <string name="brightness_slider">चमक स्लाइडर</string>
     <string name="brightness_slider_body">डायल के चारों ओर ऊपर वाला आधा चाप</string>
     <string name="volume_slider">आवाज़ स्लाइडर</string>
@@ -133,15 +127,9 @@
     <string name="volume_on_top">आवाज़ ऊपर</string>
     <string name="volume_on_top_body">स्लाइडर बदलें: आवाज़ ऊपर, चमक नीचे</string>
     <string name="bubble">बबल</string>
-    <string name="tag_size">आकार</string>
-    <string name="tag_look">रूप</string>
-    <string name="tag_auto">ऑटो</string>
-    <string name="tag_apps">ऐप</string>
-    <string name="tag_dots">डॉट</string>
     <string name="size">आकार</string>
     <string name="opacity">पारदर्शिता</string>
     <string name="opacity_body">रुका हुआ बबल कितना पारदर्शी हो। दबाए रखने पर यह पूरा दिखता है।</string>
-    <string name="tag_edge">किनारा</string>
     <string name="tuck_bubble">किनारे में छिपाएँ</string>
     <string name="tuck_bubble_body">बबल आधा स्क्रीन के किनारे में छिपा रहता है और छूने पर बाहर आ जाता है।</string>
     <string name="hide_fullscreen">फ़ुल-स्क्रीन ऐप में छिपाएं</string>
@@ -165,7 +153,6 @@
 
     <!-- Bubble style -->
     <string name="style_hint">एक कैरेक्टर और रंग चुनें। कैरेक्टर पलक झपकाते हैं, इधर-उधर देखते हैं और छूने पर जवाब देते हैं।</string>
-    <string name="tag_anim">एनिमेशन</string>
     <string name="animations_title">आइडल एनिमेशन</string>
     <string name="animations_body">हर कुछ सेकंड में पलक झपकना और छोटी हरकतें। स्थिर बबल के लिए बंद करें।</string>
     <string name="character_classic">क्लासिक</string>
@@ -184,7 +171,6 @@
     <string name="palette_lemon">नींबू</string>
     <string name="palette_grape">अंगूर</string>
     <string name="palette_mono">मोनो</string>
-    <string name="tag_mood">मूड</string>
     <string name="reactions_title">आपके दिन पर रिएक्ट करे</string>
     <string name="reactions_body">रात में सोता है, बैटरी कम होने पर पसीना आता है, चार्जिंग पर चमकता है और नई सूचना पर उछलता है।</string>
 
@@ -326,4 +312,12 @@
     <string name="pick_tap_app_title">टैप से खुले</string>
     <string name="pick_double_app_title">दो बार टैप से खुले</string>
     <string name="pick_one_app">एक ऐप या क्विक ऐक्शन चुनें</string>
+    <!-- Settings group headers -->
+    <string name="group_tap_actions">टैप एक्शन</string>
+    <string name="group_hold">होल्ड</string>
+    <string name="group_dial_sliders">डायल स्लाइडर</string>
+    <string name="group_look">रूप</string>
+    <string name="group_position">जगह</string>
+    <string name="group_auto_hide">अपने-आप छिपाएं</string>
+    <string name="group_notifications">सूचनाएं</string>
 </resources>

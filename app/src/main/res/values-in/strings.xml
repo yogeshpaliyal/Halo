@@ -109,21 +109,15 @@
     <string name="show_recents">Tampilkan aplikasi terbaru</string>
     <string name="show_recents_off">Nonaktif: menahan gelembung hanya menampilkan favorit dan penggeser.</string>
     <string name="gestures">Gestur</string>
-    <string name="tag_hold">Tahan</string>
-    <string name="tag_drag">Seret</string>
-    <string name="tag_tap">Ketuk</string>
-    <string name="tag_feel">Getar</string>
     <string name="gesture_hold_title">Tahan, geser, lepas</string>
     <string name="gesture_hold_body">Membuka aplikasi di bawah jari Anda. Lepas di dekat gelembung untuk batal.</string>
     <string name="gesture_drag_title">Seret</string>
     <string name="gesture_drag_body">Memindahkan gelembung. Gelembung menempel ke sisi terdekat.</string>
     <string name="gesture_tap_title">Ketuk</string>
-    <string name="tag_double">Ganda</string>
     <string name="gesture_double_title">Ketuk dua kali</string>
     <string name="hold_delay">Durasi tahan</string>
     <string name="haptics">Getaran</string>
     <string name="haptics_body">Bergetar saat menahan dan pada setiap aplikasi yang dilewati</string>
-    <string name="tag_dial">Dial</string>
     <string name="brightness_slider">Penggeser kecerahan</string>
     <string name="brightness_slider_body">Setengah busur atas di sekitar menu</string>
     <string name="volume_slider">Penggeser volume</string>
@@ -131,15 +125,9 @@
     <string name="volume_on_top">Volume di atas</string>
     <string name="volume_on_top_body">Tukar penggeser: volume di atas, kecerahan di bawah</string>
     <string name="bubble">Gelembung</string>
-    <string name="tag_size">Ukuran</string>
-    <string name="tag_look">Tampilan</string>
-    <string name="tag_auto">Otomatis</string>
-    <string name="tag_apps">Aplikasi</string>
-    <string name="tag_dots">Titik</string>
     <string name="size">Ukuran</string>
     <string name="opacity">Opasitas</string>
     <string name="opacity_body">Seberapa transparan gelembung saat diam. Menjadi penuh saat Anda menahannya.</string>
-    <string name="tag_edge">Tepi</string>
     <string name="tuck_bubble">Selipkan ke tepi</string>
     <string name="tuck_bubble_body">Separuh gelembung tersembunyi di tepi layar dan keluar saat Anda menyentuhnya.</string>
     <string name="hide_fullscreen">Sembunyikan di aplikasi layar penuh</string>
@@ -162,7 +150,6 @@
 
     <!-- Bubble style -->
     <string name="style_hint">Pilih karakter dan warna. Karakter berkedip, melihat sekeliling, dan bereaksi saat disentuh.</string>
-    <string name="tag_anim">Anim</string>
     <string name="animations_title">Animasi diam</string>
     <string name="animations_body">Berkedip dan gerakan kecil setiap beberapa detik. Matikan untuk gelembung yang diam.</string>
     <string name="character_classic">Klasik</string>
@@ -181,7 +168,6 @@
     <string name="palette_lemon">Lemon</string>
     <string name="palette_grape">Anggur</string>
     <string name="palette_mono">Mono</string>
-    <string name="tag_mood">Mood</string>
     <string name="reactions_title">Bereaksi pada harimu</string>
     <string name="reactions_body">Tidur di malam hari, berkeringat saat baterai lemah, bersinar saat diisi daya, dan melompat saat ada notifikasi baru.</string>
 
@@ -318,4 +304,12 @@
     <string name="pick_tap_app_title">Ketuk membuka</string>
     <string name="pick_double_app_title">Ketuk dua kali membuka</string>
     <string name="pick_one_app">Pilih satu aplikasi atau aksi cepat</string>
+    <!-- Settings group headers -->
+    <string name="group_tap_actions">Tindakan ketuk</string>
+    <string name="group_hold">Tahan</string>
+    <string name="group_dial_sliders">Penggeser dial</string>
+    <string name="group_look">Tampilan</string>
+    <string name="group_position">Posisi</string>
+    <string name="group_auto_hide">Sembunyikan otomatis</string>
+    <string name="group_notifications">Notifikasi</string>
 </resources>

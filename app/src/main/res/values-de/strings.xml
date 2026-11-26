@@ -111,21 +111,15 @@
     <string name="show_recents">Zuletzt genutzte Apps zeigen</string>
     <string name="show_recents_off">Aus: Beim Halten der Blase erscheinen nur Favoriten und Regler.</string>
     <string name="gestures">Gesten</string>
-    <string name="tag_hold">Halten</string>
-    <string name="tag_drag">Ziehen</string>
-    <string name="tag_tap">Tippen</string>
-    <string name="tag_feel">Gefühl</string>
     <string name="gesture_hold_title">Halten, gleiten, loslassen</string>
     <string name="gesture_hold_body">Öffnet die App unter deinem Finger. Neben der Blase loslassen zum Abbrechen.</string>
     <string name="gesture_drag_title">Ziehen</string>
     <string name="gesture_drag_body">Verschiebt die Blase. Sie rastet an der nächsten Seite ein.</string>
     <string name="gesture_tap_title">Tippen</string>
-    <string name="tag_double">Doppelt</string>
     <string name="gesture_double_title">Doppeltippen</string>
     <string name="hold_delay">Haltedauer</string>
     <string name="haptics">Vibration</string>
     <string name="haptics_body">Vibrieren beim Halten und bei jeder App, über die du gleitest</string>
-    <string name="tag_dial">Ring</string>
     <string name="brightness_slider">Helligkeitsregler</string>
     <string name="brightness_slider_body">Oberer Halbbogen um das Menü</string>
     <string name="volume_slider">Lautstärkeregler</string>
@@ -133,15 +127,9 @@
     <string name="volume_on_top">Lautstärke oben</string>
     <string name="volume_on_top_body">Regler tauschen: Lautstärke oben, Helligkeit unten</string>
     <string name="bubble">Blase</string>
-    <string name="tag_size">Größe</string>
-    <string name="tag_look">Optik</string>
-    <string name="tag_auto">Auto</string>
-    <string name="tag_apps">Apps</string>
-    <string name="tag_dots">Punkte</string>
     <string name="size">Größe</string>
     <string name="opacity">Deckkraft</string>
     <string name="opacity_body">Wie durchsichtig die ruhende Blase ist. Beim Halten wird sie voll sichtbar.</string>
-    <string name="tag_edge">Rand</string>
     <string name="tuck_bubble">Am Rand verstecken</string>
     <string name="tuck_bubble_body">Die Blase steckt halb im Bildschirmrand und gleitet beim Berühren heraus.</string>
     <string name="hide_fullscreen">In Vollbild-Apps ausblenden</string>
@@ -165,7 +153,6 @@
 
     <!-- Bubble style -->
     <string name="style_hint">Wähle eine Figur und eine Farbe. Figuren blinzeln, schauen sich um und reagieren auf Berührung.</string>
-    <string name="tag_anim">Anim</string>
     <string name="animations_title">Leerlauf-Animationen</string>
     <string name="animations_body">Alle paar Sekunden Blinzeln und kleine Bewegungen. Aus für eine ruhige Blase.</string>
     <string name="character_classic">Klassisch</string>
@@ -184,7 +171,6 @@
     <string name="palette_lemon">Zitrone</string>
     <string name="palette_grape">Traube</string>
     <string name="palette_mono">Mono</string>
-    <string name="tag_mood">Laune</string>
     <string name="reactions_title">Reagiert auf deinen Tag</string>
     <string name="reactions_body">Schläft nachts, schwitzt bei schwachem Akku, leuchtet beim Laden und hüpft bei neuen Benachrichtigungen.</string>
 
@@ -326,4 +312,12 @@
     <string name="pick_tap_app_title">Tippen öffnet</string>
     <string name="pick_double_app_title">Doppeltippen öffnet</string>
     <string name="pick_one_app">Eine App oder Schnellaktion auswählen</string>
+    <!-- Settings group headers -->
+    <string name="group_tap_actions">Tipp-Aktionen</string>
+    <string name="group_hold">Halten</string>
+    <string name="group_dial_sliders">Regler am Kreis</string>
+    <string name="group_look">Aussehen</string>
+    <string name="group_position">Position</string>
+    <string name="group_auto_hide">Automatisch ausblenden</string>
+    <string name="group_notifications">Benachrichtigungen</string>
 </resources>

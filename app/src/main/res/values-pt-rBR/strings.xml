@@ -113,21 +113,15 @@
     <string name="show_recents">Mostrar apps recentes</string>
     <string name="show_recents_off">Desativado: ao segurar a bolha aparecem só favoritos e controles.</string>
     <string name="gestures">Gestos</string>
-    <string name="tag_hold">Segurar</string>
-    <string name="tag_drag">Arrastar</string>
-    <string name="tag_tap">Tocar</string>
-    <string name="tag_feel">Toque</string>
     <string name="gesture_hold_title">Segure, deslize, solte</string>
     <string name="gesture_hold_body">Abre o app sob o seu dedo. Solte perto da bolha para cancelar.</string>
     <string name="gesture_drag_title">Arrastar</string>
     <string name="gesture_drag_body">Move a bolha. Ela se prende ao lado mais próximo.</string>
     <string name="gesture_tap_title">Tocar</string>
-    <string name="tag_double">Duplo</string>
     <string name="gesture_double_title">Toque duplo</string>
     <string name="hold_delay">Tempo de pressionar</string>
     <string name="haptics">Vibração</string>
     <string name="haptics_body">Vibrar ao segurar e em cada app que você desliza por cima</string>
-    <string name="tag_dial">Dial</string>
     <string name="brightness_slider">Controle de brilho</string>
     <string name="brightness_slider_body">Meio arco superior ao redor do menu</string>
     <string name="volume_slider">Controle de volume</string>
@@ -135,15 +129,9 @@
     <string name="volume_on_top">Volume em cima</string>
     <string name="volume_on_top_body">Trocar os controles: volume em cima, brilho embaixo</string>
     <string name="bubble">Bolha</string>
-    <string name="tag_size">Tamanho</string>
-    <string name="tag_look">Visual</string>
-    <string name="tag_auto">Auto</string>
-    <string name="tag_apps">Apps</string>
-    <string name="tag_dots">Pontos</string>
     <string name="size">Tamanho</string>
     <string name="opacity">Opacidade</string>
     <string name="opacity_body">Quão transparente a bolha fica em repouso. Ela fica sólida enquanto você segura.</string>
-    <string name="tag_edge">Borda</string>
     <string name="tuck_bubble">Esconder na borda</string>
     <string name="tuck_bubble_body">Metade da bolha fica escondida na borda da tela e desliza para fora ao tocar.</string>
     <string name="hide_fullscreen">Ocultar em apps em tela cheia</string>
@@ -168,7 +156,6 @@
 
     <!-- Bubble style -->
     <string name="style_hint">Escolha um personagem e uma cor. Os personagens piscam, olham em volta e reagem ao toque.</string>
-    <string name="tag_anim">Anim</string>
     <string name="animations_title">Animações em repouso</string>
     <string name="animations_body">Piscadas e pequenos movimentos a cada poucos segundos. Desative para uma bolha parada.</string>
     <string name="character_classic">Clássica</string>
@@ -187,7 +174,6 @@
     <string name="palette_lemon">Limão</string>
     <string name="palette_grape">Uva</string>
     <string name="palette_mono">Mono</string>
-    <string name="tag_mood">Humor</string>
     <string name="reactions_title">Reage ao seu dia</string>
     <string name="reactions_body">Dorme à noite, sua com bateria fraca, brilha carregando e pula com notificações novas.</string>
 
@@ -334,4 +320,12 @@
     <string name="pick_tap_app_title">O toque abre</string>
     <string name="pick_double_app_title">O toque duplo abre</string>
     <string name="pick_one_app">Escolha um app ou ação rápida</string>
+    <!-- Settings group headers -->
+    <string name="group_tap_actions">Ações de toque</string>
+    <string name="group_hold">Segurar</string>
+    <string name="group_dial_sliders">Controles do disco</string>
+    <string name="group_look">Aparência</string>
+    <string name="group_position">Posição</string>
+    <string name="group_auto_hide">Ocultar automaticamente</string>
+    <string name="group_notifications">Notificações</string>
 </resources>

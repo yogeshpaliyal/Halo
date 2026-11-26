@@ -109,21 +109,15 @@
     <string name="show_recents">最近のアプリを表示</string>
     <string name="show_recents_off">オフ：バブルを長押しするとお気に入りとスライダーだけが表示されます。</string>
     <string name="gestures">ジェスチャー</string>
-    <string name="tag_hold">長押し</string>
-    <string name="tag_drag">ドラッグ</string>
-    <string name="tag_tap">タップ</string>
-    <string name="tag_feel">振動</string>
     <string name="gesture_hold_title">長押し、スライド、離す</string>
     <string name="gesture_hold_body">指の下のアプリを開きます。バブルの近くで離すとキャンセル。</string>
     <string name="gesture_drag_title">ドラッグ</string>
     <string name="gesture_drag_body">バブルを移動します。近い方の端に吸着します。</string>
     <string name="gesture_tap_title">タップ</string>
-    <string name="tag_double">2 回</string>
     <string name="gesture_double_title">ダブルタップ</string>
     <string name="hold_delay">長押しの時間</string>
     <string name="haptics">振動</string>
     <string name="haptics_body">長押し時と、アプリの上を通るたびに振動</string>
-    <string name="tag_dial">ダイアル</string>
     <string name="brightness_slider">明るさスライダー</string>
     <string name="brightness_slider_body">ダイアルの外側、上半分の弧</string>
     <string name="volume_slider">音量スライダー</string>
@@ -131,15 +125,9 @@
     <string name="volume_on_top">音量を上に</string>
     <string name="volume_on_top_body">スライダーを入れ替え：上に音量、下に明るさ</string>
     <string name="bubble">バブル</string>
-    <string name="tag_size">サイズ</string>
-    <string name="tag_look">見た目</string>
-    <string name="tag_auto">自動</string>
-    <string name="tag_apps">アプリ</string>
-    <string name="tag_dots">ドット</string>
     <string name="size">サイズ</string>
     <string name="opacity">不透明度</string>
     <string name="opacity_body">待機中のバブルの透け具合。押している間は不透明になります。</string>
-    <string name="tag_edge">端</string>
     <string name="tuck_bubble">端に隠す</string>
     <string name="tuck_bubble_body">バブルの半分が画面の端に隠れ、触れるとスライドして出てきます。</string>
     <string name="hide_fullscreen">全画面アプリで非表示</string>
@@ -162,7 +150,6 @@
 
     <!-- Bubble style -->
     <string name="style_hint">キャラクターと色を選びましょう。キャラクターはまばたきしたり、きょろきょろしたり、触ると反応します。</string>
-    <string name="tag_anim">動き</string>
     <string name="animations_title">待機アニメーション</string>
     <string name="animations_body">数秒ごとにまばたきや小さな動き。オフにすると静止したバブルになります。</string>
     <string name="character_classic">クラシック</string>
@@ -181,7 +168,6 @@
     <string name="palette_lemon">レモン</string>
     <string name="palette_grape">グレープ</string>
     <string name="palette_mono">モノ</string>
-    <string name="tag_mood">気分</string>
     <string name="reactions_title">1 日に反応</string>
     <string name="reactions_body">夜は眠り、電池が少ないと汗をかき、充電中は光り、新しい通知でジャンプします。</string>
 
@@ -318,4 +304,12 @@
     <string name="pick_tap_app_title">タップで開く</string>
     <string name="pick_double_app_title">ダブルタップで開く</string>
     <string name="pick_one_app">アプリかクイック操作を 1 つ選択</string>
+    <!-- Settings group headers -->
+    <string name="group_tap_actions">タップ操作</string>
+    <string name="group_hold">長押し</string>
+    <string name="group_dial_sliders">ダイヤルのスライダー</string>
+    <string name="group_look">見た目</string>
+    <string name="group_position">位置</string>
+    <string name="group_auto_hide">自動で隠す</string>
+    <string name="group_notifications">通知</string>
 </resources>
