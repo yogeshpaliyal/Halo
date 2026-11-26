@@ -110,9 +110,24 @@ class RadialMenuView(
     }
 
     private val sliderTrack = dp(SLIDER_TRACK_DP)
-    private val sliderRadius = (if (extent > 0f) extent else dp(INNER_DP)) + dp(SLIDER_GAP_DP)
+    /** Sliders' radius with room for an open folder's apps; also used to keep the menu on screen. */
+    private val sliderRadiusMax = (if (extent > 0f) extent else dp(INNER_DP)) + dp(SLIDER_GAP_DP)
+    /**
+     * Sliders' radius with nothing open. Without recents (none yet, or turned off) they hug the
+     * favourites ring instead of leaving an empty band where a folder's apps would fan out.
+     */
+    private val sliderRadiusRest = when {
+        recentRing != null -> sliderRadiusMax
+        favRing != null -> favRing.radius + dp(SLIDER_GAP_DP)
+        else -> sliderRadiusMax
+    }
+    /** Where the sliders are now: they glide out of the way while a folder's apps fan out. */
+    private val sliderRadius: Float
+        get() = if (openFolder == null) sliderRadiusRest
+        else sliderRadiusRest + (sliderRadiusMax - sliderRadiusRest) * folderProgress.coerceIn(0f, 1f)
     /** A finger at least this far from the centre is on a slider rather than on the app rings. */
-    private val sliderZone = sliderRadius - sliderTrack / 2f - dp(12f)
+    private val sliderZone: Float
+        get() = sliderRadius - sliderTrack / 2f - dp(12f)
     private val brightnessAllowed = SystemControls.canWriteBrightness(context)
     private var brightness = if (brightnessAllowed) SystemControls.brightness(context) else 0f
     private var volume = SystemControls.volume(context)
@@ -495,7 +510,7 @@ class RadialMenuView(
 
     /** Keep the whole menu on screen when the bubble sits near the top or bottom. */
     private fun centerY(): Float {
-        val outer = if (sliders.isEmpty()) extent + iconSize else maxOf(extent + iconSize, sliderRadius + sliderTrack)
+        val outer = if (sliders.isEmpty()) extent + iconSize else maxOf(extent + iconSize, sliderRadiusMax + sliderTrack)
         val y = anchorScreenY - screenLoc[1]
         return if (height <= 2 * outer) height / 2f else y.coerceIn(outer, height - outer)
     }
