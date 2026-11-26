@@ -243,7 +243,10 @@
     <string name="tut_success_body">É só isso: segure, deslize, solte. Mais dois truques:</string>
     <string name="tut_tip_tap">Toque: %s</string>
     <string name="tut_tip_double">Toque duplo: %s</string>
-    <string name="tut_tip_drag">Arraste para mover pela borda</string>
+    <string name="tut_tip_drag">Arraste pela borda ou para o outro lado</string>
+    <string name="tut_side_title">De que lado a bolha deve ficar?</string>
+    <string name="tut_side_left">Esquerda</string>
+    <string name="tut_side_right">Direita</string>
     <string name="tut_done">Concluído</string>
     <string name="tut_card_title">Novo por aqui? Aprenda o gesto</string>
     <string name="tut_card_body">Um treino de 20 segundos, aqui mesmo.</string>

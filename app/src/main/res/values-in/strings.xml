@@ -237,7 +237,10 @@
     <string name="tut_success_body">Cukup itu: tahan, geser, lepas. Dua trik lagi:</string>
     <string name="tut_tip_tap">Ketuk: %s</string>
     <string name="tut_tip_double">Ketuk dua kali: %s</string>
-    <string name="tut_tip_drag">Seret untuk memindahkannya di sepanjang tepi</string>
+    <string name="tut_tip_drag">Seret di sepanjang tepi, atau ke sisi lainnya</string>
+    <string name="tut_side_title">Gelembung di sisi mana?</string>
+    <string name="tut_side_left">Kiri</string>
+    <string name="tut_side_right">Kanan</string>
     <string name="tut_done">Selesai</string>
     <string name="tut_card_title">Baru di sini? Pelajari gesturnya</string>
     <string name="tut_card_body">Latihan 20 detik, di sini saja.</string>

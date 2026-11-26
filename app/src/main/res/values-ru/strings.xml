@@ -246,7 +246,10 @@
     <string name="tut_success_body">Вот и всё: удержать, провести, отпустить. Ещё два приёма:</string>
     <string name="tut_tip_tap">Нажатие: %s</string>
     <string name="tut_tip_double">Двойное нажатие: %s</string>
-    <string name="tut_tip_drag">Перетащите, чтобы переместить вдоль края</string>
+    <string name="tut_tip_drag">Перетащите вдоль края или на другую сторону</string>
+    <string name="tut_side_title">С какой стороны держать пузырь?</string>
+    <string name="tut_side_left">Слева</string>
+    <string name="tut_side_right">Справа</string>
     <string name="tut_done">Готово</string>
     <string name="tut_card_title">Впервые здесь? Освойте жест</string>
     <string name="tut_card_body">20-секундная тренировка прямо здесь.</string>

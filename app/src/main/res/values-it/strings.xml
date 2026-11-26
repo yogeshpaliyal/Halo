@@ -243,7 +243,10 @@
     <string name="tut_success_body">Tutto qui: tieni, scorri, rilascia. Altri due trucchi:</string>
     <string name="tut_tip_tap">Tocco: %s</string>
     <string name="tut_tip_double">Doppio tocco: %s</string>
-    <string name="tut_tip_drag">Trascinala per spostarla lungo il bordo</string>
+    <string name="tut_tip_drag">Trascinala lungo il bordo o sull’altro lato</string>
+    <string name="tut_side_title">Da che lato mettere la bolla?</string>
+    <string name="tut_side_left">Sinistra</string>
+    <string name="tut_side_right">Destra</string>
     <string name="tut_done">Fatto</string>
     <string name="tut_card_title">Nuovo? Impara il gesto</string>
     <string name="tut_card_body">Una prova di 20 secondi, proprio qui.</string>

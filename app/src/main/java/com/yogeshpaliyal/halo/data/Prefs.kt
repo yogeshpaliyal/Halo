@@ -15,7 +15,7 @@ object Prefs {
 
     private const val FILE = "halo"
     const val KEY_FAVORITES = "favorites"
-    private const val KEY_BUBBLE_RIGHT = "bubble_right"
+    const val KEY_BUBBLE_RIGHT = "bubble_right"
     private const val KEY_BUBBLE_Y = "bubble_y"
     private const val KEY_ENABLED = "enabled"
     private const val KEY_TAP_ACTION = "tap_action"
@@ -224,6 +224,8 @@ object Prefs {
         sp(context).unregisterOnSharedPreferenceChangeListener(listener)
 
     fun bubbleOnRight(context: Context): Boolean = sp(context).getBoolean(KEY_BUBBLE_RIGHT, true)
+    /** Moves the resting bubble to the other edge; a running bubble slides across. */
+    fun setBubbleOnRight(context: Context, onRight: Boolean) = sp(context).edit { putBoolean(KEY_BUBBLE_RIGHT, onRight) }
     fun bubbleY(context: Context, default: Int): Int = sp(context).getInt(KEY_BUBBLE_Y, default)
 
     fun saveBubble(context: Context, onRight: Boolean, y: Int) = sp(context).edit {

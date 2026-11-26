@@ -240,7 +240,10 @@
     <string name="tut_success_body">Hepsi bu: tut, kaydır, bırak. İki ipucu daha:</string>
     <string name="tut_tip_tap">Dokunma: %s</string>
     <string name="tut_tip_double">Çift dokunma: %s</string>
-    <string name="tut_tip_drag">Kenar boyunca taşımak için sürükle</string>
+    <string name="tut_tip_drag">Kenar boyunca ya da diğer tarafa taşımak için sürükle</string>
+    <string name="tut_side_title">Baloncuk hangi tarafta dursun?</string>
+    <string name="tut_side_left">Sol</string>
+    <string name="tut_side_right">Sağ</string>
     <string name="tut_done">Bitti</string>
     <string name="tut_card_title">Yeni misin? Hareketi öğren</string>
     <string name="tut_card_body">Burada 20 saniyelik bir alıştırma.</string>

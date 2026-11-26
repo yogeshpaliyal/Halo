@@ -237,7 +237,10 @@
     <string name="tut_success_body">長押し、スライド、離すだけ。あと 2 つのコツ:</string>
     <string name="tut_tip_tap">タップ: %s</string>
     <string name="tut_tip_double">ダブルタップ: %s</string>
-    <string name="tut_tip_drag">ドラッグで端に沿って移動</string>
+    <string name="tut_tip_drag">ドラッグで端に沿って、または反対側へ移動</string>
+    <string name="tut_side_title">バブルを置く側は？</string>
+    <string name="tut_side_left">左</string>
+    <string name="tut_side_right">右</string>
     <string name="tut_done">完了</string>
     <string name="tut_card_title">はじめての方へ: ジェスチャーを覚えよう</string>
     <string name="tut_card_body">ここで 20 秒の練習ができます。</string>

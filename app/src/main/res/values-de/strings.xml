@@ -240,7 +240,10 @@
     <string name="tut_success_body">Mehr braucht es nicht: halten, gleiten, loslassen. Noch zwei Tricks:</string>
     <string name="tut_tip_tap">Tippen: %s</string>
     <string name="tut_tip_double">Doppeltippen: %s</string>
-    <string name="tut_tip_drag">Ziehen, um sie am Rand zu verschieben</string>
+    <string name="tut_tip_drag">Ziehen, um sie am Rand zu verschieben oder auf die andere Seite zu bringen</string>
+    <string name="tut_side_title">Auf welcher Seite soll die Blase sitzen?</string>
+    <string name="tut_side_left">Links</string>
+    <string name="tut_side_right">Rechts</string>
     <string name="tut_done">Fertig</string>
     <string name="tut_card_title">Neu hier? Lerne die Geste</string>
     <string name="tut_card_body">Eine 20-Sekunden-Übung, direkt hier.</string>
