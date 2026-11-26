@@ -111,21 +111,15 @@
     <string name="show_recents">Son uygulamaları göster</string>
     <string name="show_recents_off">Kapalı: balona basılı tutunca yalnızca favoriler ve kaydırıcılar görünür.</string>
     <string name="gestures">Hareketler</string>
-    <string name="tag_hold">Tut</string>
-    <string name="tag_drag">Sürükle</string>
-    <string name="tag_tap">Dokun</string>
-    <string name="tag_feel">His</string>
     <string name="gesture_hold_title">Tut, kaydır, bırak</string>
     <string name="gesture_hold_body">Parmağınızın altındaki uygulamayı açar. İptal için baloncuğun yakınında bırakın.</string>
     <string name="gesture_drag_title">Sürükle</string>
     <string name="gesture_drag_body">Baloncuğu taşır. En yakın kenara yapışır.</string>
     <string name="gesture_tap_title">Dokun</string>
-    <string name="tag_double">Çift</string>
     <string name="gesture_double_title">Çift dokunma</string>
     <string name="hold_delay">Basılı tutma süresi</string>
     <string name="haptics">Titreşim</string>
     <string name="haptics_body">Basılı tutunca ve üzerinden geçtiğiniz her uygulamada titreşir</string>
-    <string name="tag_dial">Menü</string>
     <string name="brightness_slider">Parlaklık kaydırıcısı</string>
     <string name="brightness_slider_body">Menünün etrafındaki üst yarım yay</string>
     <string name="volume_slider">Ses kaydırıcısı</string>
@@ -133,15 +127,9 @@
     <string name="volume_on_top">Ses üstte</string>
     <string name="volume_on_top_body">Kaydırıcıları değiştir: ses üstte, parlaklık altta</string>
     <string name="bubble">Baloncuk</string>
-    <string name="tag_size">Boyut</string>
-    <string name="tag_look">Görünüm</string>
-    <string name="tag_auto">Otomatik</string>
-    <string name="tag_apps">Uygulama</string>
-    <string name="tag_dots">Nokta</string>
     <string name="size">Boyut</string>
     <string name="opacity">Opaklık</string>
     <string name="opacity_body">Bekleyen baloncuğun ne kadar şeffaf olduğu. Basılı tutarken tamamen görünür.</string>
-    <string name="tag_edge">Kenar</string>
     <string name="tuck_bubble">Kenara sakla</string>
     <string name="tuck_bubble_body">Balonun yarısı ekran kenarına gizlenir ve dokunduğunuzda dışarı kayar.</string>
     <string name="hide_fullscreen">Tam ekran uygulamalarda gizle</string>
@@ -165,7 +153,6 @@
 
     <!-- Bubble style -->
     <string name="style_hint">Bir karakter ve renk seçin. Karakterler göz kırpar, etrafa bakar ve dokununca tepki verir.</string>
-    <string name="tag_anim">Anim</string>
     <string name="animations_title">Bekleme animasyonları</string>
     <string name="animations_body">Birkaç saniyede bir göz kırpma ve küçük hareketler. Hareketsiz bir baloncuk için kapatın.</string>
     <string name="character_classic">Klasik</string>
@@ -184,7 +171,6 @@
     <string name="palette_lemon">Limon</string>
     <string name="palette_grape">Üzüm</string>
     <string name="palette_mono">Mono</string>
-    <string name="tag_mood">Ruh hâli</string>
     <string name="reactions_title">Gününe tepki verir</string>
     <string name="reactions_body">Gece uyur, pil azalınca terler, şarj olurken parlar ve yeni bildirimlerde zıplar.</string>
 
@@ -326,4 +312,12 @@
     <string name="pick_tap_app_title">Dokunma açar</string>
     <string name="pick_double_app_title">Çift dokunma açar</string>
     <string name="pick_one_app">Bir uygulama veya hızlı işlem seç</string>
+    <!-- Settings group headers -->
+    <string name="group_tap_actions">Dokunma işlemleri</string>
+    <string name="group_hold">Basılı tutma</string>
+    <string name="group_dial_sliders">Kadran kaydırıcıları</string>
+    <string name="group_look">Görünüm</string>
+    <string name="group_position">Konum</string>
+    <string name="group_auto_hide">Otomatik gizle</string>
+    <string name="group_notifications">Bildirimler</string>
 </resources>

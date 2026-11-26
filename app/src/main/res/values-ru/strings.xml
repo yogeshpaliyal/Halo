@@ -115,21 +115,15 @@
     <string name="show_recents">Показывать недавние</string>
     <string name="show_recents_off">Выкл.: при удержании пузыря видны только избранное и ползунки.</string>
     <string name="gestures">Жесты</string>
-    <string name="tag_hold">Удерж.</string>
-    <string name="tag_drag">Тяни</string>
-    <string name="tag_tap">Нажм.</string>
-    <string name="tag_feel">Отклик</string>
     <string name="gesture_hold_title">Удерживайте, ведите, отпустите</string>
     <string name="gesture_hold_body">Открывает приложение под пальцем. Отпустите рядом с кнопкой, чтобы отменить.</string>
     <string name="gesture_drag_title">Перетаскивание</string>
     <string name="gesture_drag_body">Перемещает кнопку. Она прилипает к ближайшему краю.</string>
     <string name="gesture_tap_title">Нажатие</string>
-    <string name="tag_double">Двойн.</string>
     <string name="gesture_double_title">Двойное нажатие</string>
     <string name="hold_delay">Время удержания</string>
     <string name="haptics">Вибрация</string>
     <string name="haptics_body">Вибрация при удержании и на каждом приложении под пальцем</string>
-    <string name="tag_dial">Меню</string>
     <string name="brightness_slider">Ползунок яркости</string>
     <string name="brightness_slider_body">Верхняя полудуга вокруг меню</string>
     <string name="volume_slider">Ползунок громкости</string>
@@ -137,15 +131,9 @@
     <string name="volume_on_top">Громкость сверху</string>
     <string name="volume_on_top_body">Поменять местами: громкость сверху, яркость снизу</string>
     <string name="bubble">Кнопка</string>
-    <string name="tag_size">Размер</string>
-    <string name="tag_look">Вид</string>
-    <string name="tag_auto">Авто</string>
-    <string name="tag_apps">Прил.</string>
-    <string name="tag_dots">Точки</string>
     <string name="size">Размер</string>
     <string name="opacity">Непрозрачность</string>
     <string name="opacity_body">Насколько прозрачна кнопка в покое. Пока вы её держите, она непрозрачная.</string>
-    <string name="tag_edge">Край</string>
     <string name="tuck_bubble">Прятать за край</string>
     <string name="tuck_bubble_body">Пузырь наполовину скрыт за краем экрана и выдвигается при касании.</string>
     <string name="hide_fullscreen">Скрывать в полноэкранных приложениях</string>
@@ -171,7 +159,6 @@
 
     <!-- Bubble style -->
     <string name="style_hint">Выберите персонажа и цвет. Персонажи моргают, оглядываются и реагируют на касание.</string>
-    <string name="tag_anim">Аним.</string>
     <string name="animations_title">Анимация в покое</string>
     <string name="animations_body">Моргание и небольшие движения каждые несколько секунд. Выключите для неподвижной кнопки.</string>
     <string name="character_classic">Классика</string>
@@ -190,7 +177,6 @@
     <string name="palette_lemon">Лимон</string>
     <string name="palette_grape">Виноград</string>
     <string name="palette_mono">Моно</string>
-    <string name="tag_mood">Настр.</string>
     <string name="reactions_title">Реагирует на ваш день</string>
     <string name="reactions_body">Спит ночью, потеет при низком заряде, светится при зарядке и подпрыгивает от новых уведомлений.</string>
 
@@ -342,4 +328,12 @@
     <string name="pick_tap_app_title">Нажатие открывает</string>
     <string name="pick_double_app_title">Двойное нажатие открывает</string>
     <string name="pick_one_app">Выберите одно приложение или действие</string>
+    <!-- Settings group headers -->
+    <string name="group_tap_actions">Действия по нажатию</string>
+    <string name="group_hold">Удержание</string>
+    <string name="group_dial_sliders">Ползунки меню</string>
+    <string name="group_look">Внешний вид</string>
+    <string name="group_position">Положение</string>
+    <string name="group_auto_hide">Автоскрытие</string>
+    <string name="group_notifications">Уведомления</string>
 </resources>

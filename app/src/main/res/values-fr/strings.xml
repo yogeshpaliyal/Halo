@@ -113,21 +113,15 @@
     <string name="show_recents">Afficher les apps récentes</string>
     <string name="show_recents_off">Désactivé : un appui long sur la bulle n’affiche que les favoris et les curseurs.</string>
     <string name="gestures">Gestes</string>
-    <string name="tag_hold">Appui</string>
-    <string name="tag_drag">Glisser</string>
-    <string name="tag_tap">Toucher</string>
-    <string name="tag_feel">Retour</string>
     <string name="gesture_hold_title">Maintenir, glisser, relâcher</string>
     <string name="gesture_hold_body">Ouvre l’app sous votre doigt. Relâchez près de la bulle pour annuler.</string>
     <string name="gesture_drag_title">Glisser</string>
     <string name="gesture_drag_body">Déplace la bulle. Elle se colle au bord le plus proche.</string>
     <string name="gesture_tap_title">Toucher</string>
-    <string name="tag_double">Double</string>
     <string name="gesture_double_title">Double appui</string>
     <string name="hold_delay">Durée d’appui</string>
     <string name="haptics">Vibrations</string>
     <string name="haptics_body">Vibrer à l’appui et sur chaque app survolée</string>
-    <string name="tag_dial">Cadran</string>
     <string name="brightness_slider">Curseur de luminosité</string>
     <string name="brightness_slider_body">Demi-arc du haut autour du menu</string>
     <string name="volume_slider">Curseur de volume</string>
@@ -135,15 +129,9 @@
     <string name="volume_on_top">Volume en haut</string>
     <string name="volume_on_top_body">Inverser : volume en haut, luminosité en bas</string>
     <string name="bubble">Bulle</string>
-    <string name="tag_size">Taille</string>
-    <string name="tag_look">Style</string>
-    <string name="tag_auto">Auto</string>
-    <string name="tag_apps">Apps</string>
-    <string name="tag_dots">Points</string>
     <string name="size">Taille</string>
     <string name="opacity">Opacité</string>
     <string name="opacity_body">Transparence de la bulle au repos. Elle devient opaque quand vous la maintenez.</string>
-    <string name="tag_edge">Bord</string>
     <string name="tuck_bubble">Rentrer dans le bord</string>
     <string name="tuck_bubble_body">La bulle se cache à moitié dans le bord de l’écran et ressort quand vous la touchez.</string>
     <string name="hide_fullscreen">Masquer dans les apps en plein écran</string>
@@ -168,7 +156,6 @@
 
     <!-- Bubble style -->
     <string name="style_hint">Choisissez un personnage et une couleur. Les personnages clignent des yeux, regardent autour d’eux et réagissent au toucher.</string>
-    <string name="tag_anim">Anim</string>
     <string name="animations_title">Animations au repos</string>
     <string name="animations_body">Clignements et petits gestes toutes les quelques secondes. Désactivez pour une bulle immobile.</string>
     <string name="character_classic">Classique</string>
@@ -187,7 +174,6 @@
     <string name="palette_lemon">Citron</string>
     <string name="palette_grape">Raisin</string>
     <string name="palette_mono">Mono</string>
-    <string name="tag_mood">Humeur</string>
     <string name="reactions_title">Réagit à votre journée</string>
     <string name="reactions_body">Dort la nuit, transpire quand la batterie est faible, s’illumine en charge et saute aux nouvelles notifications.</string>
 
@@ -334,4 +320,12 @@
     <string name="pick_tap_app_title">L’appui ouvre</string>
     <string name="pick_double_app_title">Le double appui ouvre</string>
     <string name="pick_one_app">Choisissez une app ou une action rapide</string>
+    <!-- Settings group headers -->
+    <string name="group_tap_actions">Actions au toucher</string>
+    <string name="group_hold">Appui long</string>
+    <string name="group_dial_sliders">Curseurs du cadran</string>
+    <string name="group_look">Apparence</string>
+    <string name="group_position">Position</string>
+    <string name="group_auto_hide">Masquage auto</string>
+    <string name="group_notifications">Notifications</string>
 </resources>

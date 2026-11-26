@@ -113,21 +113,15 @@
     <string name="show_recents">Mostra app recenti</string>
     <string name="show_recents_off">Disattivato: tenendo premuta la bolla compaiono solo preferiti e cursori.</string>
     <string name="gestures">Gesti</string>
-    <string name="tag_hold">Tieni</string>
-    <string name="tag_drag">Trascina</string>
-    <string name="tag_tap">Tocca</string>
-    <string name="tag_feel">Tatto</string>
     <string name="gesture_hold_title">Tieni, scorri, rilascia</string>
     <string name="gesture_hold_body">Apre l’app sotto il dito. Rilascia vicino alla bolla per annullare.</string>
     <string name="gesture_drag_title">Trascina</string>
     <string name="gesture_drag_body">Sposta la bolla. Si aggancia al lato più vicino.</string>
     <string name="gesture_tap_title">Tocca</string>
-    <string name="tag_double">Doppio</string>
     <string name="gesture_double_title">Doppio tocco</string>
     <string name="hold_delay">Durata pressione</string>
     <string name="haptics">Vibrazione</string>
     <string name="haptics_body">Vibra quando tieni premuto e su ogni app su cui scorri</string>
-    <string name="tag_dial">Menu</string>
     <string name="brightness_slider">Cursore luminosità</string>
     <string name="brightness_slider_body">Semiarco superiore intorno al menu</string>
     <string name="volume_slider">Cursore volume</string>
@@ -135,15 +129,9 @@
     <string name="volume_on_top">Volume in alto</string>
     <string name="volume_on_top_body">Scambia i cursori: volume in alto, luminosità in basso</string>
     <string name="bubble">Bolla</string>
-    <string name="tag_size">Misura</string>
-    <string name="tag_look">Aspetto</string>
-    <string name="tag_auto">Auto</string>
-    <string name="tag_apps">App</string>
-    <string name="tag_dots">Punti</string>
     <string name="size">Dimensione</string>
     <string name="opacity">Opacità</string>
     <string name="opacity_body">Quanto è trasparente la bolla a riposo. Diventa piena mentre la tieni premuta.</string>
-    <string name="tag_edge">Bordo</string>
     <string name="tuck_bubble">Nascondi nel bordo</string>
     <string name="tuck_bubble_body">La bolla resta per metà nascosta nel bordo e scorre fuori quando la tocchi.</string>
     <string name="hide_fullscreen">Nascondi nelle app a schermo intero</string>
@@ -168,7 +156,6 @@
 
     <!-- Bubble style -->
     <string name="style_hint">Scegli un personaggio e un colore. I personaggi sbattono le palpebre, si guardano intorno e reagiscono al tocco.</string>
-    <string name="tag_anim">Anim</string>
     <string name="animations_title">Animazioni a riposo</string>
     <string name="animations_body">Battiti di ciglia e piccoli movimenti ogni pochi secondi. Disattiva per una bolla ferma.</string>
     <string name="character_classic">Classica</string>
@@ -187,7 +174,6 @@
     <string name="palette_lemon">Limone</string>
     <string name="palette_grape">Uva</string>
     <string name="palette_mono">Mono</string>
-    <string name="tag_mood">Umore</string>
     <string name="reactions_title">Reagisce alla tua giornata</string>
     <string name="reactions_body">Dorme di notte, suda con la batteria scarica, si illumina in carica e salta per le nuove notifiche.</string>
 
@@ -334,4 +320,12 @@
     <string name="pick_tap_app_title">Il tocco apre</string>
     <string name="pick_double_app_title">Il doppio tocco apre</string>
     <string name="pick_one_app">Scegli un’app o un’azione rapida</string>
+    <!-- Settings group headers -->
+    <string name="group_tap_actions">Azioni al tocco</string>
+    <string name="group_hold">Tieni premuto</string>
+    <string name="group_dial_sliders">Cursori del quadrante</string>
+    <string name="group_look">Aspetto</string>
+    <string name="group_position">Posizione</string>
+    <string name="group_auto_hide">Nascondi automaticamente</string>
+    <string name="group_notifications">Notifiche</string>
 </resources>

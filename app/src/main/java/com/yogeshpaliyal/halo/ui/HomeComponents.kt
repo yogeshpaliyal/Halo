@@ -25,6 +25,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -38,8 +40,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.rounded.KeyboardArrowDown
+import androidx.compose.material.icons.rounded.KeyboardArrowUp
 import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -73,7 +78,6 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
@@ -546,25 +550,34 @@ private fun FilledSlot(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(start = 10.dp, top = 6.dp),
         )
-        DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
+        DropdownMenu(
+            expanded = menuOpen,
+            onDismissRequest = { menuOpen = false },
+            shape = RoundedCornerShape(20.dp),
+            containerColor = MaterialTheme.colorScheme.surfaceContainer,
+        ) {
             if (onEdit != null) {
                 DropdownMenuItem(
                     text = { Text(stringResource(R.string.folder_edit)) },
+                    leadingIcon = { Icon(Icons.Rounded.Edit, contentDescription = null) },
                     onClick = { menuOpen = false; onEdit() },
                 )
             }
             DropdownMenuItem(
                 text = { Text(stringResource(R.string.move_earlier)) },
+                leadingIcon = { Icon(Icons.Rounded.KeyboardArrowUp, contentDescription = null) },
                 enabled = canMoveUp,
                 onClick = { menuOpen = false; onMove(-1) },
             )
             DropdownMenuItem(
                 text = { Text(stringResource(R.string.move_later)) },
+                leadingIcon = { Icon(Icons.Rounded.KeyboardArrowDown, contentDescription = null) },
                 enabled = canMoveDown,
                 onClick = { menuOpen = false; onMove(1) },
             )
             DropdownMenuItem(
                 text = { Text(stringResource(R.string.remove), color = MaterialTheme.colorScheme.error) },
+                leadingIcon = { Icon(Icons.Rounded.Delete, contentDescription = null, tint = MaterialTheme.colorScheme.error) },
                 onClick = { menuOpen = false; onRemove() },
             )
         }
@@ -592,6 +605,28 @@ private fun EmptySlot(onAdd: () -> Unit) {
 
 // --- Gestures: two fixed, three configurable --------------------------------------------
 
+/** Icon for a tap action, in its menu. */
+private fun tapIcon(action: TapAction) = when (action) {
+    TapAction.PREVIOUS_APP -> SettingIcons.Previous
+    TapAction.SECOND_APP -> SettingIcons.BeforeLast
+    TapAction.OPEN_APP -> SettingIcons.Apps
+    TapAction.OPEN_MENU -> SettingIcons.Menu
+    TapAction.NOTHING -> SettingIcons.NoAction
+}
+
+private fun delayIcon(delay: HoldDelay) = when (delay) {
+    HoldDelay.SHORT -> SettingIcons.Bolt
+    HoldDelay.MEDIUM -> SettingIcons.Timer
+    HoldDelay.LONG -> SettingIcons.Hourglass
+}
+
+private fun sizeIcon(size: BubbleSize) = when (size) {
+    BubbleSize.SMALL -> SettingIcons.DotSmall
+    BubbleSize.MEDIUM -> SettingIcons.DotMedium
+    BubbleSize.LARGE -> SettingIcons.DotLarge
+}
+
+/** Gestures, as small groups: how-to hints, then tap actions, hold, and the dial's sliders. */
 @Composable
 fun GesturesCard(
     tapAction: TapAction,
@@ -614,107 +649,102 @@ fun GesturesCard(
     onVolumeOnTop: (Boolean) -> Unit,
 ) {
     val res = LocalContext.current.resources
-    Card(shape = RoundedCornerShape(24.dp)) {
-        Column(Modifier.padding(vertical = 12.dp)) {
-            GestureRow(
-                tag = stringResource(R.string.tag_hold),
-                title = stringResource(R.string.gesture_hold_title),
-                body = stringResource(R.string.gesture_hold_body),
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .height(IntrinsicSize.Min),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            HintCard(
+                SettingIcons.Hold,
+                stringResource(R.string.gesture_hold_title),
+                stringResource(R.string.gesture_hold_body),
+                Modifier
+                    .weight(1f)
+                    .fillMaxHeight(),
             )
-            GestureRow(tag = stringResource(R.string.tag_drag), title = stringResource(R.string.gesture_drag_title), body = stringResource(R.string.gesture_drag_body))
+            HintCard(
+                SettingIcons.Drag,
+                stringResource(R.string.gesture_drag_title),
+                stringResource(R.string.gesture_drag_body),
+                Modifier
+                    .weight(1f)
+                    .fillMaxHeight(),
+            )
+        }
 
-            HorizontalDivider(Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
-
+        SettingsGroup(stringResource(R.string.group_tap_actions)) {
             ChoiceRow(
-                tag = stringResource(R.string.tag_tap),
+                icon = SettingIcons.Tap,
                 title = stringResource(R.string.gesture_tap_title),
                 value = tapAction,
                 options = TapAction.entries,
                 label = { res.getString(it.labelRes) },
                 detail = { tapDetail(res, it, tapApp) },
+                optionIcon = ::tapIcon,
                 onSelect = onTapAction,
             )
             if (tapAction == TapAction.OPEN_APP) GestureAppRow(tapApp, onChooseTapApp)
             ChoiceRow(
-                tag = stringResource(R.string.tag_double),
+                icon = SettingIcons.DoubleTap,
                 title = stringResource(R.string.gesture_double_title),
                 value = doubleTapAction,
                 options = TapAction.entries,
                 label = { res.getString(it.labelRes) },
                 detail = { tapDetail(res, it, doubleTapApp) },
+                optionIcon = ::tapIcon,
                 onSelect = onDoubleTapAction,
             )
             if (doubleTapAction == TapAction.OPEN_APP) GestureAppRow(doubleTapApp, onChooseDoubleTapApp)
+        }
+
+        SettingsGroup(stringResource(R.string.group_hold)) {
             ChoiceRow(
-                tag = stringResource(R.string.tag_hold),
+                icon = SettingIcons.Timer,
                 title = stringResource(R.string.hold_delay),
                 value = holdDelay,
                 options = HoldDelay.entries,
                 label = { res.getString(it.labelRes) },
                 detail = { res.getString(R.string.unit_ms, it.millis.toInt()) },
+                optionIcon = ::delayIcon,
                 onSelect = onHoldDelay,
             )
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .clickable { onHaptics(!haptics) }
-                    .padding(horizontal = 20.dp, vertical = 10.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Tag(stringResource(R.string.tag_feel))
-                Spacer(Modifier.width(14.dp))
-                Column(Modifier.weight(1f)) {
-                    Text(stringResource(R.string.haptics), style = MaterialTheme.typography.titleSmall)
-                    Text(
-                        stringResource(R.string.haptics_body),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-                Switch(checked = haptics, onCheckedChange = onHaptics)
-            }
-            DialSliderRow(
-                title = stringResource(R.string.brightness_slider),
-                body = stringResource(R.string.brightness_slider_body),
-                checked = brightnessSlider,
-                onChange = onBrightnessSlider,
+            SwitchRow(
+                SettingIcons.Haptics,
+                stringResource(R.string.haptics),
+                stringResource(R.string.haptics_body),
+                haptics,
+                onHaptics,
             )
-            DialSliderRow(
-                title = stringResource(R.string.volume_slider),
-                body = stringResource(R.string.volume_slider_body),
-                checked = volumeSlider,
-                onChange = onVolumeSlider,
+        }
+
+        SettingsGroup(stringResource(R.string.group_dial_sliders)) {
+            SwitchRow(
+                SettingIcons.Brightness,
+                stringResource(R.string.brightness_slider),
+                stringResource(R.string.brightness_slider_body),
+                brightnessSlider,
+                onBrightnessSlider,
+            )
+            SwitchRow(
+                SettingIcons.Volume,
+                stringResource(R.string.volume_slider),
+                stringResource(R.string.volume_slider_body),
+                volumeSlider,
+                onVolumeSlider,
             )
             // Only matters when both sliders are on.
             if (brightnessSlider && volumeSlider) {
-                DialSliderRow(
-                    title = stringResource(R.string.volume_on_top),
-                    body = stringResource(R.string.volume_on_top_body),
-                    checked = volumeOnTop,
-                    onChange = onVolumeOnTop,
+                SwitchRow(
+                    SettingIcons.Swap,
+                    stringResource(R.string.volume_on_top),
+                    stringResource(R.string.volume_on_top_body),
+                    volumeOnTop,
+                    onVolumeOnTop,
                 )
             }
         }
-    }
-}
-
-/** On/off row for one of the sliders around the dial. */
-@Composable
-private fun DialSliderRow(title: String, body: String, checked: Boolean, onChange: (Boolean) -> Unit) {
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .clickable { onChange(!checked) }
-            .padding(horizontal = 20.dp, vertical = 10.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Tag(stringResource(R.string.tag_dial))
-        Spacer(Modifier.width(14.dp))
-        Column(Modifier.weight(1f)) {
-            Text(title, style = MaterialTheme.typography.titleSmall)
-            Text(body, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        }
-        Switch(checked = checked, onCheckedChange = onChange)
     }
 }
 
@@ -758,10 +788,9 @@ fun BubbleCard(
     dotsAccess: Boolean,
     onDots: (Boolean) -> Unit,
 ) {
-    val res = LocalContext.current.resources
-    Card(shape = RoundedCornerShape(24.dp)) {
-        Column(Modifier.padding(vertical = 12.dp)) {
-            if (section == BubbleSection.APPEARANCE) {
+    when (section) {
+        BubbleSection.APPEARANCE -> Card(shape = RoundedCornerShape(24.dp)) {
+            Column(Modifier.padding(vertical = 12.dp)) {
                 Text(
                     stringResource(R.string.style_hint),
                     style = MaterialTheme.typography.bodySmall,
@@ -787,292 +816,123 @@ fun BubbleCard(
                     )
                     Spacer(Modifier.height(6.dp))
                     AccessoryRow(character, palette, customImage, accessory, switches, onAccessory)
-                }
-                if (character != BubbleCharacter.CLASSIC) {
-                    Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .clickable { onAnimations(!animations) }
-                            .padding(horizontal = 20.dp, vertical = 10.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Tag(stringResource(R.string.tag_anim))
-                        Spacer(Modifier.width(14.dp))
-                        Column(Modifier.weight(1f)) {
-                            Text(stringResource(R.string.animations_title), style = MaterialTheme.typography.titleSmall)
-                            Text(
-                                stringResource(R.string.animations_body),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                        }
-                        Switch(checked = animations, onCheckedChange = onAnimations)
-                    }
-                    Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .clickable { onReactions(!reactions) }
-                            .padding(horizontal = 20.dp, vertical = 10.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Tag(stringResource(R.string.tag_mood))
-                        Spacer(Modifier.width(14.dp))
-                        Column(Modifier.weight(1f)) {
-                            Text(stringResource(R.string.reactions_title), style = MaterialTheme.typography.titleSmall)
-                            Text(
-                                stringResource(R.string.reactions_body),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                        }
-                        Switch(checked = reactions, onCheckedChange = onReactions)
-                    }
-                }
-            }
-            if (section == BubbleSection.BASICS) {
-                ChoiceRow(
-                    tag = stringResource(R.string.tag_size),
-                    title = stringResource(R.string.size),
-                    value = size,
-                    options = BubbleSize.entries,
-                    label = { res.getString(it.labelRes) },
-                    detail = { res.getString(R.string.unit_dp, it.dp) },
-                    onSelect = onSize,
-                )
-                Row(
-                    Modifier.padding(start = 20.dp, end = 20.dp, top = 10.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Tag(stringResource(R.string.tag_look))
-                    Spacer(Modifier.width(14.dp))
-                    Column(Modifier.weight(1f)) {
-                        Text(stringResource(R.string.opacity), style = MaterialTheme.typography.titleSmall)
-                        Text(
-                            stringResource(R.string.opacity_body),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
-                    Spacer(Modifier.width(8.dp))
-                    Text(
-                        stringResource(R.string.unit_percent, (opacity * 100).roundToInt()),
-                        style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.primary,
+                    SwitchRow(
+                        SettingIcons.Sparkle,
+                        stringResource(R.string.animations_title),
+                        stringResource(R.string.animations_body),
+                        animations,
+                        onAnimations,
+                    )
+                    SwitchRow(
+                        SettingIcons.Mood,
+                        stringResource(R.string.reactions_title),
+                        stringResource(R.string.reactions_body),
+                        reactions,
+                        onReactions,
                     )
                 }
-                Slider(
-                    value = opacity,
-                    onValueChange = onOpacity,
-                    valueRange = 0.3f..1f,
-                    steps = 6, // 30, 40, ... 100
-                    modifier = Modifier.padding(start = 90.dp, end = 20.dp),
-                )
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .clickable { onTuck(!tuck) }
-                        .padding(horizontal = 20.dp, vertical = 10.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Tag(stringResource(R.string.tag_edge))
-                    Spacer(Modifier.width(14.dp))
-                    Column(Modifier.weight(1f)) {
-                        Text(stringResource(R.string.tuck_bubble), style = MaterialTheme.typography.titleSmall)
-                        Text(
-                            stringResource(R.string.tuck_bubble_body),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
-                    Switch(checked = tuck, onCheckedChange = onTuck)
-                }
-            }
-            if (section == BubbleSection.BASICS) {
-                HorizontalDivider(Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
-
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .clickable { onHideFullscreen(!hideFullscreen) }
-                        .padding(horizontal = 20.dp, vertical = 10.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Tag(stringResource(R.string.tag_auto))
-                    Spacer(Modifier.width(14.dp))
-                    Column(Modifier.weight(1f)) {
-                        Text(stringResource(R.string.hide_fullscreen), style = MaterialTheme.typography.titleSmall)
-                        Text(
-                            stringResource(R.string.hide_fullscreen_body),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
-                    Switch(checked = hideFullscreen, onCheckedChange = onHideFullscreen)
-                }
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .clickable(enabled = hasUsage, onClick = onChooseHiddenApps)
-                        .padding(horizontal = 20.dp, vertical = 10.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Tag(stringResource(R.string.tag_apps))
-                    Spacer(Modifier.width(14.dp))
-                    Column(Modifier.weight(1f)) {
-                        Text(stringResource(R.string.hide_in_apps), style = MaterialTheme.typography.titleSmall)
-                        Text(
-                            when {
-                                !hasUsage -> stringResource(R.string.hide_in_needs_usage)
-                                hiddenAppsCount == 0 -> stringResource(R.string.hide_in_pick)
-                                else -> plural(R.plurals.hidden_in_apps, hiddenAppsCount)
-                            },
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
-                    TextButton(onClick = onChooseHiddenApps, enabled = hasUsage) { Text(stringResource(R.string.choose)) }
-                }
-
-            }
-            if (section == BubbleSection.BASICS) {
-                HorizontalDivider(Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
-
-                val dotsOn = dots && dotsAccess
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .clickable { onDots(!dotsOn) }
-                        .padding(horizontal = 20.dp, vertical = 10.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Tag(stringResource(R.string.tag_dots))
-                    Spacer(Modifier.width(14.dp))
-                    Column(Modifier.weight(1f)) {
-                        Text(stringResource(R.string.dots_title), style = MaterialTheme.typography.titleSmall)
-                        Text(
-                            if (dots && !dotsAccess) {
-                                stringResource(R.string.dots_need_access)
-                            } else {
-                                stringResource(R.string.dots_body)
-                            },
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
-                    Switch(checked = dotsOn, onCheckedChange = onDots)
-                }
             }
         }
-    }
-}
 
-/** A setting row that shows its current value and opens a small menu of options. */
-@Composable
-private fun <T> ChoiceRow(
-    tag: String,
-    title: String,
-    value: T,
-    options: List<T>,
-    label: (T) -> String,
-    detail: (T) -> String,
-    onSelect: (T) -> Unit,
-) {
-    var open by remember { mutableStateOf(false) }
-    Box {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .clickable { open = true }
-                .padding(horizontal = 20.dp, vertical = 10.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Tag(tag)
-            Spacer(Modifier.width(14.dp))
-            Column(Modifier.weight(1f)) {
-                Text(title, style = MaterialTheme.typography.titleSmall)
-                Text(
-                    detail(value),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-            Text(
-                label(value),
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.primary,
-            )
-            Icon(
-                Icons.Rounded.ArrowDropDown,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-            )
-        }
-        DropdownMenu(
-            expanded = open,
-            onDismissRequest = { open = false },
-            offset = DpOffset(x = 180.dp, y = 0.dp),
-        ) {
-            options.forEach { option ->
-                DropdownMenuItem(
-                    text = {
-                        Column {
-                            Text(label(option))
-                            Text(
-                                detail(option),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                        }
-                    },
-                    trailingIcon = {
-                        if (option == value) Icon(Icons.Rounded.Check, contentDescription = stringResource(R.string.selected))
-                    },
-                    onClick = {
-                        open = false
-                        onSelect(option)
-                    },
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun GestureRow(tag: String, title: String, body: String) {
-    Row(
-        Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Tag(tag)
-        Spacer(Modifier.width(14.dp))
-        Column {
-            Text(title, style = MaterialTheme.typography.titleSmall)
-            Text(
-                body,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
-    }
-}
-
-@Composable
-private fun Tag(text: String) {
-    Box(
-        Modifier
-            // At least 56dp so rows line up; wider when a language needs a longer word.
-            .widthIn(min = 56.dp)
-            .clip(CircleShape)
-            .background(MaterialTheme.colorScheme.secondaryContainer)
-            .padding(horizontal = 8.dp, vertical = 6.dp),
-        contentAlignment = Alignment.Center,
-    ) {
-        Text(
-            text,
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSecondaryContainer,
-            maxLines = 1,
+        BubbleSection.BASICS -> BubbleBasics(
+            size, onSize, opacity, onOpacity, tuck, onTuck, hideFullscreen, onHideFullscreen,
+            hiddenAppsCount, hasUsage, onChooseHiddenApps, dots, dotsAccess, onDots,
         )
+    }
+}
+
+/** The home screen's bubble settings, as small groups: look, position, auto-hide, dots. */
+@Composable
+private fun BubbleBasics(
+    size: BubbleSize,
+    onSize: (BubbleSize) -> Unit,
+    opacity: Float,
+    onOpacity: (Float) -> Unit,
+    tuck: Boolean,
+    onTuck: (Boolean) -> Unit,
+    hideFullscreen: Boolean,
+    onHideFullscreen: (Boolean) -> Unit,
+    hiddenAppsCount: Int,
+    hasUsage: Boolean,
+    onChooseHiddenApps: () -> Unit,
+    dots: Boolean,
+    dotsAccess: Boolean,
+    onDots: (Boolean) -> Unit,
+) {
+    val res = LocalContext.current.resources
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        SettingsGroup(stringResource(R.string.group_look)) {
+            ChoiceRow(
+                icon = SettingIcons.Size,
+                title = stringResource(R.string.size),
+                value = size,
+                options = BubbleSize.entries,
+                label = { res.getString(it.labelRes) },
+                detail = { res.getString(R.string.unit_dp, it.dp) },
+                optionIcon = ::sizeIcon,
+                onSelect = onSize,
+            )
+            SettingRow(
+                SettingIcons.Opacity,
+                stringResource(R.string.opacity),
+                stringResource(R.string.opacity_body),
+            ) {
+                Text(
+                    stringResource(R.string.unit_percent, (opacity * 100).roundToInt()),
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+            }
+            Slider(
+                value = opacity,
+                onValueChange = onOpacity,
+                valueRange = 0.3f..1f,
+                steps = 6, // 30, 40, ... 100
+                modifier = Modifier.padding(start = RowTextIndent, end = 20.dp),
+            )
+        }
+
+        SettingsGroup(stringResource(R.string.group_position)) {
+            SwitchRow(
+                SettingIcons.Edge,
+                stringResource(R.string.tuck_bubble),
+                stringResource(R.string.tuck_bubble_body),
+                tuck,
+                onTuck,
+            )
+        }
+
+        SettingsGroup(stringResource(R.string.group_auto_hide)) {
+            SwitchRow(
+                SettingIcons.Fullscreen,
+                stringResource(R.string.hide_fullscreen),
+                stringResource(R.string.hide_fullscreen_body),
+                hideFullscreen,
+                onHideFullscreen,
+            )
+            ActionRow(
+                SettingIcons.Apps,
+                stringResource(R.string.hide_in_apps),
+                when {
+                    !hasUsage -> stringResource(R.string.hide_in_needs_usage)
+                    hiddenAppsCount == 0 -> stringResource(R.string.hide_in_pick)
+                    else -> plural(R.plurals.hidden_in_apps, hiddenAppsCount)
+                },
+                enabled = hasUsage,
+                onClick = onChooseHiddenApps,
+            )
+        }
+
+        SettingsGroup(stringResource(R.string.group_notifications)) {
+            val dotsOn = dots && dotsAccess
+            SwitchRow(
+                SettingIcons.Dots,
+                stringResource(R.string.dots_title),
+                if (dots && !dotsAccess) stringResource(R.string.dots_need_access) else stringResource(R.string.dots_body),
+                dotsOn,
+                onDots,
+            )
+        }
     }
 }
 
@@ -1198,7 +1058,7 @@ private fun GestureAppRow(app: AppEntry?, onChoose: () -> Unit) {
         Modifier
             .fillMaxWidth()
             .clickable(onClick = onChoose)
-            .padding(start = 90.dp, end = 20.dp, top = 2.dp, bottom = 8.dp),
+            .padding(start = RowTextIndent, end = 20.dp, top = 2.dp, bottom = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (app != null) {

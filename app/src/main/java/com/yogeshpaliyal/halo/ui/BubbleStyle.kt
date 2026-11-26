@@ -1,6 +1,5 @@
 package com.yogeshpaliyal.halo.ui
 
-import androidx.compose.ui.graphics.asComposePath
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
@@ -373,21 +372,7 @@ fun DialThemeCard(
                 modifier = Modifier.padding(horizontal = 20.dp),
             )
             Spacer(Modifier.height(6.dp))
-            Row(
-                Modifier
-                    .horizontalScroll(rememberScrollState())
-                    .padding(horizontal = 20.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                IconShape.entries.forEach { shape ->
-                    FilterChip(
-                        selected = shape == iconShape,
-                        onClick = { onIconShape(shape) },
-                        label = { Text(stringResource(shape.labelRes)) },
-                        leadingIcon = { ShapePreview(shape) },
-                    )
-                }
-            }
+            IconShapePicker(iconShape, onIconShape, Modifier.padding(horizontal = 14.dp))
             if (IconShapes.themedSupported) {
                 Row(
                     Modifier
@@ -477,15 +462,5 @@ fun AccessoryRow(
                 )
             }
         }
-    }
-}
-
-/** The icon shape drawn as a small filled tile, so the choices show what they look like. */
-@Composable
-private fun ShapePreview(shape: IconShape) {
-    val color = MaterialTheme.colorScheme.primary
-    Canvas(Modifier.size(18.dp)) {
-        val path = IconShapes.previewPath(shape, size.minDimension)
-        if (path != null) drawPath(path.asComposePath(), color) else drawCircle(color)
     }
 }

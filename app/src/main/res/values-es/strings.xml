@@ -111,21 +111,15 @@
     <string name="show_recents">Mostrar apps recientes</string>
     <string name="show_recents_off">Desactivado: al mantener la burbuja solo aparecen favoritas y controles.</string>
     <string name="gestures">Gestos</string>
-    <string name="tag_hold">Mantener</string>
-    <string name="tag_drag">Arrastrar</string>
-    <string name="tag_tap">Tocar</string>
-    <string name="tag_feel">Tacto</string>
     <string name="gesture_hold_title">Mantén, desliza, suelta</string>
     <string name="gesture_hold_body">Abre la app bajo tu dedo. Suelta cerca de la burbuja para cancelar.</string>
     <string name="gesture_drag_title">Arrastrar</string>
     <string name="gesture_drag_body">Mueve la burbuja. Se ajusta al lado más cercano.</string>
     <string name="gesture_tap_title">Tocar</string>
-    <string name="tag_double">Doble</string>
     <string name="gesture_double_title">Doble toque</string>
     <string name="hold_delay">Tiempo de pulsación</string>
     <string name="haptics">Vibración</string>
     <string name="haptics_body">Vibra al mantener y en cada app sobre la que deslizas</string>
-    <string name="tag_dial">Dial</string>
     <string name="brightness_slider">Control de brillo</string>
     <string name="brightness_slider_body">Medio arco superior alrededor del menú</string>
     <string name="volume_slider">Control de volumen</string>
@@ -133,15 +127,9 @@
     <string name="volume_on_top">Volumen arriba</string>
     <string name="volume_on_top_body">Intercambiar: volumen en la mitad superior, brillo abajo</string>
     <string name="bubble">Burbuja</string>
-    <string name="tag_size">Tamaño</string>
-    <string name="tag_look">Estilo</string>
-    <string name="tag_auto">Auto</string>
-    <string name="tag_apps">Apps</string>
-    <string name="tag_dots">Puntos</string>
     <string name="size">Tamaño</string>
     <string name="opacity">Opacidad</string>
     <string name="opacity_body">Qué tan transparente es la burbuja en reposo. Se vuelve sólida mientras la mantienes.</string>
-    <string name="tag_edge">Borde</string>
     <string name="tuck_bubble">Ocultar en el borde</string>
     <string name="tuck_bubble_body">La burbuja queda medio oculta en el borde y sale al tocarla.</string>
     <string name="hide_fullscreen">Ocultar en apps a pantalla completa</string>
@@ -165,7 +153,6 @@
 
     <!-- Bubble style -->
     <string name="style_hint">Elige un personaje y un color. Los personajes parpadean, miran a su alrededor y reaccionan al tocarlos.</string>
-    <string name="tag_anim">Anim</string>
     <string name="animations_title">Animaciones en reposo</string>
     <string name="animations_body">Parpadeos y pequeños gestos cada pocos segundos. Desactívalo para una burbuja quieta.</string>
     <string name="character_classic">Clásica</string>
@@ -184,7 +171,6 @@
     <string name="palette_lemon">Limón</string>
     <string name="palette_grape">Uva</string>
     <string name="palette_mono">Mono</string>
-    <string name="tag_mood">Ánimo</string>
     <string name="reactions_title">Reacciona a tu día</string>
     <string name="reactions_body">Duerme de noche, suda con poca batería, brilla mientras carga y salta con notificaciones nuevas.</string>
 
@@ -326,4 +312,12 @@
     <string name="pick_tap_app_title">El toque abre</string>
     <string name="pick_double_app_title">El doble toque abre</string>
     <string name="pick_one_app">Elige una app o acción rápida</string>
+    <!-- Settings group headers -->
+    <string name="group_tap_actions">Acciones al tocar</string>
+    <string name="group_hold">Mantener</string>
+    <string name="group_dial_sliders">Controles del dial</string>
+    <string name="group_look">Aspecto</string>
+    <string name="group_position">Posición</string>
+    <string name="group_auto_hide">Ocultar automáticamente</string>
+    <string name="group_notifications">Notificaciones</string>
 </resources>
