@@ -28,6 +28,7 @@ object Prefs {
     private const val KEY_VOLUME_SLIDER = "volume_slider"
     private const val KEY_VOLUME_ON_TOP = "volume_on_top"
     private const val KEY_HIDDEN_RECENTS = "hidden_recents"
+    private const val KEY_SHOW_RECENTS = "show_recents"
     const val KEY_HIDE_FULLSCREEN = "hide_fullscreen"
     const val KEY_BUBBLE_OPACITY = "bubble_opacity"
     const val KEY_BUBBLE_SIZE = "bubble_size"
@@ -78,6 +79,10 @@ object Prefs {
 
     fun foldersJson(context: Context): String? = sp(context).getString(KEY_FOLDERS, null)
     fun setFoldersJson(context: Context, json: String) = sp(context).edit { putString(KEY_FOLDERS, json) }
+
+    /** Recent apps fill the dial's outer ring. On by default; off leaves favourites and sliders only. */
+    fun showRecents(context: Context): Boolean = sp(context).getBoolean(KEY_SHOW_RECENTS, true)
+    fun setShowRecents(context: Context, on: Boolean) = sp(context).edit { putBoolean(KEY_SHOW_RECENTS, on) }
 
     /** Packages the user never wants in the recent-apps ring. */
     fun hiddenRecents(context: Context): Set<String> =

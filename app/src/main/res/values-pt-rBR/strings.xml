@@ -93,6 +93,8 @@
     </plurals>
     <string name="hide_recents_pick">Marque os apps que devem ficar fora do anel externo</string>
     <string name="hide_recents_picked">%d ocultos</string>
+    <string name="show_recents">Mostrar apps recentes</string>
+    <string name="show_recents_off">Desativado: ao segurar a bolha aparecem só favoritos e controles.</string>
     <string name="gestures">Gestos</string>
     <string name="tag_hold">Segurar</string>
     <string name="tag_drag">Arrastar</string>

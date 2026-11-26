@@ -89,6 +89,8 @@
     </plurals>
     <string name="hide_recents_pick">Centang aplikasi yang tidak boleh muncul di cincin luar</string>
     <string name="hide_recents_picked">%d disembunyikan</string>
+    <string name="show_recents">Tampilkan aplikasi terbaru</string>
+    <string name="show_recents_off">Nonaktif: menahan gelembung hanya menampilkan favorit dan penggeser.</string>
     <string name="gestures">Gestur</string>
     <string name="tag_hold">Tahan</string>
     <string name="tag_drag">Seret</string>

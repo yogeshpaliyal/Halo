@@ -123,6 +123,7 @@ fun HomeScreen() {
     }
     var backToPicker by remember { mutableStateOf(false) }
     var showPicker by remember { mutableStateOf(false) }
+    var showRecents by remember { mutableStateOf(Prefs.showRecents(context)) }
     var hiddenRecents by remember { mutableStateOf(Prefs.hiddenRecents(context)) }
     var showHiddenPicker by remember { mutableStateOf(false) }
     // Apps opened by tap / double tap when set to "Open an app".
@@ -381,6 +382,8 @@ fun HomeScreen() {
             item {
                 Section(stringResource(R.string.recents_title)) {
                 RecentsCard(
+                    showRecents = showRecents,
+                    onShowRecents = { showRecents = it; Prefs.setShowRecents(context, it) },
                     hiddenCount = hiddenRecents.size,
                     hasUsage = hasUsage,
                     onChooseHidden = { showHiddenPicker = true },

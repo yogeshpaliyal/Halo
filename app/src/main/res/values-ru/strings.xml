@@ -95,6 +95,8 @@
     </plurals>
     <string name="hide_recents_pick">Отметьте приложения, которые не нужно показывать во внешнем кольце</string>
     <string name="hide_recents_picked">Скрыто: %d</string>
+    <string name="show_recents">Показывать недавние</string>
+    <string name="show_recents_off">Выкл.: при удержании пузыря видны только избранное и ползунки.</string>
     <string name="gestures">Жесты</string>
     <string name="tag_hold">Удерж.</string>
     <string name="tag_drag">Тяни</string>

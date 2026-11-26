@@ -91,6 +91,8 @@
     </plurals>
     <string name="hide_recents_pick">Marca apps para dejarlas fuera del anillo exterior</string>
     <string name="hide_recents_picked">%d ocultas</string>
+    <string name="show_recents">Mostrar apps recientes</string>
+    <string name="show_recents_off">Desactivado: al mantener la burbuja solo aparecen favoritas y controles.</string>
     <string name="gestures">Gestos</string>
     <string name="tag_hold">Mantener</string>
     <string name="tag_drag">Arrastrar</string>

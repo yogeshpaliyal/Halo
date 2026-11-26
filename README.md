@@ -75,7 +75,7 @@ All three are the same app, signed with the same key.
 
 **Stays out of your way**
 - Hides itself in full-screen games and videos, and in any apps you choose.
-- Keep any app out of the recent-apps ring.
+- Turn the recent-apps ring off for a favourites-only dial, or keep any app out of it.
 - Optional dots on apps with unread notifications.
 - Comes back on its own after you restart your phone.
 - Work profile apps can be favourites.

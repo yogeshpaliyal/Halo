@@ -91,6 +91,8 @@
     </plurals>
     <string name="hide_recents_pick">Dış halkada görünmemesi gereken uygulamaları işaretleyin</string>
     <string name="hide_recents_picked">%d gizli</string>
+    <string name="show_recents">Son uygulamaları göster</string>
+    <string name="show_recents_off">Kapalı: balona basılı tutunca yalnızca favoriler ve kaydırıcılar görünür.</string>
     <string name="gestures">Hareketler</string>
     <string name="tag_hold">Tut</string>
     <string name="tag_drag">Sürükle</string>

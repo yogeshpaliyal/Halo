@@ -89,6 +89,8 @@
     </plurals>
     <string name="hide_recents_pick">外側のリングから除外するアプリを選択</string>
     <string name="hide_recents_picked">%d 個を非表示</string>
+    <string name="show_recents">最近のアプリを表示</string>
+    <string name="show_recents_off">オフ：バブルを長押しするとお気に入りとスライダーだけが表示されます。</string>
     <string name="gestures">ジェスチャー</string>
     <string name="tag_hold">長押し</string>
     <string name="tag_drag">ドラッグ</string>

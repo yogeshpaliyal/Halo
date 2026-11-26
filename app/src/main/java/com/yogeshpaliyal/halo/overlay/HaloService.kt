@@ -302,7 +302,11 @@ class HaloService : Service(), BubbleView.Listener {
         removeMenu(animate = false)
         // Empty folders (all their apps uninstalled) are left out of the dial.
         val favorites = repo.favorites().filter { !it.isFolder || it.children.isNotEmpty() }
-        val recents = repo.recents(Prefs.MAX_RECENTS, excludeKeys = favorites.mapTo(HashSet()) { it.key })
+        val recents = if (Prefs.showRecents(this)) {
+            repo.recents(Prefs.MAX_RECENTS, excludeKeys = favorites.mapTo(HashSet()) { it.key })
+        } else {
+            emptyList()
+        }
 
         // Near the top or bottom the dial can't be centred on the bubble without spilling
         // off screen, so centre it where it fits and slide the bubble there while it's open.

@@ -1059,37 +1059,65 @@ private fun Tag(text: String) {
     }
 }
 
-/** Outer ring settings: which apps never appear as recents. */
+/** Outer ring settings: whether recents show at all, and which apps never appear as recents. */
 @Composable
-fun RecentsCard(hiddenCount: Int, hasUsage: Boolean, onChooseHidden: () -> Unit) {
+fun RecentsCard(
+    showRecents: Boolean,
+    onShowRecents: (Boolean) -> Unit,
+    hiddenCount: Int,
+    hasUsage: Boolean,
+    onChooseHidden: () -> Unit,
+) {
     Card(shape = RoundedCornerShape(24.dp)) {
         Column(Modifier.padding(20.dp)) {
-            Text(
-                stringResource(if (hasUsage) R.string.recents_hint else R.string.recents_need_usage),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            Spacer(Modifier.height(12.dp))
             Row(
                 Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(16.dp))
-                    .clickable(onClick = onChooseHidden)
+                    .clickable { onShowRecents(!showRecents) }
                     .padding(vertical = 8.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Column(Modifier.weight(1f)) {
-                    Text(stringResource(R.string.hide_recents_title), style = MaterialTheme.typography.titleSmall)
+                    Text(stringResource(R.string.show_recents), style = MaterialTheme.typography.titleSmall)
                     Text(
-                        when (hiddenCount) {
-                            0 -> stringResource(R.string.hide_recents_none)
-                            else -> plural(R.plurals.hide_recents_count, hiddenCount)
-                        },
+                        stringResource(
+                            when {
+                                !showRecents -> R.string.show_recents_off
+                                hasUsage -> R.string.recents_hint
+                                else -> R.string.recents_need_usage
+                            },
+                        ),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
-                TextButton(onClick = onChooseHidden) { Text(stringResource(R.string.choose)) }
+                Spacer(Modifier.width(12.dp))
+                Switch(checked = showRecents, onCheckedChange = onShowRecents)
+            }
+            if (showRecents) {
+                Spacer(Modifier.height(4.dp))
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(16.dp))
+                        .clickable(onClick = onChooseHidden)
+                        .padding(vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Column(Modifier.weight(1f)) {
+                        Text(stringResource(R.string.hide_recents_title), style = MaterialTheme.typography.titleSmall)
+                        Text(
+                            when (hiddenCount) {
+                                0 -> stringResource(R.string.hide_recents_none)
+                                else -> plural(R.plurals.hide_recents_count, hiddenCount)
+                            },
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                    TextButton(onClick = onChooseHidden) { Text(stringResource(R.string.choose)) }
+                }
             }
         }
     }

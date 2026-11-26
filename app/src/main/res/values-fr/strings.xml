@@ -93,6 +93,8 @@
     </plurals>
     <string name="hide_recents_pick">Cochez les apps à exclure de l’anneau extérieur</string>
     <string name="hide_recents_picked">%d masquées</string>
+    <string name="show_recents">Afficher les apps récentes</string>
+    <string name="show_recents_off">Désactivé : un appui long sur la bulle n’affiche que les favoris et les curseurs.</string>
     <string name="gestures">Gestes</string>
     <string name="tag_hold">Appui</string>
     <string name="tag_drag">Glisser</string>
