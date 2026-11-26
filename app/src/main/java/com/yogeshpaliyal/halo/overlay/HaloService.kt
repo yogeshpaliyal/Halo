@@ -75,8 +75,6 @@ class HaloService : Service(), BubbleView.Listener {
         }
         wm = getSystemService(WindowManager::class.java)
         repo = AppRepository(this)
-        addBubble()
-        addFullscreenDetector()
         Prefs.registerListener(this, prefListener)
         NotificationBadges.addListener(badgeListener)
         ContextCompat.registerReceiver(
@@ -85,6 +83,7 @@ class HaloService : Service(), BubbleView.Listener {
             IntentFilter(Intent.ACTION_SCREEN_ON),
             ContextCompat.RECEIVER_NOT_EXPORTED,
         )
+        // Adds the bubble, unless a snooze from before a restart is still running.
         applySnooze()
         updateAppWatch()
         updateBubbleBadge()
@@ -271,7 +270,10 @@ class HaloService : Service(), BubbleView.Listener {
         Toast.makeText(this, getString(R.string.snooze_toast, formatTime(until)), Toast.LENGTH_SHORT).show()
     }
 
-    /** Hides or brings back the bubble for the saved snooze, and wakes up when it ends. */
+    /**
+     * Removes the bubble (and the full-screen detector) from the screen for the saved snooze,
+     * adds them back once it's over, and wakes up when it ends.
+     */
     private fun applySnooze() {
         main.removeCallbacks(snoozeEnd)
         val until = Prefs.snoozedUntil(this)
@@ -284,16 +286,45 @@ class HaloService : Service(), BubbleView.Listener {
                 return
             }
         }
+        if (left > 0) removeWindows() else addWindows()
         applyVisibility()
         updateNotification()
     }
 
+    /** Puts the bubble and the full-screen detector on screen, if they aren't already. */
+    private fun addWindows() {
+        if (bubble != null) return
+        hiddenNow = false
+        touching = false
+        addBubble()
+        if (detector == null) addFullscreenDetector()
+        updateBubbleBadge()
+    }
+
+    /** Takes the bubble and its helper windows off the screen entirely while snoozed. */
+    private fun removeWindows() {
+        if (bubble == null && detector == null) return
+        // The dial is usually already closing; let that animation finish on its own.
+        if (menu != null) removeMenu()
+        restY = null
+        snapAnimator?.cancel()
+        main.removeCallbacks(tuckRunnable)
+        main.removeCallbacks(applyRunnable)
+        detector?.let { runCatching { wm.removeView(it) } }
+        detector = null
+        bubble?.let { runCatching { wm.removeView(it) } }
+        bubble = null
+        fullscreen = false
+        hiddenNow = false
+        touching = false
+    }
+
     private fun formatTime(millis: Long): String = DateFormat.getTimeFormat(this).format(Date(millis))
 
-    /** Hidden while snoozed, while another app is full screen (if enabled) or while a chosen app is open. */
+    /** Hidden while another app is full screen (if enabled) or while a chosen app is open. */
     private fun applyVisibility() {
         val inHiddenApp = foregroundPkg?.let { it in Prefs.hideInApps(this) } == true
-        val hide = snoozed() || (fullscreen && Prefs.hideInFullscreen(this)) || inHiddenApp
+        val hide = (fullscreen && Prefs.hideInFullscreen(this)) || inHiddenApp
         if (hide == hiddenNow) return
         hiddenNow = hide
         val view = bubble ?: return
