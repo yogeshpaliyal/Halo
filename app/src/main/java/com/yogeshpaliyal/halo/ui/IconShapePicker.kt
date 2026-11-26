@@ -21,22 +21,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.asComposePath
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.yogeshpaliyal.halo.data.IconShape
-import kotlin.math.abs
-import kotlin.math.cos
-import kotlin.math.pow
-import kotlin.math.sign
-import kotlin.math.sin
+import com.yogeshpaliyal.halo.data.IconShapes
 
 /** The icon shapes as tiles that show the shape itself, not only its name. */
 @Composable
@@ -83,31 +77,9 @@ fun IconShapePicker(value: IconShape, onSelect: (IconShape) -> Unit, modifier: M
 private fun ShapePreview(shape: IconShape, fill: Color, glyph: Color) {
     Canvas(Modifier.size(36.dp)) {
         val s = size.minDimension
-        val rect = Rect(0f, 0f, s, s)
-        val path = Path()
-        when (shape) {
-            IconShape.CIRCLE -> path.addOval(rect)
-            IconShape.ROUNDED_SQUARE -> path.addRoundRect(RoundRect(rect, CornerRadius(s * 0.22f)))
-            IconShape.TEARDROP -> {
-                val big = CornerRadius(s / 2)
-                path.addRoundRect(RoundRect(rect, big, big, CornerRadius(s * 0.12f), big))
-            }
-            IconShape.SQUIRCLE -> {
-                // Same superellipse the dial uses: |x|^4 + |y|^4 = r^4.
-                val r = s / 2
-                for (i in 0..96) {
-                    val t = 2.0 * Math.PI * i / 96
-                    val c = cos(t)
-                    val sn = sin(t)
-                    val x = r + r * (sign(c) * abs(c).pow(0.5)).toFloat()
-                    val y = r + r * (sign(sn) * abs(sn).pow(0.5)).toFloat()
-                    if (i == 0) path.moveTo(x, y) else path.lineTo(x, y)
-                }
-                path.close()
-            }
-            IconShape.SYSTEM -> path.addRoundRect(RoundRect(rect, CornerRadius(s * 0.3f)))
-        }
-        drawPath(path, fill)
+        // The same outlines the dial clips icons to; Phone default uses this phone's own mask.
+        val path = IconShapes.previewPath(shape, s)
+        if (path != null) drawPath(path.asComposePath(), fill) else drawCircle(fill)
         if (shape == IconShape.SYSTEM) {
             val w = s * 0.3f
             val h = s * 0.48f
