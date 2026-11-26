@@ -148,6 +148,20 @@ class RadialMenuView(
     /** Called when the finger lifts on the brightness slider before Halo may change brightness. */
     var onBrightnessLocked: (() -> Unit)? = null
 
+    /**
+     * The system ignored a volume change (Halo lost its audio access in the background). Called
+     * at most once per dial, with the volume step that should have been set.
+     */
+    var onVolumeBlocked: ((Int) -> Unit)? = null
+    private var volumeBlockedReported = false
+
+    private fun applyVolume(index: Int) {
+        if (SystemControls.setVolumeIndex(context, index)) return
+        if (volumeBlockedReported) return
+        volumeBlockedReported = true
+        onVolumeBlocked?.invoke(index)
+    }
+
     /** The folder whose apps are on the outer ring right now, and its inner-ring slot. */
     private var openFolder: AppEntry? = null
     private var folderSlot = -1
@@ -367,7 +381,7 @@ class RadialMenuView(
                 val index = SystemControls.volumeIndex(context, value)
                 if (index != volumeIndex) {
                     volumeIndex = index
-                    SystemControls.setVolumeIndex(context, index)
+                    applyVolume(index)
                 }
                 step = index
             }
@@ -413,7 +427,7 @@ class RadialMenuView(
         }
         volume = target
         volumeIndex = SystemControls.volumeIndex(context, target)
-        SystemControls.setVolumeIndex(context, volumeIndex)
+        applyVolume(volumeIndex)
         if (Prefs.haptics(context)) performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
     }
 

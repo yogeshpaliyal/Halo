@@ -97,6 +97,9 @@ class HaloService : Service(), BubbleView.Listener {
             return START_NOT_STICKY
         }
         if (intent?.action == ACTION_WAKE) Prefs.clearSnooze(this)
+        // Started again from AudioAccessActivity: every start via startForegroundService must
+        // be answered with startForeground, and this one also carries "while in use" access.
+        if (intent?.action == ACTION_AUDIO_ACCESS) startAsForeground()
         return START_STICKY
     }
 
@@ -470,6 +473,8 @@ class HaloService : Service(), BubbleView.Listener {
             removeMenu()
             runCatching { startActivity(SystemControls.writeSettingsIntent(this)) }
         }
+        // Volume change ignored: Halo was restarted in the background without audio access.
+        view.onVolumeBlocked = { index -> AudioAccessActivity.open(this, index) }
         if (tapMode) armTapMode(view)
         wm.addView(view, params)
         menu = view
@@ -816,6 +821,7 @@ class HaloService : Service(), BubbleView.Listener {
         private const val NOTIFICATION_ID = 1
         private const val ACTION_STOP = "com.yogeshpaliyal.halo.STOP"
         private const val ACTION_WAKE = "com.yogeshpaliyal.halo.WAKE"
+        const val ACTION_AUDIO_ACCESS = "com.yogeshpaliyal.halo.AUDIO_ACCESS"
 
         private val _running = MutableStateFlow(false)
         val running: StateFlow<Boolean> = _running

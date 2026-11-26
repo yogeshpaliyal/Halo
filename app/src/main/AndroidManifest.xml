@@ -49,6 +49,15 @@
             </intent-filter>
         </activity>
 
+        <!-- Invisible and closes at once: wins back volume access after Halo is swiped from recents (#17). -->
+        <activity
+            android:name=".overlay.AudioAccessActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
         <!-- Both broadcasts are protected (only the system can send them), so exporting is safe. -->
         <receiver
             android:name=".overlay.BootReceiver"
