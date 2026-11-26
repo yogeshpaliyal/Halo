@@ -124,6 +124,9 @@
     <string name="size">Taille</string>
     <string name="opacity">Opacité</string>
     <string name="opacity_body">Transparence de la bulle au repos. Elle devient opaque quand vous la maintenez.</string>
+    <string name="tag_edge">Bord</string>
+    <string name="tuck_bubble">Rentrer dans le bord</string>
+    <string name="tuck_bubble_body">La bulle se cache à moitié dans le bord de l’écran et ressort quand vous la touchez.</string>
     <string name="hide_fullscreen">Masquer dans les apps en plein écran</string>
     <string name="hide_fullscreen_body">Jeux, vidéos et apps de streaming. Elle revient avec la barre d’état.</string>
     <string name="hide_in_apps">Masquer dans ces apps</string>

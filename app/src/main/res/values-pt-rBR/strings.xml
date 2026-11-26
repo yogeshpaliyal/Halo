@@ -124,6 +124,9 @@
     <string name="size">Tamanho</string>
     <string name="opacity">Opacidade</string>
     <string name="opacity_body">Quão transparente a bolha fica em repouso. Ela fica sólida enquanto você segura.</string>
+    <string name="tag_edge">Borda</string>
+    <string name="tuck_bubble">Esconder na borda</string>
+    <string name="tuck_bubble_body">Metade da bolha fica escondida na borda da tela e desliza para fora ao tocar.</string>
     <string name="hide_fullscreen">Ocultar em apps em tela cheia</string>
     <string name="hide_fullscreen_body">Jogos, vídeos e apps de streaming. Volta quando a barra de status volta.</string>
     <string name="hide_in_apps">Ocultar nestes apps</string>

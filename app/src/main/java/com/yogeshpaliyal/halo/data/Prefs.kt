@@ -31,6 +31,7 @@ object Prefs {
     const val KEY_HIDE_FULLSCREEN = "hide_fullscreen"
     const val KEY_BUBBLE_OPACITY = "bubble_opacity"
     const val KEY_BUBBLE_SIZE = "bubble_size"
+    const val KEY_TUCK_BUBBLE = "tuck_bubble"
     const val KEY_HIDE_IN_APPS = "hide_in_apps"
     const val KEY_NOTIFICATION_DOTS = "notification_dots"
     const val KEY_FOLDERS = "folders"
@@ -98,6 +99,10 @@ object Prefs {
 
     fun setBubbleOpacity(context: Context, value: Float) =
         sp(context).edit { putFloat(KEY_BUBBLE_OPACITY, value.coerceIn(0.3f, 1f)) }
+
+    /** Resting bubble tucks half into the screen edge and slides out when touched. Off by default. */
+    fun tuckBubble(context: Context): Boolean = sp(context).getBoolean(KEY_TUCK_BUBBLE, false)
+    fun setTuckBubble(context: Context, on: Boolean) = sp(context).edit { putBoolean(KEY_TUCK_BUBBLE, on) }
 
     fun bubbleSize(context: Context): BubbleSize =
         sp(context).getString(KEY_BUBBLE_SIZE, null)

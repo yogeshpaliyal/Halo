@@ -122,6 +122,9 @@
     <string name="size">Boyut</string>
     <string name="opacity">Opaklık</string>
     <string name="opacity_body">Bekleyen baloncuğun ne kadar şeffaf olduğu. Basılı tutarken tamamen görünür.</string>
+    <string name="tag_edge">Kenar</string>
+    <string name="tuck_bubble">Kenara sakla</string>
+    <string name="tuck_bubble_body">Balonun yarısı ekran kenarına gizlenir ve dokunduğunuzda dışarı kayar.</string>
     <string name="hide_fullscreen">Tam ekran uygulamalarda gizle</string>
     <string name="hide_fullscreen_body">Oyunlar, videolar ve dizi-film uygulamaları. Durum çubuğu geri gelince geri gelir.</string>
     <string name="hide_in_apps">Bu uygulamalarda gizle</string>

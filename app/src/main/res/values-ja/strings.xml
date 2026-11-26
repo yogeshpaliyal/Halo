@@ -120,6 +120,9 @@
     <string name="size">サイズ</string>
     <string name="opacity">不透明度</string>
     <string name="opacity_body">待機中のバブルの透け具合。押している間は不透明になります。</string>
+    <string name="tag_edge">端</string>
+    <string name="tuck_bubble">端に隠す</string>
+    <string name="tuck_bubble_body">バブルの半分が画面の端に隠れ、触れるとスライドして出てきます。</string>
     <string name="hide_fullscreen">全画面アプリで非表示</string>
     <string name="hide_fullscreen_body">ゲーム、動画、配信アプリ。ステータスバーが戻ると再表示されます。</string>
     <string name="hide_in_apps">これらのアプリで非表示</string>

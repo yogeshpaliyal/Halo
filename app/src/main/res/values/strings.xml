@@ -149,6 +149,9 @@
     <string name="size">Size</string>
     <string name="opacity">Opacity</string>
     <string name="opacity_body">How see-through the resting bubble is. It turns solid while you hold it.</string>
+    <string name="tag_edge">Edge</string>
+    <string name="tuck_bubble">Tuck into the edge</string>
+    <string name="tuck_bubble_body">Half the bubble hides past the screen edge and slides out when you touch it.</string>
     <string name="hide_fullscreen">Hide in full-screen apps</string>
     <string name="hide_fullscreen_body">Games, videos and OTT apps. Comes back when the status bar does.</string>
     <string name="hide_in_apps">Hide in these apps</string>

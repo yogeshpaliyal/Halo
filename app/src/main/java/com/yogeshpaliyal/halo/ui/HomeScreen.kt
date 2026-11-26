@@ -180,6 +180,7 @@ fun HomeScreen() {
     var volumeOnTop by remember { mutableStateOf(Prefs.volumeOnTop(context)) }
     var hideFullscreen by remember { mutableStateOf(Prefs.hideInFullscreen(context)) }
     var opacity by remember { mutableFloatStateOf(Prefs.bubbleOpacity(context)) }
+    var tuckBubble by remember { mutableStateOf(Prefs.tuckBubble(context)) }
     var bubbleSize by remember { mutableStateOf(Prefs.bubbleSize(context)) }
     var hideInApps by remember { mutableStateOf(Prefs.hideInApps(context)) }
     var showHideAppsPicker by remember { mutableStateOf(false) }
@@ -227,6 +228,8 @@ fun HomeScreen() {
             opacity = opacity,
             // Saved as you drag, so the real bubble updates live.
             onOpacity = { opacity = it; Prefs.setBubbleOpacity(context, it) },
+            tuck = tuckBubble,
+            onTuck = { tuckBubble = it; Prefs.setTuckBubble(context, it) },
             hideFullscreen = hideFullscreen,
             onHideFullscreen = { hideFullscreen = it; Prefs.setHideInFullscreen(context, it) },
             hiddenAppsCount = hideInApps.size,
