@@ -231,6 +231,10 @@
     <string name="dial_hint">How the menu looks when you hold the bubble. Glass blurs the screen behind it on Android 12 and newer.</string>
     <string name="icon_shape_title">Icon shape</string>
     <string name="icon_shape_body">Halo can\'t read your home screen\'s icon shape, so pick the one that matches it. Phone default uses the shape Android gives icons on this phone.</string>
+    <string name="dial_size_title">Dial size</string>
+    <string name="dial_size_body">Compact pulls the rings closer to the bubble, so apps are easier to reach with one thumb. The dial also shrinks on its own when the screen is too short for it, like in landscape.</string>
+    <string name="dial_size_standard">Standard</string>
+    <string name="dial_size_compact">Compact</string>
     <string name="icon_shape_system">Phone default</string>
     <string name="icon_shape_circle">Circle</string>
     <string name="icon_shape_squircle">Squircle</string>

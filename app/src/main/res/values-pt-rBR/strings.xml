@@ -205,6 +205,10 @@
     <string name="dial_hint">Como o menu aparece ao segurar a bolha. Vidro desfoca a tela atrás no Android 12 ou mais recente.</string>
     <string name="icon_shape_title">Formato dos ícones</string>
     <string name="icon_shape_body">O Halo não consegue ler o formato dos ícones da sua tela inicial, então escolha o que combina. Padrão do celular usa o formato que o Android dá aos ícones neste celular.</string>
+    <string name="dial_size_title">Tamanho do menu</string>
+    <string name="dial_size_body">Compacto aproxima os anéis da bolha, para alcançar os apps com um polegar com mais facilidade. O menu também diminui sozinho quando a tela é baixa demais, como na horizontal.</string>
+    <string name="dial_size_standard">Padrão</string>
+    <string name="dial_size_compact">Compacto</string>
     <string name="icon_shape_system">Padrão do celular</string>
     <string name="icon_shape_circle">Círculo</string>
     <string name="icon_shape_squircle">Squircle</string>

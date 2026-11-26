@@ -202,6 +202,10 @@
     <string name="dial_hint">So sieht das Menü aus, wenn du die Blase hältst. Glas macht den Bildschirm dahinter ab Android 12 unscharf.</string>
     <string name="icon_shape_title">Symbolform</string>
     <string name="icon_shape_body">Halo kann die Symbolform deines Startbildschirms nicht auslesen, wähle also die passende. Handy-Standard nutzt die Form, die Android auf diesem Handy verwendet.</string>
+    <string name="dial_size_title">Menügröße</string>
+    <string name="dial_size_body">Kompakt rückt die Ringe näher an die Blase, damit du Apps mit einem Daumen leichter erreichst. Das Menü wird auch von selbst kleiner, wenn der Bildschirm zu niedrig ist, etwa im Querformat.</string>
+    <string name="dial_size_standard">Standard</string>
+    <string name="dial_size_compact">Kompakt</string>
     <string name="icon_shape_system">Handy-Standard</string>
     <string name="icon_shape_circle">Kreis</string>
     <string name="icon_shape_squircle">Squircle</string>

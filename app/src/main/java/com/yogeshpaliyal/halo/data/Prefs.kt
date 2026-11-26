@@ -32,6 +32,7 @@ object Prefs {
     const val KEY_HIDE_FULLSCREEN = "hide_fullscreen"
     const val KEY_BUBBLE_OPACITY = "bubble_opacity"
     const val KEY_BUBBLE_SIZE = "bubble_size"
+    private const val KEY_DIAL_SIZE = "dial_size"
     const val KEY_TUCK_BUBBLE = "tuck_bubble"
     const val KEY_HIDE_IN_APPS = "hide_in_apps"
     const val KEY_NOTIFICATION_DOTS = "notification_dots"
@@ -117,6 +118,15 @@ object Prefs {
 
     fun setBubbleSize(context: Context, size: BubbleSize) =
         sp(context).edit { putString(KEY_BUBBLE_SIZE, size.name) }
+
+    /** Size of the dial: standard, or compact for one-handed use. */
+    fun dialSize(context: Context): DialSize =
+        sp(context).getString(KEY_DIAL_SIZE, null)
+            ?.let { runCatching { DialSize.valueOf(it) }.getOrNull() }
+            ?: DialSize.STANDARD
+
+    fun setDialSize(context: Context, size: DialSize) =
+        sp(context).edit { putString(KEY_DIAL_SIZE, size.name) }
 
     fun bubblePalette(context: Context): BubblePalette =
         sp(context).getString(KEY_BUBBLE_PALETTE, null)

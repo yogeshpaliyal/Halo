@@ -199,6 +199,10 @@
     <string name="dial_hint">バブルを長押ししたときのメニューの見た目。ガラスは Android 12 以降で背後の画面をぼかします。</string>
     <string name="icon_shape_title">アイコンの形</string>
     <string name="icon_shape_body">Halo はホーム画面のアイコンの形を読み取れないため、合う形を選んでください。スマホの標準は、このスマホで Android が使う形です。</string>
+    <string name="dial_size_title">ダイヤルのサイズ</string>
+    <string name="dial_size_body">コンパクトにするとリングがバブルに近づき、片手の親指でアプリに届きやすくなります。横向きなど画面の高さが足りないときも、ダイヤルは自動で小さくなります。</string>
+    <string name="dial_size_standard">標準</string>
+    <string name="dial_size_compact">コンパクト</string>
     <string name="icon_shape_system">スマホの標準</string>
     <string name="icon_shape_circle">円</string>
     <string name="icon_shape_squircle">スクワークル</string>

@@ -67,16 +67,25 @@ class RadialMenuView(
     private val volumeOnTop: Boolean = false,
     /** Navigation bar height in px; the snooze button sits just above it. */
     private val bottomInset: Int = 0,
+    /**
+     * Size of the rings, icons and sliders, 1 = standard. Smaller for the compact dial, and
+     * smaller still when the standard dial wouldn't fit the screen (landscape). Text, the dead
+     * zone around the bubble and the snooze button keep their usual size.
+     */
+    private val scale: Float = 1f,
 ) : View(context) {
 
     /** [angles] is set for an open folder: its apps sit on a short arc instead of evenly spread. */
     private class Ring(val items: List<AppEntry>, val radius: Float, val angles: FloatArray? = null)
 
     private val density = resources.displayMetrics.density
-    private fun dp(v: Float) = v * density
+    /** Dial geometry: scaled with [scale]. */
+    private fun dp(v: Float) = v * density * scale
+    /** Unscaled: text, the snooze button and on-screen margins. */
+    private fun px(v: Float) = v * density
 
     private val iconSize = dp(ICON_DP)
-    private val deadZone = dp(52f)
+    private val deadZone = px(52f)
     private val span = SPAN_DEG
     /** Direction the half-rings open towards: left when docked right, right when docked left. */
     private val facing = if (onRightEdge) 180f else 0f
@@ -208,12 +217,12 @@ class RadialMenuView(
     private val pill = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = theme.pill }
     private val label = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
         color = theme.pillText
-        textSize = dp(14f)
+        textSize = px(14f)
         isFakeBoldText = true
     }
     private val hint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
         color = theme.hintText
-        textSize = dp(15f)
+        textSize = px(15f)
         textAlign = Paint.Align.CENTER
     }
     private val sliderPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -240,7 +249,7 @@ class RadialMenuView(
         strokeWidth = dp(2f)
     }
     private val snoozeText = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
-        textSize = dp(13f)
+        textSize = px(13f)
         isFakeBoldText = true
         textAlign = Paint.Align.CENTER
     }
@@ -453,9 +462,9 @@ class RadialMenuView(
     // --- snooze -----------------------------------------------------------------------------
 
     private val snoozeChoices = SnoozeChoice.entries
-    private val snoozeButtonR = dp(SNOOZE_BUTTON_DP)
-    private val snoozeFanR = dp(SNOOZE_FAN_DP)
-    private val snoozeOptionR = dp(SNOOZE_OPTION_DP)
+    private val snoozeButtonR = px(SNOOZE_BUTTON_DP)
+    private val snoozeFanR = px(SNOOZE_FAN_DP)
+    private val snoozeOptionR = px(SNOOZE_OPTION_DP)
     private val snoozeIcon = context.getDrawable(R.drawable.ic_snooze)!!.mutate()
     /** True while the snooze times are fanned out above the button. */
     private var snoozeOpen = false
@@ -476,7 +485,7 @@ class RadialMenuView(
     var onSnoozePick: ((SnoozeChoice) -> Unit)? = null
 
     private fun snoozeX(): Float = width / 2f
-    private fun snoozeY(): Float = height - bottomInset - dp(SNOOZE_BOTTOM_DP)
+    private fun snoozeY(): Float = height - bottomInset - px(SNOOZE_BOTTOM_DP)
 
     /** Angle (Canvas convention) of snooze time [i]: an arc over the top of the button. */
     private fun snoozeAngle(i: Int): Float {
@@ -494,7 +503,7 @@ class RadialMenuView(
         val dx = rawX - screenLoc[0] - snoozeX()
         val dy = rawY - screenLoc[1] - snoozeY()
         val d = hypot(dx, dy)
-        val onButton = d < snoozeButtonR + dp(10f)
+        val onButton = d < snoozeButtonR + px(10f)
         if (!snoozeOpen) {
             if (!onButton) return null
             openSnooze()
@@ -502,7 +511,7 @@ class RadialMenuView(
             return true
         }
         // Far enough away from the fan: fold it up and hand the finger back to the dial.
-        if (d > snoozeFanR + snoozeOptionR + dp(SNOOZE_LEAVE_DP)) {
+        if (d > snoozeFanR + snoozeOptionR + px(SNOOZE_LEAVE_DP)) {
             closeSnooze()
             return null
         }
@@ -519,7 +528,7 @@ class RadialMenuView(
                 }
             }
             // Drag mode stays forgiving; a tap has to land on (or right next to) a time.
-            val reach = snoozeOptionR + if (onPick != null) dp(6f) else dp(18f)
+            val reach = snoozeOptionR + if (onPick != null) px(6f) else px(18f)
             if (bestDist > reach) best = -1
         }
         val changed = best != snoozeSel
@@ -990,7 +999,7 @@ class RadialMenuView(
         canvas.drawCircle(sx, sy, br, sliderPaint)
         sliderPaint.style = Paint.Style.STROKE
         drawRing(canvas, sx, sy, br, fade)
-        val half = (sliderIconSize * 0.65f).toInt()
+        val half = (px(18f) * 0.65f).toInt()
         snoozeIcon.setBounds(sx.toInt() - half, sy.toInt() - half, sx.toInt() + half, sy.toInt() + half)
         snoozeIcon.setTint(theme.hintText)
         snoozeIcon.alpha = (fade * 255).toInt()
@@ -1015,10 +1024,10 @@ class RadialMenuView(
             snoozeText.alpha = (fade * open * 255).toInt()
             val word = context.getString(choice.short)
             // Shrink longer translations so they stay inside the circle.
-            snoozeText.textSize = dp(13f)
+            snoozeText.textSize = px(13f)
             val fit = optR * 1.6f
             val w = snoozeText.measureText(word)
-            if (w > fit) snoozeText.textSize = dp(13f) * fit / w
+            if (w > fit) snoozeText.textSize = px(13f) * fit / w
             canvas.drawText(
                 word,
                 x,
@@ -1027,7 +1036,7 @@ class RadialMenuView(
             )
         }
         val text = context.getString(snoozeChoice?.long ?: R.string.snooze_title)
-        drawCenteredLabel(canvas, text, sx, sy - r - snoozeOptionR * 1.2f - dp(28f), open)
+        drawCenteredLabel(canvas, text, sx, sy - r - snoozeOptionR * 1.2f - px(28f), open)
     }
 
     /** Thin outline around a round button, in the theme's band edge colour. */
@@ -1041,11 +1050,11 @@ class RadialMenuView(
 
     /** A label pill centred on ([cx], [cy]), kept on screen. */
     private fun drawCenteredLabel(canvas: Canvas, text: String, cx: Float, cy: Float, fade: Float) {
-        val pad = dp(10f)
+        val pad = px(10f)
         val name = TextUtils.ellipsize(text, label, width * 0.8f, TextUtils.TruncateAt.END).toString()
         val w = label.measureText(name) + pad * 2
         val h = label.textSize + pad * 1.4f
-        val x = (cx - w / 2f).coerceIn(dp(8f), width - w - dp(8f))
+        val x = (cx - w / 2f).coerceIn(px(8f), width - w - px(8f))
         val y = cy - h / 2f
         pillRect.set(x, y, x + w, y + h)
         pill.alpha = (fade * Color.alpha(theme.pill)).toInt()
@@ -1086,13 +1095,13 @@ class RadialMenuView(
 
     /** App name in a pill just inside the highlighted icon, kept on screen. */
     private fun drawLabel(canvas: Canvas, text: String, iconX: Float, iconY: Float) {
-        val pad = dp(10f)
+        val pad = px(10f)
         val name = TextUtils.ellipsize(text, label, width * 0.5f, TextUtils.TruncateAt.END).toString()
         val w = label.measureText(name) + pad * 2
         val h = label.textSize + pad * 1.4f
-        val gap = iconSize * 0.75f + dp(8f)
+        val gap = iconSize * 0.75f + px(8f)
         val left = if (onRightEdge) iconX - gap - w else iconX + gap
-        val x = left.coerceIn(dp(8f), width - w - dp(8f))
+        val x = left.coerceIn(px(8f), width - w - px(8f))
         val y = iconY - h / 2f
         pillRect.set(x, y, x + w, y + h)
         canvas.drawRoundRect(pillRect, h / 2f, h / 2f, pill)
@@ -1141,6 +1150,7 @@ class RadialMenuView(
             hasFavorites: Boolean,
             hasRecents: Boolean,
             hasSliders: Boolean = true,
+            scale: Float = 1f,
         ): Float {
             val outer = when {
                 hasFavorites && hasRecents -> OUTER_DP
@@ -1151,7 +1161,7 @@ class RadialMenuView(
             }
             // The brightness and volume sliders sit outside the outermost ring.
             val slider = (if (outer > 0f) outer else INNER_DP) + SLIDER_GAP_DP + SLIDER_TRACK_DP
-            return maxOf(outer + ICON_DP, if (hasSliders) slider else 0f) * context.resources.displayMetrics.density
+            return maxOf(outer + ICON_DP, if (hasSliders) slider else 0f) * scale * context.resources.displayMetrics.density
         }
     }
 }

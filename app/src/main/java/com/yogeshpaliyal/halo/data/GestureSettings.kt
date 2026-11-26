@@ -26,3 +26,9 @@ enum class BubbleSize(@StringRes val labelRes: Int, val dp: Int) {
     MEDIUM(R.string.size_medium, 52),
     LARGE(R.string.size_large, 62),
 }
+
+/** Size of the dial. Compact pulls the rings in for one-handed reach; the look stays the same. */
+enum class DialSize(@StringRes val labelRes: Int, val scale: Float) {
+    STANDARD(R.string.dial_size_standard, 1f),
+    COMPACT(R.string.dial_size_compact, 0.8f),
+}

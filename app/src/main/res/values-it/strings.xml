@@ -205,6 +205,10 @@
     <string name="dial_hint">Come appare il menu quando tieni premuta la bolla. Vetro sfoca lo schermo dietro su Android 12 e successivi.</string>
     <string name="icon_shape_title">Forma delle icone</string>
     <string name="icon_shape_body">Halo non può leggere la forma delle icone della schermata Home, quindi scegli quella corrispondente. Predefinita usa la forma che Android dà alle icone su questo telefono.</string>
+    <string name="dial_size_title">Dimensione del menu</string>
+    <string name="dial_size_body">Compatto avvicina gli anelli alla bolla, così raggiungi le app più facilmente con un pollice. Il menu si rimpicciolisce anche da solo quando lo schermo è troppo basso, come in orizzontale.</string>
+    <string name="dial_size_standard">Standard</string>
+    <string name="dial_size_compact">Compatto</string>
     <string name="icon_shape_system">Predefinita</string>
     <string name="icon_shape_circle">Cerchio</string>
     <string name="icon_shape_squircle">Squircle</string>
