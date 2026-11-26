@@ -12,6 +12,23 @@
     <string name="slider_unmute">Riattiva audio</string>
     <string name="slider_brightness_locked">Rilascia per consentire il controllo della luminosità</string>
     <string name="slider_brightness_locked_tap">Tocca per consentire il controllo della luminosità</string>
+
+    <!-- Snooze button on the dial -->
+    <string name="snooze_title">Posticipa</string>
+    <string name="snooze_1m_short">1 min</string>
+    <string name="snooze_5m_short">5 min</string>
+    <string name="snooze_1h_short">1 h</string>
+    <string name="snooze_8h_short">8 h</string>
+    <string name="snooze_off_short">Off</string>
+    <string name="snooze_1m">Nascondi per 1 minuto</string>
+    <string name="snooze_5m">Nascondi per 5 minuti</string>
+    <string name="snooze_1h">Nascondi per 1 ora</string>
+    <string name="snooze_8h">Nascondi per 8 ore</string>
+    <string name="snooze_off">Disattiva la bolla</string>
+    <string name="snooze_toast">Bolla nascosta fino alle %1$s</string>
+    <string name="snooze_off_toast">Bolla disattivata. Riattivala in Halo.</string>
+    <string name="notification_snoozed">Nascosta fino alle %1$s</string>
+    <string name="notification_wake">Mostra ora</string>
     <string name="action_flashlight">Torcia</string>
     <string name="action_volume">Volume</string>
     <string name="action_play_pause">Riproduci / pausa</string>

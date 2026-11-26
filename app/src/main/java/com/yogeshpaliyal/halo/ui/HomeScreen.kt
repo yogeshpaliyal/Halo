@@ -309,7 +309,7 @@ fun HomeScreen() {
                     onToggle = { on ->
                         when {
                             !canOverlay -> context.startActivity(Permissions.overlaySettingsIntent(context))
-                            on -> HaloService.start(context)
+                            on -> HaloService.start(context, wake = true)
                             else -> HaloService.stop(context)
                         }
                     },

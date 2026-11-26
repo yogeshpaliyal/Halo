@@ -44,6 +44,10 @@ import kotlin.math.sin
  * upper half and media volume on the lower half (swappable in Settings). Both rise towards the top. Sliding (or
  * touching) out onto one adjusts it live; lifting there picks no app.
  *
+ * At the bottom centre of the screen sits a snooze button. Sliding (or tapping) onto it fans out
+ * snooze times above it; lifting on one hides the bubble for that long (see [SnoozeChoice]).
+ * While the fan is open the rest of the dial is dimmed and ignores the finger.
+ *
  * Angles use the Canvas convention: 0° points right and angles grow clockwise (y is down).
  */
 @SuppressLint("ViewConstructor")
@@ -61,6 +65,8 @@ class RadialMenuView(
     private val showVolume: Boolean = true,
     /** Swap the halves: volume on the upper half, brightness on the lower (Settings). */
     private val volumeOnTop: Boolean = false,
+    /** Navigation bar height in px; the snooze button sits just above it. */
+    private val bottomInset: Int = 0,
 ) : View(context) {
 
     /** [angles] is set for an open folder: its apps sit on a short arc instead of evenly spread. */
@@ -136,6 +142,8 @@ class RadialMenuView(
     private var activeSlider: Slider? = null
     /** Coarse position of the active slider, for one haptic tick per step. */
     private var sliderStep = -1
+    /** The active slider's value from before it was grabbed, to undo a pass on the way to snooze. */
+    private var sliderBefore = 0f
 
     /** Called when the finger lifts on the brightness slider before Halo may change brightness. */
     var onBrightnessLocked: (() -> Unit)? = null
@@ -217,6 +225,11 @@ class RadialMenuView(
         strokeCap = Paint.Cap.ROUND
         strokeWidth = dp(2f)
     }
+    private val snoozeText = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
+        textSize = dp(13f)
+        isFakeBoldText = true
+        textAlign = Paint.Align.CENTER
+    }
     private val arcRect = RectF()
     private val pillRect = RectF()
 
@@ -238,6 +251,7 @@ class RadialMenuView(
     /** Reverse of [show]: rings shrink back toward the bubble and fade, then [onEnd] runs. */
     fun dismiss(onEnd: () -> Unit) {
         onPick = null
+        onSnoozePick = null
         anim?.cancel()
         var done = false
         val finish = { if (!done) { done = true; onEnd() } }
@@ -260,6 +274,7 @@ class RadialMenuView(
     fun updateFinger(rawX: Float, rawY: Float): Boolean {
         fingerX = rawX
         fingerY = rawY
+        trackSnooze(rawX, rawY)?.let { return it }
         val onMute = showVolume && laidOut && activeSlider == null && onMuteButton(rawX, rawY)
         if (onMute != muteHover) {
             muteHover = onMute
@@ -330,6 +345,7 @@ class RadialMenuView(
             }
         }
         val grabbed = s != activeSlider
+        if (grabbed) sliderBefore = if (s == Slider.BRIGHTNESS) brightness else volume
         activeSlider = s
         val (lo, hi) = sliderRange(s)
         // Within the half that was grabbed: sliding past the middle doesn't jump to the other one.
@@ -420,6 +436,133 @@ class RadialMenuView(
         return hypot(rawX - screenLoc[0] - mx, rawY - screenLoc[1] - my) < sliderTrack * 0.9f
     }
 
+    // --- snooze -----------------------------------------------------------------------------
+
+    private val snoozeChoices = SnoozeChoice.entries
+    private val snoozeButtonR = dp(SNOOZE_BUTTON_DP)
+    private val snoozeFanR = dp(SNOOZE_FAN_DP)
+    private val snoozeOptionR = dp(SNOOZE_OPTION_DP)
+    private val snoozeIcon = context.getDrawable(R.drawable.ic_snooze)!!.mutate()
+    /** True while the snooze times are fanned out above the button. */
+    private var snoozeOpen = false
+    private var snoozeProgress = 0f
+    private var snoozeAnim: ValueAnimator? = null
+    /** Index into [snoozeChoices] under the finger, or -1. */
+    private var snoozeSel = -1
+
+    /** True while the finger is on the snooze button itself (not on one of the times). */
+    var onSnoozeButton = false
+        private set
+
+    /** The snooze time under the finger, if any. */
+    val snoozeChoice: SnoozeChoice?
+        get() = snoozeChoices.getOrNull(snoozeSel)
+
+    /** Tap mode: called once when a snooze time is tapped. */
+    var onSnoozePick: ((SnoozeChoice) -> Unit)? = null
+
+    private fun snoozeX(): Float = width / 2f
+    private fun snoozeY(): Float = height - bottomInset - dp(SNOOZE_BOTTOM_DP)
+
+    /** Angle (Canvas convention) of snooze time [i]: an arc over the top of the button. */
+    private fun snoozeAngle(i: Int): Float {
+        val n = snoozeChoices.size
+        return 270f - SNOOZE_ARC_DEG / 2f + i * SNOOZE_ARC_DEG / (n - 1)
+    }
+
+    /**
+     * Snooze part of a finger update. Returns null when the snooze button doesn't take the finger
+     * (the rest of the dial does), otherwise whether to give a haptic tick.
+     */
+    private fun trackSnooze(rawX: Float, rawY: Float): Boolean? {
+        if (!laidOut) return null
+        getLocationOnScreen(screenLoc)
+        val dx = rawX - screenLoc[0] - snoozeX()
+        val dy = rawY - screenLoc[1] - snoozeY()
+        val d = hypot(dx, dy)
+        val onButton = d < snoozeButtonR + dp(10f)
+        if (!snoozeOpen) {
+            if (!onButton) return null
+            openSnooze()
+            onSnoozeButton = true
+            return true
+        }
+        // Far enough away from the fan: fold it up and hand the finger back to the dial.
+        if (d > snoozeFanR + snoozeOptionR + dp(SNOOZE_LEAVE_DP)) {
+            closeSnooze()
+            return null
+        }
+        onSnoozeButton = onButton
+        var best = -1
+        var bestDist = Float.MAX_VALUE
+        if (!onButton) {
+            snoozeChoices.indices.forEach { i ->
+                val a = Math.toRadians(snoozeAngle(i).toDouble())
+                val od = hypot(dx - snoozeFanR * cos(a).toFloat(), dy - snoozeFanR * sin(a).toFloat())
+                if (od < bestDist) {
+                    bestDist = od
+                    best = i
+                }
+            }
+            // Drag mode stays forgiving; a tap has to land on (or right next to) a time.
+            val reach = snoozeOptionR + if (onPick != null) dp(6f) else dp(18f)
+            if (bestDist > reach) best = -1
+        }
+        val changed = best != snoozeSel
+        snoozeSel = best
+        if (changed) invalidate()
+        return changed && best >= 0
+    }
+
+    private fun openSnooze() {
+        // Sliding down here may have crossed (and grabbed) a slider: put it back as it was.
+        activeSlider?.let { s ->
+            when (s) {
+                Slider.BRIGHTNESS -> if (brightnessAllowed) {
+                    brightness = sliderBefore
+                    brightnessLevel = SystemControls.brightnessLevel(sliderBefore)
+                    SystemControls.setBrightnessLevel(context, brightnessLevel)
+                }
+                Slider.VOLUME -> {
+                    volume = sliderBefore
+                    volumeIndex = SystemControls.volumeIndex(context, sliderBefore)
+                    SystemControls.setVolumeIndex(context, volumeIndex)
+                }
+            }
+        }
+        activeSlider = null
+        sliderStep = -1
+        muteHover = false
+        removeCallbacks(openFolderLater)
+        selRing = -1
+        selSlot = -1
+        selected = null
+        snoozeOpen = true
+        snoozeSel = -1
+        animateSnooze(1f)
+    }
+
+    private fun closeSnooze() {
+        snoozeOpen = false
+        snoozeSel = -1
+        onSnoozeButton = false
+        animateSnooze(0f)
+    }
+
+    private fun animateSnooze(to: Float) {
+        snoozeAnim?.cancel()
+        snoozeAnim = ValueAnimator.ofFloat(snoozeProgress, to).apply {
+            duration = if (to > 0f) 200 else 140
+            interpolator = if (to > 0f) OvershootInterpolator(1.3f) else AccelerateInterpolator()
+            addUpdateListener {
+                snoozeProgress = it.animatedValue as Float
+                invalidate()
+            }
+            start()
+        }
+        invalidate()
+    }
+
     /** Opens the highlighted folder right away (finger lifted on it). */
     fun openSelectedFolder() {
         if (selRing == 0 && selSlot >= 0) openFolderAt(selSlot)
@@ -470,6 +613,7 @@ class RadialMenuView(
     override fun onDetachedFromWindow() {
         removeCallbacks(openFolderLater)
         folderAnim?.cancel()
+        snoozeAnim?.cancel()
         super.onDetachedFromWindow()
     }
 
@@ -483,6 +627,18 @@ class RadialMenuView(
                 }
             MotionEvent.ACTION_UP -> {
                 updateFinger(event.rawX, event.rawY)
+                if (snoozeOpen) {
+                    val choice = snoozeChoice
+                    if (choice != null) {
+                        val cb = onSnoozePick
+                        onPick = null
+                        onSnoozePick = null
+                        cb?.invoke(choice) ?: pick(null)
+                        return true
+                    }
+                    // Tapped the button: keep the times up for the next tap.
+                    if (onSnoozeButton) return true
+                }
                 // Lifting off a slider keeps the dial up for another go.
                 if (endSlider()) return true
                 val sel = selected
@@ -497,6 +653,7 @@ class RadialMenuView(
             MotionEvent.ACTION_CANCEL -> {
                 activeSlider = null
                 muteHover = false
+                onSnoozePick = null
                 onPick = null
                 pick(null)
             }
@@ -603,7 +760,11 @@ class RadialMenuView(
         val fade = progress.coerceIn(0f, 1f)
         scrim.alpha = (fade * theme.scrimAlpha).toInt()
         canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), scrim)
+        drawDial(canvas, p, fade)
+        drawSnooze(canvas, p, fade)
+    }
 
+    private fun drawDial(canvas: Canvas, p: Float, fade: Float) {
         val cx = centerX()
         val cy = centerY()
 
@@ -796,6 +957,91 @@ class RadialMenuView(
         drawLabel(canvas, text, x, y)
     }
 
+    /** Snooze button at the bottom centre and, once reached, the times fanned out above it. */
+    private fun drawSnooze(canvas: Canvas, p: Float, fade: Float) {
+        val sx = snoozeX()
+        val sy = snoozeY()
+        val open = snoozeProgress.coerceIn(0f, 1f)
+        if (open > 0f) {
+            // Dim the dial so the times stand out; it ignores the finger meanwhile.
+            scrim.alpha = (fade * open * theme.scrimAlpha * 0.8f).toInt()
+            canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), scrim)
+        }
+
+        val br = snoozeButtonR * (0.55f + 0.45f * p)
+        if (onSnoozeButton || (snoozeOpen && snoozeSel < 0)) canvas.drawCircle(sx, sy, br * 1.3f, glow)
+        sliderPaint.style = Paint.Style.FILL
+        sliderPaint.color = theme.band
+        sliderPaint.alpha = (fade * maxOf(bandAlpha, 200)).toInt()
+        canvas.drawCircle(sx, sy, br, sliderPaint)
+        sliderPaint.style = Paint.Style.STROKE
+        drawRing(canvas, sx, sy, br, fade)
+        val half = (sliderIconSize * 0.65f).toInt()
+        snoozeIcon.setBounds(sx.toInt() - half, sy.toInt() - half, sx.toInt() + half, sy.toInt() + half)
+        snoozeIcon.setTint(theme.hintText)
+        snoozeIcon.alpha = (fade * 255).toInt()
+        snoozeIcon.draw(canvas)
+
+        if (snoozeProgress <= 0f) return
+        val r = snoozeFanR * snoozeProgress
+        snoozeChoices.forEachIndexed { i, choice ->
+            val a = Math.toRadians(snoozeAngle(i).toDouble())
+            val x = sx + r * cos(a).toFloat()
+            val y = sy + r * sin(a).toFloat()
+            val selectedHere = i == snoozeSel
+            val optR = snoozeOptionR * (if (selectedHere) 1.2f else 1f) * open
+            if (selectedHere) canvas.drawCircle(x, y, optR * 1.3f, glow)
+            sliderPaint.style = Paint.Style.FILL
+            sliderPaint.color = if (selectedHere) theme.pill else theme.band
+            sliderPaint.alpha = (fade * open * if (selectedHere) 255 else maxOf(bandAlpha, 220)).toInt()
+            canvas.drawCircle(x, y, optR, sliderPaint)
+            sliderPaint.style = Paint.Style.STROKE
+            if (!selectedHere) drawRing(canvas, x, y, optR, fade * open)
+            snoozeText.color = if (selectedHere) theme.pillText else theme.hintText
+            snoozeText.alpha = (fade * open * 255).toInt()
+            val word = context.getString(choice.short)
+            // Shrink longer translations so they stay inside the circle.
+            snoozeText.textSize = dp(13f)
+            val fit = optR * 1.6f
+            val w = snoozeText.measureText(word)
+            if (w > fit) snoozeText.textSize = dp(13f) * fit / w
+            canvas.drawText(
+                word,
+                x,
+                y - (snoozeText.descent() + snoozeText.ascent()) / 2f,
+                snoozeText,
+            )
+        }
+        val text = context.getString(snoozeChoice?.long ?: R.string.snooze_title)
+        drawCenteredLabel(canvas, text, sx, sy - r - snoozeOptionR * 1.2f - dp(28f), open)
+    }
+
+    /** Thin outline around a round button, in the theme's band edge colour. */
+    private fun drawRing(canvas: Canvas, x: Float, y: Float, r: Float, fade: Float) {
+        val color = theme.edgeOuter.takeIf { it != 0 } ?: return
+        edge.color = color
+        edge.alpha = (fade * Color.alpha(color)).toInt()
+        edge.clearShadowLayer()
+        canvas.drawCircle(x, y, r, edge)
+    }
+
+    /** A label pill centred on ([cx], [cy]), kept on screen. */
+    private fun drawCenteredLabel(canvas: Canvas, text: String, cx: Float, cy: Float, fade: Float) {
+        val pad = dp(10f)
+        val name = TextUtils.ellipsize(text, label, width * 0.8f, TextUtils.TruncateAt.END).toString()
+        val w = label.measureText(name) + pad * 2
+        val h = label.textSize + pad * 1.4f
+        val x = (cx - w / 2f).coerceIn(dp(8f), width - w - dp(8f))
+        val y = cy - h / 2f
+        pillRect.set(x, y, x + w, y + h)
+        pill.alpha = (fade * Color.alpha(theme.pill)).toInt()
+        canvas.drawRoundRect(pillRect, h / 2f, h / 2f, pill)
+        pill.alpha = Color.alpha(theme.pill)
+        label.alpha = (fade * 255).toInt()
+        canvas.drawText(name, x + pad, y + h / 2f - (label.descent() + label.ascent()) / 2f, label)
+        label.alpha = 255
+    }
+
     /** Outline along both edges of a band, following its rounded ends' arc. */
     private fun drawEdges(
         canvas: Canvas,
@@ -857,6 +1103,15 @@ class RadialMenuView(
         private const val SLIDER_SLACK = 0.08f
         /** How far back in towards the apps a held slider lets go. */
         private const val SLIDER_RELEASE_DP = 28f
+        /** Snooze button: radius, and its centre's height above the navigation bar. */
+        private const val SNOOZE_BUTTON_DP = 26f
+        private const val SNOOZE_BOTTOM_DP = 64f
+        /** Snooze times: distance from the button's centre, radius, and the arc they cover. */
+        private const val SNOOZE_FAN_DP = 92f
+        private const val SNOOZE_OPTION_DP = 24f
+        private const val SNOOZE_ARC_DEG = 150f
+        /** How far past the fan the finger can stray before it folds back up. */
+        private const val SNOOZE_LEAVE_DP = 36f
 
         /**
          * Radius of the only ring when there are no favourites: the inner ring, or further out
