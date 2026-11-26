@@ -1,29 +1,162 @@
 <p align="center"><img src="docs/social-card.jpg" alt="Halo: the one-thumb app switcher for Android, shown with its home screen and the radial menu open" width="100%"></p>
 
-# Halo: One-Thumb App Switcher
+<h1 align="center">Halo: One-Thumb App Switcher</h1>
 
-A floating bubble that sticks to the edge of your screen and lets you switch apps with one thumb.
+<p align="center"><b>Hold the edge bubble, slide to an app, let go.</b><br>
+Switch between your apps with one thumb, without opening the recents screen.</p>
 
-- **Long-press** the bubble → a radial menu opens: your **favourites** on the inner ring, **recent apps** on the outer ring.
-- **Slide** to an app (you feel a tick on each one), **let go** to open it. Let go near the bubble to cancel.
-- **Brightness and volume sliders** wrap around the outside of the dial, each half its arc: brightness on top, media volume below, each showing its current level. Slide out onto one and move along it; both go up towards the top. The speaker at the start of the volume slider mutes and unmutes. Brightness asks once for "Modify system settings" and looks switched off until you allow it. Either slider can be hidden in Settings, and the two can swap halves.
-- **Tap** the bubble to jump back to your previous app (or set it to open the menu, or do nothing).
-- **Double-tap** it to jump to the app before that, so your two latest apps are one gesture away. Both taps can be set to any action.
-- **Drag** the bubble anywhere; it snaps to the nearest side and remembers its position.
-- **Configurable**: tap and double-tap actions, hold delay (200 / 280 / 400 ms) and haptics.
-- **Quick actions** as favourites: flashlight, volume panel and play/pause. No extra permissions.
-- **Make it yours**: 7 characters (Classic, Blob, Kitty, Ghost, Sprout, Star, Bot) in 8 colours. Characters blink, look around and react when you touch them.
-- **Folders** (optional): group up to 8 apps in one favourite slot. Rest on it in the dial and its apps fan out; slide to one and let go.
-- **11 languages**: English, Deutsch, Español, Français, हिन्दी, Bahasa Indonesia, Italiano, 日本語, Português (Brasil), Русский and Türkçe. On Android 13+ you can pick Halo's language on its own in Settings → Apps → Halo → Language.
-- **Hide from recents**: keep any app out of the recent-apps ring.
-- **Hides in full-screen apps** like games, videos and OTT apps, and in any apps you choose.
-- **Bubble size** (small, medium, large) and opacity.
-- **Starts on boot** if the bubble was on before the restart.
-- **Notification dots** (optional): a dot on apps with notifications waiting. Halo only sees which apps, never what the notifications say.
+<p align="center">
+  <a href="https://play.google.com/store/apps/details?id=com.yogeshpaliyal.halo"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" height="80"></a>
+</p>
 
-- **Work profile** apps can be favourites (shown with the briefcase badge). Private space apps can't: Android only exposes them to the default home app.
+<p align="center">
+  <a href="https://github.com/yogeshpaliyal/Halo/releases/latest"><img src="https://img.shields.io/github/v/release/yogeshpaliyal/Halo?label=latest&style=flat-square" alt="Latest release"></a>
+  <img src="https://img.shields.io/badge/Android-8.0%2B-3DDC84?style=flat-square&logo=android&logoColor=white" alt="Android 8.0 and later">
+  <img src="https://img.shields.io/badge/ads-none-5B47D6?style=flat-square" alt="No ads">
+  <img src="https://img.shields.io/badge/internet%20permission-none-5B47D6?style=flat-square" alt="No internet permission">
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/yogeshpaliyal/Halo?style=flat-square" alt="MIT license"></a>
+</p>
 
-No ads, no tracking, no internet permission.
+---
+
+## What is Halo?
+
+Halo puts a small bubble on the edge of your screen. **Hold it** and a half-circle menu opens with your
+favourite apps on the inside and your recent apps on the outside. **Slide** your thumb to an app and
+**let go** to open it. That's the whole gesture.
+
+It's for anyone who bounces between the same few apps all day (chat, maps, music, the browser) and
+is tired of the full-screen recents detour. It works on any Android phone from Android 8.0 on, and is
+especially handy on phones without a built-in edge panel, like Pixels.
+
+<p align="center"><img src="docs/demo.gif" alt="Animation: holding the Halo bubble opens a half-circle of apps, the thumb slides to WhatsApp and lets go to open it" width="720"></p>
+
+**Free, no ads, no account, and no internet permission**, so Halo can't send anything off your phone.
+
+## Get Halo
+
+<a href="https://play.google.com/store/apps/details?id=com.yogeshpaliyal.halo"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" height="83"></a>
+<a href="https://yogeshpaliyal.github.io/Halo/obtainium/"><img src="https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/badge_obtainium.png" alt="Get it on Obtainium" height="56"></a>
+<a href="https://github.com/yogeshpaliyal/Halo/releases/latest"><img src="https://img.shields.io/github/v/release/yogeshpaliyal/Halo?label=GitHub%20release&style=for-the-badge&logo=github" alt="Latest GitHub release" height="56"></a>
+
+1. **[Google Play](https://play.google.com/store/apps/details?id=com.yogeshpaliyal.halo)** is the easiest
+   way. It updates automatically, and the "restricted setting" step below doesn't apply.
+2. **[Obtainium](https://github.com/ImranR98/Obtainium)** if you prefer installing APKs: tap the badge on
+   your phone, then **Add to Obtainium**. It installs the latest signed release and keeps it updated.
+3. **GitHub**: download `halo-vX.Y.Z.apk` from the
+   [latest release](https://github.com/yogeshpaliyal/Halo/releases/latest).
+
+All three are the same app, signed with the same key.
+
+### First run
+
+1. Open Halo and allow **Display over other apps** (this draws the bubble).
+2. Optionally allow **Usage access** so the outer ring can show your recent apps.
+3. Pick up to six favourites and turn on **Floating bubble**. Done.
+
+## What you can do with it
+
+**Switch apps in one move**
+- Hold the bubble: favourites on the inner ring, recent apps on the outer ring.
+- Slide to an app (you feel a small tick on each one) and let go to open it. Let go near the bubble to cancel.
+- Tap the bubble to jump back to the app you just left. Double-tap for the one before that.
+
+**Quick controls on the dial**
+- Brightness and volume sliders wrap around the outside of the menu. Slide onto one and move along it.
+- Add a flashlight, volume panel or play/pause button as a favourite.
+- Group up to 8 apps in a folder that fans out when you rest on it.
+
+**Make it yours**
+- 7 bubble characters (Classic, Blob, Kitty, Ghost, Sprout, Star, Bot) in 8 colours. They blink, look
+  around and react when you touch them.
+- Small, medium or large bubble, with adjustable opacity. Drag it anywhere; it snaps to the nearest edge.
+- Choose what a tap and double-tap do, how long to hold, and whether it vibrates.
+- Themed (single-colour) icons that match your wallpaper.
+
+**Stays out of your way**
+- Hides itself in full-screen games and videos, and in any apps you choose.
+- Keep any app out of the recent-apps ring.
+- Optional dots on apps with unread notifications.
+- Comes back on its own after you restart your phone.
+- Work profile apps can be favourites.
+- Available in 11 languages: English, Deutsch, Español, Français, हिन्दी, Bahasa Indonesia, Italiano,
+  日本語, Português (Brasil), Русский and Türkçe.
+
+## Screenshots
+
+<table>
+  <tr>
+    <td align="center"><img src="docs/screenshots/menu.jpg" width="200" alt="Radial menu open over the home screen: favourites on the inner ring, recent apps on the outer ring"><br><sub>Hold, slide, let go</sub></td>
+    <td align="center"><img src="docs/screenshots/bubble.jpg" width="200" alt="The bubble resting on the right edge of the home screen"><br><sub>Stays out of the way</sub></td>
+    <td align="center"><img src="docs/screenshots/home.jpg" width="200" alt="Halo home screen with the on switch, a menu preview and six favourites"><br><sub>Pick up to six favourites</sub></td>
+    <td align="center"><img src="docs/screenshots/settings.jpg" width="200" alt="Gesture settings: tap action, hold delay and haptics"><br><sub>Tune the gestures</sub></td>
+  </tr>
+</table>
+
+## Private by design
+
+- **No internet permission.** Android won't let Halo connect to the internet, so nothing can leave your phone.
+- **No ads, no analytics, no account.**
+- **No Accessibility access needed.** Many app switchers ask for it; Halo doesn't.
+- **Open source.** Every line of code is in this repository. Read the [privacy policy](PRIVACY.md).
+
+## Questions
+
+<details>
+<summary><b>Why does Halo need these permissions?</b></summary>
+
+| Permission | Why | Required? |
+|---|---|---|
+| Display over other apps | Draws the bubble and the menu on top of other apps | Yes |
+| Usage access | Finds your recently used apps for the outer ring | No: without it you get favourites only |
+| Notifications (Android 13+) | A silent notification that keeps the bubble running, with a Stop button | Recommended |
+| Modify system settings | Lets the brightness slider change your screen brightness | No: only asked when you first use it |
+| Notification access | Shows a dot on apps with unread notifications. Halo sees which apps, never what the notifications say | No: off unless you turn on notification dots |
+| Run at startup | Brings the bubble back after a restart, if it was on | Automatic |
+
+None of these let Halo send data anywhere, because it has no internet permission.
+</details>
+
+<details>
+<summary><b>Android says "Restricted setting" or the switch is greyed out</b></summary>
+
+This only happens if you installed the APK from GitHub or Obtainium, not from Google Play. Android 15
+and later block *Display over other apps* and *Usage access* for downloaded apps until you allow them:
+
+1. Open **Settings → Apps → Halo**.
+2. Tap **⋮** (top right) and choose **Allow restricted settings**.
+3. Confirm with your screen lock, then go back to Halo and grant the permission again.
+
+Halo's setup card has an **Open App info** shortcut that takes you straight there.
+</details>
+
+<details>
+<summary><b>Is it really free?</b></summary>
+
+Yes. No ads, no in-app purchases, no subscription. Halo is open source under the MIT license.
+</details>
+
+<details>
+<summary><b>Which phones does it work on?</b></summary>
+
+Any Android phone running Android 8.0 or later. It's a regular app, so it doesn't depend on your phone brand or launcher.
+</details>
+
+<details>
+<summary><b>Why don't my Private space apps show up?</b></summary>
+
+Android only shows Private space apps to the default home-screen app, so no other app, Halo included,
+can list or open them. Work profile apps work fine and show a briefcase badge.
+</details>
+
+<details>
+<summary><b>How do I turn it off?</b></summary>
+
+Tap **Stop** on Halo's notification, or switch off **Floating bubble** in the app.
+</details>
+
+Something else? Ask in [Q&A](https://github.com/yogeshpaliyal/Halo/discussions/categories/q-a) or
+[report a bug](https://github.com/yogeshpaliyal/Halo/issues).
 
 ## Why I built this
 
@@ -37,52 +170,6 @@ this one thing: open source, no internet permission, nothing collected.
 
 It's written in Kotlin and Jetpack Compose, with Claude as a pair programmer. I review the changes and use
 it every day.
-
-## Screenshots
-
-<table>
-  <tr>
-    <td align="center"><img src="docs/screenshots/menu.jpg" width="200" alt="Radial menu open over the home screen: favourites on the inner ring, recent apps on the outer ring"><br><sub>Hold, slide, let go</sub></td>
-    <td align="center"><img src="docs/screenshots/bubble.jpg" width="200" alt="The bubble resting on the right edge of the home screen"><br><sub>Stays out of the way</sub></td>
-    <td align="center"><img src="docs/screenshots/home.jpg" width="200" alt="Halo home screen with the on switch, a menu preview and six favourites"><br><sub>Pick up to six favourites</sub></td>
-    <td align="center"><img src="docs/screenshots/settings.jpg" width="200" alt="Gesture settings: tap action, hold delay and haptics"><br><sub>Tune the gestures</sub></td>
-  </tr>
-</table>
-
-## Download
-
-<a href="https://play.google.com/store/apps/details?id=com.yogeshpaliyal.halo"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" height="83"></a>
-<a href="https://yogeshpaliyal.github.io/Halo/obtainium/"><img src="https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/badge_obtainium.png" alt="Get it on Obtainium" height="56"></a>
-<a href="https://github.com/yogeshpaliyal/Halo/releases/latest"><img src="https://img.shields.io/github/v/release/yogeshpaliyal/Halo?label=GitHub%20release&style=for-the-badge&logo=github" alt="Latest GitHub release" height="56"></a>
-
-- **[Google Play](https://play.google.com/store/apps/details?id=com.yogeshpaliyal.halo)** (easiest): updates
-  automatically, and Android 15's "restricted settings" step doesn't apply.
-- **[Obtainium](https://github.com/ImranR98/Obtainium)** (recommended for APK installs): tap the badge on your
-  phone, then **Add to Obtainium**, and Obtainium opens with Halo filled in. It installs the latest signed release and keeps it updated.
-- **GitHub releases**: download `halo-vX.Y.Z.apk` from the
-  [latest release](https://github.com/yogeshpaliyal/Halo/releases/latest).
-
-### Verify the APK
-
-Every release APK, and the Play Store version, is signed with the same key. Its certificate SHA-256 is:
-
-```
-com.yogeshpaliyal.halo
-4D:C1:4F:08:7E:D5:AB:99:63:D1:C1:EF:11:15:EC:3B:33:1E:4B:BD:A5:85:8A:0C:FF:7F:A2:66:73:4A:CD:E5
-```
-
-Check it with [AppVerifier](https://github.com/soupslurpr/AppVerifier) (paste both lines) or
-`apksigner verify --print-certs halo-vX.Y.Z.apk`. Each release also lists SHA-256 checksums of its files.
-
-### Debug builds
-
-Every push to `main` builds a debug APK and publishes it to the
-[**Latest master**](https://github.com/yogeshpaliyal/Halo/releases/tag/latest-master) pre-release:
-**[halo-debug.apk](https://github.com/yogeshpaliyal/Halo/releases/download/latest-master/halo-debug.apk)**.
-
-They install as **Halo Debug** (`com.yogeshpaliyal.halo.debug`, amber icon), next to the release version,
-and are signed with the public `keystore/debug.keystore`, so their fingerprint won't match the one above.
-Obtainium ignores this pre-release by default and tracks only signed releases.
 
 ## Featured
 
@@ -99,22 +186,26 @@ Made a video, blog post or thread about Halo? Share it in [Discussions](https://
 - **Show your setup:** post your recap card or bubble style in [Discussions → Show your setup](https://github.com/yogeshpaliyal/Halo/discussions/categories/show-your-setup), or share it anywhere with **#HaloRecap**.
 - **Ideas and questions:** [Ideas](https://github.com/yogeshpaliyal/Halo/discussions/categories/ideas) and [Q&A](https://github.com/yogeshpaliyal/Halo/discussions/categories/q-a).
 - **Bugs:** [open an issue](https://github.com/yogeshpaliyal/Halo/issues).
+- **Like Halo?** A ⭐ on this repo or a review on [Google Play](https://play.google.com/store/apps/details?id=com.yogeshpaliyal.halo) helps other people find it.
 
-## Setup
+---
 
-1. Open the project in Android Studio (or run `./gradlew installDebug`), or install the APK above.
-2. In the app, grant:
-   - **Display over other apps**: draws the bubble.
-   - **Usage access**: powers the recent-apps ring. Optional; without it you only get favourites.
-   - **Notifications** (Android 13+): a silent notification with a Stop button.
-3. Pick up to 6 favourites and turn on **Floating bubble**.
+## For developers
 
-> **“Restricted setting” or a greyed-out switch?** Android 15+ blocks *Display over other apps* and
-> *Usage access* for apps installed from a downloaded APK. Open **Settings → Apps → Halo**, tap **⋮**
-> (top right), choose **Allow restricted settings**, confirm with your screen lock, then grant the
-> permission again. Halo's setup card has an **Open App info** shortcut for this.
+<details>
+<summary><b>Build from source</b></summary>
 
-## How it works
+Open the project in Android Studio, or run:
+
+```
+./gradlew installDebug
+```
+
+Then grant the permissions and pick favourites as described in [First run](#first-run).
+</details>
+
+<details>
+<summary><b>How it works</b></summary>
 
 | Piece | File |
 |---|---|
@@ -125,15 +216,45 @@ Made a video, blog post or thread about Halo? Share it in [Discussions](https://
 | Settings screen (Compose) | `ui/MainActivity.kt` |
 
 The long-press → slide → release gesture works because Android keeps delivering the whole touch stream to the window that got `ACTION_DOWN` (the small bubble window). The menu itself is a separate full-screen, **non-touchable** overlay that just draws what the bubble reports.
+</details>
 
-## Releasing
+<details>
+<summary><b>Verify the APK</b></summary>
+
+Every release APK, and the Play Store version, is signed with the same key. Its certificate SHA-256 is:
+
+```
+com.yogeshpaliyal.halo
+4D:C1:4F:08:7E:D5:AB:99:63:D1:C1:EF:11:15:EC:3B:33:1E:4B:BD:A5:85:8A:0C:FF:7F:A2:66:73:4A:CD:E5
+```
+
+Check it with [AppVerifier](https://github.com/soupslurpr/AppVerifier) (paste both lines) or
+`apksigner verify --print-certs halo-vX.Y.Z.apk`. Each release also lists SHA-256 checksums of its files.
+</details>
+
+<details>
+<summary><b>Debug builds</b></summary>
+
+Every push to `main` builds a debug APK and publishes it to the
+[**Latest master**](https://github.com/yogeshpaliyal/Halo/releases/tag/latest-master) pre-release:
+**[halo-debug.apk](https://github.com/yogeshpaliyal/Halo/releases/download/latest-master/halo-debug.apk)**.
+
+They install as **Halo Debug** (`com.yogeshpaliyal.halo.debug`, amber icon), next to the release version,
+and are signed with the public `keystore/debug.keystore`, so their fingerprint won't match the one above.
+Obtainium ignores this pre-release by default and tracks only signed releases.
+</details>
+
+<details>
+<summary><b>Releasing</b></summary>
 
 Actions → **Release** → **Run workflow**, then pick `patch`, `minor` or `major`. The workflow bumps
 `versionName` and `versionCode` in `app/build.gradle.kts`, builds the signed APK and AAB, and only if
 the build succeeds commits the bump to `main`, tags it (`vX.Y.Z`) and publishes a GitHub release with
 both files attached and the signing fingerprint in the notes. Upload the `.aab` to Play Console.
+</details>
 
-## Stats
+<details>
+<summary><b>Stats</b></summary>
 
 Halo has no analytics in the app. Download counts, stars and repo traffic are collected from
 GitHub's APIs by the `Stats snapshot` workflow (daily, and before each `latest-master` rebuild) and
@@ -142,10 +263,10 @@ saved to the [`stats` branch](https://github.com/yogeshpaliyal/Halo/tree/stats).
 Repo views, clones and referrers need one extra step, because the Actions token can't read
 GitHub's traffic API: create a fine-grained token for this repo with **Administration: Read-only**
 and add it as the `TRAFFIC_TOKEN` repository secret.
+</details>
 
-## Privacy
-
-Halo collects no data and has no internet permission. Read the [privacy policy](PRIVACY.md).
+The animation at the top is rendered from the real screenshots by [`docs/promo_video.py`](docs/promo_video.py)
+(the `20-gesture` scene).
 
 ## License
 
