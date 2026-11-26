@@ -78,6 +78,16 @@ object Prefs {
         return current
     }
 
+    /** Trades the favourites at [from] and [to], so a drag dropped on a slot swaps the two. */
+    fun swapFavorites(context: Context, from: Int, to: Int): List<String> {
+        val current = favorites(context).toMutableList()
+        if (from in current.indices && to in current.indices && from != to) {
+            current[from] = current[to].also { current[to] = current[from] }
+        }
+        setFavorites(context, current)
+        return current
+    }
+
     fun foldersJson(context: Context): String? = sp(context).getString(KEY_FOLDERS, null)
     fun setFoldersJson(context: Context, json: String) = sp(context).edit { putString(KEY_FOLDERS, json) }
 
