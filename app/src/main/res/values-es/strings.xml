@@ -122,6 +122,9 @@
     <string name="size">Tamaño</string>
     <string name="opacity">Opacidad</string>
     <string name="opacity_body">Qué tan transparente es la burbuja en reposo. Se vuelve sólida mientras la mantienes.</string>
+    <string name="tag_edge">Borde</string>
+    <string name="tuck_bubble">Ocultar en el borde</string>
+    <string name="tuck_bubble_body">La burbuja queda medio oculta en el borde y sale al tocarla.</string>
     <string name="hide_fullscreen">Ocultar en apps a pantalla completa</string>
     <string name="hide_fullscreen_body">Juegos, videos y apps de streaming. Vuelve cuando vuelve la barra de estado.</string>
     <string name="hide_in_apps">Ocultar en estas apps</string>

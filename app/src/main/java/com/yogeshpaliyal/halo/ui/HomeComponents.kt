@@ -730,6 +730,8 @@ fun BubbleCard(
     onSize: (BubbleSize) -> Unit,
     opacity: Float,
     onOpacity: (Float) -> Unit,
+    tuck: Boolean,
+    onTuck: (Boolean) -> Unit,
     hideFullscreen: Boolean,
     onHideFullscreen: (Boolean) -> Unit,
     hiddenAppsCount: Int,
@@ -848,7 +850,25 @@ fun BubbleCard(
                     steps = 6, // 30, 40, ... 100
                     modifier = Modifier.padding(start = 90.dp, end = 20.dp),
                 )
-
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .clickable { onTuck(!tuck) }
+                        .padding(horizontal = 20.dp, vertical = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Tag(stringResource(R.string.tag_edge))
+                    Spacer(Modifier.width(14.dp))
+                    Column(Modifier.weight(1f)) {
+                        Text(stringResource(R.string.tuck_bubble), style = MaterialTheme.typography.titleSmall)
+                        Text(
+                            stringResource(R.string.tuck_bubble_body),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                    Switch(checked = tuck, onCheckedChange = onTuck)
+                }
             }
             if (section == BubbleSection.BASICS) {
                 HorizontalDivider(Modifier.padding(horizontal = 20.dp, vertical = 8.dp))

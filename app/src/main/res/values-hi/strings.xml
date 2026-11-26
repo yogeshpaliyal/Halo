@@ -122,6 +122,9 @@
     <string name="size">आकार</string>
     <string name="opacity">पारदर्शिता</string>
     <string name="opacity_body">रुका हुआ बबल कितना पारदर्शी हो। दबाए रखने पर यह पूरा दिखता है।</string>
+    <string name="tag_edge">किनारा</string>
+    <string name="tuck_bubble">किनारे में छिपाएँ</string>
+    <string name="tuck_bubble_body">बबल आधा स्क्रीन के किनारे में छिपा रहता है और छूने पर बाहर आ जाता है।</string>
     <string name="hide_fullscreen">फ़ुल-स्क्रीन ऐप में छिपाएं</string>
     <string name="hide_fullscreen_body">गेम, वीडियो और OTT ऐप। स्टेटस बार लौटने पर वापस आता है।</string>
     <string name="hide_in_apps">इन ऐप में छिपाएं</string>

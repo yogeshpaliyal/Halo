@@ -51,6 +51,10 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
         fun onMenuMove(rawX: Float, rawY: Float)
         fun onMenuRelease(rawX: Float, rawY: Float)
         fun onMenuCancel()
+        /** A finger went down on the bubble (a tucked bubble slides out). */
+        fun onTouchStart() {}
+        /** The gesture is over, whatever it was (a tucked bubble may slide back in). */
+        fun onTouchEnd() {}
     }
 
     private enum class State { IDLE, PRESSED, DRAGGING, MENU }
@@ -183,6 +187,7 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
         lastY = event.rawY
         when (event.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
+                listener.onTouchStart()
                 setMood(BubbleRenderer.Mood.PRESSED)
                 secondTap = tapPending
                 if (tapPending) {
@@ -257,6 +262,7 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
                     State.IDLE -> Unit
                 }
                 reset()
+                listener.onTouchEnd()
             }
 
             MotionEvent.ACTION_CANCEL -> {
@@ -274,6 +280,7 @@ class BubbleView(context: Context, private val listener: Listener) : View(contex
                     else -> settle()
                 }
                 reset()
+                listener.onTouchEnd()
             }
         }
         return true

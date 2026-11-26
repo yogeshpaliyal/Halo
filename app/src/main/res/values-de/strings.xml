@@ -122,6 +122,9 @@
     <string name="size">Größe</string>
     <string name="opacity">Deckkraft</string>
     <string name="opacity_body">Wie durchsichtig die ruhende Blase ist. Beim Halten wird sie voll sichtbar.</string>
+    <string name="tag_edge">Rand</string>
+    <string name="tuck_bubble">Am Rand verstecken</string>
+    <string name="tuck_bubble_body">Die Blase steckt halb im Bildschirmrand und gleitet beim Berühren heraus.</string>
     <string name="hide_fullscreen">In Vollbild-Apps ausblenden</string>
     <string name="hide_fullscreen_body">Spiele, Videos und Streaming-Apps. Kommt zurück, sobald die Statusleiste zurückkommt.</string>
     <string name="hide_in_apps">In diesen Apps ausblenden</string>

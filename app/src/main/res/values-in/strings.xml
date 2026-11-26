@@ -120,6 +120,9 @@
     <string name="size">Ukuran</string>
     <string name="opacity">Opasitas</string>
     <string name="opacity_body">Seberapa transparan gelembung saat diam. Menjadi penuh saat Anda menahannya.</string>
+    <string name="tag_edge">Tepi</string>
+    <string name="tuck_bubble">Selipkan ke tepi</string>
+    <string name="tuck_bubble_body">Separuh gelembung tersembunyi di tepi layar dan keluar saat Anda menyentuhnya.</string>
     <string name="hide_fullscreen">Sembunyikan di aplikasi layar penuh</string>
     <string name="hide_fullscreen_body">Game, video, dan aplikasi OTT. Kembali saat bilah status muncul.</string>
     <string name="hide_in_apps">Sembunyikan di aplikasi ini</string>

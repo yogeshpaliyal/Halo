@@ -124,6 +124,9 @@
     <string name="size">Dimensione</string>
     <string name="opacity">Opacità</string>
     <string name="opacity_body">Quanto è trasparente la bolla a riposo. Diventa piena mentre la tieni premuta.</string>
+    <string name="tag_edge">Bordo</string>
+    <string name="tuck_bubble">Nascondi nel bordo</string>
+    <string name="tuck_bubble_body">La bolla resta per metà nascosta nel bordo e scorre fuori quando la tocchi.</string>
     <string name="hide_fullscreen">Nascondi nelle app a schermo intero</string>
     <string name="hide_fullscreen_body">Giochi, video e app di streaming. Torna quando torna la barra di stato.</string>
     <string name="hide_in_apps">Nascondi in queste app</string>

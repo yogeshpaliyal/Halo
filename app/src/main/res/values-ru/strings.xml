@@ -126,6 +126,9 @@
     <string name="size">Размер</string>
     <string name="opacity">Непрозрачность</string>
     <string name="opacity_body">Насколько прозрачна кнопка в покое. Пока вы её держите, она непрозрачная.</string>
+    <string name="tag_edge">Край</string>
+    <string name="tuck_bubble">Прятать за край</string>
+    <string name="tuck_bubble_body">Пузырь наполовину скрыт за краем экрана и выдвигается при касании.</string>
     <string name="hide_fullscreen">Скрывать в полноэкранных приложениях</string>
     <string name="hide_fullscreen_body">Игры, видео и стриминг. Возвращается вместе со строкой состояния.</string>
     <string name="hide_in_apps">Скрывать в этих приложениях</string>

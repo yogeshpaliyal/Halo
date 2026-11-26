@@ -69,7 +69,7 @@ All three are the same app, signed with the same key.
 **Make it yours**
 - 7 bubble characters (Classic, Blob, Kitty, Ghost, Sprout, Star, Bot) in 8 colours. They blink, look
   around and react when you touch them.
-- Small, medium or large bubble, with adjustable opacity. Drag it anywhere; it snaps to the nearest edge.
+- Small, medium or large bubble, with adjustable opacity. Drag it anywhere; it snaps to the nearest edge. Optionally tuck it half into the edge, so it slides out only when you touch it.
 - Choose what a tap and double-tap do, how long to hold, and whether it vibrates.
 - Themed (single-colour) icons that match your wallpaper.
 

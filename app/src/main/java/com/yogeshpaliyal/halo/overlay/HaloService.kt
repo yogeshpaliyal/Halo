@@ -127,6 +127,7 @@ class HaloService : Service(), BubbleView.Listener {
             Prefs.KEY_HIDE_FULLSCREEN -> applyVisibility()
             Prefs.KEY_BUBBLE_OPACITY -> bubble?.refreshOpacity()
             Prefs.KEY_BUBBLE_SIZE -> resizeBubble()
+            Prefs.KEY_TUCK_BUBBLE -> applyTuckSetting()
             Prefs.KEY_BUBBLE_PALETTE, Prefs.KEY_BUBBLE_CHARACTER, Prefs.KEY_BUBBLE_ANIMATIONS,
             Prefs.KEY_BUBBLE_REACTIONS, Prefs.KEY_AVATAR_VERSION, Prefs.KEY_BUBBLE_ACCESSORY -> bubble?.refreshStyle()
             Prefs.KEY_HIDE_IN_APPS -> updateAppWatch()
@@ -285,6 +286,7 @@ class HaloService : Service(), BubbleView.Listener {
             bubbleSize,
             WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
         )
+        setNoLimits(Prefs.tuckBubble(this))
         // Work out the docked position first, then add the window already in place.
         snapTo(onRight, Prefs.bubbleY(this, (screen.y * 0.4f).toInt()), animate = false)
         val view = BubbleView(this, this)
@@ -320,12 +322,16 @@ class HaloService : Service(), BubbleView.Listener {
         val centerY = if (lo <= hi) bubbleCenter.coerceIn(lo, hi) else (top + screenH - bottom) / 2f
         if (kotlin.math.abs(centerY - bubbleCenter) > 1f) {
             restY = bubbleParams.y
-            moveBubble(bubbleParams.x, (centerY - bubbleSize / 2f).toInt(), animate = true)
+        }
+        // A tucked bubble is already sliding out from the touch; make sure it ends fully out
+        // (and at the dial's centre) even if the move above would cancel that slide.
+        if (kotlin.math.abs(centerY - bubbleCenter) > 1f || bubbleParams.x != dockedX(onRight)) {
+            moveBubble(dockedX(onRight), (centerY - bubbleSize / 2f).toInt(), animate = true)
         }
 
         val view = RadialMenuView(
             context = this,
-            anchorScreenX = (bubbleParams.x + bubbleSize / 2).toFloat(),
+            anchorScreenX = (dockedX(onRight) + bubbleSize / 2).toFloat(),
             anchorScreenY = centerY,
             onRightEdge = onRight,
             favorites = favorites,
@@ -409,6 +415,7 @@ class HaloService : Service(), BubbleView.Listener {
             restY = null
             moveBubble(bubbleParams.x, y, animate = true)
         }
+        scheduleTuck()
     }
 
     /**
@@ -457,15 +464,76 @@ class HaloService : Service(), BubbleView.Listener {
 
     // --- docking --------------------------------------------------------------------------
 
+    /**
+     * Docks to a side. Animated snaps (after a drag) land fully out and tuck in a moment later;
+     * instant ones (start, rotation, resize) go straight to the tucked spot when tucking is on.
+     */
     private fun snapTo(right: Boolean, y: Int, animate: Boolean) {
         val screen = screenSize()
         val (top, bottom) = safeInsets()
         onRight = right
-        val targetX = if (right) screen.x - bubbleSize else 0
         val maxY = (screen.y - bottom - bubbleSize).coerceAtLeast(top)
         val targetY = y.coerceIn(top, maxY)
         Prefs.saveBubble(this, right, targetY)
-        moveBubble(targetX, targetY, animate)
+        if (animate) {
+            moveBubble(dockedX(right), targetY, animate = true)
+            scheduleTuck()
+        } else {
+            main.removeCallbacks(tuckRunnable)
+            moveBubble(restX(right), targetY, animate = false)
+        }
+    }
+
+    // --- tucking into the edge ------------------------------------------------------------
+
+    /** True while a finger is on the bubble; it stays out until the gesture ends. */
+    private var touching = false
+    private val tuckRunnable = Runnable { tuckNow() }
+
+    /** X with the whole bubble on screen against its edge. */
+    private fun dockedX(right: Boolean) = if (right) screenSize().x - bubbleSize else 0
+
+    /** X where the bubble rests: docked, or half off screen when tucking is on. */
+    private fun restX(right: Boolean): Int {
+        if (!Prefs.tuckBubble(this)) return dockedX(right)
+        val hidden = (bubbleSize * TUCK_FRACTION).toInt()
+        return if (right) dockedX(right) + hidden else -hidden
+    }
+
+    /** Lets the bubble window sit partly past the screen edge (only needed when tucking). */
+    private fun setNoLimits(on: Boolean) {
+        val flag = WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        bubbleParams.flags = if (on) bubbleParams.flags or flag else bubbleParams.flags and flag.inv()
+    }
+
+    /** Slides back into the edge after a short pause, unless something still needs it out. */
+    private fun scheduleTuck() {
+        main.removeCallbacks(tuckRunnable)
+        if (Prefs.tuckBubble(this)) main.postDelayed(tuckRunnable, TUCK_DELAY_MS)
+    }
+
+    private fun tuckNow() {
+        if (touching || menu != null || restY != null || bubble == null) return
+        val target = restX(onRight)
+        if (bubbleParams.x != target) moveBubble(target, bubbleParams.y, animate = true)
+    }
+
+    private fun applyTuckSetting() {
+        val view = bubble ?: return
+        val on = Prefs.tuckBubble(this)
+        main.removeCallbacks(tuckRunnable)
+        if (on) {
+            setNoLimits(true)
+            runCatching { wm.updateViewLayout(view, bubbleParams) }
+            scheduleTuck()
+        } else if (menu == null && !touching) {
+            // Slide back out fully, then drop the off-screen allowance once it's in place.
+            moveBubble(dockedX(onRight), bubbleParams.y, animate = false)
+            setNoLimits(false)
+            runCatching { wm.updateViewLayout(view, bubbleParams) }
+        } else {
+            setNoLimits(false)
+        }
     }
 
     private fun screenSize(): Point =
@@ -503,6 +571,20 @@ class HaloService : Service(), BubbleView.Listener {
             TapAction.OPEN_APP -> appKey?.let(repo::entryFor)?.let { launch(it, kind) }
             TapAction.NOTHING -> Unit
         }
+    }
+
+    override fun onTouchStart() {
+        touching = true
+        main.removeCallbacks(tuckRunnable)
+        val out = dockedX(onRight)
+        if (Prefs.tuckBubble(this) && menu == null && bubbleParams.x != out) {
+            moveBubble(out, bubbleParams.y, animate = true)
+        }
+    }
+
+    override fun onTouchEnd() {
+        touching = false
+        scheduleTuck()
     }
 
     override fun onDragMove(rawX: Float, rawY: Float) {
@@ -592,6 +674,10 @@ class HaloService : Service(), BubbleView.Listener {
     companion object {
         private const val CHANNEL_ID = "bubble"
         private const val APP_WATCH_MS = 1000L
+        /** Share of the bubble window hidden past the edge when tucked. */
+        private const val TUCK_FRACTION = 0.5f
+        /** How long the bubble stays out after you let go before tucking back in. */
+        private const val TUCK_DELAY_MS = 1500L
         private const val NOTIFICATION_ID = 1
         private const val ACTION_STOP = "com.yogeshpaliyal.halo.STOP"
 
