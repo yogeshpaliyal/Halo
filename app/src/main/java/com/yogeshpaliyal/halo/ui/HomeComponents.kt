@@ -58,6 +58,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -82,7 +84,6 @@ import com.yogeshpaliyal.halo.data.HoldDelay
 import com.yogeshpaliyal.halo.data.Prefs
 import com.yogeshpaliyal.halo.data.TapAction
 import android.util.LruCache
-import androidx.compose.runtime.produceState
 import androidx.compose.ui.unit.Dp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -107,15 +108,18 @@ fun rememberIcon(app: AppEntry): ImageBitmap? {
     val cacheKey = remember(app.key, app.label, app.children) {
         app.key + "|" + app.label + "|" + app.children.joinToString(",") { it.key }
     }
-    val bitmap by produceState<ImageBitmap?>(iconBitmaps.get(cacheKey), cacheKey) {
-        if (value == null) {
-            value = withContext(Dispatchers.Default) {
+    // Keyed on the app, not just its place in the layout: slots are reused when favourites are
+    // reordered, and a produceState would keep showing the icon of the app that used to be there.
+    val bitmap = remember(cacheKey) { mutableStateOf(iconBitmaps.get(cacheKey)) }
+    LaunchedEffect(cacheKey) {
+        if (bitmap.value == null) {
+            bitmap.value = withContext(Dispatchers.Default) {
                 // One drawable can be shown in two places at once; don't render it twice in parallel.
                 synchronized(app.icon) { app.icon.toBitmap(128, 128).asImageBitmap() }
             }.also { iconBitmaps.put(cacheKey, it) }
         }
     }
-    return bitmap
+    return bitmap.value
 }
 
 /** App icon with a soft placeholder while it loads. */
@@ -364,6 +368,8 @@ fun FavoritesCard(
     onAdd: () -> Unit,
     onRemove: (AppEntry) -> Unit,
     onMove: (index: Int, delta: Int) -> Unit,
+    /** Drag and drop: the dragged favourite and the one it was dropped on trade places. */
+    onSwap: (from: Int, to: Int) -> Unit,
     onEditFolder: (AppEntry) -> Unit,
 ) {
     val haptics = LocalHapticFeedback.current
@@ -372,13 +378,17 @@ fun FavoritesCard(
     var dragIndex by remember { mutableIntStateOf(-1) }
     var dragOffset by remember { mutableStateOf(Offset.Zero) }
 
+    // The drag gesture outlives the composition it started in; read the latest values.
+    val count by rememberUpdatedState(favorites.size)
+    val swap by rememberUpdatedState(onSwap)
+
     /** Slot the dragged favourite would land on, from how far it has moved in whole slots. */
     fun targetIndex(): Int {
-        if (dragIndex < 0 || slotSize == IntSize.Zero) return -1
+        if (dragIndex < 0 || slotSize == IntSize.Zero || count == 0) return -1
         val col = dragIndex % COLUMNS + (dragOffset.x / (slotSize.width + gapPx)).roundToInt()
         val row = dragIndex / COLUMNS + (dragOffset.y / (slotSize.height + gapPx)).roundToInt()
         return (row.coerceAtLeast(0) * COLUMNS + col.coerceIn(0, COLUMNS - 1))
-            .coerceIn(0, favorites.lastIndex)
+            .coerceIn(0, count - 1)
     }
 
     Card(shape = RoundedCornerShape(24.dp)) {
@@ -445,7 +455,7 @@ fun FavoritesCard(
                                             },
                                             onDragEnd = {
                                                 val to = targetIndex()
-                                                if (to >= 0 && to != dragIndex) onMove(dragIndex, to - dragIndex)
+                                                if (to >= 0 && to != dragIndex) swap(dragIndex, to)
                                                 dragIndex = -1
                                                 dragOffset = Offset.Zero
                                             },

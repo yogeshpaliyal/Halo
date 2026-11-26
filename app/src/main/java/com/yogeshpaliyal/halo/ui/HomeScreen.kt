@@ -336,6 +336,7 @@ fun HomeScreen() {
                     // Removing a folder only frees its slot; it stays in the picker to add back.
                     onRemove = { favorites = Prefs.toggleFavorite(context, it.key) },
                     onMove = { index, delta -> favorites = Prefs.moveFavorite(context, index, delta) },
+                    onSwap = { from, to -> favorites = Prefs.swapFavorites(context, from, to) },
                     onEditFolder = { entry -> editingFolder = Folders.get(context, entry.key) },
                 )
             }
