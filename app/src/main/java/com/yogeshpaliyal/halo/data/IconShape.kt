@@ -1,5 +1,9 @@
 package com.yogeshpaliyal.halo.data
 
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.getValue
+import android.graphics.drawable.ColorDrawable
 import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Bitmap
@@ -97,6 +101,19 @@ object IconShapes {
         }
         return BitmapDrawable(context.resources, bitmap)
     }
+
+    /** Outline of [shape] in a [size] square, for previews; SYSTEM uses the phone's own mask. */
+    fun previewPath(shape: IconShape, size: Float): Path? =
+        shapePath(shape, size, AdaptiveIconDrawable(ColorDrawable(), ColorDrawable()))
+
+    /**
+     * Bumped when the shape or themed icons change, so the app's own screens redraw their icons
+     * straight away (the dial loads fresh icons each time it opens).
+     */
+    var version by mutableIntStateOf(0)
+        private set
+
+    fun changed() { version++ }
 
     /** Outline of [shape] in a [size] square; null means don't clip. */
     private fun shapePath(shape: IconShape, size: Float, adaptive: AdaptiveIconDrawable?): Path? {

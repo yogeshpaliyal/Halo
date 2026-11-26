@@ -81,6 +81,7 @@ import androidx.core.graphics.drawable.toBitmap
 import com.yogeshpaliyal.halo.data.AppEntry
 import com.yogeshpaliyal.halo.data.BubbleSize
 import com.yogeshpaliyal.halo.data.HoldDelay
+import com.yogeshpaliyal.halo.data.IconShapes
 import com.yogeshpaliyal.halo.data.Prefs
 import com.yogeshpaliyal.halo.data.TapAction
 import android.util.LruCache
@@ -105,8 +106,12 @@ private val iconBitmaps = LruCache<String, ImageBitmap>(400)
 @Composable
 fun rememberIcon(app: AppEntry): ImageBitmap? {
     // Folder icons are drawn from their apps, so they change when the folder is edited.
-    val cacheKey = remember(app.key, app.label, app.children) {
-        app.key + "|" + app.label + "|" + app.children.joinToString(",") { it.key }
+    // The icon shape is part of the key too, so picking another shape redraws icons at once.
+    val context = LocalContext.current
+    val styleVersion = IconShapes.version
+    val style = remember(styleVersion) { IconShapes.style(context).cacheKey }
+    val cacheKey = remember(app.key, app.label, app.children, style) {
+        app.key + "|" + app.label + "|" + app.children.joinToString(",") { it.key } + "#" + style
     }
     // Keyed on the app, not just its place in the layout: slots are reused when favourites are
     // reordered, and a produceState would keep showing the icon of the app that used to be there.
@@ -114,8 +119,10 @@ fun rememberIcon(app: AppEntry): ImageBitmap? {
     LaunchedEffect(cacheKey) {
         if (bitmap.value == null) {
             bitmap.value = withContext(Dispatchers.Default) {
+                // Loaded again rather than app.icon, which keeps the shape it was first drawn in.
                 // One drawable can be shown in two places at once; don't render it twice in parallel.
-                synchronized(app.icon) { app.icon.toBitmap(128, 128).asImageBitmap() }
+                val icon = app.iconLoader()
+                synchronized(icon) { icon.toBitmap(128, 128).asImageBitmap() }
             }.also { iconBitmaps.put(cacheKey, it) }
         }
     }

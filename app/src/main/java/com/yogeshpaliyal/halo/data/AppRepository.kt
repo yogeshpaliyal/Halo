@@ -120,7 +120,8 @@ class AppRepository(context: Context) {
             key = key,
             packageName = "",
             label = folder.name,
-            iconLoader = { FolderIcon(children.map { it.icon }) },
+            // Each load asks the children again, so a folder follows the icon shape too.
+            iconLoader = { FolderIcon(children.map { it.iconLoader() }) },
             component = null,
             user = null,
             isWork = false,

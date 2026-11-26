@@ -193,11 +193,17 @@ object Prefs {
             ?.let { runCatching { IconShape.valueOf(it) }.getOrNull() }
             ?: IconShape.SYSTEM
 
-    fun setIconShape(context: Context, shape: IconShape) = sp(context).edit { putString(KEY_ICON_SHAPE, shape.name) }
+    fun setIconShape(context: Context, shape: IconShape) {
+        sp(context).edit { putString(KEY_ICON_SHAPE, shape.name) }
+        IconShapes.changed()
+    }
 
     /** Single-colour icons in wallpaper colours, like the launcher's themed icons (Android 13+). */
     fun themedIcons(context: Context): Boolean = sp(context).getBoolean(KEY_THEMED_ICONS, false)
-    fun setThemedIcons(context: Context, on: Boolean) = sp(context).edit { putBoolean(KEY_THEMED_ICONS, on) }
+    fun setThemedIcons(context: Context, on: Boolean) {
+        sp(context).edit { putBoolean(KEY_THEMED_ICONS, on) }
+        IconShapes.changed()
+    }
 
     /** Characters sleep at night, sweat on low battery, show a bolt while charging, hop for notifications. */
     fun bubbleReactions(context: Context): Boolean = sp(context).getBoolean(KEY_BUBBLE_REACTIONS, true)
