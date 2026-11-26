@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -19,7 +20,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -38,6 +41,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.yogeshpaliyal.halo.data.IconShape
+import com.yogeshpaliyal.halo.data.IconShapes
 import com.yogeshpaliyal.halo.overlay.BubbleCharacter
 import com.yogeshpaliyal.halo.overlay.BubblePalette
 import com.yogeshpaliyal.halo.overlay.BubbleRenderer
@@ -308,7 +313,15 @@ fun DialThemeRow(theme: DialTheme, palette: BubblePalette, onTheme: (DialTheme) 
 
 /** The dial theme card on the Customise screen. */
 @Composable
-fun DialThemeCard(theme: DialTheme, palette: BubblePalette, onTheme: (DialTheme) -> Unit) {
+fun DialThemeCard(
+    theme: DialTheme,
+    palette: BubblePalette,
+    onTheme: (DialTheme) -> Unit,
+    iconShape: IconShape,
+    onIconShape: (IconShape) -> Unit,
+    themedIcons: Boolean,
+    onThemedIcons: (Boolean) -> Unit,
+) {
     androidx.compose.material3.Card(shape = RoundedCornerShape(24.dp)) {
         Column(Modifier.padding(vertical = 14.dp)) {
             Text(
@@ -319,6 +332,56 @@ fun DialThemeCard(theme: DialTheme, palette: BubblePalette, onTheme: (DialTheme)
             )
             Spacer(Modifier.height(10.dp))
             DialThemeRow(theme, palette, onTheme)
+            Spacer(Modifier.height(14.dp))
+            Text(
+                stringResource(com.yogeshpaliyal.halo.R.string.icon_shape_title),
+                style = MaterialTheme.typography.titleSmall,
+                modifier = Modifier.padding(horizontal = 20.dp),
+            )
+            Text(
+                stringResource(com.yogeshpaliyal.halo.R.string.icon_shape_body),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(horizontal = 20.dp),
+            )
+            Spacer(Modifier.height(6.dp))
+            Row(
+                Modifier
+                    .horizontalScroll(rememberScrollState())
+                    .padding(horizontal = 20.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                IconShape.entries.forEach { shape ->
+                    FilterChip(
+                        selected = shape == iconShape,
+                        onClick = { onIconShape(shape) },
+                        label = { Text(stringResource(shape.labelRes)) },
+                    )
+                }
+            }
+            if (IconShapes.themedSupported) {
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .clickable { onThemedIcons(!themedIcons) }
+                        .padding(horizontal = 20.dp, vertical = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Column(Modifier.weight(1f)) {
+                        Text(
+                            stringResource(com.yogeshpaliyal.halo.R.string.themed_icons),
+                            style = MaterialTheme.typography.titleSmall,
+                        )
+                        Text(
+                            stringResource(com.yogeshpaliyal.halo.R.string.themed_icons_body),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                    Spacer(Modifier.width(12.dp))
+                    Switch(checked = themedIcons, onCheckedChange = onThemedIcons)
+                }
+            }
         }
     }
 }

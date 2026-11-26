@@ -6,6 +6,12 @@
     <string name="menu_empty_hint">Choisissez vos favoris dans l’app Halo</string>
     <string name="flashlight_busy">La lampe torche est occupée. Fermez l’app Appareil photo et réessayez.</string>
     <string name="folder_default_name">Dossier</string>
+    <string name="slider_brightness">Luminosité %d%%</string>
+    <string name="slider_volume">Volume %d%%</string>
+    <string name="slider_mute">Couper le son</string>
+    <string name="slider_unmute">Rétablir le son</string>
+    <string name="slider_brightness_locked">Relâchez pour autoriser le réglage de la luminosité</string>
+    <string name="slider_brightness_locked_tap">Touchez pour autoriser le réglage de la luminosité</string>
     <string name="action_flashlight">Lampe torche</string>
     <string name="action_volume">Volume</string>
     <string name="action_play_pause">Lecture / pause</string>
@@ -102,6 +108,13 @@
     <string name="hold_delay">Durée d’appui</string>
     <string name="haptics">Vibrations</string>
     <string name="haptics_body">Vibrer à l’appui et sur chaque app survolée</string>
+    <string name="tag_dial">Cadran</string>
+    <string name="brightness_slider">Curseur de luminosité</string>
+    <string name="brightness_slider_body">Demi-arc du haut autour du menu</string>
+    <string name="volume_slider">Curseur de volume</string>
+    <string name="volume_slider_body">Demi-arc du bas autour du menu, pour le volume multimédia</string>
+    <string name="volume_on_top">Volume en haut</string>
+    <string name="volume_on_top_body">Inverser : volume en haut, luminosité en bas</string>
     <string name="bubble">Bulle</string>
     <string name="tag_size">Taille</string>
     <string name="tag_look">Style</string>
@@ -168,6 +181,15 @@
     <!-- Dial themes -->
     <string name="dial_title">Thème du cadran</string>
     <string name="dial_hint">L’apparence du menu quand vous maintenez la bulle. Verre floute l’écran derrière sur Android 12 et plus.</string>
+    <string name="icon_shape_title">Forme des icônes</string>
+    <string name="icon_shape_body">Halo ne peut pas lire la forme des icônes de votre écran d’accueil, choisissez donc celle qui correspond. Par défaut utilise la forme qu’Android donne aux icônes sur ce téléphone.</string>
+    <string name="icon_shape_system">Par défaut</string>
+    <string name="icon_shape_circle">Cercle</string>
+    <string name="icon_shape_squircle">Squircle</string>
+    <string name="icon_shape_rounded">Carré arrondi</string>
+    <string name="icon_shape_teardrop">Goutte</string>
+    <string name="themed_icons">Icônes à thème</string>
+    <string name="themed_icons_body">Icônes unicolores aux couleurs de votre fond d’écran, comme les icônes à thème de l’écran d’accueil. Les apps sans icône à thème gardent leur icône habituelle.</string>
     <string name="dial_classic">Classique</string>
     <string name="dial_match">Comme la bulle</string>
     <string name="dial_glass">Verre</string>

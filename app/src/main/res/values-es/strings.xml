@@ -6,6 +6,12 @@
     <string name="menu_empty_hint">Elige favoritos en la app Halo</string>
     <string name="flashlight_busy">La linterna está en uso. Cierra la app de cámara y vuelve a intentarlo.</string>
     <string name="folder_default_name">Carpeta</string>
+    <string name="slider_brightness">Brillo %d%%</string>
+    <string name="slider_volume">Volumen %d%%</string>
+    <string name="slider_mute">Silenciar</string>
+    <string name="slider_unmute">Activar sonido</string>
+    <string name="slider_brightness_locked">Suelta para permitir el control del brillo</string>
+    <string name="slider_brightness_locked_tap">Toca para permitir el control del brillo</string>
     <string name="action_flashlight">Linterna</string>
     <string name="action_volume">Volumen</string>
     <string name="action_play_pause">Reproducir / pausar</string>
@@ -100,6 +106,13 @@
     <string name="hold_delay">Tiempo de pulsación</string>
     <string name="haptics">Vibración</string>
     <string name="haptics_body">Vibra al mantener y en cada app sobre la que deslizas</string>
+    <string name="tag_dial">Dial</string>
+    <string name="brightness_slider">Control de brillo</string>
+    <string name="brightness_slider_body">Medio arco superior alrededor del menú</string>
+    <string name="volume_slider">Control de volumen</string>
+    <string name="volume_slider_body">Medio arco inferior alrededor del menú, para el volumen multimedia</string>
+    <string name="volume_on_top">Volumen arriba</string>
+    <string name="volume_on_top_body">Intercambiar: volumen en la mitad superior, brillo abajo</string>
     <string name="bubble">Burbuja</string>
     <string name="tag_size">Tamaño</string>
     <string name="tag_look">Estilo</string>
@@ -165,6 +178,15 @@
     <!-- Dial themes -->
     <string name="dial_title">Tema del dial</string>
     <string name="dial_hint">Cómo se ve el menú al mantener la burbuja. Cristal desenfoca la pantalla detrás en Android 12 y posteriores.</string>
+    <string name="icon_shape_title">Forma de los iconos</string>
+    <string name="icon_shape_body">Halo no puede leer la forma de los iconos de tu pantalla de inicio, así que elige la que coincida. Del teléfono usa la forma que Android da a los iconos en este teléfono.</string>
+    <string name="icon_shape_system">Del teléfono</string>
+    <string name="icon_shape_circle">Círculo</string>
+    <string name="icon_shape_squircle">Squircle</string>
+    <string name="icon_shape_rounded">Cuadrado redondeado</string>
+    <string name="icon_shape_teardrop">Gota</string>
+    <string name="themed_icons">Iconos temáticos</string>
+    <string name="themed_icons_body">Iconos de un solo color con los colores de tu fondo, como los iconos temáticos de la pantalla de inicio. Las apps sin icono temático mantienen el suyo.</string>
     <string name="dial_classic">Clásico</string>
     <string name="dial_match">Como la burbuja</string>
     <string name="dial_glass">Cristal</string>

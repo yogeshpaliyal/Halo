@@ -589,6 +589,12 @@ fun GesturesCard(
     onChooseDoubleTapApp: () -> Unit,
     onHoldDelay: (HoldDelay) -> Unit,
     onHaptics: (Boolean) -> Unit,
+    brightnessSlider: Boolean,
+    onBrightnessSlider: (Boolean) -> Unit,
+    volumeSlider: Boolean,
+    onVolumeSlider: (Boolean) -> Unit,
+    volumeOnTop: Boolean,
+    onVolumeOnTop: (Boolean) -> Unit,
 ) {
     val res = LocalContext.current.resources
     Card(shape = RoundedCornerShape(24.dp)) {
@@ -650,7 +656,48 @@ fun GesturesCard(
                 }
                 Switch(checked = haptics, onCheckedChange = onHaptics)
             }
+            DialSliderRow(
+                title = stringResource(R.string.brightness_slider),
+                body = stringResource(R.string.brightness_slider_body),
+                checked = brightnessSlider,
+                onChange = onBrightnessSlider,
+            )
+            DialSliderRow(
+                title = stringResource(R.string.volume_slider),
+                body = stringResource(R.string.volume_slider_body),
+                checked = volumeSlider,
+                onChange = onVolumeSlider,
+            )
+            // Only matters when both sliders are on.
+            if (brightnessSlider && volumeSlider) {
+                DialSliderRow(
+                    title = stringResource(R.string.volume_on_top),
+                    body = stringResource(R.string.volume_on_top_body),
+                    checked = volumeOnTop,
+                    onChange = onVolumeOnTop,
+                )
+            }
         }
+    }
+}
+
+/** On/off row for one of the sliders around the dial. */
+@Composable
+private fun DialSliderRow(title: String, body: String, checked: Boolean, onChange: (Boolean) -> Unit) {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .clickable { onChange(!checked) }
+            .padding(horizontal = 20.dp, vertical = 10.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Tag(stringResource(R.string.tag_dial))
+        Spacer(Modifier.width(14.dp))
+        Column(Modifier.weight(1f)) {
+            Text(title, style = MaterialTheme.typography.titleSmall)
+            Text(body, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+        Switch(checked = checked, onCheckedChange = onChange)
     }
 }
 

@@ -6,6 +6,12 @@
     <string name="menu_empty_hint">Halo uygulamasında favorileri seçin</string>
     <string name="flashlight_busy">Fener kullanımda. Kamera uygulamasını kapatıp tekrar deneyin.</string>
     <string name="folder_default_name">Klasör</string>
+    <string name="slider_brightness">Parlaklık %d%%</string>
+    <string name="slider_volume">Ses %d%%</string>
+    <string name="slider_mute">Sessiz</string>
+    <string name="slider_unmute">Sesi aç</string>
+    <string name="slider_brightness_locked">Parlaklık kontrolüne izin vermek için bırakın</string>
+    <string name="slider_brightness_locked_tap">Parlaklık kontrolüne izin vermek için dokunun</string>
     <string name="action_flashlight">Fener</string>
     <string name="action_volume">Ses</string>
     <string name="action_play_pause">Oynat / duraklat</string>
@@ -100,6 +106,13 @@
     <string name="hold_delay">Basılı tutma süresi</string>
     <string name="haptics">Titreşim</string>
     <string name="haptics_body">Basılı tutunca ve üzerinden geçtiğiniz her uygulamada titreşir</string>
+    <string name="tag_dial">Menü</string>
+    <string name="brightness_slider">Parlaklık kaydırıcısı</string>
+    <string name="brightness_slider_body">Menünün etrafındaki üst yarım yay</string>
+    <string name="volume_slider">Ses kaydırıcısı</string>
+    <string name="volume_slider_body">Menünün etrafındaki alt yarım yay, medya sesi için</string>
+    <string name="volume_on_top">Ses üstte</string>
+    <string name="volume_on_top_body">Kaydırıcıları değiştir: ses üstte, parlaklık altta</string>
     <string name="bubble">Baloncuk</string>
     <string name="tag_size">Boyut</string>
     <string name="tag_look">Görünüm</string>
@@ -165,6 +178,15 @@
     <!-- Dial themes -->
     <string name="dial_title">Kadran teması</string>
     <string name="dial_hint">Baloncuğa basılı tutunca menünün görünümü. Cam, Android 12 ve sonrasında arkadaki ekranı bulanıklaştırır.</string>
+    <string name="icon_shape_title">Simge şekli</string>
+    <string name="icon_shape_body">Halo ana ekranınızın simge şeklini okuyamaz, bu yüzden uyanı seçin. Telefon varsayılanı, Android\'in bu telefonda simgelere verdiği şekli kullanır.</string>
+    <string name="icon_shape_system">Telefon varsayılanı</string>
+    <string name="icon_shape_circle">Daire</string>
+    <string name="icon_shape_squircle">Squircle</string>
+    <string name="icon_shape_rounded">Yuvarlatılmış kare</string>
+    <string name="icon_shape_teardrop">Damla</string>
+    <string name="themed_icons">Temalı simgeler</string>
+    <string name="themed_icons_body">Duvar kağıdı renklerinizde tek renkli simgeler, ana ekrandaki temalı simgeler gibi. Temalı simgesi olmayan uygulamalar normal simgesini korur.</string>
     <string name="dial_classic">Klasik</string>
     <string name="dial_match">Baloncuğa uy</string>
     <string name="dial_glass">Cam</string>

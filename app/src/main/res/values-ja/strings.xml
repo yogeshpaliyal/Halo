@@ -6,6 +6,12 @@
     <string name="menu_empty_hint">Halo アプリでお気に入りを選んでください</string>
     <string name="flashlight_busy">ライトは使用中です。カメラアプリを閉じてからもう一度お試しください。</string>
     <string name="folder_default_name">フォルダ</string>
+    <string name="slider_brightness">明るさ %d%%</string>
+    <string name="slider_volume">音量 %d%%</string>
+    <string name="slider_mute">ミュート</string>
+    <string name="slider_unmute">ミュート解除</string>
+    <string name="slider_brightness_locked">指を離して明るさの調整を許可</string>
+    <string name="slider_brightness_locked_tap">タップして明るさの調整を許可</string>
     <string name="action_flashlight">ライト</string>
     <string name="action_volume">音量</string>
     <string name="action_play_pause">再生 / 一時停止</string>
@@ -98,6 +104,13 @@
     <string name="hold_delay">長押しの時間</string>
     <string name="haptics">振動</string>
     <string name="haptics_body">長押し時と、アプリの上を通るたびに振動</string>
+    <string name="tag_dial">ダイアル</string>
+    <string name="brightness_slider">明るさスライダー</string>
+    <string name="brightness_slider_body">ダイアルの外側、上半分の弧</string>
+    <string name="volume_slider">音量スライダー</string>
+    <string name="volume_slider_body">ダイアルの外側、下半分の弧（メディア音量）</string>
+    <string name="volume_on_top">音量を上に</string>
+    <string name="volume_on_top_body">スライダーを入れ替え：上に音量、下に明るさ</string>
     <string name="bubble">バブル</string>
     <string name="tag_size">サイズ</string>
     <string name="tag_look">見た目</string>
@@ -162,6 +175,15 @@
     <!-- Dial themes -->
     <string name="dial_title">ダイヤルのテーマ</string>
     <string name="dial_hint">バブルを長押ししたときのメニューの見た目。ガラスは Android 12 以降で背後の画面をぼかします。</string>
+    <string name="icon_shape_title">アイコンの形</string>
+    <string name="icon_shape_body">Halo はホーム画面のアイコンの形を読み取れないため、合う形を選んでください。スマホの標準は、このスマホで Android が使う形です。</string>
+    <string name="icon_shape_system">スマホの標準</string>
+    <string name="icon_shape_circle">円</string>
+    <string name="icon_shape_squircle">スクワークル</string>
+    <string name="icon_shape_rounded">角丸の四角</string>
+    <string name="icon_shape_teardrop">しずく</string>
+    <string name="themed_icons">テーマアイコン</string>
+    <string name="themed_icons_body">壁紙の色に合わせた単色アイコン。ホーム画面のテーマアイコンと同じです。テーマアイコンのないアプリは通常のアイコンのままです。</string>
     <string name="dial_classic">クラシック</string>
     <string name="dial_match">バブルに合わせる</string>
     <string name="dial_glass">ガラス</string>

@@ -304,8 +304,13 @@ class HaloService : Service(), BubbleView.Listener {
 
         // Near the top or bottom the dial can't be centred on the bubble without spilling
         // off screen, so centre it where it fits and slide the bubble there while it's open.
+        val showBrightness = Prefs.brightnessSlider(this)
+        val showVolume = Prefs.volumeSlider(this)
         val half = RadialMenuView.halfExtentPx(
-            this, favorites.isNotEmpty(), recents.isNotEmpty() || favorites.any { it.isFolder },
+            this,
+            favorites.isNotEmpty(),
+            recents.isNotEmpty() || favorites.any { it.isFolder },
+            hasSliders = showBrightness || showVolume,
         )
         val screenH = screenSize().y
         val (top, bottom) = safeInsets()
@@ -326,6 +331,9 @@ class HaloService : Service(), BubbleView.Listener {
             favorites = favorites,
             recents = recents,
             badged = if (Prefs.notificationDots(this)) NotificationBadges.keys else emptySet(),
+            showBrightness = showBrightness,
+            showVolume = showVolume,
+            volumeOnTop = Prefs.volumeOnTop(this),
         )
         // Exact display size instead of MATCH_PARENT: an overlay sized MATCH_PARENT stops at the
         // navigation bar, which left an undimmed strip at the bottom.
@@ -354,6 +362,11 @@ class HaloService : Service(), BubbleView.Listener {
             params.setFitInsetsTypes(0)
             params.setFitInsetsSides(0)
             params.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS
+        }
+        // Brightness slider used before "Modify system settings" is allowed: take them there.
+        view.onBrightnessLocked = {
+            removeMenu()
+            runCatching { startActivity(SystemControls.writeSettingsIntent(this)) }
         }
         if (tapMode) armTapMode(view)
         wm.addView(view, params)
@@ -512,6 +525,11 @@ class HaloService : Service(), BubbleView.Listener {
     override fun onMenuRelease(rawX: Float, rawY: Float) {
         val view = menu
         view?.updateFinger(rawX, rawY)
+        // Let go on the brightness or volume slider: the change is already made, just close.
+        if (view?.endSlider() == true) {
+            removeMenu()
+            return
+        }
         val target = view?.selected
         if (view != null && target != null && target.isFolder) {
             // Let go on a folder: keep the dial up with the folder open, and take the next tap.

@@ -6,6 +6,12 @@
     <string name="menu_empty_hint">Pilih favorit di aplikasi Halo</string>
     <string name="flashlight_busy">Senter sedang dipakai. Tutup aplikasi kamera lalu coba lagi.</string>
     <string name="folder_default_name">Folder</string>
+    <string name="slider_brightness">Kecerahan %d%%</string>
+    <string name="slider_volume">Volume %d%%</string>
+    <string name="slider_mute">Bisukan</string>
+    <string name="slider_unmute">Bunyikan</string>
+    <string name="slider_brightness_locked">Lepaskan untuk mengizinkan kontrol kecerahan</string>
+    <string name="slider_brightness_locked_tap">Ketuk untuk mengizinkan kontrol kecerahan</string>
     <string name="action_flashlight">Senter</string>
     <string name="action_volume">Volume</string>
     <string name="action_play_pause">Putar / jeda</string>
@@ -98,6 +104,13 @@
     <string name="hold_delay">Durasi tahan</string>
     <string name="haptics">Getaran</string>
     <string name="haptics_body">Bergetar saat menahan dan pada setiap aplikasi yang dilewati</string>
+    <string name="tag_dial">Dial</string>
+    <string name="brightness_slider">Penggeser kecerahan</string>
+    <string name="brightness_slider_body">Setengah busur atas di sekitar menu</string>
+    <string name="volume_slider">Penggeser volume</string>
+    <string name="volume_slider_body">Setengah busur bawah di sekitar menu, untuk volume media</string>
+    <string name="volume_on_top">Volume di atas</string>
+    <string name="volume_on_top_body">Tukar penggeser: volume di atas, kecerahan di bawah</string>
     <string name="bubble">Gelembung</string>
     <string name="tag_size">Ukuran</string>
     <string name="tag_look">Tampilan</string>
@@ -162,6 +175,15 @@
     <!-- Dial themes -->
     <string name="dial_title">Tema dial</string>
     <string name="dial_hint">Tampilan menu saat Anda menahan gelembung. Kaca memburamkan layar di belakangnya di Android 12 dan yang lebih baru.</string>
+    <string name="icon_shape_title">Bentuk ikon</string>
+    <string name="icon_shape_body">Halo tidak dapat membaca bentuk ikon layar utama Anda, jadi pilih yang sesuai. Bawaan ponsel memakai bentuk yang diberikan Android di ponsel ini.</string>
+    <string name="icon_shape_system">Bawaan ponsel</string>
+    <string name="icon_shape_circle">Lingkaran</string>
+    <string name="icon_shape_squircle">Squircle</string>
+    <string name="icon_shape_rounded">Persegi membulat</string>
+    <string name="icon_shape_teardrop">Tetesan</string>
+    <string name="themed_icons">Ikon bertema</string>
+    <string name="themed_icons_body">Ikon satu warna dengan warna wallpaper Anda, seperti ikon bertema di layar utama. Aplikasi tanpa ikon bertema tetap memakai ikon biasanya.</string>
     <string name="dial_classic">Klasik</string>
     <string name="dial_match">Ikuti gelembung</string>
     <string name="dial_glass">Kaca</string>

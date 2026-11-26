@@ -202,14 +202,26 @@ class AppRepository(context: Context) {
             key = key,
             packageName = pkg,
             label = info.label.toString(),
-            // Badged: work apps get the briefcase, personal apps are unchanged.
-            iconLoader = { iconCache.getOrPut(key) { info.getBadgedIcon(0) } },
+            iconLoader = {
+                // The style is part of the cache key, so changing it in settings takes effect
+                // the next time the dial (or a list) loads its icons.
+                val style = IconShapes.style(context)
+                iconCache.getOrPut("$key#${style.cacheKey}") { loadIcon(info, user, style) }
+            },
             component = info.componentName,
             user = user,
             isWork = user != me,
             available = user == me || !userManager.isQuietModeEnabled(user),
         )
     }
+
+    /** Badged: work apps get the briefcase (outside the shape), personal apps are unchanged. */
+    private fun loadIcon(info: LauncherActivityInfo, user: UserHandle, style: IconStyle): Drawable =
+        if (style.isDefault) {
+            info.getBadgedIcon(0)
+        } else {
+            context.packageManager.getUserBadgedIcon(IconShapes.apply(context, info.getIcon(0), style), user)
+        }
 
     private val excludedCache = HashMap<String, Boolean>()
 

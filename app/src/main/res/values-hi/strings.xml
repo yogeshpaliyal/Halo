@@ -6,6 +6,12 @@
     <string name="menu_empty_hint">Halo ऐप में पसंदीदा चुनें</string>
     <string name="flashlight_busy">फ़्लैशलाइट अभी इस्तेमाल में है। कैमरा ऐप बंद करके फिर से कोशिश करें।</string>
     <string name="folder_default_name">फ़ोल्डर</string>
+    <string name="slider_brightness">चमक %d%%</string>
+    <string name="slider_volume">आवाज़ %d%%</string>
+    <string name="slider_mute">म्यूट</string>
+    <string name="slider_unmute">अनम्यूट</string>
+    <string name="slider_brightness_locked">चमक नियंत्रण की अनुमति देने के लिए छोड़ें</string>
+    <string name="slider_brightness_locked_tap">चमक नियंत्रण की अनुमति देने के लिए टैप करें</string>
     <string name="action_flashlight">फ़्लैशलाइट</string>
     <string name="action_volume">आवाज़</string>
     <string name="action_play_pause">चलाएं / रोकें</string>
@@ -100,6 +106,13 @@
     <string name="hold_delay">दबाने का समय</string>
     <string name="haptics">वाइब्रेशन</string>
     <string name="haptics_body">दबाने पर और हर ऐप पर उंगली सरकाते समय वाइब्रेट करें</string>
+    <string name="tag_dial">डायल</string>
+    <string name="brightness_slider">चमक स्लाइडर</string>
+    <string name="brightness_slider_body">डायल के चारों ओर ऊपर वाला आधा चाप</string>
+    <string name="volume_slider">आवाज़ स्लाइडर</string>
+    <string name="volume_slider_body">डायल के चारों ओर नीचे वाला आधा चाप, मीडिया आवाज़ के लिए</string>
+    <string name="volume_on_top">आवाज़ ऊपर</string>
+    <string name="volume_on_top_body">स्लाइडर बदलें: आवाज़ ऊपर, चमक नीचे</string>
     <string name="bubble">बबल</string>
     <string name="tag_size">आकार</string>
     <string name="tag_look">रूप</string>
@@ -165,6 +178,15 @@
     <!-- Dial themes -->
     <string name="dial_title">डायल थीम</string>
     <string name="dial_hint">बबल दबाने पर मेन्यू कैसा दिखे। ग्लास Android 12 और नए वर्शन पर पीछे की स्क्रीन धुंधली कर देता है।</string>
+    <string name="icon_shape_title">आइकन का आकार</string>
+    <string name="icon_shape_body">Halo आपकी होम स्क्रीन के आइकन का आकार नहीं पढ़ सकता, इसलिए उससे मिलता आकार चुनें। फ़ोन का डिफ़ॉल्ट वही आकार इस्तेमाल करता है जो Android इस फ़ोन पर देता है।</string>
+    <string name="icon_shape_system">फ़ोन का डिफ़ॉल्ट</string>
+    <string name="icon_shape_circle">गोल</string>
+    <string name="icon_shape_squircle">स्क्वर्कल</string>
+    <string name="icon_shape_rounded">गोल कोनों वाला वर्ग</string>
+    <string name="icon_shape_teardrop">बूंद</string>
+    <string name="themed_icons">थीम वाले आइकन</string>
+    <string name="themed_icons_body">वॉलपेपर के रंगों में एक रंग वाले आइकन, होम स्क्रीन के थीम वाले आइकन जैसे। जिन ऐप में थीम वाला आइकन नहीं है, उनका सामान्य आइकन रहेगा।</string>
     <string name="dial_classic">क्लासिक</string>
     <string name="dial_match">बबल जैसा</string>
     <string name="dial_glass">ग्लास</string>

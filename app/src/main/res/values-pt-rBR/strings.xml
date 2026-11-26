@@ -6,6 +6,12 @@
     <string name="menu_empty_hint">Escolha os favoritos no app Halo</string>
     <string name="flashlight_busy">A lanterna está em uso. Feche o app de câmera e tente de novo.</string>
     <string name="folder_default_name">Pasta</string>
+    <string name="slider_brightness">Brilho %d%%</string>
+    <string name="slider_volume">Volume %d%%</string>
+    <string name="slider_mute">Silenciar</string>
+    <string name="slider_unmute">Ativar som</string>
+    <string name="slider_brightness_locked">Solte para permitir o controle de brilho</string>
+    <string name="slider_brightness_locked_tap">Toque para permitir o controle de brilho</string>
     <string name="action_flashlight">Lanterna</string>
     <string name="action_volume">Volume</string>
     <string name="action_play_pause">Reproduzir / pausar</string>
@@ -102,6 +108,13 @@
     <string name="hold_delay">Tempo de pressionar</string>
     <string name="haptics">Vibração</string>
     <string name="haptics_body">Vibrar ao segurar e em cada app que você desliza por cima</string>
+    <string name="tag_dial">Dial</string>
+    <string name="brightness_slider">Controle de brilho</string>
+    <string name="brightness_slider_body">Meio arco superior ao redor do menu</string>
+    <string name="volume_slider">Controle de volume</string>
+    <string name="volume_slider_body">Meio arco inferior ao redor do menu, para o volume de mídia</string>
+    <string name="volume_on_top">Volume em cima</string>
+    <string name="volume_on_top_body">Trocar os controles: volume em cima, brilho embaixo</string>
     <string name="bubble">Bolha</string>
     <string name="tag_size">Tamanho</string>
     <string name="tag_look">Visual</string>
@@ -168,6 +181,15 @@
     <!-- Dial themes -->
     <string name="dial_title">Tema do disco</string>
     <string name="dial_hint">Como o menu aparece ao segurar a bolha. Vidro desfoca a tela atrás no Android 12 ou mais recente.</string>
+    <string name="icon_shape_title">Formato dos ícones</string>
+    <string name="icon_shape_body">O Halo não consegue ler o formato dos ícones da sua tela inicial, então escolha o que combina. Padrão do celular usa o formato que o Android dá aos ícones neste celular.</string>
+    <string name="icon_shape_system">Padrão do celular</string>
+    <string name="icon_shape_circle">Círculo</string>
+    <string name="icon_shape_squircle">Squircle</string>
+    <string name="icon_shape_rounded">Quadrado arredondado</string>
+    <string name="icon_shape_teardrop">Gota</string>
+    <string name="themed_icons">Ícones com tema</string>
+    <string name="themed_icons_body">Ícones de uma cor nas cores do seu plano de fundo, como os ícones com tema da tela inicial. Apps sem ícone com tema mantêm o normal.</string>
     <string name="dial_classic">Clássico</string>
     <string name="dial_match">Igual à bolha</string>
     <string name="dial_glass">Vidro</string>

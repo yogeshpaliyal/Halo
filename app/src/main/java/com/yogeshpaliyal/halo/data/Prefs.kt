@@ -24,6 +24,9 @@ object Prefs {
     private const val KEY_DOUBLE_TAP_APP = "double_tap_app"
     private const val KEY_HOLD_DELAY = "hold_delay"
     private const val KEY_HAPTICS = "haptics"
+    private const val KEY_BRIGHTNESS_SLIDER = "brightness_slider"
+    private const val KEY_VOLUME_SLIDER = "volume_slider"
+    private const val KEY_VOLUME_ON_TOP = "volume_on_top"
     private const val KEY_HIDDEN_RECENTS = "hidden_recents"
     const val KEY_HIDE_FULLSCREEN = "hide_fullscreen"
     const val KEY_BUBBLE_OPACITY = "bubble_opacity"
@@ -36,6 +39,8 @@ object Prefs {
     const val KEY_BUBBLE_ANIMATIONS = "bubble_animations"
     const val KEY_BUBBLE_REACTIONS = "bubble_reactions"
     const val KEY_DIAL_THEME = "dial_theme"
+    const val KEY_ICON_SHAPE = "icon_shape"
+    const val KEY_THEMED_ICONS = "themed_icons"
     const val KEY_AVATAR_VERSION = "avatar_version"
     private const val KEY_TUTORIAL_DONE = "tutorial_done"
     const val KEY_BUBBLE_ACCESSORY = "bubble_accessory"
@@ -152,6 +157,17 @@ object Prefs {
 
     fun setDialTheme(context: Context, theme: DialTheme) = sp(context).edit { putString(KEY_DIAL_THEME, theme.name) }
 
+    fun iconShape(context: Context): IconShape =
+        sp(context).getString(KEY_ICON_SHAPE, null)
+            ?.let { runCatching { IconShape.valueOf(it) }.getOrNull() }
+            ?: IconShape.SYSTEM
+
+    fun setIconShape(context: Context, shape: IconShape) = sp(context).edit { putString(KEY_ICON_SHAPE, shape.name) }
+
+    /** Single-colour icons in wallpaper colours, like the launcher's themed icons (Android 13+). */
+    fun themedIcons(context: Context): Boolean = sp(context).getBoolean(KEY_THEMED_ICONS, false)
+    fun setThemedIcons(context: Context, on: Boolean) = sp(context).edit { putBoolean(KEY_THEMED_ICONS, on) }
+
     /** Characters sleep at night, sweat on low battery, show a bolt while charging, hop for notifications. */
     fun bubbleReactions(context: Context): Boolean = sp(context).getBoolean(KEY_BUBBLE_REACTIONS, true)
     fun setBubbleReactions(context: Context, on: Boolean) = sp(context).edit { putBoolean(KEY_BUBBLE_REACTIONS, on) }
@@ -216,6 +232,15 @@ object Prefs {
         sp(context).edit { putString(KEY_HOLD_DELAY, delay.name) }
 
     fun haptics(context: Context): Boolean = sp(context).getBoolean(KEY_HAPTICS, true)
+
+    /** Brightness and volume sliders around the dial; both on by default. */
+    fun brightnessSlider(context: Context): Boolean = sp(context).getBoolean(KEY_BRIGHTNESS_SLIDER, true)
+    fun setBrightnessSlider(context: Context, on: Boolean) = sp(context).edit { putBoolean(KEY_BRIGHTNESS_SLIDER, on) }
+    fun volumeSlider(context: Context): Boolean = sp(context).getBoolean(KEY_VOLUME_SLIDER, true)
+    fun setVolumeSlider(context: Context, on: Boolean) = sp(context).edit { putBoolean(KEY_VOLUME_SLIDER, on) }
+    /** Volume on the dial's upper half and brightness on the lower; off by default. */
+    fun volumeOnTop(context: Context): Boolean = sp(context).getBoolean(KEY_VOLUME_ON_TOP, false)
+    fun setVolumeOnTop(context: Context, on: Boolean) = sp(context).edit { putBoolean(KEY_VOLUME_ON_TOP, on) }
     fun setHaptics(context: Context, on: Boolean) = sp(context).edit { putBoolean(KEY_HAPTICS, on) }
 
     fun enabled(context: Context): Boolean = sp(context).getBoolean(KEY_ENABLED, false)

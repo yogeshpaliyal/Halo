@@ -11,6 +11,12 @@
     <string name="menu_empty_hint">Pick favourites in the Halo app</string>
     <string name="flashlight_busy">Flashlight is busy. Close the camera app and try again.</string>
     <string name="folder_default_name">Folder</string>
+    <string name="slider_brightness">Brightness %d%%</string>
+    <string name="slider_volume">Volume %d%%</string>
+    <string name="slider_mute">Mute</string>
+    <string name="slider_unmute">Unmute</string>
+    <string name="slider_brightness_locked">Let go to allow brightness control</string>
+    <string name="slider_brightness_locked_tap">Tap to allow brightness control</string>
 
     <!-- Quick actions -->
     <string name="action_flashlight">Flashlight</string>
@@ -125,6 +131,13 @@
     <string name="hold_delay">Hold delay</string>
     <string name="haptics">Haptics</string>
     <string name="haptics_body">Vibrate on hold and on each app you slide over</string>
+    <string name="tag_dial">Dial</string>
+    <string name="brightness_slider">Brightness slider</string>
+    <string name="brightness_slider_body">Upper half-arc around the dial</string>
+    <string name="volume_slider">Volume slider</string>
+    <string name="volume_slider_body">Lower half-arc around the dial, for media volume</string>
+    <string name="volume_on_top">Volume on top</string>
+    <string name="volume_on_top_body">Swap the sliders: volume on the upper half, brightness below</string>
 
     <!-- Bubble -->
     <string name="bubble">Bubble</string>
@@ -194,6 +207,15 @@
     <!-- Dial themes -->
     <string name="dial_title">Dial theme</string>
     <string name="dial_hint">How the menu looks when you hold the bubble. Glass blurs the screen behind it on Android 12 and newer.</string>
+    <string name="icon_shape_title">Icon shape</string>
+    <string name="icon_shape_body">Halo can\'t read your home screen\'s icon shape, so pick the one that matches it. Phone default uses the shape Android gives icons on this phone.</string>
+    <string name="icon_shape_system">Phone default</string>
+    <string name="icon_shape_circle">Circle</string>
+    <string name="icon_shape_squircle">Squircle</string>
+    <string name="icon_shape_rounded">Rounded square</string>
+    <string name="icon_shape_teardrop">Teardrop</string>
+    <string name="themed_icons">Themed icons</string>
+    <string name="themed_icons_body">Single-colour icons in your wallpaper colours, like themed icons on the home screen. Apps without a themed icon keep their usual one.</string>
     <string name="dial_classic">Classic</string>
     <string name="dial_match">Match bubble</string>
     <string name="dial_glass">Glass</string>

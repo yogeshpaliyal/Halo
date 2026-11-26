@@ -145,6 +145,8 @@ fun HomeScreen() {
     var bubbleAnimations by remember { mutableStateOf(Prefs.bubbleAnimations(context)) }
     var bubbleReactions by remember { mutableStateOf(Prefs.bubbleReactions(context)) }
     var dialTheme by remember { mutableStateOf(Prefs.dialTheme(context)) }
+    var iconShape by remember { mutableStateOf(Prefs.iconShape(context)) }
+    var themedIcons by remember { mutableStateOf(Prefs.themedIcons(context)) }
     var tutorialDone by remember { mutableStateOf(Prefs.tutorialDone(context)) }
     var accessory by remember { mutableStateOf(Prefs.bubbleAccessory(context)) }
     val switches = remember(resumeTick) { Prefs.switchCount(context) }
@@ -173,6 +175,9 @@ fun HomeScreen() {
     var doubleTapAction by remember { mutableStateOf(Prefs.doubleTapAction(context)) }
     var holdDelay by remember { mutableStateOf(Prefs.holdDelay(context)) }
     var haptics by remember { mutableStateOf(Prefs.haptics(context)) }
+    var brightnessSlider by remember { mutableStateOf(Prefs.brightnessSlider(context)) }
+    var volumeSlider by remember { mutableStateOf(Prefs.volumeSlider(context)) }
+    var volumeOnTop by remember { mutableStateOf(Prefs.volumeOnTop(context)) }
     var hideFullscreen by remember { mutableStateOf(Prefs.hideInFullscreen(context)) }
     var opacity by remember { mutableFloatStateOf(Prefs.bubbleOpacity(context)) }
     var bubbleSize by remember { mutableStateOf(Prefs.bubbleSize(context)) }
@@ -360,6 +365,12 @@ fun HomeScreen() {
                     onChooseDoubleTapApp = { appPickerFor = DOUBLE_TAP },
                     onHoldDelay = { holdDelay = it; Prefs.setHoldDelay(context, it) },
                     onHaptics = { haptics = it; Prefs.setHaptics(context, it) },
+                    brightnessSlider = brightnessSlider,
+                    onBrightnessSlider = { brightnessSlider = it; Prefs.setBrightnessSlider(context, it) },
+                    volumeSlider = volumeSlider,
+                    onVolumeSlider = { volumeSlider = it; Prefs.setVolumeSlider(context, it) },
+                    volumeOnTop = volumeOnTop,
+                    onVolumeOnTop = { volumeOnTop = it; Prefs.setVolumeOnTop(context, it) },
                 )
                 }
             }
@@ -381,7 +392,15 @@ fun HomeScreen() {
                     item { Section(stringResource(R.string.bubble)) { bubbleCard(BubbleSection.APPEARANCE) } }
                     item {
                         Section(stringResource(R.string.dial_title)) {
-                            DialThemeCard(dialTheme, bubblePalette) { dialTheme = it; Prefs.setDialTheme(context, it) }
+                            DialThemeCard(
+                                theme = dialTheme,
+                                palette = bubblePalette,
+                                onTheme = { dialTheme = it; Prefs.setDialTheme(context, it) },
+                                iconShape = iconShape,
+                                onIconShape = { iconShape = it; Prefs.setIconShape(context, it) },
+                                themedIcons = themedIcons,
+                                onThemedIcons = { themedIcons = it; Prefs.setThemedIcons(context, it) },
+                            )
                         }
                     }
                 }

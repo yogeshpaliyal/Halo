@@ -6,6 +6,12 @@
     <string name="menu_empty_hint">Wähle Favoriten in der Halo-App</string>
     <string name="flashlight_busy">Taschenlampe wird gerade verwendet. Schließe die Kamera-App und versuche es erneut.</string>
     <string name="folder_default_name">Ordner</string>
+    <string name="slider_brightness">Helligkeit %d%%</string>
+    <string name="slider_volume">Lautstärke %d%%</string>
+    <string name="slider_mute">Stumm</string>
+    <string name="slider_unmute">Ton an</string>
+    <string name="slider_brightness_locked">Loslassen, um die Helligkeitssteuerung zu erlauben</string>
+    <string name="slider_brightness_locked_tap">Tippen, um die Helligkeitssteuerung zu erlauben</string>
     <string name="action_flashlight">Taschenlampe</string>
     <string name="action_volume">Lautstärke</string>
     <string name="action_play_pause">Wiedergabe / Pause</string>
@@ -100,6 +106,13 @@
     <string name="hold_delay">Haltedauer</string>
     <string name="haptics">Vibration</string>
     <string name="haptics_body">Vibrieren beim Halten und bei jeder App, über die du gleitest</string>
+    <string name="tag_dial">Ring</string>
+    <string name="brightness_slider">Helligkeitsregler</string>
+    <string name="brightness_slider_body">Oberer Halbbogen um das Menü</string>
+    <string name="volume_slider">Lautstärkeregler</string>
+    <string name="volume_slider_body">Unterer Halbbogen um das Menü, für Medienlautstärke</string>
+    <string name="volume_on_top">Lautstärke oben</string>
+    <string name="volume_on_top_body">Regler tauschen: Lautstärke oben, Helligkeit unten</string>
     <string name="bubble">Blase</string>
     <string name="tag_size">Größe</string>
     <string name="tag_look">Optik</string>
@@ -165,6 +178,15 @@
     <!-- Dial themes -->
     <string name="dial_title">Kreis-Design</string>
     <string name="dial_hint">So sieht das Menü aus, wenn du die Blase hältst. Glas macht den Bildschirm dahinter ab Android 12 unscharf.</string>
+    <string name="icon_shape_title">Symbolform</string>
+    <string name="icon_shape_body">Halo kann die Symbolform deines Startbildschirms nicht auslesen, wähle also die passende. Handy-Standard nutzt die Form, die Android auf diesem Handy verwendet.</string>
+    <string name="icon_shape_system">Handy-Standard</string>
+    <string name="icon_shape_circle">Kreis</string>
+    <string name="icon_shape_squircle">Squircle</string>
+    <string name="icon_shape_rounded">Abgerundetes Quadrat</string>
+    <string name="icon_shape_teardrop">Tropfen</string>
+    <string name="themed_icons">Designsymbole</string>
+    <string name="themed_icons_body">Einfarbige Symbole in deinen Hintergrundfarben, wie Designsymbole auf dem Startbildschirm. Apps ohne Designsymbol behalten ihr normales Symbol.</string>
     <string name="dial_classic">Klassisch</string>
     <string name="dial_match">Wie Blase</string>
     <string name="dial_glass">Glas</string>

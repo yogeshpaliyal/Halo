@@ -6,6 +6,12 @@
     <string name="menu_empty_hint">Выберите избранное в приложении Halo</string>
     <string name="flashlight_busy">Фонарик занят. Закройте приложение камеры и попробуйте снова.</string>
     <string name="folder_default_name">Папка</string>
+    <string name="slider_brightness">Яркость %d%%</string>
+    <string name="slider_volume">Громкость %d%%</string>
+    <string name="slider_mute">Без звука</string>
+    <string name="slider_unmute">Включить звук</string>
+    <string name="slider_brightness_locked">Отпустите, чтобы разрешить управление яркостью</string>
+    <string name="slider_brightness_locked_tap">Нажмите, чтобы разрешить управление яркостью</string>
     <string name="action_flashlight">Фонарик</string>
     <string name="action_volume">Громкость</string>
     <string name="action_play_pause">Пуск / пауза</string>
@@ -104,6 +110,13 @@
     <string name="hold_delay">Время удержания</string>
     <string name="haptics">Вибрация</string>
     <string name="haptics_body">Вибрация при удержании и на каждом приложении под пальцем</string>
+    <string name="tag_dial">Меню</string>
+    <string name="brightness_slider">Ползунок яркости</string>
+    <string name="brightness_slider_body">Верхняя полудуга вокруг меню</string>
+    <string name="volume_slider">Ползунок громкости</string>
+    <string name="volume_slider_body">Нижняя полудуга вокруг меню, громкость медиа</string>
+    <string name="volume_on_top">Громкость сверху</string>
+    <string name="volume_on_top_body">Поменять местами: громкость сверху, яркость снизу</string>
     <string name="bubble">Кнопка</string>
     <string name="tag_size">Размер</string>
     <string name="tag_look">Вид</string>
@@ -171,6 +184,15 @@
     <!-- Dial themes -->
     <string name="dial_title">Тема меню</string>
     <string name="dial_hint">Как выглядит меню при удержании кнопки. «Стекло» размывает экран позади на Android 12 и новее.</string>
+    <string name="icon_shape_title">Форма значков</string>
+    <string name="icon_shape_body">Halo не может узнать форму значков на главном экране, поэтому выберите подходящую. «Как в телефоне» — форма, которую Android использует на этом телефоне.</string>
+    <string name="icon_shape_system">Как в телефоне</string>
+    <string name="icon_shape_circle">Круг</string>
+    <string name="icon_shape_squircle">Сквиркл</string>
+    <string name="icon_shape_rounded">Скруглённый квадрат</string>
+    <string name="icon_shape_teardrop">Капля</string>
+    <string name="themed_icons">Тематические значки</string>
+    <string name="themed_icons_body">Одноцветные значки в цветах обоев, как тематические значки на главном экране. Приложения без тематического значка сохраняют обычный.</string>
     <string name="dial_classic">Классика</string>
     <string name="dial_match">Как у кнопки</string>
     <string name="dial_glass">Стекло</string>

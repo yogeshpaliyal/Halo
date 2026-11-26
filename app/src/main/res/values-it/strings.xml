@@ -6,6 +6,12 @@
     <string name="menu_empty_hint">Scegli i preferiti nell’app Halo</string>
     <string name="flashlight_busy">La torcia è occupata. Chiudi l’app Fotocamera e riprova.</string>
     <string name="folder_default_name">Cartella</string>
+    <string name="slider_brightness">Luminosità %d%%</string>
+    <string name="slider_volume">Volume %d%%</string>
+    <string name="slider_mute">Silenzia</string>
+    <string name="slider_unmute">Riattiva audio</string>
+    <string name="slider_brightness_locked">Rilascia per consentire il controllo della luminosità</string>
+    <string name="slider_brightness_locked_tap">Tocca per consentire il controllo della luminosità</string>
     <string name="action_flashlight">Torcia</string>
     <string name="action_volume">Volume</string>
     <string name="action_play_pause">Riproduci / pausa</string>
@@ -102,6 +108,13 @@
     <string name="hold_delay">Durata pressione</string>
     <string name="haptics">Vibrazione</string>
     <string name="haptics_body">Vibra quando tieni premuto e su ogni app su cui scorri</string>
+    <string name="tag_dial">Menu</string>
+    <string name="brightness_slider">Cursore luminosità</string>
+    <string name="brightness_slider_body">Semiarco superiore intorno al menu</string>
+    <string name="volume_slider">Cursore volume</string>
+    <string name="volume_slider_body">Semiarco inferiore intorno al menu, per il volume multimediale</string>
+    <string name="volume_on_top">Volume in alto</string>
+    <string name="volume_on_top_body">Scambia i cursori: volume in alto, luminosità in basso</string>
     <string name="bubble">Bolla</string>
     <string name="tag_size">Misura</string>
     <string name="tag_look">Aspetto</string>
@@ -168,6 +181,15 @@
     <!-- Dial themes -->
     <string name="dial_title">Tema del quadrante</string>
     <string name="dial_hint">Come appare il menu quando tieni premuta la bolla. Vetro sfoca lo schermo dietro su Android 12 e successivi.</string>
+    <string name="icon_shape_title">Forma delle icone</string>
+    <string name="icon_shape_body">Halo non può leggere la forma delle icone della schermata Home, quindi scegli quella corrispondente. Predefinita usa la forma che Android dà alle icone su questo telefono.</string>
+    <string name="icon_shape_system">Predefinita</string>
+    <string name="icon_shape_circle">Cerchio</string>
+    <string name="icon_shape_squircle">Squircle</string>
+    <string name="icon_shape_rounded">Quadrato arrotondato</string>
+    <string name="icon_shape_teardrop">Goccia</string>
+    <string name="themed_icons">Icone a tema</string>
+    <string name="themed_icons_body">Icone monocolore con i colori dello sfondo, come le icone a tema della schermata Home. Le app senza icona a tema mantengono quella abituale.</string>
     <string name="dial_classic">Classico</string>
     <string name="dial_match">Come la bolla</string>
     <string name="dial_glass">Vetro</string>
