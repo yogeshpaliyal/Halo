@@ -114,6 +114,8 @@
     </plurals>
     <string name="hide_recents_pick">Tick apps to keep out of the outer ring</string>
     <string name="hide_recents_picked">%d hidden</string>
+    <string name="show_recents">Show recent apps</string>
+    <string name="show_recents_off">Off: holding the bubble shows only favourites and sliders.</string>
 
     <!-- Gestures -->
     <string name="gestures">Gestures</string>

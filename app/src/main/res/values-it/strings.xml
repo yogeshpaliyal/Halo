@@ -93,6 +93,8 @@
     </plurals>
     <string name="hide_recents_pick">Seleziona le app da escludere dall’anello esterno</string>
     <string name="hide_recents_picked">%d nascoste</string>
+    <string name="show_recents">Mostra app recenti</string>
+    <string name="show_recents_off">Disattivato: tenendo premuta la bolla compaiono solo preferiti e cursori.</string>
     <string name="gestures">Gesti</string>
     <string name="tag_hold">Tieni</string>
     <string name="tag_drag">Trascina</string>

@@ -91,6 +91,8 @@
     </plurals>
     <string name="hide_recents_pick">Apps auswählen, die nicht im äußeren Ring erscheinen sollen</string>
     <string name="hide_recents_picked">%d ausgeblendet</string>
+    <string name="show_recents">Zuletzt genutzte Apps zeigen</string>
+    <string name="show_recents_off">Aus: Beim Halten der Blase erscheinen nur Favoriten und Regler.</string>
     <string name="gestures">Gesten</string>
     <string name="tag_hold">Halten</string>
     <string name="tag_drag">Ziehen</string>

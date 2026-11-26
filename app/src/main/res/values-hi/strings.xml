@@ -91,6 +91,8 @@
     </plurals>
     <string name="hide_recents_pick">बाहरी रिंग से बाहर रखने के लिए ऐप चुनें</string>
     <string name="hide_recents_picked">%d छिपे</string>
+    <string name="show_recents">हाल के ऐप दिखाएँ</string>
+    <string name="show_recents_off">बंद: बबल दबाए रखने पर सिर्फ़ पसंदीदा और स्लाइडर दिखते हैं।</string>
     <string name="gestures">जेस्चर</string>
     <string name="tag_hold">दबाएं</string>
     <string name="tag_drag">खींचें</string>
