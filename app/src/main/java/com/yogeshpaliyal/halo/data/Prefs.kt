@@ -47,6 +47,7 @@ object Prefs {
     private const val KEY_TUTORIAL_DONE = "tutorial_done"
     const val KEY_BUBBLE_ACCESSORY = "bubble_accessory"
     const val KEY_SWITCH_COUNT = "switch_count"
+    const val KEY_SNOOZED_UNTIL = "snoozed_until"
 
     private fun sp(context: Context): SharedPreferences =
         context.getSharedPreferences(FILE, Context.MODE_PRIVATE)
@@ -255,4 +256,9 @@ object Prefs {
 
     fun enabled(context: Context): Boolean = sp(context).getBoolean(KEY_ENABLED, false)
     fun setEnabled(context: Context, enabled: Boolean) = sp(context).edit { putBoolean(KEY_ENABLED, enabled) }
+
+    /** Wall-clock time (ms) the bubble stays hidden until, after a snooze from the dial; 0 when not snoozed. */
+    fun snoozedUntil(context: Context): Long = sp(context).getLong(KEY_SNOOZED_UNTIL, 0L)
+    fun setSnoozedUntil(context: Context, until: Long) = sp(context).edit { putLong(KEY_SNOOZED_UNTIL, until) }
+    fun clearSnooze(context: Context) = sp(context).edit { remove(KEY_SNOOZED_UNTIL) }
 }

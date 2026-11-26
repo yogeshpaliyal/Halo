@@ -8,8 +8,10 @@ import android.app.PendingIntent
 import android.app.Service
 import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.content.pm.ServiceInfo
 import android.content.res.Configuration
@@ -24,7 +26,9 @@ import android.view.Gravity
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
+import android.text.format.DateFormat
 import android.view.animation.DecelerateInterpolator
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.ServiceCompat
 import androidx.core.content.ContextCompat
@@ -39,6 +43,7 @@ import com.yogeshpaliyal.halo.data.TapAction
 import com.yogeshpaliyal.halo.ui.MainActivity
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import java.util.Date
 
 /** Foreground service that owns the bubble window and, during a long-press, the menu window. */
 class HaloService : Service(), BubbleView.Listener {
@@ -74,6 +79,13 @@ class HaloService : Service(), BubbleView.Listener {
         addFullscreenDetector()
         Prefs.registerListener(this, prefListener)
         NotificationBadges.addListener(badgeListener)
+        ContextCompat.registerReceiver(
+            this,
+            screenOnReceiver,
+            IntentFilter(Intent.ACTION_SCREEN_ON),
+            ContextCompat.RECEIVER_NOT_EXPORTED,
+        )
+        applySnooze()
         updateAppWatch()
         updateBubbleBadge()
         _running.value = true
@@ -85,6 +97,7 @@ class HaloService : Service(), BubbleView.Listener {
             stopSelf()
             return START_NOT_STICKY
         }
+        if (intent?.action == ACTION_WAKE) Prefs.clearSnooze(this)
         return START_STICKY
     }
 
@@ -106,6 +119,7 @@ class HaloService : Service(), BubbleView.Listener {
         main.removeCallbacksAndMessages(null)
         Prefs.unregisterListener(this, prefListener)
         NotificationBadges.removeListener(badgeListener)
+        runCatching { unregisterReceiver(screenOnReceiver) }
         detector?.let { runCatching { wm.removeView(it) } }
         detector = null
         removeMenu(animate = false)
@@ -125,6 +139,7 @@ class HaloService : Service(), BubbleView.Listener {
     private val prefListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
         when (key) {
             Prefs.KEY_HIDE_FULLSCREEN -> applyVisibility()
+            Prefs.KEY_SNOOZED_UNTIL -> applySnooze()
             Prefs.KEY_BUBBLE_OPACITY -> bubble?.refreshOpacity()
             Prefs.KEY_BUBBLE_SIZE -> resizeBubble()
             Prefs.KEY_TUCK_BUBBLE -> applyTuckSetting()
@@ -230,10 +245,55 @@ class HaloService : Service(), BubbleView.Listener {
         }
     }
 
-    /** Hidden while another app is full screen (if enabled) or while a chosen app is open. */
+    // --- snooze ---------------------------------------------------------------------------
+
+    private val snoozeEnd = Runnable { applySnooze() }
+
+    /**
+     * Handler delays stop counting while the phone sleeps, so a long snooze is also checked
+     * again each time the screen comes on.
+     */
+    private val screenOnReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) = applySnooze()
+    }
+
+    private fun snoozed(): Boolean = Prefs.snoozedUntil(this) > System.currentTimeMillis()
+
+    /** Picked on the dial's snooze button: hide the bubble for a while, or turn it off. */
+    private fun snooze(choice: SnoozeChoice) {
+        if (choice == SnoozeChoice.OFF) {
+            Toast.makeText(this, R.string.snooze_off_toast, Toast.LENGTH_LONG).show()
+            stop(this)
+            return
+        }
+        val until = System.currentTimeMillis() + choice.minutes * 60_000L
+        Prefs.setSnoozedUntil(this, until)
+        Toast.makeText(this, getString(R.string.snooze_toast, formatTime(until)), Toast.LENGTH_SHORT).show()
+    }
+
+    /** Hides or brings back the bubble for the saved snooze, and wakes up when it ends. */
+    private fun applySnooze() {
+        main.removeCallbacks(snoozeEnd)
+        val until = Prefs.snoozedUntil(this)
+        val left = until - System.currentTimeMillis()
+        when {
+            left > 0 -> main.postDelayed(snoozeEnd, left)
+            // Over: forget it (this calls back in here once more, with nothing saved).
+            until != 0L -> {
+                Prefs.clearSnooze(this)
+                return
+            }
+        }
+        applyVisibility()
+        updateNotification()
+    }
+
+    private fun formatTime(millis: Long): String = DateFormat.getTimeFormat(this).format(Date(millis))
+
+    /** Hidden while snoozed, while another app is full screen (if enabled) or while a chosen app is open. */
     private fun applyVisibility() {
         val inHiddenApp = foregroundPkg?.let { it in Prefs.hideInApps(this) } == true
-        val hide = (fullscreen && Prefs.hideInFullscreen(this)) || inHiddenApp
+        val hide = snoozed() || (fullscreen && Prefs.hideInFullscreen(this)) || inHiddenApp
         if (hide == hiddenNow) return
         hiddenNow = hide
         val view = bubble ?: return
@@ -344,6 +404,7 @@ class HaloService : Service(), BubbleView.Listener {
             showBrightness = showBrightness,
             showVolume = showVolume,
             volumeOnTop = Prefs.volumeOnTop(this),
+            bottomInset = bottom,
         )
         // Exact display size instead of MATCH_PARENT: an overlay sized MATCH_PARENT stops at the
         // navigation bar, which left an undimmed strip at the bottom.
@@ -611,6 +672,17 @@ class HaloService : Service(), BubbleView.Listener {
     override fun onMenuRelease(rawX: Float, rawY: Float) {
         val view = menu
         view?.updateFinger(rawX, rawY)
+        // Let go on a snooze time: hide the bubble for that long.
+        view?.snoozeChoice?.let { choice ->
+            removeMenu()
+            snooze(choice)
+            return
+        }
+        // Let go on the snooze button itself: keep its times up and take the next tap.
+        if (view != null && view.onSnoozeButton) {
+            keepOpenForTap(view)
+            return
+        }
         // Let go on the brightness or volume slider: the change is already made, just close.
         if (view?.endSlider() == true) {
             removeMenu()
@@ -620,15 +692,20 @@ class HaloService : Service(), BubbleView.Listener {
         if (view != null && target != null && target.isFolder) {
             // Let go on a folder: keep the dial up with the folder open, and take the next tap.
             view.openSelectedFolder()
-            armTapMode(view)
-            (view.layoutParams as? WindowManager.LayoutParams)?.let { lp ->
-                lp.flags = lp.flags and WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE.inv()
-                runCatching { wm.updateViewLayout(view, lp) }
-            }
+            keepOpenForTap(view)
             return
         }
         removeMenu()
         target?.let { launch(it, Stats.Kind.DIAL) }
+    }
+
+    /** A hold ended but the dial stays up: let its window take the next tap. */
+    private fun keepOpenForTap(view: RadialMenuView) {
+        armTapMode(view)
+        (view.layoutParams as? WindowManager.LayoutParams)?.let { lp ->
+            lp.flags = lp.flags and WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE.inv()
+            runCatching { wm.updateViewLayout(view, lp) }
+        }
     }
 
     /** Menu takes touches itself: tapping an app opens it, a folder opens the folder, anything else closes. */
@@ -636,6 +713,10 @@ class HaloService : Service(), BubbleView.Listener {
         view.onPick = { app ->
             removeMenu()
             app?.let { launch(it, Stats.Kind.DIAL) }
+        }
+        view.onSnoozePick = { choice ->
+            removeMenu()
+            snooze(choice)
         }
     }
 
@@ -648,31 +729,50 @@ class HaloService : Service(), BubbleView.Listener {
         nm.createNotificationChannel(
             NotificationChannel(CHANNEL_ID, getString(R.string.notification_channel), NotificationManager.IMPORTANCE_MIN),
         )
-        val openApp = PendingIntent.getActivity(
-            this, 0, Intent(this, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE,
-        )
-        val stop = PendingIntent.getService(
-            this, 1, Intent(this, HaloService::class.java).setAction(ACTION_STOP), PendingIntent.FLAG_IMMUTABLE,
-        )
-        val notification: Notification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle(getString(R.string.app_name))
-            .setContentText(getString(R.string.notification_text))
-            .setContentIntent(openApp)
-            .addAction(0, getString(R.string.notification_stop), stop)
-            .setOngoing(true)
-            .setPriority(NotificationCompat.PRIORITY_MIN)
-            .build()
         ServiceCompat.startForeground(
             this,
             NOTIFICATION_ID,
-            notification,
+            buildNotification(),
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
                 ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
             } else {
                 0
             },
         )
+    }
+
+    /** Shows the snooze in the notification, with a button to bring the bubble back now. */
+    private fun updateNotification() {
+        runCatching { getSystemService(NotificationManager::class.java).notify(NOTIFICATION_ID, buildNotification()) }
+    }
+
+    private fun buildNotification(): Notification {
+        val until = Prefs.snoozedUntil(this)
+        val snoozed = until > System.currentTimeMillis()
+        val openApp = PendingIntent.getActivity(
+            this, 0, Intent(this, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE,
+        )
+        val stop = PendingIntent.getService(
+            this, 1, Intent(this, HaloService::class.java).setAction(ACTION_STOP), PendingIntent.FLAG_IMMUTABLE,
+        )
+        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setContentTitle(getString(R.string.app_name))
+            .setContentText(
+                if (snoozed) getString(R.string.notification_snoozed, formatTime(until))
+                else getString(R.string.notification_text),
+            )
+            .setContentIntent(openApp)
+            .setOngoing(true)
+            .setOnlyAlertOnce(true)
+            .setPriority(NotificationCompat.PRIORITY_MIN)
+        if (snoozed) {
+            val wake = PendingIntent.getService(
+                this, 2, Intent(this, HaloService::class.java).setAction(ACTION_WAKE), PendingIntent.FLAG_IMMUTABLE,
+            )
+            builder.addAction(0, getString(R.string.notification_wake), wake)
+        }
+        return builder.addAction(0, getString(R.string.notification_stop), stop).build()
     }
 
     companion object {
@@ -684,17 +784,21 @@ class HaloService : Service(), BubbleView.Listener {
         private const val TUCK_DELAY_MS = 1500L
         private const val NOTIFICATION_ID = 1
         private const val ACTION_STOP = "com.yogeshpaliyal.halo.STOP"
+        private const val ACTION_WAKE = "com.yogeshpaliyal.halo.WAKE"
 
         private val _running = MutableStateFlow(false)
         val running: StateFlow<Boolean> = _running
 
-        fun start(context: Context) {
+        /** [wake] = true also ends a snooze (the user switched the bubble on themselves). */
+        fun start(context: Context, wake: Boolean = false) {
+            if (wake) Prefs.clearSnooze(context)
             Prefs.setEnabled(context, true)
             ContextCompat.startForegroundService(context, Intent(context, HaloService::class.java))
         }
 
         fun stop(context: Context) {
             Prefs.setEnabled(context, false)
+            Prefs.clearSnooze(context)
             context.stopService(Intent(context, HaloService::class.java))
         }
     }

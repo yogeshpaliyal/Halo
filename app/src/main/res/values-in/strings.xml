@@ -12,6 +12,23 @@
     <string name="slider_unmute">Bunyikan</string>
     <string name="slider_brightness_locked">Lepaskan untuk mengizinkan kontrol kecerahan</string>
     <string name="slider_brightness_locked_tap">Ketuk untuk mengizinkan kontrol kecerahan</string>
+
+    <!-- Snooze button on the dial -->
+    <string name="snooze_title">Tunda</string>
+    <string name="snooze_1m_short">1 mnt</string>
+    <string name="snooze_5m_short">5 mnt</string>
+    <string name="snooze_1h_short">1 j</string>
+    <string name="snooze_8h_short">8 j</string>
+    <string name="snooze_off_short">Mati</string>
+    <string name="snooze_1m">Sembunyikan 1 menit</string>
+    <string name="snooze_5m">Sembunyikan 5 menit</string>
+    <string name="snooze_1h">Sembunyikan 1 jam</string>
+    <string name="snooze_8h">Sembunyikan 8 jam</string>
+    <string name="snooze_off">Matikan gelembung</string>
+    <string name="snooze_toast">Gelembung disembunyikan hingga %1$s</string>
+    <string name="snooze_off_toast">Gelembung dimatikan. Nyalakan lagi di Halo.</string>
+    <string name="notification_snoozed">Disembunyikan hingga %1$s</string>
+    <string name="notification_wake">Tampilkan sekarang</string>
     <string name="action_flashlight">Senter</string>
     <string name="action_volume">Volume</string>
     <string name="action_play_pause">Putar / jeda</string>
