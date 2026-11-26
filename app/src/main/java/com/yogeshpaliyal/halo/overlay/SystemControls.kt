@@ -6,6 +6,7 @@ import android.media.AudioManager
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
+import android.util.Log
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
 
@@ -13,7 +14,11 @@ import kotlin.math.sqrt
  * Screen brightness and media volume for the sliders around the dial. Values are 0..1.
  *
  * Brightness needs "Modify system settings" (WRITE_SETTINGS), which the user grants in
- * Settings; volume needs nothing.
+ * Settings. Volume needs no permission, but newer Android versions (and some OEM builds, such
+ * as OxygenOS on Android 16) silently ignore volume changes from an app that has no visible
+ * activity and whose foreground service lacks "while in use" access. That is the case once
+ * Halo's task is swiped away and the system restarts the service. [setVolumeIndex] reads the
+ * volume back so the caller can tell, and [AudioAccessActivity] gets the access back.
  */
 object SystemControls {
 
@@ -84,9 +89,27 @@ object SystemControls {
         return (min + (max - min) * value.coerceIn(0f, 1f)).roundToInt()
     }
 
-    /** Sets media volume quietly (no system volume panel on top of the dial). */
-    fun setVolumeIndex(context: Context, index: Int) {
-        val am = audio(context) ?: return
-        runCatching { am.setStreamVolume(AudioManager.STREAM_MUSIC, index, 0) }
+    /**
+     * Sets media volume quietly (no system volume panel on top of the dial). Returns false when
+     * the system ignored the change (see the class comment), so the caller can win access back.
+     */
+    fun setVolumeIndex(context: Context, index: Int): Boolean {
+        val am = audio(context) ?: return false
+        // Fixed-volume devices (some TVs, HDMI out) never take a change; nothing to fix there.
+        if (am.isVolumeFixed) return true
+        val result = runCatching { am.setStreamVolume(AudioManager.STREAM_MUSIC, index, 0) }
+        result.exceptionOrNull()?.let {
+            Log.w(TAG, "setStreamVolume($index) failed", it)
+            return false
+        }
+        val now = runCatching { am.getStreamVolume(AudioManager.STREAM_MUSIC) }.getOrNull() ?: return true
+        if (now != index) {
+            Log.w(TAG, "setStreamVolume($index) was ignored by the system, volume is still $now")
+            return false
+        }
+        return true
     }
+
+    private const val TAG = "HaloVolume"
+
 }
