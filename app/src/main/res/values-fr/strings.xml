@@ -205,6 +205,10 @@
     <string name="dial_hint">L’apparence du menu quand vous maintenez la bulle. Verre floute l’écran derrière sur Android 12 et plus.</string>
     <string name="icon_shape_title">Forme des icônes</string>
     <string name="icon_shape_body">Halo ne peut pas lire la forme des icônes de votre écran d’accueil, choisissez donc celle qui correspond. Par défaut utilise la forme qu’Android donne aux icônes sur ce téléphone.</string>
+    <string name="dial_size_title">Taille du menu</string>
+    <string name="dial_size_body">Compact rapproche les anneaux de la bulle pour atteindre les apps plus facilement avec un pouce. Le menu rétrécit aussi tout seul quand l’écran est trop bas, comme en paysage.</string>
+    <string name="dial_size_standard">Standard</string>
+    <string name="dial_size_compact">Compact</string>
     <string name="icon_shape_system">Par défaut</string>
     <string name="icon_shape_circle">Cercle</string>
     <string name="icon_shape_squircle">Squircle</string>

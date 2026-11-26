@@ -202,6 +202,10 @@
     <string name="dial_hint">Cómo se ve el menú al mantener la burbuja. Cristal desenfoca la pantalla detrás en Android 12 y posteriores.</string>
     <string name="icon_shape_title">Forma de los iconos</string>
     <string name="icon_shape_body">Halo no puede leer la forma de los iconos de tu pantalla de inicio, así que elige la que coincida. Del teléfono usa la forma que Android da a los iconos en este teléfono.</string>
+    <string name="dial_size_title">Tamaño del menú</string>
+    <string name="dial_size_body">Compacto acerca los anillos a la burbuja para que alcances las apps con un pulgar más fácilmente. El menú también se reduce solo cuando la pantalla es demasiado baja, como en horizontal.</string>
+    <string name="dial_size_standard">Estándar</string>
+    <string name="dial_size_compact">Compacto</string>
     <string name="icon_shape_system">Del teléfono</string>
     <string name="icon_shape_circle">Círculo</string>
     <string name="icon_shape_squircle">Squircle</string>

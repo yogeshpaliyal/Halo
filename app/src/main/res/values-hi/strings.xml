@@ -202,6 +202,10 @@
     <string name="dial_hint">बबल दबाने पर मेन्यू कैसा दिखे। ग्लास Android 12 और नए वर्शन पर पीछे की स्क्रीन धुंधली कर देता है।</string>
     <string name="icon_shape_title">आइकन का आकार</string>
     <string name="icon_shape_body">Halo आपकी होम स्क्रीन के आइकन का आकार नहीं पढ़ सकता, इसलिए उससे मिलता आकार चुनें। फ़ोन का डिफ़ॉल्ट वही आकार इस्तेमाल करता है जो Android इस फ़ोन पर देता है।</string>
+    <string name="dial_size_title">डायल का आकार</string>
+    <string name="dial_size_body">कॉम्पैक्ट रिंग को बबल के पास ले आता है, ताकि एक अंगूठे से ऐप तक पहुँचना आसान हो। स्क्रीन छोटी होने पर, जैसे लैंडस्केप में, डायल अपने आप भी छोटा हो जाता है।</string>
+    <string name="dial_size_standard">सामान्य</string>
+    <string name="dial_size_compact">कॉम्पैक्ट</string>
     <string name="icon_shape_system">फ़ोन का डिफ़ॉल्ट</string>
     <string name="icon_shape_circle">गोल</string>
     <string name="icon_shape_squircle">स्क्वर्कल</string>

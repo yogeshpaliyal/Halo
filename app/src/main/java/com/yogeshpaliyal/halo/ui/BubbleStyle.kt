@@ -321,6 +321,8 @@ fun DialThemeCard(
     onIconShape: (IconShape) -> Unit,
     themedIcons: Boolean,
     onThemedIcons: (Boolean) -> Unit,
+    dialSize: com.yogeshpaliyal.halo.data.DialSize,
+    onDialSize: (com.yogeshpaliyal.halo.data.DialSize) -> Unit,
 ) {
     androidx.compose.material3.Card(shape = RoundedCornerShape(24.dp)) {
         Column(Modifier.padding(vertical = 14.dp)) {
@@ -332,6 +334,31 @@ fun DialThemeCard(
             )
             Spacer(Modifier.height(10.dp))
             DialThemeRow(theme, palette, onTheme)
+            Spacer(Modifier.height(14.dp))
+            Text(
+                stringResource(com.yogeshpaliyal.halo.R.string.dial_size_title),
+                style = MaterialTheme.typography.titleSmall,
+                modifier = Modifier.padding(horizontal = 20.dp),
+            )
+            Text(
+                stringResource(com.yogeshpaliyal.halo.R.string.dial_size_body),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(horizontal = 20.dp),
+            )
+            Spacer(Modifier.height(6.dp))
+            Row(
+                Modifier.padding(horizontal = 20.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                com.yogeshpaliyal.halo.data.DialSize.entries.forEach { size ->
+                    FilterChip(
+                        selected = size == dialSize,
+                        onClick = { onDialSize(size) },
+                        label = { Text(stringResource(size.labelRes)) },
+                    )
+                }
+            }
             Spacer(Modifier.height(14.dp))
             Text(
                 stringResource(com.yogeshpaliyal.halo.R.string.icon_shape_title),

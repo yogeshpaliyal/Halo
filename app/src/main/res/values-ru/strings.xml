@@ -208,6 +208,10 @@
     <string name="dial_hint">Как выглядит меню при удержании кнопки. «Стекло» размывает экран позади на Android 12 и новее.</string>
     <string name="icon_shape_title">Форма значков</string>
     <string name="icon_shape_body">Halo не может узнать форму значков на главном экране, поэтому выберите подходящую. «Как в телефоне» — форма, которую Android использует на этом телефоне.</string>
+    <string name="dial_size_title">Размер меню</string>
+    <string name="dial_size_body">Компактный размер приближает кольца к пузырю, чтобы до приложений было проще дотянуться одним пальцем. Меню также само уменьшается, когда экран слишком низкий, например в горизонтальной ориентации.</string>
+    <string name="dial_size_standard">Стандартный</string>
+    <string name="dial_size_compact">Компактный</string>
     <string name="icon_shape_system">Как в телефоне</string>
     <string name="icon_shape_circle">Круг</string>
     <string name="icon_shape_squircle">Сквиркл</string>

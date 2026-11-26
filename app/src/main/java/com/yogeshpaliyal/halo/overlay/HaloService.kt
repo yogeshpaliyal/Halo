@@ -406,14 +406,24 @@ class HaloService : Service(), BubbleView.Listener {
         // off screen, so centre it where it fits and slide the bubble there while it's open.
         val showBrightness = Prefs.brightnessSlider(this)
         val showVolume = Prefs.volumeSlider(this)
-        val half = RadialMenuView.halfExtentPx(
+        val fullHalf = RadialMenuView.halfExtentPx(
             this,
             favorites.isNotEmpty(),
             recents.isNotEmpty() || favorites.any { it.isFolder },
             hasSliders = showBrightness || showVolume,
         )
-        val screenH = screenSize().y
+        val screen = screenSize()
+        val screenH = screen.y
         val (top, bottom) = safeInsets()
+        // Compact dial (Settings), and shrink further whenever the dial wouldn't fit between the
+        // system bars or across the screen, e.g. in landscape, so no icon is ever cut off.
+        val fit = if (fullHalf > 0f) {
+            minOf((screenH - top - bottom) / (2f * fullHalf), (screen.x - bubbleSize / 2f) / fullHalf)
+        } else {
+            1f
+        }
+        val scale = minOf(Prefs.dialSize(this).scale, fit).coerceIn(MIN_DIAL_SCALE, 1f)
+        val half = fullHalf * scale
         val bubbleCenter = bubbleParams.y + bubbleSize / 2f
         val lo = top + half
         val hi = screenH - bottom - half
@@ -439,6 +449,7 @@ class HaloService : Service(), BubbleView.Listener {
             showVolume = showVolume,
             volumeOnTop = Prefs.volumeOnTop(this),
             bottomInset = bottom,
+            scale = scale,
         )
         // Exact display size instead of MATCH_PARENT: an overlay sized MATCH_PARENT stops at the
         // navigation bar, which left an undimmed strip at the bottom.
@@ -816,6 +827,8 @@ class HaloService : Service(), BubbleView.Listener {
         private const val APP_WATCH_MS = 1000L
         /** Share of the bubble window hidden past the edge when tucked. */
         private const val TUCK_FRACTION = 0.5f
+        /** Smallest the dial shrinks to fit a short (landscape) screen; icons stay tappable. */
+        private const val MIN_DIAL_SCALE = 0.5f
         /** How long the bubble stays out after you let go before tucking back in. */
         private const val TUCK_DELAY_MS = 1500L
         private const val NOTIFICATION_ID = 1
