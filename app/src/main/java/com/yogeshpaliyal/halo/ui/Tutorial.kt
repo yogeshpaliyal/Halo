@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Button
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -45,6 +46,7 @@ import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
@@ -53,6 +55,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.yogeshpaliyal.halo.R
+import com.yogeshpaliyal.halo.data.Prefs
 import com.yogeshpaliyal.halo.data.TapAction
 import com.yogeshpaliyal.halo.overlay.BubbleCharacter
 import com.yogeshpaliyal.halo.overlay.BubblePalette
@@ -71,8 +74,9 @@ private const val HOLD_MS = 300L
 
 /**
  * A 20-second practice run of the core gesture, inside the app: press and hold the bubble,
- * slide to the starred app, let go. Then a quick reminder of what tap and double tap do.
- * Drawn with the user's own bubble style.
+ * slide to the starred app, let go. Then a quick reminder of what tap and double tap do,
+ * and a choice of which screen edge the bubble sits on. The practice bubble sits on that
+ * same edge, drawn with the user's own bubble style.
  */
 @Composable
 fun TutorialDialog(
@@ -87,6 +91,8 @@ fun TutorialDialog(
     var message by remember { mutableIntStateOf(R.string.tut_step1) }
     var selected by remember { mutableIntStateOf(-1) }
     var touchingBubble by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+    var onRight by remember { mutableStateOf(Prefs.bubbleOnRight(context)) }
     val haptics = LocalHapticFeedback.current
     val density = LocalDensity.current
     val renderer = remember { BubbleRenderer() }
@@ -138,7 +144,11 @@ fun TutorialDialog(
                     Spacer(Modifier.height(20.dp))
                     TipRow("👆", stringResource(R.string.tut_tip_tap, stringResource(tapAction.labelRes)))
                     TipRow("✌️", stringResource(R.string.tut_tip_double, stringResource(doubleTapAction.labelRes)))
-                    TipRow("↕️", stringResource(R.string.tut_tip_drag))
+                    TipRow("↔️", stringResource(R.string.tut_tip_drag))
+                    SideChoice(onRight) { right ->
+                        onRight = right
+                        Prefs.setBubbleOnRight(context, right)
+                    }
                     Spacer(Modifier.height(24.dp))
                     Button(onClick = onDone) { Text(stringResource(R.string.tut_done)) }
                 }
@@ -159,12 +169,12 @@ fun TutorialDialog(
                     .weight(1f)
                     .fillMaxWidth()
                     .clipToBounds()
-                    .pointerInput(Unit) {
+                    .pointerInput(onRight) {
                         val bubbleR = 30.dp.toPx()
                         val ringR = 130.dp.toPx()
                         awaitEachGesture {
                             val down = awaitFirstDown()
-                            val bubble = Offset(bubbleR + 12.dp.toPx(), size.height / 2f)
+                            val bubble = Offset(bubbleX(size.width.toFloat(), bubbleR + 12.dp.toPx(), onRight), size.height / 2f)
                             if (hypot(down.position.x - bubble.x, down.position.y - bubble.y) > bubbleR * 1.6f) return@awaitEachGesture
                             touchingBubble = true
                             // Held long enough without lifting? Then the dial opens.
@@ -194,8 +204,8 @@ fun TutorialDialog(
                                     -1
                                 } else {
                                     val a = Math.toDegrees(atan2(dy, dx).toDouble()).toFloat()
-                                    PRACTICE_APPS.indices.minByOrNull { kotlin.math.abs(slotAngle(it) - a) }
-                                        ?.takeIf { kotlin.math.abs(slotAngle(it) - a) < 22f } ?: -1
+                                    PRACTICE_APPS.indices.minByOrNull { angleGap(slotAngle(it, onRight), a) }
+                                        ?.takeIf { angleGap(slotAngle(it, onRight), a) < 22f } ?: -1
                                 }
                                 if (pick != selected) {
                                     selected = pick
@@ -217,17 +227,17 @@ fun TutorialDialog(
                     val bubbleR = 30.dp.toPx()
                     val ringR = 130.dp.toPx()
                     val icon = 46.dp.toPx()
-                    val c = Offset(bubbleR + 12.dp.toPx(), size.height / 2f)
+                    val c = Offset(bubbleX(size.width, bubbleR + 12.dp.toPx(), onRight), size.height / 2f)
                     if (step == TutorialStep.SLIDE) {
                         drawRect(Color.Black.copy(alpha = 0.55f))
                         drawArc(
-                            Color(0xE61E1B2E), -84f, 168f, useCenter = false,
+                            Color(0xE61E1B2E), if (onRight) 96f else -84f, 168f, useCenter = false,
                             topLeft = Offset(c.x - ringR, c.y - ringR),
                             size = androidx.compose.ui.geometry.Size(ringR * 2, ringR * 2),
                             style = Stroke(icon + 18.dp.toPx(), cap = StrokeCap.Round),
                         )
                         PRACTICE_APPS.forEachIndexed { i, e ->
-                            val a = Math.toRadians(slotAngle(i).toDouble())
+                            val a = Math.toRadians(slotAngle(i, onRight).toDouble())
                             val p = Offset(c.x + ringR * cos(a).toFloat(), c.y + ringR * sin(a).toFloat())
                             val sel = i == selected
                             if (i == TARGET) {
@@ -261,10 +271,42 @@ fun TutorialDialog(
     }
 }
 
-/** The practice dial faces right from the left edge, like the real one. */
-private fun slotAngle(i: Int): Float {
+/** Centre of the practice bubble, docked to the chosen edge like the real one. */
+private fun bubbleX(width: Float, inset: Float, onRight: Boolean): Float = if (onRight) width - inset else inset
+
+/** The practice dial fans out into the screen from the bubble's edge, like the real one. */
+private fun slotAngle(i: Int, onRight: Boolean): Float {
     val span = 150f
-    return -span / 2f + span * (i + 0.5f) / PRACTICE_APPS.size
+    val a = -span / 2f + span * (i + 0.5f) / PRACTICE_APPS.size
+    return if (onRight) 180f - a else a
+}
+
+/** Gap between two angles in degrees, 0..180, across the ±180 wrap. */
+private fun angleGap(a: Float, b: Float): Float = kotlin.math.abs(((a - b) % 360f + 540f) % 360f - 180f)
+
+/** Left / right edge for the bubble. Saving it slides the running bubble across. */
+@Composable
+private fun SideChoice(onRight: Boolean, onChange: (Boolean) -> Unit) {
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .padding(vertical = 6.dp),
+    ) {
+        Text(stringResource(R.string.tut_side_title), style = MaterialTheme.typography.bodyLarge)
+        Spacer(Modifier.height(6.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            FilterChip(
+                selected = !onRight,
+                onClick = { onChange(false) },
+                label = { Text(stringResource(R.string.tut_side_left)) },
+            )
+            FilterChip(
+                selected = onRight,
+                onClick = { onChange(true) },
+                label = { Text(stringResource(R.string.tut_side_right)) },
+            )
+        }
+    }
 }
 
 @Composable

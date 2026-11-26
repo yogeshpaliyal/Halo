@@ -269,7 +269,10 @@
     <string name="tut_success_body">That’s all it takes: hold, slide, let go. Two more tricks:</string>
     <string name="tut_tip_tap">Tap: %s</string>
     <string name="tut_tip_double">Double tap: %s</string>
-    <string name="tut_tip_drag">Drag it to move it anywhere along the edge</string>
+    <string name="tut_tip_drag">Drag it up or down the edge, or across to the other side</string>
+    <string name="tut_side_title">Which side should the bubble sit on?</string>
+    <string name="tut_side_left">Left</string>
+    <string name="tut_side_right">Right</string>
     <string name="tut_done">Done</string>
     <string name="tut_card_title">New here? Learn the gesture</string>
     <string name="tut_card_body">A 20-second practice run, right here.</string>

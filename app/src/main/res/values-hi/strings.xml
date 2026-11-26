@@ -240,7 +240,10 @@
     <string name="tut_success_body">बस इतना ही: दबाएं, सरकाएं, छोड़ें। दो और ट्रिक:</string>
     <string name="tut_tip_tap">टैप: %s</string>
     <string name="tut_tip_double">दो बार टैप: %s</string>
-    <string name="tut_tip_drag">किनारे पर कहीं भी ले जाने के लिए खींचें</string>
+    <string name="tut_tip_drag">किनारे पर ऊपर-नीचे या दूसरी तरफ़ ले जाने के लिए खींचें</string>
+    <string name="tut_side_title">बबल किस तरफ़ रहे?</string>
+    <string name="tut_side_left">बाएँ</string>
+    <string name="tut_side_right">दाएँ</string>
     <string name="tut_done">हो गया</string>
     <string name="tut_card_title">नए हैं? जेस्चर सीखें</string>
     <string name="tut_card_body">यहीं 20 सेकंड की प्रैक्टिस।</string>

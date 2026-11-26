@@ -145,6 +145,7 @@ class HaloService : Service(), BubbleView.Listener {
             Prefs.KEY_BUBBLE_OPACITY -> bubble?.refreshOpacity()
             Prefs.KEY_BUBBLE_SIZE -> resizeBubble()
             Prefs.KEY_TUCK_BUBBLE -> applyTuckSetting()
+            Prefs.KEY_BUBBLE_RIGHT -> applySideSetting()
             Prefs.KEY_BUBBLE_PALETTE, Prefs.KEY_BUBBLE_CHARACTER, Prefs.KEY_BUBBLE_ANIMATIONS,
             Prefs.KEY_BUBBLE_REACTIONS, Prefs.KEY_AVATAR_VERSION, Prefs.KEY_BUBBLE_ACCESSORY -> bubble?.refreshStyle()
             Prefs.KEY_HIDE_IN_APPS -> updateAppWatch()
@@ -628,6 +629,14 @@ class HaloService : Service(), BubbleView.Listener {
         if (touching || menu != null || restY != null || bubble == null) return
         val target = restX(onRight)
         if (bubbleParams.x != target) moveBubble(target, bubbleParams.y, animate = true)
+    }
+
+    /** Side picked in the app (tutorial): slide the bubble across to that edge, same height. */
+    private fun applySideSetting() {
+        if (bubble == null || menu != null || touching) return
+        val right = Prefs.bubbleOnRight(this)
+        // snapTo saves the side too; an unchanged value doesn't call back here.
+        if (right != onRight) snapTo(right, bubbleParams.y, animate = true)
     }
 
     private fun applyTuckSetting() {

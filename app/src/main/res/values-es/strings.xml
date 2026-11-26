@@ -240,7 +240,10 @@
     <string name="tut_success_body">Eso es todo: mantén, desliza, suelta. Dos trucos más:</string>
     <string name="tut_tip_tap">Toque: %s</string>
     <string name="tut_tip_double">Doble toque: %s</string>
-    <string name="tut_tip_drag">Arrástrala para moverla por el borde</string>
+    <string name="tut_tip_drag">Arrástrala por el borde o al otro lado de la pantalla</string>
+    <string name="tut_side_title">¿En qué lado va la burbuja?</string>
+    <string name="tut_side_left">Izquierda</string>
+    <string name="tut_side_right">Derecha</string>
     <string name="tut_done">Listo</string>
     <string name="tut_card_title">¿Eres nuevo? Aprende el gesto</string>
     <string name="tut_card_body">Una práctica de 20 segundos, aquí mismo.</string>
