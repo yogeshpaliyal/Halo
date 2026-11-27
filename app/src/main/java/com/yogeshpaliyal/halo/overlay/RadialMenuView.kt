@@ -165,13 +165,13 @@ class RadialMenuView(
     private var volumeBlockedReported = false
 
     private fun applyVolume(index: Int) {
-        if (!AudioAccessActivity.isResumed() && showVolume) {
+        if (SystemControls.setVolumeIndex(context, index)) return
+        if (!volumeBlockedReported) {
+            volumeBlockedReported = true
+            onVolumeBlocked?.invoke(index)
+        } else if (!AudioAccessActivity.isResumed()) {
             AudioAccessActivity.open(context, index)
         }
-        if (SystemControls.setVolumeIndex(context, index)) return
-        if (volumeBlockedReported) return
-        volumeBlockedReported = true
-        onVolumeBlocked?.invoke(index)
     }
 
     /** The folder whose apps are on the outer ring right now, and its inner-ring slot. */
@@ -408,6 +408,7 @@ class RadialMenuView(
      * a brightness slider Halo can't use yet asks for access through [onBrightnessLocked].
      */
     fun endSlider(): Boolean {
+        AudioAccessActivity.close()
         if (muteHover) {
             muteHover = false
             toggleMute()
@@ -637,6 +638,7 @@ class RadialMenuView(
     }
 
     override fun onDetachedFromWindow() {
+        AudioAccessActivity.close()
         removeCallbacks(openFolderLater)
         folderAnim?.cancel()
         snoozeAnim?.cancel()

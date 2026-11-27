@@ -11,17 +11,15 @@ import androidx.core.content.ContextCompat
 import java.lang.ref.WeakReference
 
 /**
- * Invisible, instant activity that gives Halo back the right to change the volume.
+ * Invisible activity that gives Halo back the right to change the volume.
  *
  * Android only lets an app with no visible activity change the volume when its foreground
  * service was started "while in use", that is while the app was on screen. After Halo is swiped
  * out of recents the system restarts [HaloService] in the background, without that access, and
- * from then on every volume change from the dial is silently ignored (issue #17). Starting the
- * service again from a visible activity grants the access. Halo may start an activity from the
- * background because it can draw over other apps.
+ * from then on every volume change from the dial is silently ignored (issue #17).
  *
- * This activity stays open while the radial menu is open (or while volume control is used),
- * keeping Halo in a visible activity state so volume changes succeed.
+ * This activity opens when a volume change is ignored and stays open while the volume slider
+ * is being dragged, allowing live volume adjustments, and closes when the slider is released.
  */
 class AudioAccessActivity : Activity() {
 
@@ -71,7 +69,7 @@ class AudioAccessActivity : Activity() {
 
         fun isResumed(): Boolean = activeInstance?.get() != null
 
-        /** Opens the invisible activity to grant volume access while radial menu is active. */
+        /** Opens the invisible activity to grant volume access while volume slider is being used. */
         fun open(context: Context, volumeIndex: Int = -1) {
             if (activeInstance?.get() != null) return
             val intent = Intent(context, AudioAccessActivity::class.java)
@@ -93,7 +91,7 @@ class AudioAccessActivity : Activity() {
                 .onFailure { Log.w(TAG, "Couldn't open AudioAccessActivity", it) }
         }
 
-        /** Closes the invisible activity when radial menu is closed. */
+        /** Closes the invisible activity when volume slider / radial menu interaction ends. */
         fun close() {
             activeInstance?.get()?.let {
                 runCatching { it.finish() }
