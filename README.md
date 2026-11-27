@@ -15,6 +15,7 @@ Switch between your apps with one thumb, without opening the recents screen.</p>
   <img src="https://img.shields.io/badge/ads-none-5B47D6?style=flat-square" alt="No ads">
   <img src="https://img.shields.io/badge/internet%20permission-none-5B47D6?style=flat-square" alt="No internet permission">
   <a href="LICENSE"><img src="https://img.shields.io/github/license/yogeshpaliyal/Halo?style=flat-square" alt="MIT license"></a>
+  <a href="https://github.com/sponsors/yogeshpaliyal"><img src="https://img.shields.io/github/sponsors/yogeshpaliyal?label=sponsor&logo=githubsponsors&style=flat-square&color=EA4AAA" alt="Sponsor on GitHub"></a>
 </p>
 
 ---
@@ -187,6 +188,9 @@ Made a video, blog post or thread about Halo? Share it in [Discussions](https://
 - **Ideas and questions:** [Ideas](https://github.com/yogeshpaliyal/Halo/discussions/categories/ideas) and [Q&A](https://github.com/yogeshpaliyal/Halo/discussions/categories/q-a).
 - **Bugs:** [open an issue](https://github.com/yogeshpaliyal/Halo/issues).
 - **Like Halo?** A ⭐ on this repo or a review on [Google Play](https://play.google.com/store/apps/details?id=com.yogeshpaliyal.halo) helps other people find it.
+- **Support the work:** Halo is free, with no ads and no tracking. If it saves you time, you can
+  [sponsor me on GitHub](https://github.com/sponsors/yogeshpaliyal), or use [Ko-fi](https://ko-fi.com/yogeshpaliyal)
+  or [Liberapay](https://liberapay.com/yogeshpaliyal).
 
 ---
 
