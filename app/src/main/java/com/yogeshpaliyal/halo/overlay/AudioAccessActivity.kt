@@ -1,13 +1,14 @@
 package com.yogeshpaliyal.halo.overlay
 
 import android.app.Activity
+import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.os.SystemClock
 import android.util.Log
 import androidx.core.content.ContextCompat
+import java.lang.ref.WeakReference
 
 /**
  * Invisible, instant activity that gives Halo back the right to change the volume.
@@ -19,8 +20,8 @@ import androidx.core.content.ContextCompat
  * service again from a visible activity grants the access. Halo may start an activity from the
  * background because it can draw over other apps.
  *
- * The dial opens this the first time a volume change is ignored. It sets the volume the slider
- * asked for while it is on screen, re-starts the service, and closes straight away.
+ * This activity stays open while the radial menu is open (or while volume control is used),
+ * keeping Halo in a visible activity state so volume changes succeed.
  */
 class AudioAccessActivity : Activity() {
 
@@ -31,6 +32,7 @@ class AudioAccessActivity : Activity() {
 
     override fun onResume() {
         super.onResume()
+        activeInstance = WeakReference(this)
         // On screen now: this re-start of the service is "while in use".
         runCatching {
             ContextCompat.startForegroundService(
@@ -39,11 +41,17 @@ class AudioAccessActivity : Activity() {
             )
         }.onFailure { Log.w(TAG, "Couldn't re-start the service", it) }
         val index = intent.getIntExtra(EXTRA_VOLUME_INDEX, -1)
-        if (index >= 0 && !SystemControls.setVolumeIndex(this, index)) {
-            Log.w(TAG, "Volume still ignored with an activity on screen")
+        if (index >= 0) {
+            SystemControls.setVolumeIndex(this, index)
         }
-        finish()
         noAnimation()
+    }
+
+    override fun onDestroy() {
+        if (activeInstance?.get() == this) {
+            activeInstance = null
+        }
+        super.onDestroy()
     }
 
     @Suppress("DEPRECATION")
@@ -59,15 +67,13 @@ class AudioAccessActivity : Activity() {
     companion object {
         private const val TAG = "HaloVolume"
         private const val EXTRA_VOLUME_INDEX = "volume_index"
-        /** Don't keep flashing an activity if access can't be won back on this phone. */
-        private const val RETRY_MS = 60_000L
-        private var lastOpened = 0L
+        private var activeInstance: WeakReference<AudioAccessActivity>? = null
 
-        /** Opens it, unless it was tried in the last minute. */
-        fun open(context: Context, volumeIndex: Int) {
-            val now = SystemClock.elapsedRealtime()
-            if (lastOpened != 0L && now - lastOpened < RETRY_MS) return
-            lastOpened = now
+        fun isResumed(): Boolean = activeInstance?.get() != null
+
+        /** Opens the invisible activity to grant volume access while radial menu is active. */
+        fun open(context: Context, volumeIndex: Int = -1) {
+            if (activeInstance?.get() != null) return
             val intent = Intent(context, AudioAccessActivity::class.java)
                 .putExtra(EXTRA_VOLUME_INDEX, volumeIndex)
                 .addFlags(
@@ -76,8 +82,23 @@ class AudioAccessActivity : Activity() {
                         Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS or
                         Intent.FLAG_ACTIVITY_NO_HISTORY,
                 )
-            runCatching { context.startActivity(intent) }
+            val options = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                ActivityOptions.makeBasic().apply {
+                    pendingIntentBackgroundActivityStartMode = ActivityOptions.MODE_BACKGROUND_ACTIVITY_START_ALLOWED
+                }
+            } else {
+                null
+            }
+            runCatching { context.startActivity(intent, options?.toBundle()) }
                 .onFailure { Log.w(TAG, "Couldn't open AudioAccessActivity", it) }
+        }
+
+        /** Closes the invisible activity when radial menu is closed. */
+        fun close() {
+            activeInstance?.get()?.let {
+                runCatching { it.finish() }
+            }
+            activeInstance = null
         }
     }
 }

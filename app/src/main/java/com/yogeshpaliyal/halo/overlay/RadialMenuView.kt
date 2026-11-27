@@ -165,6 +165,9 @@ class RadialMenuView(
     private var volumeBlockedReported = false
 
     private fun applyVolume(index: Int) {
+        if (!AudioAccessActivity.isResumed() && showVolume) {
+            AudioAccessActivity.open(context, index)
+        }
         if (SystemControls.setVolumeIndex(context, index)) return
         if (volumeBlockedReported) return
         volumeBlockedReported = true

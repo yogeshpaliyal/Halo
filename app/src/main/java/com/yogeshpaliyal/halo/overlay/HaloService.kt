@@ -487,6 +487,10 @@ class HaloService : Service(), BubbleView.Listener {
         }
         // Volume change ignored: Halo was restarted in the background without audio access.
         view.onVolumeBlocked = { index -> AudioAccessActivity.open(this, index) }
+        // Volume change access: open invisible activity while menu is open so OS permits setStreamVolume
+        if (showVolume) {
+            AudioAccessActivity.open(this)
+        }
         if (tapMode) armTapMode(view)
         wm.addView(view, params)
         menu = view
@@ -501,6 +505,7 @@ class HaloService : Service(), BubbleView.Listener {
      * shutting down, rotation, resize, or a new menu about to open).
      */
     private fun removeMenu(animate: Boolean = true) {
+        AudioAccessActivity.close()
         val view = menu
         menu = null
         if (!animate) {
