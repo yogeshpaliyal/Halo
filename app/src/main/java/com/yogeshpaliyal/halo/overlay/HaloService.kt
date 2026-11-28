@@ -88,6 +88,7 @@ class HaloService : Service(), BubbleView.Listener {
         updateAppWatch()
         updateBubbleBadge()
         _running.value = true
+        HaloTileService.requestUpdate(this)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -128,6 +129,7 @@ class HaloService : Service(), BubbleView.Listener {
         bubble?.let { runCatching { wm.removeView(it) } }
         bubble = null
         _running.value = false
+        HaloTileService.requestUpdate(this)
         super.onDestroy()
     }
 
